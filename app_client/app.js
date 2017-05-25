@@ -71,6 +71,8 @@
 		$rootScope.$on("$routeChangeStart", function(event, next, current) {
 			if(next.$$route.templateUrl == '/survey/completeSurvey/completeSurvey.view.html'){
 				$location.path("/complete-survey");
+			} else if(next.$$route.templateUrl == '/auth/forgotPass/forgotPass.view.html'){
+				$location.path("/forgot-password");
 			} else if (!authentication.isLoggedIn()) {
 				$location.path("/login");
 			} 

@@ -22,7 +22,7 @@
 				vm.formError = "All fields required, please try again";
 				return false;
 			} else {
-				console.log("Send email to reset password!")
+				console.log("Send email to " + vm.credentials.email + " to reset password!")
 			}
 		};
 	}
