@@ -1,0 +1,118 @@
+body, html {
+	width: 100%; 
+	height: 100%;
+	margin: 0; 
+	padding: 0
+}
+
+#navigation-main{
+	position: absolute;
+	top: 0; 
+	left: 0; 
+	right: 0; 
+	height: 50px;
+}
+
+#banner{
+	margin-top: 70px;
+}
+
+#map-controls{
+	position: absolute;
+	top: 60px;
+	left: 10px;
+	padding: 0;
+	z-index: 2;
+	box-shadow: 0 2px 4px rgba(0,0,0,0.2), 0 -1px 0px rgba(0,0,0,0.02);
+	background-color: #fff;
+}
+
+#map-controls .tab-content{
+	padding: 0 15px;
+}
+
+#map-controls .nav-tabs li{
+	cursor: pointer;
+}
+
+#map-controls .tab-content .list-group a{
+	cursor: pointer;
+}
+
+#map-warning {
+	z-index: 2;
+	display: inline-block;
+	text-align: center;
+	position: fixed;
+	top: 60px;
+	left: 50%;
+	-webkit-transform: translate(-50%);
+	transform: translate(-50%);
+}
+
+#map{
+	position: absolute; 
+	top: 50px; 
+	left: 0; 
+	right: 0; 
+	bottom: 0; 
+	background: rgb(229, 227, 223);
+}
+
+#map iframe {
+	display: block; 
+	width: 100%; 
+	height: 100%; 
+	border: none;
+}
+
+footer{
+	text-align: left;
+	margin-bottom: 5px;
+	position: inherit;
+}
+
+td[data-title-text=Command] {
+	width: 150px;
+	text-align: center;
+	vertical-align: middle !important;
+}
+
+#visualisation-table td{
+	text-align: center;
+	vertical-align: middle !important;
+}
+
+#visualisation-table td[data-title-text=Visualisation] {
+	text-align: left !important;
+}
+
+.vis-img-thumb{
+	height: 75px;
+	border: 1px solid #000;
+	margin-right: 5px;
+}
+
+div[ng-table-pagination=params] {
+	height: 60px;
+}
+
+@media (min-width: 768px) {
+	.modal-xl {
+		width: 90%;
+		max-width:1200px;
+	}
+}
+
+/*
+
+#survey-code-box .panel{
+	border-color: #000;
+}
+
+#survey-code-box .panel-heading{
+	background-color: #000;
+	border-color: #000;
+}
+
+*/
