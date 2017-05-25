@@ -9,7 +9,7 @@
 
 		vm.pageHeader = {
 			title: 'Settings',
-			strapline: 'change things up'
+			strapline: 'change how things work'
 		};
 
 
