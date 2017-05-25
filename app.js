@@ -21,18 +21,26 @@ var app = express();
 app.set('views', path.join(__dirname, 'app_server', 'views'));
 app.set('view engine', 'jade');
 
+/* must add js files in the app_client folder here, the files 
+are combined and minified into one file - nativeQDA.min.js 
+which is then included in index.html */
 var appClientFiles = [
 'app_client/app.js',
 'app_client/home/home.controller.js',
-'app_client/about/about.controller.js',
 'app_client/auth/login/login.controller.js',
 'app_client/auth/register/register.controller.js',
+'app_client/auth/forgotPass/forgotPass.controller.js',
 'app_client/locationDetail/locationDetail.controller.js',
-'app_client/analysis/map/analysisMapDetail.controller.js',
-'app_client/analysis/data/analysisDataDetail.controller.js',
-'app_client/analysis/visualisation/analysisVisualisationDetail.controller.js',
-'app_client/newDatasetModal/newDatasetModal.controller.js',
+'app_client/analysis/map/map.controller.js',
+'app_client/analysis/data/data.controller.js',
+'app_client/analysis/data/newDataset/newDataset.controller.js',
+'app_client/analysis/visualisation/visualisation.controller.js',
+'app_client/analysis/visualisation/newVisualisation/newVisualisation.controller.js',
 'app_client/survey/completeSurvey/completeSurvey.controller.js',
+'app_client/survey/survey.controller.js',
+'app_client/survey/newSurvey/newSurvey.controller.js',
+'app_client/files/files.controller.js',
+'app_client/settings/settings.controller.js',
 'app_client/common/services/authentication.service.js',
 'app_client/common/services/geolocation.service.js',
 'app_client/common/services/nativeQDAData.service.js',
@@ -57,7 +65,7 @@ fs.writeFile('public/angular/nativeQDA.min.js', uglified.code, function (err){
 }); 
 
 // uncomment after placing your favicon in /public
-//app.use(favicon(__dirname + '/public/favicon.ico'));
+app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -115,4 +123,3 @@ app.use(function(err, req, res, next) {
 
 
 module.exports = app;
- 

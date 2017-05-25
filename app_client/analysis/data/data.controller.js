@@ -2,10 +2,10 @@
 
 	angular
 	.module('nativeQDAApp')
-	.controller('analysisDataCtrl', analysisDataCtrl);
+	.controller('dataCtrl', dataCtrl);
 
-	analysisDataCtrl.$inject = ['$scope', '$window', 'NgTableParams', '$sce', '$uibModal'];
-	function analysisDataCtrl ($scope, $window, NgTableParams, $sce, $uibModal) {
+	dataCtrl.$inject = ['$scope', '$window', 'NgTableParams', '$sce', '$uibModal'];
+	function dataCtrl ($scope, $window, NgTableParams, $sce, $uibModal) {
 		var vm = this;
 		
 		vm.pageHeader = {
@@ -15,8 +15,8 @@
 
 		vm.popupNewDatasetForm = function () {
 			var modalInstance = $uibModal.open({
-				templateUrl: '/newDatasetModal/newDatasetModal.view.html',
-				controller: 'newDatasetModalCtrl as vm',
+				templateUrl: '/analysis/data/newDataset/newDataset.view.html',
+				controller: 'newDatasetCtrl as vm',
 				size: 'xl'
 			});
 			
@@ -30,7 +30,6 @@
 		{ dataset: 'Inheritance of Bunuban', createdBy: 'Anu', description: 'Bunuban inheritance study', dateCreated: '2009/01/12', command: 'id2'},
 		{ dataset: 'Qualitative study of the Moriori', createdBy: 'Michael', description: 'Moriori language evolution', dateCreated: '2012/03/29', command: 'id3'},
 		{ dataset: 'Kanaks - Drehu', createdBy: 'Michael', description: 'Drehu', dateCreated: '2008/11/28', command: 'id4'},
-	
 		{ dataset: 'Kanaks French dialect', createdBy: 'Holly', description: 'French', dateCreated: '2012/12/02', command: 'id29'},
 		{ dataset: 'Decline of the Bunuban family', createdBy: 'Anu', description: 'Bunuban Family study', dateCreated: '2011/07/25', command: 'id30'}
 		];

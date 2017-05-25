@@ -2,15 +2,27 @@
 
 	angular
 	.module('nativeQDAApp')
-	.controller('analysisVisCtrl', analysisVisCtrl);
+	.controller('visualisationCtrl', visualisationCtrl);
 
-	analysisVisCtrl.$inject = ['$scope', '$window', 'NgTableParams', '$sce'];
-	function analysisVisCtrl ($scope, $window, NgTableParams, $sce) {
+	visualisationCtrl.$inject = ['$scope', '$window', 'NgTableParams', '$sce', '$uibModal'];
+	function visualisationCtrl ($scope, $window, NgTableParams, $sce, $uibModal) {
 		var vm = this;
 		
 		vm.pageHeader = {
 			title: 'Visualisation',
 			strapline: 'visualise data sets here'
+		};
+
+		vm.popupVisualisationForm = function () {
+			var modalInstance = $uibModal.open({
+				templateUrl: '/analysis/visualisation/newVisualisation/newVisualisation.view.html',
+				controller: 'newVisualisationCtrl as vm',
+				size: 'xl'
+			});
+			
+			modalInstance.result.then(function () {
+
+			});
 		};
 
 		var dataset = [

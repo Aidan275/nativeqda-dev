@@ -2,10 +2,10 @@
 
 	angular
 	.module('nativeQDAApp')
-	.controller('newDatasetModalCtrl', newDatasetModalCtrl);
+	.controller('newDatasetCtrl', newDatasetCtrl);
 
-	newDatasetModalCtrl.$inject = ['$uibModalInstance', 'nativeQDAData'];
-	function newDatasetModalCtrl ($uibModalInstance, nativeQDAData) {
+	newDatasetCtrl.$inject = ['$uibModalInstance', 'nativeQDAData'];
+	function newDatasetCtrl ($uibModalInstance, nativeQDAData) {
 		var vm = this;
 				
 		vm.onSubmit = function () {

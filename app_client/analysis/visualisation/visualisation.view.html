@@ -12,7 +12,7 @@
 		</div>
 	</div>
 
-	<button type="button" class="btn btn-md btn-success">New Visualisation</button>
+	<button type="button" class="btn btn-md btn-success" ng-click="vm.popupVisualisationForm()">New Visualisation</button>
 
 	<table id="visualisation-table" ng-table="vm.tableParams" class="table table-condensed table-bordered table-striped" style="margin-top:5px">
 		<tr ng-repeat="row in $data">
