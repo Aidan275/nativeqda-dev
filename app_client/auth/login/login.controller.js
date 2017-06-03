@@ -4,17 +4,40 @@
 	.module('nativeQDAApp')
 	.controller('loginCtrl', loginCtrl);
 
-	loginCtrl.$inject = ['$location','authentication'];
-	function loginCtrl($location, authentication) {
+	loginCtrl.$inject = ['$location', 'geolocation', 'authentication'];
+	function loginCtrl($location, geolocation, authentication) {
 		var vm = this;
+		var lat;
+		var lng;
 
-		vm.pageHeader = {
-			title: 'Sign in to nativeQDA'
+		vm.getData = function (position) {
+			lat = position.coords.latitude;
+			lng = position.coords.longitude;
 		};
+
+		vm.showError = function (error) {
+			$scope.$apply(function() {
+				vm.message = error.message;
+				console.log(vm.message);
+			});
+		};
+
+		vm.noGeo = function () {
+			$scope.$apply(function() {
+				vm.message = "Geolocation is not supported by this browser.";
+				console.log(vm.message);
+			});
+		};
+
+		geolocation.getPosition(vm.getData,vm.showError,vm.noGeo);
 
 		vm.credentials = {
 			email : "",
 			password : ""
+		};
+
+		vm.pageHeader = {
+			title: 'Sign in to nativeQDA'
 		};
 
 		vm.returnPage = $location.search().page || '/';
@@ -31,6 +54,17 @@
 
 		vm.doLogin = function() {
 			vm.formError = "";
+			var userDetails = {
+				email : vm.credentials.email,
+				lat : lat,
+				lng : lng
+			};
+			authentication.loginEvent(userDetails)
+			.then(function(response){
+				console.log("response");
+			}, function(err){
+console.log("response err");
+			});
 			authentication
 			.login(vm.credentials)
 			.then(function(response) {

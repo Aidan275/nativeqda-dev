@@ -38,7 +38,7 @@
 		vm.tableParams = new NgTableParams({}, { dataset: dataset});
 
 		$scope.confirmDelete = function () {
-			$window.confirm("Are ya sure?")
+			$window.confirm("Are you sure?")
 		};
 
 	}
