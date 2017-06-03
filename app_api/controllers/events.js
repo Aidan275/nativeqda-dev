@@ -11,9 +11,12 @@ module.exports.loginEvent = function(req, res) {
 
 	event.email = req.body.email;
 	event.ip = (req.headers['x-forwarded-for'] || '').split(',')[0] || req.connection.remoteAddress;
-	event.coords = { 
-		coordinates: [parseFloat(req.body.lng), parseFloat(req.body.lat)]
-	};
+	if(req.body.lng && req.body.lat){
+		event.coords = { 
+			coordinates: [parseFloat(req.body.lng), parseFloat(req.body.lat)]
+		};
+		console.log(parseFloat(req.body.lng));
+	}
 	event.event = "Login Event";
 
 	event.save(function(err) {
