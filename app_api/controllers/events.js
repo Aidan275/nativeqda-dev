@@ -27,9 +27,7 @@ module.exports.event = function(req, res) {
 		if (err) {
 			sendJSONresponse(res, 404, err);
 		} else {
-			sendJSONresponse(res, 200, {
-				"message": "User details received."
-			});
+			sendJSONresponse(res, 200);
 		}
 	});
 
