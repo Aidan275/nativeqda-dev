@@ -13,19 +13,9 @@ module.exports.loginEvent = function(req, res) {
 	//console.log(req.body);
 	var ip = (req.headers['x-forwarded-for'] || '').split(',')[0] || req.connection.remoteAddress;
 	console.log(ip);
-	sendJSONresponse(res, 200, {
-		"message": "User details received."
-	});
+	sendJSONresponse(res, 200, ip);
 	//event.email = req.body.email;
 };
-
-getClientAddress = function (req) {
-	return (req.headers['x-forwarded-for'] || '').split(',')[0] || req.connection.remoteAddress;
-};
-
-
-
-
 
 /* POST a event
 /* /api/event */

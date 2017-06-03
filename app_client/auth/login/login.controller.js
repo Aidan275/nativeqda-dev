@@ -61,9 +61,9 @@
 			};
 			authentication.loginEvent(userDetails)
 			.then(function(response){
-				console.log("response");
+				console.log(response);
 			}, function(err){
-console.log("response err");
+				console.log("err");
 			});
 			authentication
 			.login(vm.credentials)
