@@ -5,7 +5,7 @@ var eventSchema = new mongoose.Schema({
 		type: String
 	},
 	ip: {
-		type: Number
+		type: String
 	},
 	coords: { 
 		type: { 
