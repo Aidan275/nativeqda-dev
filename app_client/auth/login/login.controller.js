@@ -31,7 +31,7 @@
 
 		vm.doLogin = function() {
 			vm.formError = "";
-			events.event({email : vm.credentials.email});
+			events.event({email : vm.credentials.email, desc : "Login"});
 			authentication
 			.login(vm.credentials)
 			.then(function(response) {

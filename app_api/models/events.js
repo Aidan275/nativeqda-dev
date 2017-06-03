@@ -14,7 +14,7 @@ var eventSchema = new mongoose.Schema({
 		}, 
 		coordinates: [Number]
 	},
-	time: {
+	date: {
 		type: Date, "default": Date.now
 	},
 	url: {
