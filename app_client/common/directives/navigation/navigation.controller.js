@@ -4,9 +4,11 @@
 	.module('nativeQDAApp')
 	.controller('navigationCtrl', navigationCtrl);
 
-	navigationCtrl.$inject = ['$location', 'authentication'];
-	function navigationCtrl($location, authentication) {
+	navigationCtrl.$inject = ['$location', 'authentication', 'events'];
+	function navigationCtrl($location, authentication, events) {
 		var vm = this;
+
+		events.event({email : authentication.currentUser().email});
 
 		vm.currentPath = $location.path();
 
@@ -15,7 +17,10 @@
 		vm.currentUser = authentication.currentUser();
 
 		vm.logout = function() {
-			authentication.logout();
+			authentication.logout({
+				email : authentication.currentUser().email,
+				desc : "Logout"
+			});
 			$location.path('/$logged-out');
 		};
 

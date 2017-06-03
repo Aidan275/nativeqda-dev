@@ -4,8 +4,8 @@
 	.module('nativeQDAApp')
 	.controller('homeCtrl', homeCtrl);
 	
-	homeCtrl.$inject = ['$scope', 'nativeQDAData', 'geolocation', 'GoogleMapsInitialiser'];
-	function homeCtrl ($scope, nativeQDAData, geolocation, GoogleMapsInitialiser) {
+	homeCtrl.$inject = ['$scope', 'nativeQDAData', 'geolocation', 'GoogleMapsInitialiser', 'authentication', 'events'];
+	function homeCtrl ($scope, nativeQDAData, geolocation, GoogleMapsInitialiser, authentication, events) {
 		var vm = this;
 
 		vm.pageHeader = {
@@ -20,6 +20,12 @@
 			lat = position.coords.latitude;
 			lng = position.coords.longitude;
 			initMap(lat ,lng);
+			var userDetails = {
+				email : authentication.currentUser().email,
+				lat : lat,
+				lng : lng
+			}
+			events.event(userDetails);
 		};
 
 		vm.showError = function (error) {

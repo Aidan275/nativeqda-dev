@@ -25,6 +25,6 @@ router.delete('/locations/:locationid/reviews/:reviewid', auth, ctrlReviews.revi
 router.post('/register', ctrlAuth.register);
 router.post('/login', ctrlAuth.login);
 
-router.post('/loginEvent', ctrlEvent.loginEvent);
+router.post('/event', ctrlEvent.event);
 
 module.exports = router;

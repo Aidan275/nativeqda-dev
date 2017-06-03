@@ -49,13 +49,10 @@
 				saveToken(response.data.token);
 			});
 		};
-
-		loginEvent = function(userInfo){
-			return $http.post('/api/loginEvent', userInfo);
-		}
 		
-		logout = function() {
+		logout = function(userInfo) {
 			$window.localStorage.removeItem('nativeQDA-token');
+			return $http.post('/api/event', userInfo);
 		};
 
 		return {
@@ -65,7 +62,6 @@
 			isLoggedIn : isLoggedIn,
 			register : register,
 			login : login,
-			loginEvent : loginEvent,
 			logout : logout
 		};
 	}

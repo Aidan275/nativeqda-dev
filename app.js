@@ -42,6 +42,7 @@ var appClientFiles = [
 'app_client/files/files.controller.js',
 'app_client/settings/settings.controller.js',
 'app_client/common/services/authentication.service.js',
+'app_client/common/services/events.service.js',
 'app_client/common/services/geolocation.service.js',
 'app_client/common/services/nativeQDAData.service.js',
 'app_client/common/services/googleMapsInitialiser.service.js',

@@ -6,19 +6,23 @@ var sendJSONresponse = function(res, status, content) {
 	res.json(content);
 };
 
-module.exports.loginEvent = function(req, res) {
+module.exports.event = function(req, res) {
 	var event = new Event();
 
-	event.email = req.body.email;
-	event.ip = (req.headers['x-forwarded-for'] || '').split(',')[0] || req.connection.remoteAddress;
+	// if coordinates aren't supplied, do not attempt to store - most likely NaN
 	if(req.body.lng && req.body.lat){
 		event.coords = { 
 			coordinates: [parseFloat(req.body.lng), parseFloat(req.body.lat)]
 		};
-		console.log(parseFloat(req.body.lng));
 	}
-	event.event = "Login Event";
+	// if event description is provided use, otherwise defaults to "Page load"
+	if(req.body.desc)
+		event.desc = req.body.desc;
+	event.email = req.body.email;
+	event.ip = (req.headers['x-forwarded-for'] || '').split(',')[0] || req.connection.remoteAddress;
+	event.url = req.headers.referer;
 
+	
 	event.save(function(err) {
 		if (err) {
 			sendJSONresponse(res, 404, err);
@@ -28,4 +32,5 @@ module.exports.loginEvent = function(req, res) {
 			});
 		}
 	});
+
 };

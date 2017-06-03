@@ -17,8 +17,11 @@ var eventSchema = new mongoose.Schema({
 	time: {
 		type: Date, "default": Date.now
 	},
-	event: {
+	url: {
 		type: String
+	},
+	desc: {
+		type: String, "default": "Page load"
 	}
 });
 

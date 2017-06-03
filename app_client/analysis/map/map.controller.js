@@ -4,8 +4,8 @@
 	.module('nativeQDAApp')
 	.controller('mapCtrl', mapCtrl);
 
-	mapCtrl.$inject = ['$scope', 'nativeQDAData', 'geolocation', 'GoogleMapsInitialiser'];
-	function mapCtrl ($scope, nativeQDAData, geolocation, GoogleMapsInitialiser) {
+	mapCtrl.$inject = ['$scope', 'nativeQDAData', 'geolocation', 'GoogleMapsInitialiser', 'authentication', 'events'];
+	function mapCtrl ($scope, nativeQDAData, geolocation, GoogleMapsInitialiser, authentication, events) {
 		var vm = this;
 		var lat = -34.406749;
 		var lng = 150.878473;
@@ -13,6 +13,12 @@
 		vm.getData = function (position) {
 			lat = position.coords.latitude;
 			lng = position.coords.longitude;
+			userDetails = {
+				email : authentication.currentUser().email,
+				lat : lat,
+				lng : lng
+			}
+			events.event(userDetails);
 			initMap(lat ,lng);
 		};
 
@@ -179,8 +185,8 @@
 				var kaguMarkerCluster = new MarkerClusterer(map, kaguMarkers, {imagePath: '/images/map/icons/kagu-markers/m'});
 
 			});
-		}
-	}
+}
+}
 
 
 })();
