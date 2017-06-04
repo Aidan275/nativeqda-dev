@@ -4,8 +4,8 @@
 	.module('nativeQDAApp')
 	.service('events', events);
 
-	events.$inject = ['$http', '$window'];
-	function events ($http, $window) {
+	events.$inject = ['$http'];
+	function events ($http) {
 
 		event = function(userInfo){
 			return $http.post('/api/event', userInfo);

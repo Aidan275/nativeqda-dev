@@ -16,14 +16,12 @@
 
 	<table ng-table="vm.tableParams" class="table table-condensed table-bordered table-striped" style="margin-top:5px">
 		<tr ng-repeat="row in $data">
-			<td data-title="'Dataset'" filter="{dataset: 'text'}" sortable="'dataset'">{{row.dataset}}</td>
+			<td data-title="'Dataset Name'" filter="{name: 'text'}" sortable="'name'">{{row.name}}</td>
+			<td data-title="'Description'" filter="{desc: 'text'}" sortable="'desc'">{{row.desc}}</td>
 			<td data-title="'Created By'" filter="{createdBy: 'text'}" sortable="'createdBy'">{{row.createdBy}}</td>
-			<td data-title="'Description'" filter="{description: 'text'}" sortable="'description'">{{row.description}}</td>
-			<td data-title="'Date Created'" filter="{dateCreated: 'text'}" sortable="'dateCreated'">{{row.dateCreated}}</td>
-			<td data-title="'Command'"><a href="/analysis/data/view/{{row.command}}" class="btn btn-success btn-xs" role="button">View</a> <a href="/analysis/data/edit/{{row.command}}" class="btn btn-primary btn-xs" role="button">Edit</a> <a href="/analysis/data/delete/{{row.command}}" ng-click="confirmDelete()" class="btn btn-danger btn-xs" role="button">Delete</a></td class="data-command-cell">
+			<td data-title="'Date Created'" filter="{dateCreated: 'text'}" sortable="'dateCreated'">{{row.dateCreated | date : "dd MMMM, yyyy h:mm a"}}</td>
+			<td data-title="'Command'"><a href="/analysis/data/view/{{row._id}}" class="btn btn-success btn-xs" role="button">View</a> <a href="/analysis/data/edit/{{row._id}}" class="btn btn-primary btn-xs" role="button">Edit</a> <a ng-click="confirmDelete(row.name, row._id)" class="btn btn-danger btn-xs" role="button">Delete</a></td class="data-command-cell">
 		</tr>
-
-
 	</table>
 
 	<footer-generic></footer-generic>

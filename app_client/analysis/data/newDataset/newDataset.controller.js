@@ -4,10 +4,10 @@
 	.module('nativeQDAApp')
 	.controller('newDatasetCtrl', newDatasetCtrl);
 
-	newDatasetCtrl.$inject = ['$uibModalInstance', 'nativeQDAData'];
-	function newDatasetCtrl ($uibModalInstance, nativeQDAData) {
+	newDatasetCtrl.$inject = ['$uibModalInstance', 'datasets'];
+	function newDatasetCtrl ($uibModalInstance, datasets) {
 		var vm = this;
-				
+
 		vm.onSubmit = function () {
 			vm.formError = "";
 			if(angular.isDefined(vm.formData)){
@@ -15,7 +15,7 @@
 					vm.formError = "All fields required, please try again";
 					return false;
 				} else {
-					console.log("Create Dataset!")
+					vm.doCreateDataset(vm.formData);
 				}
 			} else {
 				vm.formError = "All fields required, please try again";
@@ -23,11 +23,24 @@
 			}
 		};
 
+		vm.doCreateDataset = function (formData) {
+			datasets.datasetCreate({
+				name: vm.formData.datasetName,
+				desc: vm.formData.description
+			})
+			.then(function (response) {
+				vm.modal.close(response.data); 
+			}, function (e) {
+				vm.formError = "The Dataset was not saved, please try again";
+			});
+			return false;
+		};
+
 		vm.modal = {
-			close : function (result) {
-				$uibModalInstance.close(result);
+			close : function() {
+				$uibModalInstance.close();
 			}, 
-			cancel : function () {
+			cancel : function() {
 				$uibModalInstance.dismiss('cancel');
 			}
 		};
