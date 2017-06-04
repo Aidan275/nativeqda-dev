@@ -15,7 +15,7 @@ module.exports.event = function(req, res) {
 			coordinates: [parseFloat(req.body.lng), parseFloat(req.body.lat)]
 		};
 	}
-	// if event description is provided use, otherwise defaults to "Page load"
+	// store event description if provided, otherwise defaults to "Page load"
 	if(req.body.desc)
 		event.desc = req.body.desc;
 	event.email = req.body.email;

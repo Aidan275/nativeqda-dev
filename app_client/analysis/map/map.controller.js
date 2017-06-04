@@ -9,6 +9,7 @@
 		var vm = this;
 		var lat = -34.406749;
 		var lng = 150.878473;
+		var mapZoom = 5;
 
 		vm.getData = function (position) {
 			lat = position.coords.latitude;
@@ -19,6 +20,7 @@
 				lng : lng
 			}
 			events.event(userDetails);
+			mapZoom = 20;
 			initMap(lat ,lng);
 		};
 
@@ -47,7 +49,7 @@
 				var mapCanvas = document.getElementById('map');
 				var mapOptions = {
 					center: location,
-					zoom: 5,
+					zoom: mapZoom,
 					panControl: false,
 					mapTypeId: google.maps.MapTypeId.ROADMAP,
 					mapTypeControl: true,
