@@ -4,8 +4,8 @@
 	.module('nativeQDAApp')
 	.controller('newVisualisationCtrl', newVisualisationCtrl);
 
-	newVisualisationCtrl.$inject = ['$uibModalInstance', 'nativeQDAData'];
-	function newVisualisationCtrl ($uibModalInstance, nativeQDAData) {
+	newVisualisationCtrl.$inject = ['$uibModalInstance'];
+	function newVisualisationCtrl ($uibModalInstance) {
 		var vm = this;
 				
 		vm.onSubmit = function () {

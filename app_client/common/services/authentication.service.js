@@ -52,6 +52,7 @@
 		
 		logout = function(userInfo) {
 			$window.localStorage.removeItem('nativeQDA-token');
+			// event for logout
 			return $http.post('/api/event', userInfo);
 		};
 

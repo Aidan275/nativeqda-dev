@@ -86,6 +86,32 @@ var buildDatasetList = function(req, res, results) {
 	return datasetList;
 };
 
+module.exports.datasetReadOne = function(req, res) {
+	var datasetid = req.params.datasetid;
+	console.log(datasetid);
+	if (datasetid) {
+		Dataset
+		.findById(datasetid)
+		.exec(
+			function(err, dataset) {
+				if (!dataset) {
+					sendJSONresponse(res, 404, {
+						"message": "datasetid not found"
+					});
+					return;
+				} else if (err) {
+					sendJSONresponse(res, 404, err);
+					return;
+				}
+				sendJSONresponse(res, 200, dataset);
+			});
+	} else {
+		sendJSONresponse(res, 404, {
+			"message": "No datasetid in request"
+		});
+	}
+}
+
 module.exports.datasetDeleteOne = function(req, res) {
 	var datasetid = req.params.datasetid;
 	if (datasetid) {

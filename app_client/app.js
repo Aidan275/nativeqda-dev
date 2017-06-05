@@ -1,6 +1,6 @@
 (function () {
 	
-	angular.module('nativeQDAApp', ['ngRoute', 'ngSanitize', 'ui.bootstrap', 'ngTable']);
+	angular.module('nativeQDAApp', ['ngRoute', 'ngSanitize', 'ngTable', 'ui.bootstrap', 'ui.bootstrap.datepicker']);
 
 	config.$inject = ['$routeProvider', '$locationProvider'];
 	function config ($routeProvider, $locationProvider) {

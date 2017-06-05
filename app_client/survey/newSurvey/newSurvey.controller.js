@@ -4,8 +4,8 @@
 	.module('nativeQDAApp')
 	.controller('newSurveyCtrl', newSurveyCtrl);
 
-	newSurveyCtrl.$inject = ['$uibModalInstance', 'nativeQDAData'];
-	function newSurveyCtrl ($uibModalInstance, nativeQDAData) {
+	newSurveyCtrl.$inject = ['$uibModalInstance'];
+	function newSurveyCtrl ($uibModalInstance) {
 		var vm = this;
 				
 		vm.onSubmit = function () {

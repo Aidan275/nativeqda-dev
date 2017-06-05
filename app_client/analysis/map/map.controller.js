@@ -4,8 +4,8 @@
 	.module('nativeQDAApp')
 	.controller('mapCtrl', mapCtrl);
 
-	mapCtrl.$inject = ['$scope', 'nativeQDAData', 'geolocation', 'GoogleMapsInitialiser', 'authentication', 'events'];
-	function mapCtrl ($scope, nativeQDAData, geolocation, GoogleMapsInitialiser, authentication, events) {
+	mapCtrl.$inject = ['$scope', 'geolocation', 'GoogleMapsInitialiser', 'authentication', 'events'];
+	function mapCtrl ($scope, geolocation, GoogleMapsInitialiser, authentication, events) {
 		var vm = this;
 		var lat = -34.406749;
 		var lng = 150.878473;

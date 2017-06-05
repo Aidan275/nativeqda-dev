@@ -34,6 +34,8 @@ var appClientFiles = [
 'app_client/analysis/map/map.controller.js',
 'app_client/analysis/data/data.controller.js',
 'app_client/analysis/data/newDataset/newDataset.controller.js',
+'app_client/analysis/data/viewDataset/viewDataset.controller.js',
+'app_client/analysis/data/editDataset/editDataset.controller.js',
 'app_client/analysis/visualisation/visualisation.controller.js',
 'app_client/analysis/visualisation/newVisualisation/newVisualisation.controller.js',
 'app_client/survey/completeSurvey/completeSurvey.controller.js',
@@ -45,7 +47,6 @@ var appClientFiles = [
 'app_client/common/services/authentication.service.js',
 'app_client/common/services/events.service.js',
 'app_client/common/services/geolocation.service.js',
-'app_client/common/services/nativeQDAData.service.js',
 'app_client/common/services/googleMapsInitialiser.service.js',
 'app_client/common/filters/formatDistance.filter.js',
 'app_client/common/filters/addHtmlLineBreaks.filter.js',
@@ -58,7 +59,7 @@ var appClientFiles = [
 ];
 var uglified = uglifyJs.minify(appClientFiles, { compress : false });
 
-fs.writeFile('public/angular/nativeQDA.min.js', uglified.code, function (err){
+fs.writeFile('public/javascripts/angular/nativeQDA.min.js', uglified.code, function (err){
     if(err) {
         console.log(err);
     } else {

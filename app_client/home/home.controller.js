@@ -4,8 +4,8 @@
 	.module('nativeQDAApp')
 	.controller('homeCtrl', homeCtrl);
 	
-	homeCtrl.$inject = ['$scope', 'nativeQDAData', 'geolocation', 'GoogleMapsInitialiser', 'authentication', 'events'];
-	function homeCtrl ($scope, nativeQDAData, geolocation, GoogleMapsInitialiser, authentication, events) {
+	homeCtrl.$inject = ['$scope', 'geolocation', 'GoogleMapsInitialiser', 'authentication', 'events'];
+	function homeCtrl ($scope, geolocation, GoogleMapsInitialiser, authentication, events) {
 		var vm = this;
 
 		vm.pageHeader = {

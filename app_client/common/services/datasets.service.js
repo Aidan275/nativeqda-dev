@@ -7,6 +7,14 @@
 	datasets.$inject = ['$http', 'authentication'];
 	function datasets ($http, authentication) {
 
+		var datasetCreate = function(dataset){
+			return $http.post('/api/analysis/data/create', dataset, {
+				headers: {
+					Authorization: 'Bearer '+ authentication.getToken()
+				}
+			});
+		};
+
 		var listDatasets = function(datasetList){
 			return $http.get('/api/analysis/data', datasetList, {
 				headers: {
@@ -15,8 +23,8 @@
 			});
 		};
 
-		var datasetCreate = function(dataset){
-			return $http.post('/api/analysis/data/create', dataset, {
+		var datasetReadOne = function(datasetid){
+			return $http.get('/api/analysis/data/' + datasetid, {
 				headers: {
 					Authorization: 'Bearer '+ authentication.getToken()
 				}
@@ -32,8 +40,9 @@
 		};
 
 		return {
-			listDatasets : listDatasets,
 			datasetCreate : datasetCreate,
+			listDatasets : listDatasets,
+			datasetReadOne : datasetReadOne,
 			datasetDeleteOne : datasetDeleteOne
 		};
 
