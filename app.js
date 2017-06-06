@@ -41,6 +41,7 @@ var appClientFiles = [
 'app_client/survey/completeSurvey/completeSurvey.controller.js',
 'app_client/survey/survey.controller.js',
 'app_client/survey/newSurvey/newSurvey.controller.js',
+'app_client/heatmapExample/heatmapExample.controller.js',
 'app_client/files/files.controller.js',
 'app_client/settings/settings.controller.js',
 'app_client/common/services/datasets.service.js',

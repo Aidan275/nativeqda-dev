@@ -8,7 +8,7 @@
 	GoogleMapsInitialiser.$inject = ['$window', '$q'];
 	function GoogleMapsInitialiser ($window, $q) {
 		//Google's url for async maps initialization accepting callback function
-		var asyncUrl = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyCEMpLtx0n2Pk4ggQonEyD0iPZbGHYhR5o&callback=',
+		var asyncUrl = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyCEMpLtx0n2Pk4ggQonEyD0iPZbGHYhR5o&libraries=visualization&callback=',
 		mapsDefer = $q.defer();
 
 		//Callback function - resolving promise after maps successfully loaded

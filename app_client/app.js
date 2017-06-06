@@ -1,6 +1,6 @@
 (function () {
 	
-	angular.module('nativeQDAApp', ['ngRoute', 'ngSanitize', 'ngTable', 'ui.bootstrap', 'ui.bootstrap.datepicker']);
+	angular.module('nativeQDAApp', ['ngRoute', 'ngSanitize', 'ngTable', 'ui.bootstrap', 'ui.bootstrap.datepicker', 'rzModule']);
 
 	config.$inject = ['$routeProvider', '$locationProvider'];
 	function config ($routeProvider, $locationProvider) {
@@ -58,6 +58,11 @@
 		.when('/complete-survey', {
 			templateUrl: '/survey/completeSurvey/completeSurvey.view.html',
 			controller: 'CompleteSurveyCtrl',
+			controllerAs: 'vm'
+		})
+		.when('/heatmap-example', {
+			templateUrl: '/heatmapExample/heatmapExample.view.html',
+			controller: 'heatmapCtrl',
 			controllerAs: 'vm'
 		})
 		.otherwise({redirectTo: '/'});

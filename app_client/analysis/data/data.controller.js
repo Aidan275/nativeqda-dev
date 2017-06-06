@@ -42,7 +42,7 @@
 			var modalInstance = $uibModal.open({
 				templateUrl: '/analysis/data/viewDataset/viewDataset.view.html',
 				controller: 'viewDatasetCtrl as vm',
-				size: 'xl',
+				size: 'lg',
 				resolve: {
 					datasetid: function () {
 						return datasetid;
