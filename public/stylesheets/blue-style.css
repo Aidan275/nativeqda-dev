@@ -19,13 +19,9 @@ body, html {
 	left: 0; 
 	right: 0; 
 	height: 50px;
-	    -webkit-box-shadow: 0px 0px 10px 3px #999;
-    -moz-box-shadow: 0px 0px 10px 3px #999;
-    box-shadow: 0px 0px 10px 3px #999;
-
-	-webkit-box-shadow: 0 8px 6px -6px #999;
-	-moz-box-shadow: 0 8px 6px -6px #999;
-	box-shadow: 0 8px 6px -6px #999;
+	-webkit-box-shadow: 0 6px 6px -6px #999;
+	-moz-box-shadow: 0 6px 6px -6px #999;
+	box-shadow: 0 6px 6px -6px #999;
 }
 
 .navbar-default {
