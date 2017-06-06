@@ -35,7 +35,7 @@
 			authentication
 			.login(vm.credentials)
 			.then(function(response) {
-				$location.search('page', null); 
+				$location.search('page', null);
 				$location.path(vm.returnPage);
 			}, function(err){
 				vm.formError = err.data.message;

@@ -21,7 +21,7 @@
 				email : authentication.currentUser().email,
 				desc : "Logout"
 			});
-			$location.path('/$logged-out');
+			$location.path('/login');
 		};
 
 	}

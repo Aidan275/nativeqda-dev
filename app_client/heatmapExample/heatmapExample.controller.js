@@ -219,9 +219,11 @@
 					}
 
 					heatmap.setData(heatmapData);
-					heatmap.set('radius', vm.radiusSlider.value);
-					heatmap.set('opacity', vm.opacitySlider.value);
-					heatmap.set('gradient', gradient);
+					heatmap.setOptions({
+						radius: vm.radiusSlider.value,
+						opacity: vm.opacitySlider.value,
+						gradient: gradient
+					});
 					heatmap.setMap(map);
 				}
 				

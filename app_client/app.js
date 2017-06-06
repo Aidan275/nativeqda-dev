@@ -8,62 +8,74 @@
 		.when('/login', {
 			templateUrl: '/auth/login/login.view.html',
 			controller: 'loginCtrl',
-			controllerAs: 'vm'
+			controllerAs: 'vm',
+			loginRequired: false
 		})
 		.when('/register', {
 			templateUrl: '/auth/register/register.view.html',
 			controller: 'registerCtrl',
-			controllerAs: 'vm'
+			controllerAs: 'vm',
+			loginRequired: true
 		})
 		.when('/forgot-password', {
 			templateUrl: '/auth/forgotPass/forgotPass.view.html',
 			controller: 'forgotPassCtrl',
-			controllerAs: 'vm'
+			controllerAs: 'vm',
+			loginRequired: false
 		})
 		.when('/', {
 			templateUrl: '/home/home.view.html',
 			controller: 'homeCtrl',
-			controllerAs: 'vm'
+			controllerAs: 'vm',
+			loginRequired: true
 		})
 		.when('/analysis/map', {
 			templateUrl: '/analysis/map/map.view.html',
 			controller: 'mapCtrl',
-			controllerAs: 'vm'
+			controllerAs: 'vm',
+			loginRequired: true
 		})
 		.when('/analysis/data', {
 			templateUrl: '/analysis/data/data.view.html',
 			controller: 'dataCtrl',
-			controllerAs: 'vm'
+			controllerAs: 'vm',
+			loginRequired: true
 		})
 		.when('/analysis/visualisation', {
 			templateUrl: '/analysis/visualisation/visualisation.view.html',
 			controller: 'visualisationCtrl',
-			controllerAs: 'vm'
+			controllerAs: 'vm',
+			loginRequired: true
 		})
 		.when('/survey', {
 			templateUrl: '/survey/survey.view.html',
 			controller: 'surveyCtrl',
-			controllerAs: 'vm'
+			controllerAs: 'vm',
+			loginRequired: true
 		})
 		.when('/files', {
 			templateUrl: '/files/files.view.html',
 			controller: 'filesCtrl',
-			controllerAs: 'vm'
+			controllerAs: 'vm',
+			loginRequired: true
 		})
 		.when('/settings', {
 			templateUrl: '/settings/settings.view.html',
 			controller: 'settingsCtrl',
-			controllerAs: 'vm'
+			controllerAs: 'vm',
+			loginRequired: true
 		})
 		.when('/complete-survey', {
 			templateUrl: '/survey/completeSurvey/completeSurvey.view.html',
 			controller: 'CompleteSurveyCtrl',
-			controllerAs: 'vm'
+			controllerAs: 'vm',
+			loginRequired: false
 		})
 		.when('/heatmap-example', {
 			templateUrl: '/heatmapExample/heatmapExample.view.html',
 			controller: 'heatmapCtrl',
-			controllerAs: 'vm'
+			controllerAs: 'vm',
+			loginRequired: true
 		})
 		.otherwise({redirectTo: '/'});
 
@@ -73,13 +85,15 @@
 
 	// hacked together for the complete survey page, will need to improve
 	function run ($rootScope, $location, authentication) {
-		$rootScope.$on("$routeChangeStart", function(event, next, current) {
-			if(next.$$route.templateUrl == '/survey/completeSurvey/completeSurvey.view.html'){
-				$location.path("/complete-survey");
-			} else if(next.$$route.templateUrl == '/auth/forgotPass/forgotPass.view.html'){
-				$location.path("/forgot-password");
-			} else if (!authentication.isLoggedIn()) {
-				$location.path("/login");
+		$rootScope.$on("$routeChangeStart", function(event, nextRoute, currentRoute) {
+			var postLogInRoute;
+			if(nextRoute.loginRequired && !authentication.isLoggedIn()){
+				postLogInRoute = $location.path();
+				$location.path('/login').replace();
+				$location.search('page', postLogInRoute);
+			} else if (nextRoute.loginRequired && authentication.isLoggedIn()) {
+				$location.path(postLogInRoute).replace();
+				postLogInRoute = null;
 			} 
 		});
 	}
