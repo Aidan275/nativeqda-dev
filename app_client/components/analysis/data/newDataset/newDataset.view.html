@@ -6,6 +6,7 @@
 				<span class="sr-only">Close</span>
 			</button>
 			<h4 id="dataset-modal-label" class="modal-title">Add New Dataset</h4>
+
 		</div>
 		<div class="modal-body">
 			<div role="alert" ng-show="vm.formError" class="alert alert-danger">{{ vm.formError }}</div>
@@ -21,6 +22,13 @@
 					<textarea id="description" name="description" required="required" ng-model="vm.formData.description" rows="1" class="form-control"></textarea>
 				</div>
 			</div>
+			<div class="form-group">
+				<label for="file-select" class="col-sm-2 control-label">Files</label>
+				<div class="col-sm-10">
+					<p>Need to add files list so users can select which files to include in a dataset</p>
+				</div>
+			</div>
+
 
 		</div>
 		<div class="modal-footer">

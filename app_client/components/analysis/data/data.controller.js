@@ -14,10 +14,6 @@
 			strapline: 'where the Datasets live'
 		};
 
-
-
-
-
 		$scope.open1 = function() {
 			$scope.popup1.opened = true;
 		};
@@ -30,17 +26,9 @@
 			opened: false
 		};
 
-		
-
-
-
-
-
-
-
 		vm.popupViewDatasetForm = function(datasetid) {
 			var modalInstance = $uibModal.open({
-				templateUrl: '/analysis/data/viewDataset/viewDataset.view.html',
+				templateUrl: '/components/analysis/data/viewDataset/viewDataset.view.html',
 				controller: 'viewDatasetCtrl as vm',
 				size: 'lg',
 				resolve: {
@@ -57,7 +45,7 @@
 
 		vm.popupEditDatasetForm = function(name, datasetid) {
 			var modalInstance = $uibModal.open({
-				templateUrl: '/analysis/data/editDataset/editDataset.view.html',
+				templateUrl: '/components/analysis/data/editDataset/editDataset.view.html',
 				controller: 'editDatasetCtrl as vm',
 				size: 'xl'
 			});
@@ -69,7 +57,7 @@
 
 		vm.popupNewDatasetForm = function() {
 			var modalInstance = $uibModal.open({
-				templateUrl: '/analysis/data/newDataset/newDataset.view.html',
+				templateUrl: '/components/analysis/data/newDataset/newDataset.view.html',
 				controller: 'newDatasetCtrl as vm',
 				size: 'xl'
 			});
@@ -82,7 +70,7 @@
 		vm.doListDatasets = function(datasetList) {
 			dataset = datasetList;
 			vm.tableParams = new NgTableParams({
-				sorting: {dateCreated: "asc"}
+				sorting: {dateCreated: "desc"}
 			}, {
 				dataset: dataset
 			});

@@ -15,7 +15,7 @@
 
 		vm.popupVisualisationForm = function () {
 			var modalInstance = $uibModal.open({
-				templateUrl: '/analysis/visualisation/newVisualisation/newVisualisation.view.html',
+				templateUrl: '/components/analysis/visualisation/newVisualisation/newVisualisation.view.html',
 				controller: 'newVisualisationCtrl as vm',
 				size: 'xl'
 			});
