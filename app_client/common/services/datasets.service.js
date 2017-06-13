@@ -15,8 +15,8 @@
 			});
 		};
 
-		var listDatasets = function(datasetList){
-			return $http.get('/api/analysis/data', datasetList, {
+		var listDatasets = function(){
+			return $http.get('/api/analysis/data/list', {
 				headers: {
 					Authorization: 'Bearer '+ authentication.getToken()
 				}
@@ -24,7 +24,7 @@
 		};
 
 		var datasetReadOne = function(datasetid){
-			return $http.get('/api/analysis/data/' + datasetid, {
+			return $http.get('/api/analysis/data/read/' + datasetid, {
 				headers: {
 					Authorization: 'Bearer '+ authentication.getToken()
 				}

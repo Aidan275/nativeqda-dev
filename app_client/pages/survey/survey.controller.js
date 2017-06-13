@@ -15,7 +15,7 @@
 
 		vm.popupNewSurveyForm = function () {
 			var modalInstance = $uibModal.open({
-				templateUrl: '/components/survey/newSurvey/newSurvey.view.html',
+				templateUrl: '/pages/survey/newSurvey/newSurvey.view.html',
 				controller: 'newSurveyCtrl as vm',
 				size: 'xl'
 			});

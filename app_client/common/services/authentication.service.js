@@ -38,19 +38,19 @@
 			}
 		};
 
-		register = function(user) {
+		var register = function(user) {
 			return $http.post('/api/register', user).then(function(response){
 				saveToken(response.data.token);
 			});
 		};
 
-		login = function(user) {
+		var login = function(user) {
 			return $http.post('/api/login', user).then(function (response) {
 				saveToken(response.data.token);
 			});
 		};
 		
-		logout = function(userInfo) {
+		var logout = function(userInfo) {
 			$window.localStorage.removeItem('nativeQDA-token');
 			// event for logout
 			return $http.post('/api/event', userInfo);

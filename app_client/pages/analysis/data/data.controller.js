@@ -4,8 +4,8 @@
 	.module('nativeQDAApp')
 	.controller('dataCtrl', dataCtrl);
 
-	dataCtrl.$inject = ['$scope', '$window', '$sce', '$uibModal', 'NgTableParams', 'datasets'];
-	function dataCtrl($scope, $window, $sce, $uibModal, NgTableParams, datasets) {
+	dataCtrl.$inject = ['$window', '$sce', '$uibModal', 'NgTableParams', 'datasets'];
+	function dataCtrl($window, $sce, $uibModal, NgTableParams, datasets) {
 		var vm = this;
 		var dataset;
 
@@ -14,21 +14,9 @@
 			strapline: 'where the Datasets live'
 		};
 
-		$scope.open1 = function() {
-			$scope.popup1.opened = true;
-		};
-
-		$scope.format = 'dd MMMM, yyyy';
-
-		$scope.altInputFormats = ['d!/M!/yyyy'];
-
-		$scope.popup1 = {
-			opened: false
-		};
-
 		vm.popupViewDatasetForm = function(datasetid) {
 			var modalInstance = $uibModal.open({
-				templateUrl: '/components/analysis/data/viewDataset/viewDataset.view.html',
+				templateUrl: '/pages/analysis/data/viewDataset/viewDataset.view.html',
 				controller: 'viewDatasetCtrl as vm',
 				size: 'lg',
 				resolve: {
@@ -45,7 +33,7 @@
 
 		vm.popupEditDatasetForm = function(name, datasetid) {
 			var modalInstance = $uibModal.open({
-				templateUrl: '/components/analysis/data/editDataset/editDataset.view.html',
+				templateUrl: '/pages/analysis/data/editDataset/editDataset.view.html',
 				controller: 'editDatasetCtrl as vm',
 				size: 'xl'
 			});
@@ -57,7 +45,7 @@
 
 		vm.popupNewDatasetForm = function() {
 			var modalInstance = $uibModal.open({
-				templateUrl: '/components/analysis/data/newDataset/newDataset.view.html',
+				templateUrl: '/pages/analysis/data/newDataset/newDataset.view.html',
 				controller: 'newDatasetCtrl as vm',
 				size: 'xl'
 			});
@@ -98,7 +86,7 @@
 			return false;
 		}
 
-		$scope.confirmDelete = function(name, datasetid) {
+		vm.confirmDelete = function(name, datasetid) {
 			deleteDataset = $window.confirm("Are you sure you want to delete " + name + "?");
 			if(deleteDataset){
 				vm.doDeleteDataset(datasetid);

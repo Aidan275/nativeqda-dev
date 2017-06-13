@@ -53,7 +53,6 @@ var getAuthor = function(req, res, callback) {
 };
 
 module.exports.listDatasets = function(req, res) {
-
 	Dataset
 	.find()
 	.exec(
@@ -88,7 +87,6 @@ var buildDatasetList = function(req, res, results) {
 
 module.exports.datasetReadOne = function(req, res) {
 	var datasetid = req.params.datasetid;
-	console.log(datasetid);
 	if (datasetid) {
 		Dataset
 		.findById(datasetid)

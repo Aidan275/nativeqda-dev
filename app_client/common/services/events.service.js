@@ -7,7 +7,7 @@
 	events.$inject = ['$http'];
 	function events ($http) {
 
-		event = function(userInfo){
+		var event = function(userInfo){
 			return $http.post('/api/event', userInfo);
 		};
 

@@ -10,12 +10,12 @@
 		
 		vm.pageHeader = {
 			title: 'Visualisation',
-			strapline: 'visualise data sets here'
+			strapline: 'visualise datasets here'
 		};
 
 		vm.popupVisualisationForm = function () {
 			var modalInstance = $uibModal.open({
-				templateUrl: '/components/analysis/visualisation/newVisualisation/newVisualisation.view.html',
+				templateUrl: '/pages/analysis/visualisation/newVisualisation/newVisualisation.view.html',
 				controller: 'newVisualisationCtrl as vm',
 				size: 'xl'
 			});

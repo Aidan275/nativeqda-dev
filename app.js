@@ -26,23 +26,25 @@ are combined and minified into one file - nativeQDA.min.js
 which is then included in index.html */
 var appClientFiles = [
 'app_client/app.js',
-'app_client/components/home/home.controller.js',
-'app_client/components/auth/login/login.controller.js',
-'app_client/components/auth/register/register.controller.js',
-'app_client/components/auth/forgotPass/forgotPass.controller.js',
-'app_client/components/analysis/map/map.controller.js',
-'app_client/components/analysis/data/data.controller.js',
-'app_client/components/analysis/data/newDataset/newDataset.controller.js',
-'app_client/components/analysis/data/viewDataset/viewDataset.controller.js',
-'app_client/components/analysis/data/editDataset/editDataset.controller.js',
-'app_client/components/analysis/visualisation/visualisation.controller.js',
-'app_client/components/analysis/visualisation/newVisualisation/newVisualisation.controller.js',
-'app_client/components/survey/completeSurvey/completeSurvey.controller.js',
-'app_client/components/survey/survey.controller.js',
-'app_client/components/survey/newSurvey/newSurvey.controller.js',
-'app_client/components/heatmapExample/heatmapExample.controller.js',
-'app_client/components/files/files.controller.js',
-'app_client/components/settings/settings.controller.js',
+'app_client/pages/home/home.controller.js',
+'app_client/pages/auth/login/login.controller.js',
+'app_client/pages/auth/register/register.controller.js',
+'app_client/pages/auth/forgotPass/forgotPass.controller.js',
+'app_client/pages/analysis/map/map.controller.js',
+'app_client/pages/analysis/data/data.controller.js',
+'app_client/pages/analysis/data/newDataset/newDataset.controller.js',
+'app_client/pages/analysis/data/viewDataset/viewDataset.controller.js',
+'app_client/pages/analysis/data/editDataset/editDataset.controller.js',
+'app_client/pages/analysis/visualisation/visualisation.controller.js',
+'app_client/pages/analysis/visualisation/newVisualisation/newVisualisation.controller.js',
+'app_client/pages/survey/completeSurvey/completeSurvey.controller.js',
+'app_client/pages/survey/survey.controller.js',
+'app_client/pages/survey/newSurvey/newSurvey.controller.js',
+'app_client/pages/heatmapExample/heatmapExample.controller.js',
+'app_client/pages/files/files.controller.js',
+'app_client/pages/files/viewFile/viewFile.controller.js',
+'app_client/pages/settings/settings.controller.js',
+'app_client/common/services/files.service.js',
 'app_client/common/services/datasets.service.js',
 'app_client/common/services/authentication.service.js',
 'app_client/common/services/events.service.js',
@@ -50,8 +52,10 @@ var appClientFiles = [
 'app_client/common/services/googleMapsInitialiser.service.js',
 'app_client/common/filters/formatDistance.filter.js',
 'app_client/common/filters/addHtmlLineBreaks.filter.js',
+'app_client/common/filters/formatFileSize.filter.js',
 'app_client/common/directives/navigation/navigation.controller.js',
 'app_client/common/directives/navigation/navigation.directive.js',
+'app_client/common/directives/dynamic.directive.js',
 'app_client/common/directives/footerGeneric/footerGeneric.directive.js',
 'app_client/common/directives/pageHeader/pageHeader.directive.js'
 ];
@@ -65,7 +69,6 @@ fs.writeFile('public/javascripts/angular/nativeQDA.min.js', uglified.code, funct
     }
 }); 
 
-// uncomment after placing your favicon in /public
 app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(logger('dev'));
 app.use(bodyParser.json());

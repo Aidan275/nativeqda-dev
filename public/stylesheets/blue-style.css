@@ -127,6 +127,15 @@ body, html {
 	border: none;
 }
 
+#file-map{
+	position: absolute; 
+	top: 0; 
+	left: 0; 
+	right: 0; 
+	bottom: 0; 
+	background: rgb(229, 227, 223);
+}
+
 footer{
 	text-align: left;
 	margin-bottom: 5px;
