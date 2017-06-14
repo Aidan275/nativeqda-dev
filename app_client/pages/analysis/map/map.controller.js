@@ -4,8 +4,8 @@
 	.module('nativeQDAApp')
 	.controller('mapCtrl', mapCtrl);
 
-	mapCtrl.$inject = ['$scope', '$compile', '$window', '$filter', 'geolocation', 'GoogleMapsInitialiser', 'authentication', 'events', 'files'];
-	function mapCtrl ($scope, $compile, $window, $filter, geolocation, GoogleMapsInitialiser, authentication, events, files) {
+	mapCtrl.$inject = ['$scope', '$compile', '$window', '$filter', 'geolocService', 'initMapService', 'authentication', 'events', 'filesService'];
+	function mapCtrl ($scope, $compile, $window, $filter, geolocService, initMapService, authentication, events, filesService) {
 		var vm = this;
 		var lat = -34.406749;
 		var lng = 150.878473;
@@ -15,12 +15,7 @@
 		vm.getData = function (position) {
 			lat = position.coords.latitude;
 			lng = position.coords.longitude;
-			userDetails = {
-				email : authentication.currentUser().email,
-				lat : lat,
-				lng : lng
-			}
-			events.event(userDetails);
+			events.event({email : authentication.currentUser().email,});
 			mapZoom = 13;
 			initMap(lat, lng);
 		};
@@ -42,10 +37,10 @@
 		};
 
 		vm.getFileList = function() {
-			files.getFileListDB()
+			filesService.getFileListDB()
 			.then(function(response) {
 				fileList = response.data;
-				geolocation.getPosition(vm.getData,vm.showError,vm.noGeo);
+				geolocService.getPosition(vm.getData,vm.showError,vm.noGeo);
 			}, function(e) {
 				console.log(e);
 			});
@@ -54,10 +49,10 @@
 
 		vm.getFileList();
 
-		// Gets signed URL to download the requested file from S3 
-		// and if successful, opens the signed URL in a new tab
+		// Get signed URL to download the requested file from S3 
+		// and if successful, open the signed URL in a new tab
 		vm.viewFile = function(key) {
-			files.signDownloadS3(key)
+			filesService.signDownloadS3(key)
 			.then(function(response) {
 				var signedURL = response.data;
 				$window.open(response.data, '_blank');
@@ -67,7 +62,7 @@
 		}
 
 		function initMap(lat, lng) {
-			GoogleMapsInitialiser.mapsInitialised
+			initMapService.init
 			.then(function(){
 				var location = new google.maps.LatLng(lat, lng);
 				var mapCanvas = document.getElementById('map');
@@ -82,6 +77,7 @@
 						position: google.maps.ControlPosition.TOP_RIGHT
 					}
 				}
+
 				var map = new google.maps.Map(mapCanvas, mapOptions);
 
 				var icons = {

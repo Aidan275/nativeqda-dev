@@ -29,9 +29,9 @@
 
 		<a ng-click="vm.viewFile(vm.file.key)" class="btn btn-success" role="button">View file</a>
 
-		<a ng-hide="vm.acl=='public-read'" ng-click="vm.updateAcl(vm.file.key, 'public-read')" class="btn btn-primary" role="button">Make Public</a>
+		<a ng-hide="vm.acl=='public-read'" ng-click="vm.updateAcl(vm.file.key, 'public-read')" class="btn btn-primary" role="button" jp-ng-bs-animated-button is-submitting="vm.isSubmittingButton" result="vm.resultButton" options="vm.makePublicOptions">Make Public</a>
 
-		<a ng-hide="vm.acl=='private'" ng-click="vm.updateAcl(vm.file.key, 'private')" class="btn btn-primary" role="button">Make Private</a>
+		<a ng-hide="vm.acl=='private'" ng-click="vm.updateAcl(vm.file.key, 'private')" class="btn btn-primary" role="button" jp-ng-bs-animated-button is-submitting="vm.isSubmittingButton" result="vm.resultButton" options="vm.makePrivateOptions">Make Private</a>
 		
 		<br/>
 		<br/>

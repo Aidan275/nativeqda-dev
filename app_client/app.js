@@ -1,6 +1,6 @@
 (function () {
 	
-	angular.module('nativeQDAApp', ['ngRoute', 'ngSanitize', 'ngTable', 'ui.bootstrap', 'ui.bootstrap.datepicker', 'rzModule', 'ngFileUpload', 'ngTagsInput']);
+	angular.module('nativeQDAApp', ['ngRoute', 'ngSanitize', 'ngTable', 'ui.bootstrap', 'ui.bootstrap.datepicker', 'rzModule', 'ngFileUpload', 'ngTagsInput', 'jp.ng-bs-animated-button']);
 
 	config.$inject = ['$routeProvider', '$locationProvider'];
 	function config ($routeProvider, $locationProvider) {
@@ -83,7 +83,7 @@
 	    $locationProvider.html5Mode(true);
 	}
 
-	// hacked together for the complete survey page, will need to improve
+	// hacked together for the complete survey page, may need to improve
 	function run ($rootScope, $location, authentication) {
 		$rootScope.$on("$routeChangeStart", function(event, nextRoute, currentRoute) {
 			var postLogInRoute;

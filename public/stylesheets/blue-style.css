@@ -24,6 +24,11 @@ body, html {
 	box-shadow: 0 6px 6px -6px #999;
 }
 
+#navbar-main {
+	background-color: #4676fa;
+	border-color: #4676fa;
+}
+
 .navbar-default {
 	background-color: #4676fa;
 	border-color: #4676fa;
@@ -40,24 +45,24 @@ body, html {
 }
 
 .navbar-default .navbar-nav>li>a:hover, .navbar-default .navbar-nav>li>a:focus {
-    color: #fff;
-    background-color: #2d65ff;
-    cursor: pointer;
+	color: #fff;
+	background-color: #2d65ff;
+	cursor: pointer;
 }
 
 .navbar-default .navbar-nav>.dropdown>a .caret {
-    border-top-color: #fff;
-    border-bottom-color: #fff;
+	border-top-color: #fff;
+	border-bottom-color: #fff;
 }
 
 .navbar-default .navbar-nav>li>a:hover .caret {
-    border-top-color: #fff !important;
-    border-bottom-color: #fff !important;
+	border-top-color: #fff !important;
+	border-bottom-color: #fff !important;
 }
 
 .navbar-default .navbar-nav>.open>a .caret, .navbar-default .navbar-nav>.open>a:hover .caret {
-    border-top-color: #333 !important;
-    border-bottom-color: #333 !important;
+	border-top-color: #333 !important;
+	border-bottom-color: #333 !important;
 }
 
 .dropdown-menu {
@@ -66,12 +71,22 @@ body, html {
 }
 
 .dropdown-menu>li>a {
-    padding: 10px 20px;
+	padding: 10px 20px;
 }
 
 .dropdown-menu>li>a:hover {
-    background-color: #e7e7e7;
-    font-weight: 500;
+	background-color: #e7e7e7;
+	font-weight: 500;
+}
+
+@media (max-width: 767px) {
+	.navbar-default .navbar-nav .open .dropdown-menu>li>a {
+		color: #fff !important;
+	}
+
+	.navbar-nav .open .dropdown-menu>li>a {
+		line-height: 30px;
+	}
 }
 
 #banner{
@@ -179,4 +194,12 @@ div[ng-table-pagination=params] {
 	height:500px;
 	border: 1px solid #000;
 	background: rgb(229, 227, 223);
+}
+
+#toast-container {
+	top: 62px !important;
+}
+
+#toast-container .toast-message {
+	white-space: pre-wrap;
 }

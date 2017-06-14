@@ -1,53 +1,86 @@
 (function () { 
+	"use strict";
 
 	angular
 	.module('nativeQDAApp')
 	.controller('homeCtrl', homeCtrl);
 	
-	homeCtrl.$inject = ['$scope', 'geolocation', 'GoogleMapsInitialiser', 'authentication', 'events'];
-	function homeCtrl ($scope, geolocation, GoogleMapsInitialiser, authentication, events) {
+	homeCtrl.$inject = ['$scope', '$filter', '$compile', 'geolocService', 'initMapService', 'filesService', 'authentication', 'logger'];
+	function homeCtrl ($scope, $filter, $compile, geolocService, initMapService, filesService, authentication, logger) {
 		var vm = this;
 
+		var lat = -34.4054039;	// Default location is UOW
+		var lng = 150.87842999999998;
+		var fileList;
+		
+		vm.getGeoData = getGeoData;
+		vm.getFileList = getFileList;
+		vm.noGeo = noGeo;
+		vm.showGeoError = showGeoError;
+		vm.viewFile = viewFile;
 		vm.pageHeader = {
 			title: 'Dashboard',
 			strapline: 'summary of recent activity'
 		};
 
-		var lat = -34.406749;
-		var lng = 150.878473;
+		activate();
 
-		vm.getData = function (position) {
-			lat = position.coords.latitude;
-			lng = position.coords.longitude;
-			initMap(lat ,lng);
-			var userDetails = {
-				email : authentication.currentUser().email,
-				lat : lat,
-				lng : lng
-			}
-			events.event(userDetails);
+    	///////////////////////////
+
+    	function activate() {
+    		getFileList();
+    	}
+
+    	// Gets all the files from the MongoDB database to be displayed on the map
+    	function getFileList() {
+    		filesService.getFileListDB()
+    		.then(function(response) {
+    			fileList = response.data;
+    			geolocService.getPosition(vm.getGeoData,vm.showGeoError,vm.noGeo);
+    		}, function(e) {
+    			console.log(e);
+    		});
+    		return false;
+    	}
+
+		// If getPosition returns successfully load the map at the users position
+		function getGeoData(position) {	
+			initMap(position.coords.latitude, position.coords.longitude);
 		};
 
-		vm.showError = function (error) {
-			$scope.$apply(function() {
-				vm.message = error.message;
-				console.log(vm.message);
-				initMap(lat ,lng);
-			});
-		};
+    	// If getPosition returns with an error show the 
+    	// error and load the map at the defult location
+    	function showGeoError(error) {			
+    		$scope.$apply(function() {
+    			vm.message = error.message;
+    			initMap(lat, lng);
+    		});
+    	};
 
-		vm.noGeo = function () {
+		// If getPosition returns not supported show the 
+		// error and load the map at the defult location
+		function noGeo() {					
 			$scope.$apply(function() {
 				vm.message = "Geolocation is not supported by this browser.";
-				console.log(vm.message);
-				initMap(lat ,lng);
+				initMap(lat, lng);
 			});
 		};
 
-		geolocation.getPosition(vm.getData,vm.showError,vm.noGeo);
+		// Get a signed URL to download the requested file from S3 
+		// and if successful, open the signed URL in a new tab
+		function viewFile(key) {
+			filesService.signDownloadS3(key)
+			.then(function(response) {
+				var signedURL = response.data;
+				$window.open(response.data, '_blank');
+			}, function(err) {
+				console.log(err);
+			});
+		}
 
+		// 
 		function initMap(lat, lng) {
-			GoogleMapsInitialiser.mapsInitialised
+			initMapService.init
 			.then(function(){
 				var location = new google.maps.LatLng(lat, lng);
 				var mapCanvas = document.getElementById('map-homepage');
@@ -60,8 +93,9 @@
 					mapTypeControlOptions: {
 						style: google.maps.MapTypeControlStyle.DEFAULT,
 						position: google.maps.ControlPosition.TOP_RIGHT
-					},
+					}
 				}
+
 				var map = new google.maps.Map(mapCanvas, mapOptions);
 
 				var icons = {
@@ -76,106 +110,46 @@
 					}
 				};
 
-				var features = [
-				{
-					position: new google.maps.LatLng(-34.195122, 145.613610),
-					type: 'australia'
-				}, {
-					position: new google.maps.LatLng(-27.782105, 144.988068),
-					type: 'australia'
-				}, {
-					position: new google.maps.LatLng(-31.617175, 149.755251),
-					type: 'australia'
-				}, {
-					position: new google.maps.LatLng(-34.183426, 145.531326),
-					type: 'australia'
-				}, {
-					position: new google.maps.LatLng(-23.004057, 150.208288),
-					type: 'australia'
-				}, {
-					position: new google.maps.LatLng(-23.367210, 148.562199),
-					type: 'australia'
-				}, {
-					position: new google.maps.LatLng(-27.149085, 148.392517),
-					type: 'australia'
-				}, {
-					position: new google.maps.LatLng(-27.171054, 148.692928),
-					type: 'australia'
-				}, {
-					position: new google.maps.LatLng(-21.676721, 166.040641),
-					type: 'newCaledonia'
-				}, {
-					position: new google.maps.LatLng(-21.198481, 165.322936),
-					type: 'newCaledonia'
-				}, {
-					position: new google.maps.LatLng(-20.650302, 164.739780),
-					type: 'newCaledonia'
-				}, {
-					position: new google.maps.LatLng(-20.513840, 164.399452),
-					type: 'newCaledonia'
-				}, {
-					position: new google.maps.LatLng(-20.765698, 164.410470),
-					type: 'newCaledonia'
-				}, {
-					position: new google.maps.LatLng(-20.625109, 164.786398),
-					type: 'newCaledonia'
-				}, {
-					position: new google.maps.LatLng(-22.259586, 166.453261),
-					type: 'newCaledonia'
-				}, {
-					position: new google.maps.LatLng(-40.768675, 175.207908),
-					type: 'newZealand'
-				}, {
-					position: new google.maps.LatLng(-41.114069, 174.107308),
-					type: 'newZealand'
-				}, {
-					position: new google.maps.LatLng(-41.101032, 175.183516),
-					type: 'newZealand'
-				}, {
-					position: new google.maps.LatLng(-40.145982, 176.593862),
-					type: 'newZealand'
-				}, {
-					position: new google.maps.LatLng(-39.454753, 173.929295),
-					type: 'newZealand'
-				}, {
-					position: new google.maps.LatLng(-39.060873, 176.168224),
-					type: 'newZealand'
-				}, {
-					position: new google.maps.LatLng(-43.974486, 169.417745),
-					type: 'newZealand'
-				}, {
-					position: new google.maps.LatLng(-45.779950, 170.528945),
-					type: 'newZealand'
-				}
-				];
-
 				var kangarooMarkers = [];
 				var kiwiMarkers = [];
 				var kaguMarkers = [];
 
-				var contentString = '<div class="info-window">' +
-				'<h3>Data</h3>' +
-				'<div class="info-content">' +
-				'<p>Data collected from interview</p>' +
-				'<a href="/files">Interview.doc</a>' +
-				'</div>' +
-				'</div>';
-
-				var infowindow = new google.maps.InfoWindow({
-					content: contentString,
-					maxWidth: 400
-				});
-
-				features.forEach(function(feature) {
+				// For each file returned from the DB, a marker with an info 
+				// window is created. Each marker is then added to its 
+				// corresponding marker array to be displayed on the map
+				fileList.forEach(function(file) {
 					var marker = new google.maps.Marker({
-						position: feature.position,
-						icon: icons[feature.type].icon,
+						position: new google.maps.LatLng(file.coords.lat, file.coords.lng),
+						icon: icons['australia'].icon,
+						title: file.key
+					});
+
+					var contentString = '<div class="info-window">' +
+					'<h3>' + file.key + '</h3>' +
+					'<p>Created By: ' + file.createdBy + '</p>' +
+					'<p>Size: ' + $filter('formatFileSize')(file.size, 2) + '</p>' +	// using formatFileSize filter to format the file size
+					'<p>Last Modified: ' + file.lastModified + '</p>' +
+					'<p>Tags: ';
+
+					// lists each tag for current file
+					file.tags.forEach(function(tag){
+						contentString += tag + ', ';
+					});
+
+					contentString += '<p><a ng-click="vm.viewFile(\'' + file.key + '\')" class="btn btn-success" role="button">View file</a></p>' +
+					//'<p><a href="' + file.url + '" target="_blank">' + file.url + '</a></p>' + 	// will add make public button which changes the ACL permissions and shows public URL
+					'</div>';
+
+					// compiles the HTML so ng-click works
+					var compiledContentString = $compile(contentString)($scope)
+
+					var infowindow = new google.maps.InfoWindow({
+						content: compiledContentString[0]
 					});
 
 					marker.addListener('click', function () {
 						infowindow.open(map, marker);
 					});
-
 
 					if(marker.icon == '/images/map/icons/kangaroo-markers/kangaroo-marker.png'){
 						kangarooMarkers.push(marker);
@@ -191,8 +165,8 @@
 				var kaguMarkerCluster = new MarkerClusterer(map, kaguMarkers, {imagePath: '/images/map/icons/kagu-markers/m'});
 
 			});
-}
-}
+		}
+	}
 
 
 })();

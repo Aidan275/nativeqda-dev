@@ -61,7 +61,6 @@ module.exports.signUploadS3 = function(req, res) {
 
 module.exports.signDownloadS3 = function(req, res) {
 	var key = req.query.key;
-	console.log(key);
 	var params = {
 		Bucket: process.env.S3_BUCKET_NAME, 
 		Key: key
@@ -150,6 +149,31 @@ module.exports.getFileListDB = function(req, res) {
 			var fileList = buildFileListDB(req, res, results);
 			sendJSONresponse(res, 200, fileList);
 		});
+};
+
+module.exports.fileReadOneDB = function(req, res) {
+	var key = req.query.key;
+	if(key) {
+		File
+		.findOne({key: key})
+		.exec(
+			function(err, results) {
+				if (!results) {
+					sendJSONresponse(res, 404, {
+						"message": "No file found"
+					});
+					return;
+				} else if (err) {
+					sendJSONresponse(res, 404, err);
+					return;
+				}
+				sendJSONresponse(res, 200, results);
+			});
+	} else {
+		sendJSONresponse(res, 404, {
+			"message": "No key parameter in request"
+		});
+	}
 };
 
 var buildFileListDB = function(req, res, results) {

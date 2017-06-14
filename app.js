@@ -26,6 +26,7 @@ are combined and minified into one file - nativeQDA.min.js
 which is then included in index.html */
 var appClientFiles = [
 'app_client/app.js',
+'app_client/config.js',
 'app_client/pages/home/home.controller.js',
 'app_client/pages/auth/login/login.controller.js',
 'app_client/pages/auth/register/register.controller.js',
@@ -44,18 +45,20 @@ var appClientFiles = [
 'app_client/pages/files/files.controller.js',
 'app_client/pages/files/viewFile/viewFile.controller.js',
 'app_client/pages/settings/settings.controller.js',
+'app_client/common/services/exception.service.js',
+'app_client/common/services/logger.service.js',
 'app_client/common/services/files.service.js',
 'app_client/common/services/datasets.service.js',
 'app_client/common/services/authentication.service.js',
 'app_client/common/services/events.service.js',
 'app_client/common/services/geolocation.service.js',
-'app_client/common/services/googleMapsInitialiser.service.js',
+'app_client/common/services/initMap.service.js',
 'app_client/common/filters/formatDistance.filter.js',
 'app_client/common/filters/addHtmlLineBreaks.filter.js',
 'app_client/common/filters/formatFileSize.filter.js',
 'app_client/common/directives/navigation/navigation.controller.js',
 'app_client/common/directives/navigation/navigation.directive.js',
-'app_client/common/directives/dynamic.directive.js',
+'app_client/common/directives/dynamicCompile.directive.js',
 'app_client/common/directives/footerGeneric/footerGeneric.directive.js',
 'app_client/common/directives/pageHeader/pageHeader.directive.js'
 ];

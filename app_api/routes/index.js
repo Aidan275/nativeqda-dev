@@ -29,6 +29,7 @@ router.get('/files/getFileListS3', auth, ctrlFile.getFileListS3);
 router.post('/files/deleteFileS3', auth, ctrlFile.deleteFileS3);
 router.post('/files/addFileDB', auth, ctrlFile.addFileDB);
 router.get('/files/getFileListDB', auth, ctrlFile.getFileListDB);
+router.get('/files/fileReadOneDB', auth, ctrlFile.fileReadOneDB);
 router.delete('/files/deleteFileDB', auth, ctrlFile.deleteFileDB);
 router.post('/files/syncDBwithS3', auth, ctrlFile.syncDBwithS3);
 router.post('/files/objectAclS3', auth, ctrlFile.objectAclS3);
