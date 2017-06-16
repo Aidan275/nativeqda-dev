@@ -20,12 +20,13 @@
 		<label>Latitude: </label> {{vm.file.coords.coordinates[0]}}
 		<br/>
 		<label>Longitude: </label> {{vm.file.coords.coordinates[1]}}
-
 		<br/>
-		<label>Tags: </label>
-		<ul>
-			<li ng-repeat="tag in vm.file.tags">{{tag}}</li>
-		</ul>
+		<span ng-hide="vm.file.tags.length == 0">
+			<label>Tags: </label>
+			<ul>
+				<li ng-repeat="tag in vm.file.tags">{{tag}}</li>
+			</ul>
+		</span>
 
 		<a ng-hide="vm.acl=='public-read'" ng-click="vm.updateAclS3(vm.file.key, 'public-read')" class="btn btn-primary" role="button" jp-ng-bs-animated-button is-submitting="vm.isSubmittingButton" result="vm.resultButton" options="vm.makePublicOptions">Make Public</a>
 

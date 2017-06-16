@@ -138,20 +138,25 @@
 				'<h3>' + file.name + '</h3>' +
 				'<p>Created By: ' + file.createdBy + '</p>' +
 				'<p>Size: ' + $filter('formatFileSize')(file.size, 2) + '</p>' +	// using formatFileSize filter to format the file size
-				'<p>Last Modified: ' + $filter('date')(file.lastModified, "dd MMMM, yyyy h:mm a") + '</p>' +
-				'<p>Tags: ' +
-				'<ul>';
+				'<p>Last Modified: ' + $filter('date')(file.lastModified, "dd MMMM, yyyy h:mm a") + '</p>';
 
-				// lists each tag for current file
-				file.tags.forEach(function(tag){
-					contentString += '<li>' + tag + '</li>';
-				});
+				// If the file has tags add an unsorted list, listing each tag
+				// otherwise skip and exclude the 'tags' label
+				if(file.tags.length != 0) { 
+					contentString += '<p>Tags: </p>' +
+					'<ul>';
+					// lists each tag for current file
+					file.tags.forEach(function(tag){
+						contentString += '<li>' + tag + '</li>';
+					});
+					contentString += '</ul>';
+				}
 
-				contentString += '</ul>' +
-				'<a ng-click="vm.viewFile(\'' + file.key + '\')" class="btn btn-success" role="button">View</a> ' +
+				contentString += '<a ng-click="vm.viewFile(\'' + file.key + '\')" class="btn btn-success" role="button">View</a> ' +
 				'<a ng-click="vm.popupFileDetails(\'' + file.key + '\')" class="btn btn-primary" role="button">Details</a> ' +
 				'<a ng-click="vm.confirmDelete(\'' + file.key + '\', \'' + file.name + '\')" class="btn btn-danger" role="button">Delete</a>' +
 				'</div>';
+
 
 				// compiles the HTML so ng-click works
 				var compiledContentString = $compile(contentString)($scope)
