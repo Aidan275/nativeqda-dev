@@ -138,7 +138,7 @@
 				'<h3>' + file.name + '</h3>' +
 				'<p>Created By: ' + file.createdBy + '</p>' +
 				'<p>Size: ' + $filter('formatFileSize')(file.size, 2) + '</p>' +	// using formatFileSize filter to format the file size
-				'<p>Last Modified: ' + file.lastModified + '</p>' +
+				'<p>Last Modified: ' + $filter('date')(file.lastModified, "dd MMMM, yyyy h:mm a") + '</p>' +
 				'<p>Tags: ' +
 				'<ul>';
 
