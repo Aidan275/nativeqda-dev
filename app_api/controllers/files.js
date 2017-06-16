@@ -112,7 +112,6 @@ module.exports.addFileDB = function(req, res) {
 	file.name = req.body.name;
 	file.eTag = req.body.eTag;
 	file.key = req.body.key;
-	file.versionId = req.body.versionId;
 	file.size = req.body.size;
 	file.url = req.body.url;
 	file.createdBy = req.body.createdBy;
@@ -151,6 +150,29 @@ module.exports.getFileListDB = function(req, res) {
 		});
 };
 
+var buildFileListDB = function(req, res, results) {
+	var fileList = [];
+	results.forEach(function(doc) {
+		fileList.push({
+			eTag: doc.eTag,
+			key: doc.key,
+			size: doc.size,
+			url: doc.url,
+			createdBy: doc.createdBy,
+			lastModified: doc.lastModified,
+			name: doc.name,
+			coords: {
+				lng: doc.coords.coordinates[0],
+				lat: doc.coords.coordinates[1]
+			},
+			tags: doc.tags,
+			_id: doc._id,
+			acl: doc.acl
+		});
+	});
+	return fileList;
+};
+
 module.exports.fileReadOneDB = function(req, res) {
 	var key = req.query.key;
 	if(key) {
@@ -174,29 +196,6 @@ module.exports.fileReadOneDB = function(req, res) {
 			"message": "No key parameter in request"
 		});
 	}
-};
-
-var buildFileListDB = function(req, res, results) {
-	var fileList = [];
-	results.forEach(function(doc) {
-		fileList.push({
-			eTag: doc.eTag,
-			key: doc.key,
-			size: doc.size,
-			url: doc.url,
-			createdBy: doc.createdBy,
-			lastModified: doc.lastModified,
-			name: doc.name,
-			coords: {
-				lng: doc.coords.coordinates[0],
-				lat: doc.coords.coordinates[1]
-			},
-			tags: doc.tags,
-			_id: doc._id,
-			acl: doc.acl
-		});
-	});
-	return fileList;
 };
 
 module.exports.deleteFileDB = function(req, res) {

@@ -44,7 +44,7 @@
 
 	</div>
 	<div class="col-md-8" style="height:400px;">
-		<div id="file-map"></div>
+		<div id="map-files-page"></div>
 	</div>
 
 	<div class="col-md-12">
@@ -57,7 +57,7 @@
 
 		<br />
 
-		<!-- Gets file list for MongoDB database -->
+		<!-- displays file list for MongoDB database -->
 
 		<table ng-table="vm.tableParams" class="table table-condensed table-bordered table-striped" style="margin-top:5px">
 			<tr ng-repeat="row in $data">
@@ -66,13 +66,14 @@
 				<td data-title="'Uploaded By'" filter="{createdBy: 'text'}" sortable="'createdBy'">{{row.createdBy}}</td>
 				<td data-title="'Size'" filter="{size: 'text'}" sortable="'size'">{{row.size | formatFileSize:2}}</td>
 				<td data-title="'Command'">
-					<a ng-click="vm.popupViewFile(row.key)" class="btn btn-success btn-xs" role="button">View</a>
+					<a ng-click="vm.viewFile(row.key)" class="btn btn-success btn-xs" role="button">View</a>
+					<a ng-click="vm.popupFileDetails(row.key)" class="btn btn-primary btn-xs" role="button">Details</a>
 					<a ng-click="vm.confirmDelete(row.key, row.name)" class="btn btn-danger btn-xs" role="button">Delete</a>
 				</td class="data-command-cell">
 			</tr>
 		</table>
 
-		<!-- Gets file list for S3
+		<!-- displays file list for S3
 
 		<a ng-click="vm.getFileListS3()" class="btn btn-success btn-sm" role="button">Get File List</a>
 
@@ -90,6 +91,6 @@
 
 	-->
 
-	</div>
+</div>
 
 </div>

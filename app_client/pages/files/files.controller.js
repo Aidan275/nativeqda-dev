@@ -1,28 +1,34 @@
 (function () { 
 
+	'use strict';
+
 	angular
 	.module('nativeQDAApp')
 	.controller('filesCtrl', filesCtrl);
 	
 
-	filesCtrl.$inject = ['$http', '$window', '$scope', '$uibModal', 'Upload', 'NgTableParams', 'filesService', 'authentication', 'initMapService'];
-	function filesCtrl ($http, $window, $scope, $uibModal, Upload, NgTableParams, filesService, authentication, initMapService) {
+	filesCtrl.$inject = ['mapService', '$http', '$window', '$scope', '$uibModal', 'Upload', 'NgTableParams', 'filesService', 'authentication', 'logger'];
+	function filesCtrl (mapService, $http, $window, $scope, $uibModal, Upload, NgTableParams, filesService, authentication, logger) {
 		var vm = this;
-		var marker = null;
-		var map = null;
 
+		var map = null;
+		var marker = null;
+		var fileList = null;
+
+		vm.lat = -34.4054039;	// Default position is UOW
+		vm.lng = 150.87842999999998;
 		vm.tags = [];
 		vm.address = '';
 		vm.formattedAddress = '';
 
 		vm.currentPercentage = '0';
 
-		vm.popupViewFile = popupViewFile;
+		vm.popupFileDetails = popupFileDetails;
 		vm.getFileListS3 = getFileListS3;
-		vm.doDeleteFile = doDeleteFile;
 		vm.confirmDelete = confirmDelete;
 		vm.onFileSelect = onFileSelect;
 		vm.geocodeAddress = geocodeAddress;
+		vm.viewFile = viewFile;
 
 		activate();
 
@@ -30,93 +36,151 @@
 
     	function activate() {
     		initMap();
-    		getFileListDB();
-    	}		
+    		getFileList();
+    	}
 
-    	function popupViewFile(key) {
-    		var modalInstance = $uibModal.open({
-    			templateUrl: '/pages/files/viewFile/viewFile.view.html',
-    			controller: 'viewFileCtrl as vm',
-    			size: 'lg',
-    			resolve: {
-    				key: function () {
-    					return key;
-    				}
+    	function initMap() {
+    		var position = new google.maps.LatLng(vm.lat, vm.lng);
+    		var mapCanvas = document.getElementById('map-files-page');
+    		var mapOptions = {
+    			center: position,
+    			zoom: 4,
+    			panControl: false,
+    			mapTypeId: google.maps.MapTypeId.ROADMAP,
+    			mapTypeControl: true,
+    			mapTypeControlOptions: {
+    				style: google.maps.MapTypeControlStyle.DEFAULT,
+    				position: google.maps.ControlPosition.TOP_RIGHT
+    			}
+    		}
+
+    		map = new google.maps.Map(mapCanvas, mapOptions);
+
+    		marker = new google.maps.Marker({
+    			draggable: true,
+    			position: position,
+    			map: map,
+    			title: 'Latitude: ' + vm.lat + '\nLongitude: ' + vm.lng
+    		});
+
+    		google.maps.event.addListener(marker, 'dragend', function(event) {
+    			vm.lat = event.latLng.lat();
+    			vm.lng = event.latLng.lng();
+    			marker.setTitle('Latitude: ' + vm.lat + '\nLongitude: ' + vm.lng);
+    			$scope.$apply();
+    		});
+
+    		google.maps.event.addListener(map, 'click', function(event) {
+    			vm.lat = event.latLng.lat();
+    			vm.lng = event.latLng.lng();
+    			marker.setPosition(event.latLng);
+    			marker.setTitle('Latitude: ' + vm.lat + '\nLongitude: ' + vm.lng);
+    			$scope.$apply();
+    		});
+
+    		mapService.getPosition(getGeoData);
+    	}
+
+    	function getGeoData(position) {
+    		vm.lat = position.coords.latitude;
+    		vm.lng = position.coords.longitude;
+    		updateUserPos();
+    	}
+
+    	function updateUserPos() {
+    		var userPos = new google.maps.LatLng(vm.lat, vm.lng);
+    		marker.setPosition(userPos);
+    		marker.setTitle('Latitude: ' + vm.lat + '\nLongitude: ' + vm.lng);
+    		map.setZoom(13);
+    		map.panTo(userPos);
+    		$scope.$apply();
+    	}
+
+    	function geocodeAddress() {
+    		var geocoder = new google.maps.Geocoder();
+    		geocoder.geocode({'address': vm.address}, function(results, status) {
+    			if (status === 'OK') {
+    				vm.lat = results[0].geometry.location.lat();
+    				vm.lng = results[0].geometry.location.lng();
+    				vm.formattedAddress = results[0].formatted_address;
+
+    				marker.setPosition(results[0].geometry.location);
+    				marker.setTitle('Latitude: ' + vm.lat + '\nLongitude: ' + vm.lng);
+
+    				map.panTo(new google.maps.LatLng(vm.lat,vm.lng));
+
+    				$scope.$apply();
+    			} else if (status === 'ZERO_RESULTS') {
+    				toastr.warning('Warning: Address not found', 'Warning', { "positionClass": "toast-top-center"})
+    			} else {
+    				toastr.error('Geocode failed: ' + status, 'Error', { "positionClass": "toast-top-center"})
     			}
     		});
+    	}
 
-    		modalInstance.result.then(function() {
-
-    		});
-    	};
-
-    	function doListFilesDB(data) {
-    		fileList = data;
-    		vm.tableParams = new NgTableParams({
-    			sorting: {LastModified: "desc"}
-    		}, {
-    			dataset: fileList
-    		});
-    	};
-
-		// need to work on back end still
-		/*
-		function syncDB(data) {
-			var fileList = data.Contents;
-
-			fileList.forEach(function(file) {
-				filesService.syncDBwithS3({key: file.Key})
-				.then(function(response) {
-					console.log(response);
-				}, function(err) {
-					console.log(err);
-				});
-			});
-
-			doListFiles(data);
-		}
-		*/
-
-		function getFileListS3() {
-			filesService.getFileListS3()
-			.then(function(response) {
-				//syncDB(response.data);
-				doListFilesS3(response.data.Contents);
-			}, function(err) {
-				console.log(err);
-			});
-		};
-
-		function getFileListDB() {
+		// Gets all the files from the MongoDB database to be displayed on the map
+		function getFileList() {
 			filesService.getFileListDB()
 			.then(function(response) {
-				doListFilesDB(response.data);
-			}, function(err) {
-				console.log(err);
-			});
-		};
-
-		function doDeleteFileDB(key) {
-			filesService.deleteFileDB(key)
-			.then(function(response) {
-				getFileListDB();
-			}, function(err) {
-				console.log(err);
+				fileList = response.data;
+				listFiles();
 			});
 		}
 
-		function doDeleteFile(key) {
-			filesService.deleteFileS3({key: key})
+		function listFiles() {
+			vm.tableParams = new NgTableParams({
+				sorting: {LastModified: "desc"}
+			}, {
+				dataset: fileList
+			});
+		}
+
+		// Gets signed URL to download the requested file from S3 
+		// if successful, opens the signed URL in a new tab
+		function viewFile(key) {
+			filesService.signDownloadS3(key)
 			.then(function(response) {
-				doDeleteFileDB(key);
+				$window.open(response.data, '_blank');
+			});
+		}
+
+		function popupFileDetails(key) {
+			var modalInstance = $uibModal.open({
+				templateUrl: '/pages/files/fileDetails/fileDetails.view.html',
+				controller: 'fileDetails as vm',
+				size: 'lg',
+				resolve: {
+					key: function () {
+						return key;
+					}
+				}
+			});
+
+			modalInstance.result.then(function() {
+
 			});
 		};
 
 		function confirmDelete(key, fileName) {
 			var deleteFile = $window.confirm("Are you sure you want to delete " + fileName + "?");
 			if(deleteFile){
-				vm.doDeleteFile(key);
+				deleteFileDB(key, fileName);
 			}
+		};
+
+		function deleteFileDB(key, fileName) {
+			filesService.deleteFileDB(key)
+			.then(function(response) {
+				deleteFileS3(key, fileName);
+			});
+		}
+
+		function deleteFileS3(key, fileName) {
+			filesService.deleteFileS3({key: key})
+			.then(function(response) {
+				logger.success('File ' + fileName + ' deleted successfully', '', 'Success');
+				getFileList();
+			});
 		};
 
 		// Gets a signed URL for uploading a file then uploads the file to S3 with this signed URL
@@ -137,12 +201,12 @@
 						url: result.data.url, 
 						fields: result.data.fields, 
 						file: uploadFiles[0]
-					}).progress(function(evt) {
+					})
+					.progress(function(evt) {
 						vm.currentPercentage = parseInt(100.0 * evt.loaded / evt.total);
-						console.log('progress: ' + parseInt(100.0 * evt.loaded / evt.total));
-					}).then(function(response) {
-						console.log('file ' + response.config.file.name + 'is uploaded successfully. Response: ' + response.data);
-						console.log(response);
+					})
+					.then(function(response) {
+						console.log('File ' + response.config.file.name + ' uploaded successfully to S3');
 						// parses XML data response to jQuery object to be stored in the database
 						var xml = $.parseXML(response.data);
 						// maps the tag obects to an array of strings to be stored in the database
@@ -162,83 +226,51 @@
 						}
 						filesService.addFileDB(fileDetails)
 						.then(function(response) {
-							console.log(response);
-							getFileListDB();
-						}, function(err) {
-							console.log(err);
+							console.log('File ' + filename + ' successfully added to DB');
+							logger.success('File ' + filename + ' uploaded successfully', '', 'Success');
+							getFileList();
 						});
-					}, function(err) {
-						console.log(err);
+					}, function(error) {
+						var xml = $.parseXML(error.data);
+						logger.error($(xml).find("Message").text(), '', 'Error');
 					});
-				}, function(err) {
-					console.log(err);
 				});
 			}
 		};
 
-		function initMap() {
-			initMapService.init
-			.then(function(){
-				displayMap();
+		// need to work on back end still
+		// Thinking if S3 and the DB become unsynced, such as a file in the DB that's 
+		// not on S3, or vice-versa, this will re-sync them. Maybe provide settings button
+		// to re-sync or do it periodically (maybe when a user logs in?).
+
+		/*
+		function syncDB(data) {
+			var fileList = data.Contents;
+
+			fileList.forEach(function(file) {
+				filesService.syncDBwithS3({key: file.Key})
+				.then(function(response) {
+					console.log(response);
+				}, function(err) {
+					console.log(err);
+				});
 			});
+
+			doListFiles(data);
 		}
+		*/
 
-		function displayMap() {
-			var location = new google.maps.LatLng(-34.406749, 150.878473);
-			var mapCanvas = document.getElementById('file-map');
-			var mapOptions = {
-				zoom: 13,
-				center: location,
-				mapTypeId: google.maps.MapTypeId.ROADMAP
-			};
-
-			map = new google.maps.Map(mapCanvas, mapOptions);
-
-			marker = new google.maps.Marker({
-				draggable: true,
-				position: location,
-				map: map,
-				title: 'Latitude: ' + location.lat() + '\nLongitude: ' + location.lng()
+		// not using at the moment, getting file details from DB 
+		// Amazon S3 free tier only provides 2000 put requests a month
+		function getFileListS3() {
+			filesService.getFileListS3()
+			.then(function(response) {
+				//syncDB(response.data);
+				doListFilesS3(response.data.Contents);
+			}, function(err) {
+				console.log(err);
 			});
-
-			google.maps.event.addListener(marker, 'dragend', function(event) {
-				marker.setTitle('Latitude: ' + event.latLng.lat() + '\nLongitude: ' + event.latLng.lng());
-				vm.lat = event.latLng.lat();
-				vm.lng = event.latLng.lng();
-				$scope.$apply();
-			});
-
-			google.maps.event.addListener(map, 'click', function(event) {
-				marker.setPosition(event.latLng);
-				marker.setTitle('Latitude: ' + event.latLng.lat() + '\nLongitude: ' + event.latLng.lng());
-				vm.lat = event.latLng.lat();
-				vm.lng = event.latLng.lng();
-				$scope.$apply();
-			});
-
-		}
-
-		function geocodeAddress() {
-			var geocoder = new google.maps.Geocoder();
-			geocoder.geocode({'address': vm.address}, function(results, status) {
-				if (status === 'OK') {
-					vm.lat = results[0].geometry.location.lat();
-					vm.lng = results[0].geometry.location.lng();
-					vm.formattedAddress = results[0].formatted_address;
-
-					marker.setPosition(results[0].geometry.location);
-					marker.setTitle('Latitude: ' + vm.lat + '\nLongitude: ' + vm.lng);
-
-					map.panTo(new google.maps.LatLng(vm.lat,vm.lng));
-
-					$scope.$apply();
-				} else if (status === 'ZERO_RESULTS') {
-					toastr.warning('Warning: Address not found', 'Warning', { "positionClass": "toast-top-center"})
-				} else {
-					toastr.error('Geocode failed: ' + status, 'Error', { "positionClass": "toast-top-center"})
-				}
-			});
-		}
+		};
 	}
 
 })();

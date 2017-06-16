@@ -12,11 +12,11 @@
         // Disables console errors for unhandled rejections since 
         // these are being caught in the services and processed by
         // the exception service
-        $qProvider.errorOnUnhandledRejections(false);
+        $qProvider.errorOnUnhandledRejections(true);
 
         // toastr config
         toastr.options.closeButton = true;
-        toastr.options.timeOut = 14000;
+        toastr.options.timeOut = 3000;
         toastr.options.positionClass = 'toast-top-right';
 
         // Turn debugging off/on (no info or warn)

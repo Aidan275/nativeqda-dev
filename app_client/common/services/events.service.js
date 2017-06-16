@@ -6,15 +6,15 @@
 
 	events.$inject = ['$http'];
 	function events ($http) {
+		return {
+			event: event
+		};
 
-		var event = function(userInfo){
+		///////////////////////////
+
+		function event(userInfo){
 			return $http.post('/api/event', userInfo);
 		};
-
-		return {
-			event : event,
-		};
-
 	}
 
 })();

@@ -142,7 +142,7 @@ body, html {
 	border: none;
 }
 
-#file-map{
+#map-files-page{
 	position: absolute; 
 	top: 0; 
 	left: 0; 
@@ -158,7 +158,7 @@ footer{
 }
 
 td[data-title-text=Command] {
-	width: 150px;
+	width: 175px;
 	text-align: center;
 	vertical-align: middle !important;
 }
@@ -196,10 +196,53 @@ div[ng-table-pagination=params] {
 	background: rgb(229, 227, 223);
 }
 
-#toast-container {
-	top: 62px !important;
-}
+/* ========== TOASTS ========== */
 
+/* To render line breaks - '\n' */
 #toast-container .toast-message {
 	white-space: pre-wrap;
+}
+
+#toast-container .toast-warning {
+	background-color: #ffd600 !important;
+	border-color: #ffd600 !important;
+	color: #714700 !important;
+}
+
+#toast-container .toast-warning .toast-close-button {
+	color: #714700 !important;
+}
+
+#toast-container > .toast-warning {
+    background-image: none !important;
+}
+
+#toast-container > .toast-warning:before {
+    position: fixed;
+    font-family: FontAwesome;
+    font-size: 24px;
+    float: left;
+    padding-right: 0.5em;
+    margin: auto 0.5em auto -1.5em;
+}        
+
+#toast-container > .toast-warning:before {
+    content: "\f071";
+}
+
+#toast-container > .toast-error {
+    background-image: none !important;
+}
+
+#toast-container > .toast-error:before {
+    position: fixed;
+    font-family: FontAwesome;
+    font-size: 30px;
+    float: left;
+    padding-right: 0.5em;
+    margin: auto 0.5em auto -1em;
+}
+
+#toast-container > .toast-error:before {
+    content: "\f12a";
 }

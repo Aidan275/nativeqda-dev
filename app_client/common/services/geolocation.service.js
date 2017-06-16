@@ -6,8 +6,10 @@
 
 	function geolocService () {
 		return {
-			getPosition : getPosition
+			getPosition: getPosition
 		};
+
+		///////////////////////////
 
 		function getPosition(cbSuccess, cbError, cbNoGeo) {
 			if (navigator.geolocation) {
