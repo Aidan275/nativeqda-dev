@@ -4,8 +4,8 @@
 	.module('nativeQDAApp')
 	.service('authentication', authentication);
 
-	authentication.$inject = ['$http', '$window'];
-	function authentication ($http, $window) {
+	authentication.$inject = ['$http', '$window', 'exception'];
+	function authentication ($http, $window, exception) {
 		return {
 			currentUser	: currentUser,
 			saveToken	: saveToken,
@@ -54,9 +54,12 @@
 		};
 
 		function login(user) {
-			return $http.post('/api/login', user).then(function (response) {
-				saveToken(response.data.token);
-			});
+			return $http.post('/api/login', user)
+			.then(loginComplete)
+			.catch(loginFailed);
+
+        	function loginComplete(data) { saveToken(data.data.token); }
+        	function loginFailed(e) { return exception.catcher('Login Failed')(e); }
 		};
 		
 		function logout(userInfo) {

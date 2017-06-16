@@ -17,15 +17,19 @@
 			return function(err) {
 				var thrownDescription;
 				var newMessage;
+
+				// if message parameter passed, add a new line to the end of the message
+				if (message) 
+					message += '\n';
+
 				if (err.data && err.data.description) {
-					thrownDescription = '\n' + err.data.description;
-					newMessage = message + thrownDescription;
+					newMessage = message + err.data.description;
 					err.data.description = newMessage;
 				} else if (err.data && err.data.message){	 // For S3 errors with err.data.message
-					thrownDescription = '\n' + err.data.message;
-					newMessage = message + thrownDescription;
+					newMessage = message + err.data.message;
 					err.data.message = newMessage;
 				}
+
 				logger.error(newMessage, err, 'Error');
 				return $q.reject(err);
 			};

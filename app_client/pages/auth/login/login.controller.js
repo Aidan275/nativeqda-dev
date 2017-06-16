@@ -4,10 +4,13 @@
 	.module('nativeQDAApp')
 	.controller('loginCtrl', loginCtrl);
 
-	loginCtrl.$inject = ['$location', 'geolocation', 'authentication', 'events'];
-	function loginCtrl($location, geolocation, authentication, events) {
+	loginCtrl.$inject = ['$location', 'authentication', 'events', 'logger'];
+	function loginCtrl($location, authentication, events, logger) {
 		var vm = this;
-	
+
+		vm.onSubmit = onSubmit;
+		vm.login = login;
+
 		vm.credentials = {
 			email : "",
 			password : ""
@@ -19,26 +22,23 @@
 
 		vm.returnPage = $location.search().page || '/';
 
-		vm.onSubmit = function () {
-			vm.formError = "";
+
+		function onSubmit() {
 			if (!vm.credentials.email || !vm.credentials.password) {
-				vm.formError = "All fields required, please try again";
+				logger.error("All fields required, please try again", 'Error', 'Error');
 				return false;
 			} else {
-				vm.doLogin();
+				login();
 			}
 		};
 
-		vm.doLogin = function() {
-			vm.formError = "";
+		function login() {
 			events.event({email : vm.credentials.email, desc : "Login"});
 			authentication
 			.login(vm.credentials)
 			.then(function(response) {
 				$location.search('page', null);
 				$location.path(vm.returnPage);
-			}, function(err){
-				vm.formError = err.data.message;
 			});
 		};
 
