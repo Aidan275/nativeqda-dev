@@ -17,7 +17,7 @@
 					numDistance = parseFloat(numDistance).toFixed(1);
 					unit = ' km';
 				} else {
-					numDistance = parseInt(numDistance * 1000, 10);
+					numDistance = parseInt(numDistance * 1000, 10).toFixed(1);
 					unit = ' m';
 				}
 				return numDistance + unit;
