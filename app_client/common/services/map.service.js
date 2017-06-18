@@ -23,7 +23,6 @@
         	}
 
         	function cbError(error) {
-        		console.log(error);
         		if(error.code == 1)
         			logger.warning(error.message, error, 'Warning');
         		else

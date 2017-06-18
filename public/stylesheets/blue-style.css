@@ -246,3 +246,9 @@ div[ng-table-pagination=params] {
 #toast-container > .toast-error:before {
     content: "\f12a";
 }
+
+/* ========== LEAFLET MAPS ========== */
+
+.leaflet-container .btn {
+    color: #fff !important;
+}

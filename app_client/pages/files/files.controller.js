@@ -206,19 +206,20 @@
 						vm.currentPercentage = parseInt(100.0 * evt.loaded / evt.total);
 					})
 					.then(function(response) {
-						console.log('File ' + response.config.file.name + ' uploaded successfully to S3');
+						console.log(response.config.file.name + ' successfully uploaded to S3');
 						// parses XML data response to jQuery object to be stored in the database
 						var xml = $.parseXML(response.data);
 						// maps the tag obects to an array of strings to be stored in the database
 						var tagStrings = vm.tags.map(function(item) {
 							return item['text'];
 						});
+						var key = result.data.fields.key;
+						var url = result.data.url + '/' + key;
 						var fileDetails = {
 							name : filename,
-							eTag : $(xml).find("ETag").text(),
-							key : $(xml).find("Key").text(),
+							key : key,
 							size : response.config.file.size,
-							url : $(xml).find("Location").text(),
+							url : url,
 							createdBy : authentication.currentUser().name,
 							lat : vm.lat,
 							lng : vm.lng,
@@ -226,8 +227,8 @@
 						}
 						filesService.addFileDB(fileDetails)
 						.then(function(response) {
-							console.log('File ' + filename + ' successfully added to DB');
-							logger.success('File ' + filename + ' uploaded successfully', '', 'Success');
+							console.log(filename + ' successfully added to DB');
+							logger.success(filename + ' successfully uploaded', '', 'Success');
 							getFileList();
 						});
 					}, function(error) {
@@ -261,7 +262,7 @@
 		*/
 
 		// not using at the moment, getting file details from DB 
-		// Amazon S3 free tier only provides 2000 put requests a month
+		// Amazon S3 free tier only provides 2000 put requests and 20000 get requests a month
 		function getFileListS3() {
 			filesService.getFileListS3()
 			.then(function(response) {

@@ -23,7 +23,6 @@
     		filesService.fileReadOneDB(key)
     		.then(function(response) {
     			vm.file = response.data;
-    			vm.acl = vm.file.acl;
     		});
     	}		
 
@@ -45,7 +44,7 @@
 			filesService.objectAclDB({key: key, acl: acl})
 			.then(function(response) {
 				vm.resultButton = 'success';
-				vm.acl = acl
+				vm.file.acl = acl
 			}, function(err) {
 				vm.resultButton = 'error';
 			});
