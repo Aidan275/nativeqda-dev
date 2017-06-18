@@ -29,7 +29,7 @@
 			}
 		});
 
-		var defaultIcon = new LeafIcon({iconUrl: '/markers/marker-icon.png'});
+		var defaultIcon = new LeafIcon({iconUrl: '/markers/marker-icon-2x.png'});
 		var posIcon = new LeafIcon({iconUrl: '/markers/marker-icon-pos.png'});
 
 		activate();
