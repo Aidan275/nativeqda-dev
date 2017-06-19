@@ -161,24 +161,24 @@
 			});
 		};
 
-		function confirmDelete(key, fileName) {
-			var deleteFile = $window.confirm("Are you sure you want to delete " + fileName + "?");
-			if(deleteFile){
-				deleteFileDB(key, fileName);
+		function confirmDelete(name, key) {
+			var doDelete = $window.confirm("Are you sure you want to delete " + name + "?");
+			if(doDelete){
+				deleteFileDB(name, key);
 			}
 		};
 
-		function deleteFileDB(key, fileName) {
+		function deleteFileDB(name, key) {
 			filesService.deleteFileDB(key)
 			.then(function(response) {
-				deleteFileS3(key, fileName);
+				deleteFileS3(name, key);
 			});
 		}
 
-		function deleteFileS3(key, fileName) {
+		function deleteFileS3(name, key) {
 			filesService.deleteFileS3({key: key})
 			.then(function(response) {
-				logger.success('File ' + fileName + ' deleted successfully', '', 'Success');
+				logger.success('File ' + name + ' deleted successfully', '', 'Success');
 				getFileList();
 			});
 		};

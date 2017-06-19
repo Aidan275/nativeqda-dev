@@ -57,7 +57,6 @@ var appClientFiles = [
 'app_client/common/filters/formatFileSize.filter.js',
 'app_client/common/directives/navigation/navigation.controller.js',
 'app_client/common/directives/navigation/navigation.directive.js',
-'app_client/common/directives/dynamicCompile.directive.js',
 'app_client/common/directives/footerGeneric/footerGeneric.directive.js',
 'app_client/common/directives/pageHeader/pageHeader.directive.js'
 ];

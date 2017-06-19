@@ -4,95 +4,103 @@
 	.module('nativeQDAApp')
 	.controller('dataCtrl', dataCtrl);
 
-	dataCtrl.$inject = ['$window', '$sce', '$uibModal', 'NgTableParams', 'datasets'];
-	function dataCtrl($window, $sce, $uibModal, NgTableParams, datasets) {
+	dataCtrl.$inject = ['$window', '$sce', '$uibModal', 'NgTableParams', 'datasetService'];
+	function dataCtrl($window, $sce, $uibModal, NgTableParams, datasetService) {
 		var vm = this;
-		var dataset;
+		
+		vm.dataset;
+
+		vm.popupViewDatasetForm = popupViewDatasetForm;
+		vm.popupEditDatasetForm = popupEditDatasetForm;
+		vm.popupNewDatasetForm = popupNewDatasetForm;
+		vm.getDatasetList = getDatasetList;
+		vm.confirmDelete  = confirmDelete;
 
 		vm.pageHeader = {
 			title: 'Data',
 			strapline: 'where the Datasets live'
 		};
 
-		vm.popupViewDatasetForm = function(datasetid) {
-			var modalInstance = $uibModal.open({
-				templateUrl: '/pages/analysis/data/viewDataset/viewDataset.view.html',
-				controller: 'viewDatasetCtrl as vm',
-				size: 'lg',
-				resolve: {
-					datasetid: function () {
-						return datasetid;
-					}
-				}
-			});
+		activate();
 
-			modalInstance.result.then(function() {
+    	///////////////////////////
 
-			});
-		};
+    	function activate() {
+    		getDatasetList();
+    	}
 
-		vm.popupEditDatasetForm = function(name, datasetid) {
-			var modalInstance = $uibModal.open({
-				templateUrl: '/pages/analysis/data/editDataset/editDataset.view.html',
-				controller: 'editDatasetCtrl as vm',
-				size: 'xl'
-			});
+    	function getDatasetList() {
+    		datasetService.listDatasets()
+    		.then(function(response) {
+    			ListDatasets(response.data);
+    		});
+    	}
 
-			modalInstance.result.then(function() {
-				vm.getDatasetList();
-			});
-		};
+    	function ListDatasets(datasetList) {
+    		vm.dataset = datasetList
+    		vm.tableParams = new NgTableParams({
+    			sorting: {dateCreated: "desc"}
+    		}, {
+    			dataset: vm.dataset
+    		});
+    	};
 
-		vm.popupNewDatasetForm = function() {
-			var modalInstance = $uibModal.open({
-				templateUrl: '/pages/analysis/data/newDataset/newDataset.view.html',
-				controller: 'newDatasetCtrl as vm',
-				size: 'xl'
-			});
+    	function confirmDelete(name, datasetId) {
+    		var doDelete = $window.confirm("Are you sure you want to delete " + name + "?");
+    		if(doDelete){
+    			deleteDataset(datasetId);
+    		}
+    	};
 
-			modalInstance.result.then(function() {
-				vm.getDatasetList();
-			});
-		};
+    	function deleteDataset(datasetId) {
+    		datasetService.datasetDeleteOne(datasetId)
+    		.then(function(response) {
+    			getDatasetList();
+    		});
+    	}
 
-		vm.doListDatasets = function(datasetList) {
-			dataset = datasetList;
-			vm.tableParams = new NgTableParams({
-				sorting: {dateCreated: "desc"}
-			}, {
-				dataset: dataset
-			});
-		};
+    	function popupViewDatasetForm(datasetId) {
+    		var modalInstance = $uibModal.open({
+    			templateUrl: '/pages/analysis/data/viewDataset/viewDataset.view.html',
+    			controller: 'viewDatasetCtrl as vm',
+    			size: 'lg',
+    			resolve: {
+    				datasetId: function () {
+    					return datasetId;
+    				}
+    			}
+    		});
 
-		vm.getDatasetList = function() {
-			datasets.listDatasets()
-			.then(function(response) {
-				vm.doListDatasets(response.data);
-			}, function(e) {
-				console.log(e);
-			});
-			return false;
-		}
+    		modalInstance.result.then(function() {
 
-		vm.getDatasetList();
+    		});
+    	};
 
-		vm.doDeleteDataset = function(datasetid) {
-			datasets.datasetDeleteOne(datasetid)
-			.then(function(response) {
-				vm.getDatasetList();
-			}, function(e) {
-				console.log(e);
-			});
-			return false;
-		}
+    	function popupEditDatasetForm(name, datasetId) {
+    		var modalInstance = $uibModal.open({
+    			templateUrl: '/pages/analysis/data/editDataset/editDataset.view.html',
+    			controller: 'editDatasetCtrl as vm',
+    			size: 'xl'
+    		});
 
-		vm.confirmDelete = function(name, datasetid) {
-			deleteDataset = $window.confirm("Are you sure you want to delete " + name + "?");
-			if(deleteDataset){
-				vm.doDeleteDataset(datasetid);
-			}
-		};
+    		modalInstance.result.then(function() {
+    			getDatasetList();
+    		});
+    	};
 
-	}
+    	function popupNewDatasetForm() {
+    		var modalInstance = $uibModal.open({
+    			templateUrl: '/pages/analysis/data/newDataset/newDataset.view.html',
+    			controller: 'newDatasetCtrl as vm',
+    			size: 'xl'
+    		});
+
+    		modalInstance.result.then(function(data) {
+    			vm.dataset.push(data)
+    			ListDatasets(vm.dataset);
+    		});
+    	};
+
+    }
 
 })();

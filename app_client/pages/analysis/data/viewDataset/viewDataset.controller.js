@@ -4,16 +4,13 @@
 	.module('nativeQDAApp')
 	.controller('viewDatasetCtrl', viewDatasetCtrl);
 
-	viewDatasetCtrl.$inject = ['$uibModalInstance', 'datasets', 'datasetid'];
-	function viewDatasetCtrl ($uibModalInstance, datasets, datasetid) {
+	viewDatasetCtrl.$inject = ['$uibModalInstance', 'datasetService', 'datasetId'];
+	function viewDatasetCtrl ($uibModalInstance, datasetService, datasetId) {
 		var vm = this;
-		vm.datasetid = datasetid;
 		
-		datasets.datasetReadOne(vm.datasetid)
+		datasetService.datasetReadOne(datasetId)
 		.then(function(response) {
 			vm.data = response.data;
-		}, function (e) {
-			console.log(e);
 		});
 
 		vm.modal = {

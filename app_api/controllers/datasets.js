@@ -19,7 +19,7 @@ module.exports.datasetCreate = function(req, res) {
 			if (err) {
 				sendJSONresponse(res, 404, err);
 			} else {
-				sendJSONresponse(res, 200);
+				sendJSONresponse(res, 200, dataset);
 			}
 		});	
 	});

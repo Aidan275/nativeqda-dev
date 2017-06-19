@@ -2,10 +2,10 @@
 
 	angular
 	.module('nativeQDAApp')
-	.service('datasets', datasets);
+	.service('datasetService', datasetService);
 
-	datasets.$inject = ['$http', 'authentication', 'exception'];
-	function datasets ($http, authentication, exception) {
+	datasetService.$inject = ['$http', 'authentication', 'exception'];
+	function datasetService ($http, authentication, exception) {
 		return {
 			datasetCreate	: datasetCreate,
 			listDatasets	: listDatasets,
