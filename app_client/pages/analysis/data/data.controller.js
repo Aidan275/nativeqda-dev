@@ -4,18 +4,19 @@
 	.module('nativeQDAApp')
 	.controller('dataCtrl', dataCtrl);
 
-	dataCtrl.$inject = ['$window', '$sce', '$uibModal', 'NgTableParams', 'datasetService'];
-	function dataCtrl($window, $sce, $uibModal, NgTableParams, datasetService) {
+	dataCtrl.$inject = ['$window', '$sce', '$uibModal', 'NgTableParams', 'datasetService', 'logger'];
+	function dataCtrl($window, $sce, $uibModal, NgTableParams, datasetService, logger) {
 		var vm = this;
 		
-		vm.dataset;
-
-		vm.popupViewDatasetForm = popupViewDatasetForm;
-		vm.popupEditDatasetForm = popupEditDatasetForm;
-		vm.popupNewDatasetForm = popupNewDatasetForm;
+		// Bindable Functions
 		vm.getDatasetList = getDatasetList;
 		vm.confirmDelete  = confirmDelete;
+		vm.popupViewDataset = popupViewDataset;
+		vm.popupEditDataset = popupEditDataset;
+		vm.popupNewDataset = popupNewDataset;
 
+		// Bindable Data
+		vm.dataset = [];
 		vm.pageHeader = {
 			title: 'Data',
 			strapline: 'where the Datasets live'
@@ -23,84 +24,98 @@
 
 		activate();
 
-    	///////////////////////////
+		///////////////////////////
 
-    	function activate() {
-    		getDatasetList();
-    	}
+		function activate() {
+			getDatasetList();
+		}
 
-    	function getDatasetList() {
-    		datasetService.listDatasets()
-    		.then(function(response) {
-    			ListDatasets(response.data);
-    		});
-    	}
+		function getDatasetList() {
+			datasetService.listDatasets()
+			.then(function(response) {
+				vm.dataset = response.data
+				ListDatasets();
+			});
+		}
 
-    	function ListDatasets(datasetList) {
-    		vm.dataset = datasetList
-    		vm.tableParams = new NgTableParams({
-    			sorting: {dateCreated: "desc"}
-    		}, {
-    			dataset: vm.dataset
-    		});
-    	};
+		function ListDatasets() {
+			vm.tableParams = new NgTableParams({
+				sorting: {dateCreated: "desc"}
+			}, {
+				dataset: vm.dataset
+			});
+		}
 
-    	function confirmDelete(name, datasetId) {
-    		var doDelete = $window.confirm("Are you sure you want to delete " + name + "?");
-    		if(doDelete){
-    			deleteDataset(datasetId);
-    		}
-    	};
+		function confirmDelete(name, datasetId) {
+			var doDelete = $window.confirm("Are you sure you want to delete " + name + "?");
+			if(doDelete){
+				deleteDataset(name, datasetId);
+			}
+		}
 
-    	function deleteDataset(datasetId) {
-    		datasetService.datasetDeleteOne(datasetId)
-    		.then(function(response) {
-    			getDatasetList();
-    		});
-    	}
+		function deleteDataset(name, datasetId) {
+			datasetService.datasetDeleteOne(datasetId)
+			.then(function(response) {
+				logger.success('Dataset ' + name + ' was successfully deleted' ,'', 'Success');
+				removeFromList(datasetId);	// if deleting the dataset was successful, 
+			});								// the deleted dataset is removed from the local array
+		}
 
-    	function popupViewDatasetForm(datasetId) {
-    		var modalInstance = $uibModal.open({
-    			templateUrl: '/pages/analysis/data/viewDataset/viewDataset.view.html',
-    			controller: 'viewDatasetCtrl as vm',
-    			size: 'lg',
-    			resolve: {
-    				datasetId: function () {
-    					return datasetId;
-    				}
-    			}
-    		});
+		function removeFromList(datasetId) {
+			// Find the dataset index for datasetId, will return -1 if not found 
+			var datasetIndex = vm.dataset.findIndex(function(obj){return obj._id == datasetId});
 
-    		modalInstance.result.then(function() {
+			// Remove the dataset from the vm.dataset array
+			if (datasetIndex > -1) {
+				vm.dataset.splice(datasetIndex, 1);
+			}
 
-    		});
-    	};
+			// List the datasets again
+			ListDatasets();
+		}
 
-    	function popupEditDatasetForm(name, datasetId) {
-    		var modalInstance = $uibModal.open({
-    			templateUrl: '/pages/analysis/data/editDataset/editDataset.view.html',
-    			controller: 'editDatasetCtrl as vm',
-    			size: 'xl'
-    		});
+		function popupViewDataset(datasetId) {
+			var modalInstance = $uibModal.open({
+				templateUrl: '/pages/analysis/data/viewDataset/viewDataset.view.html',
+				controller: 'viewDatasetCtrl as vm',
+				size: 'lg',
+				resolve: {
+					datasetId: function () {
+						return datasetId;
+					}
+				}
+			});
 
-    		modalInstance.result.then(function() {
-    			getDatasetList();
-    		});
-    	};
+			modalInstance.result.then(function() {
 
-    	function popupNewDatasetForm() {
-    		var modalInstance = $uibModal.open({
-    			templateUrl: '/pages/analysis/data/newDataset/newDataset.view.html',
-    			controller: 'newDatasetCtrl as vm',
-    			size: 'xl'
-    		});
+			});
+		}
 
-    		modalInstance.result.then(function(data) {
-    			vm.dataset.push(data)
-    			ListDatasets(vm.dataset);
-    		});
-    	};
+		function popupEditDataset(name, datasetId) {
+			var modalInstance = $uibModal.open({
+				templateUrl: '/pages/analysis/data/editDataset/editDataset.view.html',
+				controller: 'editDatasetCtrl as vm',
+				size: 'xl'
+			});
 
-    }
+			modalInstance.result.then(function() {
+
+			});
+		}
+
+		function popupNewDataset() {
+			var modalInstance = $uibModal.open({
+				templateUrl: '/pages/analysis/data/newDataset/newDataset.view.html',
+				controller: 'newDatasetCtrl as vm',
+				size: 'xl'
+			});
+
+			modalInstance.result.then(function(data) {
+				vm.dataset.push(data)
+				ListDatasets();
+			});
+		}
+
+	}
 
 })();

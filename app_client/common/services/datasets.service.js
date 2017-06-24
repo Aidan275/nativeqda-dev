@@ -13,6 +13,7 @@
 			datasetDeleteOne: datasetDeleteOne
 		};
 
+		// Creates a dataset with a name and dexcription
 		function datasetCreate(dataset){
 			return $http.post('/api/analysis/data/create', dataset, {
 				headers: {

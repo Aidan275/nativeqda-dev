@@ -10,6 +10,12 @@
 	function homeCtrl (mapService, filesService, $scope, $filter, $compile, $window, $uibModal, logger) {
 		var vm = this;
 
+		// Bindable Functions
+		vm.getFileList = getFileList;
+		vm.viewFile = viewFile;
+		vm.popupFileDetails = popupFileDetails;
+		vm.confirmDelete = confirmDelete;
+		
 		var lat = -34.4054039;	// Default position is UOW
 		var lng = 150.87842999999998;
 		var fileList = null;
@@ -20,11 +26,6 @@
 		var kangarooMarkerCluster = null;
 		var kiwiMarkerCluster = null;
 		var kaguMarkerCluster = null;
-
-		vm.getFileList = getFileList;
-		vm.viewFile = viewFile;
-		vm.popupFileDetails = popupFileDetails;
-		vm.confirmDelete = confirmDelete;
 		vm.pageHeader = {
 			title: 'Dashboard',
 			strapline: 'summary of recent activity'

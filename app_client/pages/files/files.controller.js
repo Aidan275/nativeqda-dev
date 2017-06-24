@@ -11,24 +11,24 @@
 	function filesCtrl (mapService, $http, $window, $scope, $uibModal, Upload, NgTableParams, filesService, authentication, logger) {
 		var vm = this;
 
-		var map = null;
-		var marker = null;
-		var fileList = null;
+		// Bindable Functions
+		vm.geocodeAddress = geocodeAddress;
+		vm.getFileListS3 = getFileListS3;
+		vm.viewFile = viewFile;
+		vm.onFileSelect = onFileSelect;
+		vm.confirmDelete = confirmDelete;
+		vm.popupFileDetails = popupFileDetails;
 
+		// Bindable Data
+		vm.map = null;
+		vm.marker = null;
+		vm.fileList = [];
 		vm.lat = -34.4054039;	// Default position is UOW
 		vm.lng = 150.87842999999998;
 		vm.tags = [];
 		vm.address = '';
 		vm.formattedAddress = '';
-
 		vm.currentPercentage = '0';
-
-		vm.popupFileDetails = popupFileDetails;
-		vm.getFileListS3 = getFileListS3;
-		vm.confirmDelete = confirmDelete;
-		vm.onFileSelect = onFileSelect;
-		vm.geocodeAddress = geocodeAddress;
-		vm.viewFile = viewFile;
 
 		activate();
 
@@ -54,27 +54,27 @@
     			}
     		}
 
-    		map = new google.maps.Map(mapCanvas, mapOptions);
+    		vm.map = new google.maps.Map(mapCanvas, mapOptions);
 
-    		marker = new google.maps.Marker({
+    		vm.marker = new google.maps.Marker({
     			draggable: true,
     			position: position,
-    			map: map,
+    			map: vm.map,
     			title: 'Latitude: ' + vm.lat + '\nLongitude: ' + vm.lng
     		});
 
-    		google.maps.event.addListener(marker, 'dragend', function(event) {
+    		google.maps.event.addListener(vm.marker, 'dragend', function(event) {
     			vm.lat = event.latLng.lat();
     			vm.lng = event.latLng.lng();
-    			marker.setTitle('Latitude: ' + vm.lat + '\nLongitude: ' + vm.lng);
+    			vm.marker.setTitle('Latitude: ' + vm.lat + '\nLongitude: ' + vm.lng);
     			$scope.$apply();
     		});
 
-    		google.maps.event.addListener(map, 'click', function(event) {
+    		google.maps.event.addListener(vm.map, 'click', function(event) {
     			vm.lat = event.latLng.lat();
     			vm.lng = event.latLng.lng();
-    			marker.setPosition(event.latLng);
-    			marker.setTitle('Latitude: ' + vm.lat + '\nLongitude: ' + vm.lng);
+    			vm.marker.setPosition(event.latLng);
+    			vm.marker.setTitle('Latitude: ' + vm.lat + '\nLongitude: ' + vm.lng);
     			$scope.$apply();
     		});
 
@@ -89,10 +89,10 @@
 
     	function updateUserPos() {
     		var userPos = new google.maps.LatLng(vm.lat, vm.lng);
-    		marker.setPosition(userPos);
-    		marker.setTitle('Latitude: ' + vm.lat + '\nLongitude: ' + vm.lng);
-    		map.setZoom(13);
-    		map.panTo(userPos);
+    		vm.marker.setPosition(userPos);
+    		vm.marker.setTitle('Latitude: ' + vm.lat + '\nLongitude: ' + vm.lng);
+    		vm.map.setZoom(13);
+    		vm.map.panTo(userPos);
     		$scope.$apply();
     	}
 
@@ -104,10 +104,10 @@
     				vm.lng = results[0].geometry.location.lng();
     				vm.formattedAddress = results[0].formatted_address;
 
-    				marker.setPosition(results[0].geometry.location);
-    				marker.setTitle('Latitude: ' + vm.lat + '\nLongitude: ' + vm.lng);
+    				vm.marker.setPosition(results[0].geometry.location);
+    				vm.marker.setTitle('Latitude: ' + vm.lat + '\nLongitude: ' + vm.lng);
 
-    				map.panTo(new google.maps.LatLng(vm.lat,vm.lng));
+    				vm.map.panTo(new google.maps.LatLng(vm.lat,vm.lng));
 
     				$scope.$apply();
     			} else if (status === 'ZERO_RESULTS') {
@@ -122,16 +122,16 @@
 		function getFileList() {
 			filesService.getFileListDB()
 			.then(function(response) {
-				fileList = response.data;
+				vm.fileList = response.data;
 				listFiles();
 			});
 		}
 
 		function listFiles() {
 			vm.tableParams = new NgTableParams({
-				sorting: {LastModified: "desc"}
+				sorting: {lastModified: "desc"}
 			}, {
-				dataset: fileList
+				dataset: vm.fileList
 			});
 		}
 
@@ -144,29 +144,12 @@
 			});
 		}
 
-		function popupFileDetails(key) {
-			var modalInstance = $uibModal.open({
-				templateUrl: '/pages/files/fileDetails/fileDetails.view.html',
-				controller: 'fileDetails as vm',
-				size: 'lg',
-				resolve: {
-					key: function () {
-						return key;
-					}
-				}
-			});
-
-			modalInstance.result.then(function() {
-
-			});
-		};
-
 		function confirmDelete(name, key) {
 			var doDelete = $window.confirm("Are you sure you want to delete " + name + "?");
 			if(doDelete){
 				deleteFileDB(name, key);
 			}
-		};
+		}
 
 		function deleteFileDB(name, key) {
 			filesService.deleteFileDB(key)
@@ -181,7 +164,7 @@
 				logger.success('File ' + name + ' deleted successfully', '', 'Success');
 				getFileList();
 			});
-		};
+		}
 
 		// Gets a signed URL for uploading a file then uploads the file to S3 with this signed URL
 		// If successful, the file info is then posted to the DB
@@ -237,7 +220,24 @@
 					});
 				});
 			}
-		};
+		}
+
+		function popupFileDetails(key) {
+			var modalInstance = $uibModal.open({
+				templateUrl: '/pages/files/fileDetails/fileDetails.view.html',
+				controller: 'fileDetails as vm',
+				size: 'lg',
+				resolve: {
+					key: function () {
+						return key;
+					}
+				}
+			});
+
+			modalInstance.result.then(function() {
+
+			});
+		}
 
 		// need to work on back end still
 		// Thinking if S3 and the DB become unsynced, such as a file in the DB that's 
@@ -246,9 +246,9 @@
 
 		/*
 		function syncDB(data) {
-			var fileList = data.Contents;
+			vm.fileList = data.Contents;
 
-			fileList.forEach(function(file) {
+			vm.fileList.forEach(function(file) {
 				filesService.syncDBwithS3({key: file.Key})
 				.then(function(response) {
 					console.log(response);
@@ -271,7 +271,7 @@
 			}, function(err) {
 				console.log(err);
 			});
-		};
+		}
 	}
 
 })();

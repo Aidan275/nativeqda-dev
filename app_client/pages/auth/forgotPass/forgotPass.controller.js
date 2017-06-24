@@ -4,25 +4,28 @@
 	.module('nativeQDAApp')
 	.controller('forgotPassCtrl', forgotPassCtrl);
 
-	forgotPassCtrl.$inject = ['authentication'];
-	function forgotPassCtrl(authentication) {
+	forgotPassCtrl.$inject = ['authentication', 'logger'];
+	function forgotPassCtrl(authentication, logger) {
 		var vm = this;
 
+		// Bindable Functions
+		vm.onSubmit = onSubmit;
+
+		// Bindable Data
+		vm.email = "";
 		vm.pageHeader = {
 			title: 'Forgot Password'
 		};
 
-		vm.credentials = {
-			email : ""
-		};
+    	///////////////////////////
 
-		vm.onSubmit = function () {
+		function onSubmit() {
 			vm.formError = "";
-			if (!vm.credentials.email) {
-				vm.formError = "All fields required, please try again";
+			if (!vm.email) {
+				logger.error('All fields required, please try again', '', 'Error')
 				return false;
 			} else {
-				console.log("Send email to " + vm.credentials.email + " to reset password!")
+				logger.info('TODO: verify user\'s email and send link to reset password', '', 'TODO')
 			}
 		};
 	}

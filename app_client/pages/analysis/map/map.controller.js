@@ -4,20 +4,22 @@
 	.module('nativeQDAApp')
 	.controller('mapCtrl', mapCtrl);
 
-	mapCtrl.$inject = ['mapService', 'filesService', '$scope', '$filter', '$compile', '$window', '$uibModal', 'logger'];
-	function mapCtrl (mapService, filesService, $scope, $filter, $compile, $window, $uibModal, logger) {
+	mapCtrl.$inject = ['filesService', '$scope', '$filter', '$compile', '$window', '$uibModal', 'logger'];
+	function mapCtrl (filesService, $scope, $filter, $compile, $window, $uibModal, logger) {
 		var vm = this;
 
-		var map = null;
-		var markers;
-
-		vm.currentMarker = null;
-
+		// Bindable Functions
 		vm.getFileList = getFileList;
 		vm.viewFile = viewFile;
 		vm.popupFileDetails = popupFileDetails;
 		vm.confirmDelete = confirmDelete;
 
+		// Bindable Data
+		vm.map = null;
+		vm.markers = [];
+		vm.currentMarker = null;
+
+		// To move - may move the majority of the mapping functions into it's own directive
 		var LeafIcon = L.Icon.extend({
 			options: {
 				shadowUrl: '/markers/marker-shadow.png',
@@ -46,7 +48,7 @@
 				zoom: 4
 			};
 
-			map = L.map('map', mapOptions);
+			vm.map = L.map('map', mapOptions);
 
 			var maxZoom = 22;
 
@@ -84,7 +86,7 @@
 				map: 'mapbox.streets-basic',
 				accessToken: 'pk.eyJ1IjoiYWlkYW4yNzUiLCJhIjoiY2o0MWVrMmFxMGVuNjJxbnlocmV6ZDJ0cCJ9.h77mANND4PPZz9U1z4OC3w',
 				maxZoom: maxZoom
-			}).addTo(map);
+			}).addTo(vm.map);
 
 			var mapboxComic = L.tileLayer('https://api.mapbox.com/v4/{map}/{z}/{x}/{y}.png?access_token={accessToken}', {
 				map: 'mapbox.comic',
@@ -176,7 +178,7 @@
 				'Google Traffic': trafficMutant
 			}, {}, {
 				collapsed: true
-			}).addTo(map);
+			}).addTo(vm.map);
 
 			geoLocateUser();
 			
@@ -185,15 +187,15 @@
 
 		// If getPosition returns successfully update the user's posistion on the map
 		function geoLocateUser(position) {
-			map.on('locationfound', onLocationFound);
-			map.on('locationerror', onLocationError);
-			map.locate({setView: true, maxZoom: 15});
+			vm.map.on('locationfound', onLocationFound);
+			vm.map.on('locationerror', onLocationError);
+			vm.map.locate({setView: true, maxZoom: 15});
 		}
 
 		function onLocationFound(response) {
 			var radius = response.accuracy / 2;
 			var userPos = response.latlng;
-			var posMarker = L.marker(userPos, { icon: posIcon, title: 'Your Position' }).addTo(map).bindPopup("You are within " + $filter('formatDistance')(radius) + " meters from this point");
+			var posMarker = L.marker(userPos, { icon: posIcon, title: 'Your Position' }).addTo(vm.map).bindPopup("You are within " + $filter('formatDistance')(radius) + " meters from this point");
 			var posCicle = L.circle(userPos, {
 				radius: radius,
 				color: '#cb2529'
@@ -201,10 +203,10 @@
 
 			// Adds/removes the circle from the marker when focused/unfocused
 			posMarker.on("popupopen", function() { 
-				posCicle.addTo(map); 
-				map.setView(userPos, 18);
+				posCicle.addTo(vm.map); 
+				vm.map.setView(userPos, 18);
 			});
-			posMarker.on("popupclose", function() { map.removeLayer(posCicle); });
+			posMarker.on("popupclose", function() { vm.map.removeLayer(posCicle); });
 
 			logger.success('User\'s location found', response, 'Success');
 		}
@@ -217,14 +219,13 @@
 		function getFileList() {
 			filesService.getFileListDB()
 			.then(function(response) {
-				var fileList = response.data;
-				addMapMarkers(fileList);
+				addMapMarkers(response.data);
 			});
 		}
 
 		// Adds markers for the files retrieved from the MongoDB database
 		function addMapMarkers(fileList) {
-			markers = L.markerClusterGroup({showCoverageOnHover: false});
+			vm.markers = L.markerClusterGroup({showCoverageOnHover: false});
 
 			// For each file returned from the DB, a marker with an info 
 			// window is created. Each marker is then added to its 
@@ -264,9 +265,9 @@
 				// so the marker can be removed if the file is deleted
 				marker.on("popupopen", function() { vm.currentMarker = this; });
 
-				markers.addLayer(marker);
+				vm.markers.addLayer(marker);
 			});
-			map.addLayer(markers);
+			vm.map.addLayer(vm.markers);
 		}
 
 		// Get a signed URL to download the requested file from S3 
@@ -316,7 +317,7 @@
 		}
 
 		function removeMapMarker() {	
-			markers.removeLayer(vm.currentMarker);
+			vm.markers.removeLayer(vm.currentMarker);
 		}
 	}
 

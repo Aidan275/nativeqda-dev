@@ -7,8 +7,13 @@
 	newVisualisationCtrl.$inject = ['$uibModalInstance'];
 	function newVisualisationCtrl ($uibModalInstance) {
 		var vm = this;
-				
-		vm.onSubmit = function () {
+		
+		// Bindable Functions
+		vm.onSubmit = onSubmit;
+
+		///////////////////////////
+
+		function onSubmit() {
 			vm.formError = "";
 			if(angular.isDefined(vm.formData)){
 				if(!vm.formData.visualisationName) {

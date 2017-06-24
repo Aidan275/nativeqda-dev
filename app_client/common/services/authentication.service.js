@@ -27,7 +27,7 @@
 		};
 
 		// Checks if the user is logged in by getting the JWT and checking its expiry date against the current date
-		// This method can be fooled with a token named 'nativeQDA-token' and a valid expiry date but for any requests 
+		// This FUNCTION can be fooled with a token named 'nativeQDA-token' and a valid expiry date but for any requests 
 		// to the server using the APIs, the user's jwt will be checked and denied if not genuine.
 		function isLoggedIn() {
 			var token = getToken();
@@ -52,9 +52,12 @@
 		};
 
 		function register(user) {
-			return $http.post('/api/register', user).then(function(response){
-				saveToken(response.data.token);
-			});
+			return $http.post('/api/register', user)
+			.then(registerComplete)
+			.catch(registerFailed);
+
+			function registerComplete(data) { saveToken(data.data.token); }
+			function registerFailed(e) { return exception.catcher('Registration Failed')(e); }
 		};
 
 		function login(user) {

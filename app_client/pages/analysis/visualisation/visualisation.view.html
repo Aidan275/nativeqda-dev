@@ -7,24 +7,28 @@
 	<div class="row">
 		<div class="col-md-12">
 			<p>This page is for viewing, modifying, and creating Visualisations of the datasets.<br />
-			A Visualisation is a visual representation of the analysed dataset. There are a number of different visualisations possible to help the users understand the significance of the data.</p>
+				A Visualisation is a visual representation of the analysed dataset. There are a number of different visualisations possible to help the users understand the significance of the data.</p>
+			</div>
 		</div>
+
+		<button type="button" class="btn btn-md btn-success" ng-click="vm.popupNewVisual()">New Visualisation</button>
+
+		<table id="visualisation-table" ng-table="vm.tableParams" class="table table-condensed table-bordered table-striped" style="margin-top:5px">
+			<tr ng-repeat="row in $data">
+				<td data-title="'Visualisation'" filter="{visual: 'text'}" sortable="'visual'"><img class="vis-img-thumb" src="/images/visualisations/{{row.visualThumb}}" /> {{row.visual}}</td>
+				<td data-title="'Data Set'" filter="{dataSet: 'text'}" sortable="'dataSet'">{{row.dataSet}}</td>
+				<td data-title="'Created By'" filter="{createdBy: 'text'}" sortable="'createdBy'">{{row.createdBy}}</td>
+				<td data-title="'Date Created'" filter="{dateCreated: 'text'}" sortable="'dateCreated'">{{row.dateCreated}}</td>
+				<td data-title="'Command'">
+					<a ng-click="vm.popupViewVisaul(row._id)" class="btn btn-success btn-xs" role="button">View</a>
+					<a ng-click="vm.popupEditVisual(row.visual, row._id)" class="btn btn-primary btn-xs" role="button">Edit</a>
+					<a ng-click="vm.confirmDelete(row.visual, row._id)" class="btn btn-danger btn-xs" role="button">Delete</a>
+				</td class="data-command-cell">
+			</tr>
+
+
+		</table>
+
+		<footer-generic></footer-generic>
+
 	</div>
-
-	<button type="button" class="btn btn-md btn-success" ng-click="vm.popupVisualisationForm()">New Visualisation</button>
-
-	<table id="visualisation-table" ng-table="vm.tableParams" class="table table-condensed table-bordered table-striped" style="margin-top:5px">
-		<tr ng-repeat="row in $data">
-			<td data-title="'Visualisation'" filter="{visual: 'text'}" sortable="'visual'"><img class="vis-img-thumb" src="/images/visualisations/{{row.visualThumb}}" /> {{row.visual}}</td>
-			<td data-title="'Data Set'" filter="{dataSet: 'text'}" sortable="'dataSet'">{{row.dataSet}}</td>
-			<td data-title="'Created By'" filter="{createdBy: 'text'}" sortable="'createdBy'">{{row.createdBy}}</td>
-			<td data-title="'Date Created'" filter="{dateCreated: 'text'}" sortable="'dateCreated'">{{row.dateCreated}}</td>
-			<td data-title="'Command'"><a href="/analysis/data/view/{{row.command}}" class="btn btn-success btn-xs" role="button">View</a> <a href="/analysis/data/edit/{{row.command}}" class="btn btn-primary btn-xs" role="button">Edit</a> <a href="/analysis/data/delete/{{row.command}}" ng-click="confirmDelete()" class="btn btn-danger btn-xs" role="button">Delete</a></td class="data-command-cell">
-		</tr>
-
-
-	</table>
-
-	<footer-generic></footer-generic>
-
-</div>

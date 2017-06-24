@@ -8,12 +8,14 @@
 	function fileDetails ($uibModalInstance, $window, key, filesService) {
 		var vm = this;
 
+		// Bindable Functions
+		vm.updateAclS3 = updateAclS3;
+
+		// Bindable Data
 		vm.isSubmittingButton = null;	// variables for button animation - ng-bs-animated-button
 		vm.resultButton = null;
 		vm.makePublicOptions = { buttonDefaultText: 'Make Public' };
 		vm.makePrivateOptions = { buttonDefaultText: 'Make Private' };
-
-		vm.updateAclS3 = updateAclS3;
 
 		activate();
 

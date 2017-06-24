@@ -5,22 +5,20 @@
 
 	<div class="row">
 		<div class="col-md-6 col-sm-12">
-			<p class="lead">Already a member? Please <a href="/login?page={{ vm.returnPage }}">log in</a> instead.</p>
 			<form ng-submit="vm.onSubmit()">
-				<div role="alert" ng-show="vm.formError" class="alert alert-danger">{{ vm.formError }}</div>
 				<div class="form-group">
-					<label for="name">Full name</label>
-					<input type="text" class="form-control" id="name" required="required" placeholder="Enter your name" ng-model="vm.credentials.name">
+					<label for="name">Name</label>
+					<input type="text" class="form-control" id="name" required="required" placeholder="Name" ng-model="vm.credentials.name">
 				</div>
 				<div class="form-group">
 					<label for="email">Email address</label>
-					<input type="email" class="form-control" id="email" required="required" placeholder="Enter email" ng-model="vm.credentials.email">
+					<input type="email" class="form-control" id="email" required="required" placeholder="Email" ng-model="vm.credentials.email">
 				</div>
 				<div class="form-group">
 					<label for="password">Password</label>
 					<input type="password" class="form-control" id="password" required="required" placeholder="Password" ng-model="vm.credentials.password">
 				</div>
-				<button type="submit" class="btn btn-default">Register!</button>
+				<button type="submit" class="btn btn-primary">Register</button>
 			</form>
 		</div>
 	</div>

@@ -83,7 +83,6 @@
 	    $locationProvider.html5Mode(true);
 	}
 
-	// hacked together for the complete survey page, may need to improve
 	function run ($rootScope, $location, authentication) {
 		$rootScope.$on("$routeChangeStart", function(event, nextRoute, currentRoute) {
 			var postLogInRoute;

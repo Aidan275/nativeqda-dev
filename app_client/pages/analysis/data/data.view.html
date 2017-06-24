@@ -12,7 +12,7 @@
 		</div>
 	</div>
 
-	<button type="button" class="btn btn-md btn-success" ng-click="vm.popupNewDatasetForm()">New Dataset</button>
+	<button type="button" class="btn btn-md btn-success" ng-click="vm.popupNewDataset()">New Dataset</button>
 
 	<table ng-table="vm.tableParams" class="table table-condensed table-bordered table-striped" style="margin-top:5px">
 		<tr ng-repeat="row in $data">
@@ -21,8 +21,8 @@
 			<td data-title="'Created By'" filter="{createdBy: 'text'}" sortable="'createdBy'">{{row.createdBy}}</td>
 			<td data-title="'Date Created'" filter="{dateCreated: 'text'}" sortable="'dateCreated'">{{row.dateCreated | date : "dd MMMM, yyyy h:mm a"}}</td>
 			<td data-title="'Command'">
-				<a ng-click="vm.popupViewDatasetForm(row._id)" class="btn btn-success btn-xs" role="button">View</a>
-				<a ng-click="vm.popupEditDatasetForm(row.name, row._id)" class="btn btn-primary btn-xs" role="button">Edit</a>
+				<a ng-click="vm.popupViewDataset(row._id)" class="btn btn-success btn-xs" role="button">View</a>
+				<a ng-click="vm.popupEditDataset(row.name, row._id)" class="btn btn-primary btn-xs" role="button">Edit</a>
 				<a ng-click="vm.confirmDelete(row.name, row._id)" class="btn btn-danger btn-xs" role="button">Delete</a>
 			</td class="data-command-cell">
 		</tr>

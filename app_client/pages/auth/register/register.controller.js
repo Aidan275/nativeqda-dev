@@ -4,41 +4,42 @@
 	.module('nativeQDAApp')
 	.controller('registerCtrl', registerCtrl);
 
-	registerCtrl.$inject = ['$location','authentication'];
-	function registerCtrl($location, authentication) {
+	registerCtrl.$inject = ['$location','authentication', 'logger'];
+	function registerCtrl($location, authentication, logger) {
 		var vm = this;
 
-		vm.pageHeader = {
-			title: 'Create a new nativeQDA account'
-		};
+		// Bindable Functions
+		vm.onSubmit = onSubmit;
+		vm.register = register;
 
+		// Bindable Data
 		vm.credentials = {
 			name : "",
 			email : "",
 			password : ""
 		};
-
+		vm.pageHeader = {
+			title: 'Create a new NativeQDA account'
+		};
 		vm.returnPage = $location.search().page || '/';
 
-		vm.onSubmit = function () {
-			vm.formError = "";
+		///////////////////////////
+
+		function onSubmit() {
 			if (!vm.credentials.name || !vm.credentials.email || !vm.credentials.password) {
-				vm.formError = "All fields required, please try again";
+				logger.error("All fields required, please try again", '', 'Error');
 				return false;
 			} else {
-				vm.doRegister();
+				register();
 			}
 		};
 
-		vm.doRegister = function() {
-			vm.formError = "";
+		function register() {
 			authentication
 			.register(vm.credentials)
 			.then(function(){
 				$location.search('page', null); 
 				$location.path(vm.returnPage);
-			},function(err){
-				vm.formError = err;
 			});
 		};
 

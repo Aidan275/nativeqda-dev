@@ -7,21 +7,22 @@
 	loginCtrl.$inject = ['$location', 'authentication', 'events', 'logger'];
 	function loginCtrl($location, authentication, events, logger) {
 		var vm = this;
-
+		
+		// Bindable Functions
 		vm.onSubmit = onSubmit;
 		vm.login = login;
 
+		// Bindable Data
 		vm.credentials = {
 			email : "",
 			password : ""
 		};
-
 		vm.pageHeader = {
 			title: 'Sign in to nativeQDA'
 		};
-
 		vm.returnPage = $location.search().page || '/';
 
+		///////////////////////////
 
 		function onSubmit() {
 			if (!vm.credentials.email || !vm.credentials.password) {

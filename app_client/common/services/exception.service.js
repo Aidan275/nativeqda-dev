@@ -28,6 +28,13 @@
 				} else if (err.data && err.data.message){	 // For S3 errors with err.data.message
 					newMessage = message + err.data.message;
 					err.data.message = newMessage;
+				} else if (err.data && err.data.errmsg){	 // For DB errors with err.data.errmsg
+					if(err.data.code === 11000) {			// if duplicate key error - must be existing email in DB 
+						newMessage = message + 'Email already exists in the database';
+					} else {
+						newMessage = message + err.data.errmsg;
+						err.data.errmsg = newMessage;
+					}
 				}
 
 				logger.error(newMessage, err, 'Error');
