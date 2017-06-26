@@ -52,4 +52,4 @@ S3_BUCKET_NAME=nativeqda-assets
 ```
 These variables should be kept secret and shouldn't be included here but oh well, no one can see them. <br>
 The MONGODB_URI is only used when NODE_ENV is set to production and the JWT_SECRET is for the authentication of users and passwords (salts and hashes).
-* Try gulp serve to run the app its development environment
+* Try gulp serve to run the app in its development environment
