@@ -38,6 +38,10 @@ gulp serve-build	/* 	This will watch the AngularJS JS files, vendor JS, vendor C
 						appropriate tasks to bundle/minify/copy/etc. the modified files
 						when changes are detected and reload the app/browser.	*/
 ```
+* Install browser-sync globally for automatic browser reloads on file changes
+```
+npm install -g browser-sync
+```
 * Before running the app environmental variables have to be defined. 
 	* Create a new text file in the root folder called **.env**
 	* Add the following text and save the file
@@ -52,4 +56,9 @@ S3_BUCKET_NAME=nativeqda-assets
 ```
 These variables should be kept secret and shouldn't be included here but oh well, no one can see them. <br>
 The MONGODB_URI is only used when NODE_ENV is set to production and the JWT_SECRET is for the authentication of users and passwords (salts and hashes).
-* Try gulp serve to run the app in its development environment
+* Start MongoDB in  a seperate commandline/terminal with 
+```
+mongod
+```
+* Try gulp serve to run the app its development environment
+* Stuffing up? Go to localhost:3000
