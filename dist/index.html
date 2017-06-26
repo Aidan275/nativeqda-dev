@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html ng-app="nativeQDAApp">
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>NativeQDA</title>
+	<style>
+		/* This helps the ng-show/ng-hide animations start at the right place. */
+		/* Since Angular has this but needs to load, this gives us the class early. */
+		.ng-hide {
+			display: none!important;
+		}
+	</style>
+
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,500,700">
+
+	<!-- inject-vendor:css -->
+	<link rel="stylesheet" href="/assets/css/vendor.min.css">
+	<!-- endinject -->
+
+	<!-- inject-styles:css -->
+	<link rel="stylesheet" href="/assets/css/styles.min.css">
+	<!-- endinject -->
+
+	<base href="/">
+</head>
+<body ng-view>
+
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCEMpLtx0n2Pk4ggQonEyD0iPZbGHYhR5o&libraries=visualization"></script>
+
+	<!-- inject-vendor:js -->
+	<script src="/assets/js/vendor.min.js"></script>
+	<!-- endinject -->
+
+	<!-- inject-scripts:js -->
+	<script src="/assets/js/scripts.min.js"></script>
+	<!-- endinject -->
+
+	<!-- inject-ng-app:js -->
+	<script src="/assets/js/ng-app.min.js"></script>
+	<!-- endinject -->
+
+</body>
+</html>
