@@ -30,9 +30,9 @@ gulp.task('ng-app', function() {
 			single_quotes: true
 		}))
 		.pipe(plug.bytediff.start())
-		//.pipe(plug.uglify({
-		//	mangle: true
-		//}))
+		.pipe(plug.uglify({
+			mangle: true
+		}))
 		.pipe(plug.bytediff.stop(bytediffFormatter))
 		.pipe(gulp.dest(paths.dist + 'assets/js'));
 });
