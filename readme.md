@@ -33,17 +33,18 @@ gulp serve			/*	Serves the files for development located in /src and watches
 gulp build			/* 	Builds the optimised app for production. Copies optimised code
 						to the dist folder */
 
-gulp serve-build	/* 	This will watch the AngularJS JS files, vendor JS, vendor CSS, 
+gulp serve-build		/* 	This will watch the AngularJS JS files, vendor JS, vendor CSS, 
 						scripts, styles, images, fonts, and AngularJS HTML and run the 
 						appropriate tasks to bundle/minify/copy/etc. the modified files
 						when changes are detected and reload the app/browser.	*/
 ```
-the scripts for these commands are located in gulpfile.js.
+The scripts for these commands are located in gulpfile<span></span>.js. <br>
+**Note:** The app must be built before deploying as this creates the files in the dist directory which are used in production.
 * Install [Browsersync](https://www.browsersync.io/) globally to automatically reload the browser when file changes are detected
 ```
 npm install -g browser-sync
 ```
-* Before running the app environmental variables have to be defined. 
+* Before running the app, environmental variables need to be defined. 
 	* Create a new file in the root folder called **.env**
 	* Add the following text and save the file
 ```
@@ -55,9 +56,9 @@ AWS_ACCESS_KEY_ID=AKIAIP53REFZNB3H3GBA
 AWS_SECRET_ACCESS_KEY=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
 S3_BUCKET_NAME=nativeqda-assets
 ```
-These variables should be kept secret and shouldn't be included here but oh well, no one can see them here. <br>
+These variables should be kept secret and shouldn't be included here but oh well, no one can see them. <br>
 The MONGODB_URI is only used when NODE_ENV is set to production and the JWT_SECRET is for the authentication of users and passwords (salts and hashes).
-* Start MongoDB in  a seperate command line/terminal with
+* Start MongoDB in a separate command line/terminal with
 ```
 mongod
 ```
