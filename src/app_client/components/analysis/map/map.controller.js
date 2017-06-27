@@ -194,6 +194,7 @@
 
 		function onLocationFound(response) {
 			var radius = response.accuracy / 2;
+			// Set the zoom level depending on the radius of the accuracy circle
 			var zoom = (
 				radius < 9 ? 22 : 
 				radius > 8 && radius < 17 ? 21 : 
@@ -229,8 +230,6 @@
 			posMarker.on("popupopen", function() { 
 				posCicle.addTo(vm.map); 
 				vm.map.setView(userPos, zoom);
-				console.log(radius);
-				console.log(vm.map.getZoom())
 			});
 			posMarker.on("popupclose", function() { vm.map.removeLayer(posCicle); });
 
