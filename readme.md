@@ -4,7 +4,7 @@
 
 * Download and install Node - [Node.js Download](https://nodejs.org/en/) 
 * Download and install MongoDB - [MongoDB Download](https://www.mongodb.com/download-center?jmp=nav#community) 
-* Clone repo from Github  (The production repo will have the most recent commits)
+* Clone repo from Github  (The development repo will have the most recent commits)
 
 Development repo deploys to [nativeqda-dev](https://nativeqda-dev.herokuapp.com/) every push to master
 ```
@@ -19,7 +19,7 @@ git clone git@github.com:Aidan275/nativeqda.git
 cd nativeqda-dev
 npm install
 ```
-This is downloading all the dependencies for the app into the node_modules folder, it may take a minute (~150 MB - including dev dependencies). 
+This will download all the dependencies for the app into the node_modules folder, it may take a minute (~150 MB including dev dependencies). 
 * Install [gulp](http://gulpjs.com/) globally to build and serve the development and production environments
  ```
 npm install -g gulp
@@ -38,12 +38,12 @@ gulp serve-build	/* 	This will watch the AngularJS JS files, vendor JS, vendor C
 						appropriate tasks to bundle/minify/copy/etc. the modified files
 						when changes are detected and reload the app/browser.	*/
 ```
-* Install browser-sync globally for automatic browser reloads on file changes
+* Install [Browsersync](https://www.browsersync.io/) globally to automatically reload the browser when file changes are detected
 ```
 npm install -g browser-sync
 ```
 * Before running the app environmental variables have to be defined. 
-	* Create a new text file in the root folder called **.env**
+	* Create a new file in the root folder called **.env**
 	* Add the following text and save the file
 ```
 NODE_ENV=development
@@ -54,11 +54,11 @@ AWS_ACCESS_KEY_ID=AKIAIP53REFZNB3H3GBA
 AWS_SECRET_ACCESS_KEY=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
 S3_BUCKET_NAME=nativeqda-assets
 ```
-These variables should be kept secret and shouldn't be included here but oh well, no one can see them. <br>
+These variables should be kept secret and shouldn't be included here but oh well, no one can see them here. <br>
 The MONGODB_URI is only used when NODE_ENV is set to production and the JWT_SECRET is for the authentication of users and passwords (salts and hashes).
-* Start MongoDB in  a seperate commandline/terminal with 
+* Start MongoDB in  a seperate command line/terminal with
 ```
 mongod
 ```
-* Try gulp serve to run the app its development environment
-* Stuffing up? Go to localhost:3000
+* Try gulp serve to run the app in its development environment
+* Not working? Try going to localhost:3000 instead.
