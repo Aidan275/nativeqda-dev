@@ -170,7 +170,7 @@ gulp.task('inject', ['ng-app', 'vendor-js', 'vendor-css', 'scripts-js', 'styles-
 
 
 /**
- * Build the optimised app
+ * Build the optimised app for production
  * @return {Stream}
  */
 gulp.task('build', ['inject', 'html', 'images', 'fonts'], function() {
@@ -252,7 +252,7 @@ gulp.task('nodemon', function (cb) {
  * This will watch the AngularJS JS files, vendor JS, vendor CSS, 
  * scripts, styles, images, fonts, and AngularJS HTML and run the 
  * appropriate tasks to bundle/minify/copy/etc. the modified files
- * and reload the browser.
+ * when changes are detected and reload the app/browser.
  * 
  * This is also using nodemon so any edits to the AngularJS JS files 
  * will be detected and node and the browser will both reload.
