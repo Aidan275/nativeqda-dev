@@ -25,7 +25,7 @@ This will download all the dependencies for the app into the node_modules folder
 npm install -g gulp
 ```
 Gulp is used to automate deployment to production and provides additional development features. <br>
-At the moment, the following commands exist:
+Some of the commands that exist at the moment include:
  ```javascript
 gulp serve			/*	Serves the files for development located in /src and watches
 						these files and reloads the app/browser when changes are made */
@@ -38,6 +38,7 @@ gulp serve-build	/* 	This will watch the AngularJS JS files, vendor JS, vendor C
 						appropriate tasks to bundle/minify/copy/etc. the modified files
 						when changes are detected and reload the app/browser.	*/
 ```
+the scripts for these commands are located in gulpfile.js.
 * Install [Browsersync](https://www.browsersync.io/) globally to automatically reload the browser when file changes are detected
 ```
 npm install -g browser-sync
