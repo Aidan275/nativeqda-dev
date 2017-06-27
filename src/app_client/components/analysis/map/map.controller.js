@@ -195,7 +195,7 @@
 		function onLocationFound(response) {
 			var radius = response.accuracy / 2;
 			var userPos = response.latlng;
-			var posMarker = L.marker(userPos, { icon: posIcon, title: 'Your Position' }).addTo(vm.map).bindPopup("You are within " + $filter('formatDistance')(radius) + " meters from this point");
+			var posMarker = L.marker(userPos, { icon: posIcon, title: 'Your Position' }).addTo(vm.map).bindPopup("You are within " + $filter('formatDistance')(radius) + " from this point");
 			var posCicle = L.circle(userPos, {
 				radius: radius,
 				color: '#cb2529'
@@ -281,7 +281,7 @@
 
 		function popupFileDetails(key) {
 			var modalInstance = $uibModal.open({
-				templateUrl: '/pages/files/fileDetails/fileDetails.view.html',
+				templateUrl: '/components/files/fileDetails/fileDetails.view.html',
 				controller: 'fileDetails as vm',
 				size: 'lg',
 				resolve: {
@@ -494,7 +494,7 @@
 
 		function popupFileDetails(key) {
 			var modalInstance = $uibModal.open({
-				templateUrl: '/pages/files/fileDetails/fileDetails.view.html',
+				templateUrl: '/components/files/fileDetails/fileDetails.view.html',
 				controller: 'fileDetails as vm',
 				size: 'lg',
 				resolve: {

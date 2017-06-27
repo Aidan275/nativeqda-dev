@@ -32,7 +32,7 @@
 				desc: vm.formData.description
 			})
 			.then(function (response) {
-				logger.success('New Dataset ' + vm.formData.datasetName + ' was created successfully', '', 'Success')
+				logger.success('Dataset "' + vm.formData.datasetName + '" was created successfully', '', 'Success')
 				vm.modal.close(response.data);	// Close modal if dataset was created successfully in DB
 			});									// and return the response from the DB (the new dataset)
 		};

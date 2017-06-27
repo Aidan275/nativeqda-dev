@@ -192,7 +192,7 @@
 
 		function popupFileDetails(key) {
 			var modalInstance = $uibModal.open({
-				templateUrl: '/pages/files/fileDetails/fileDetails.view.html',
+				templateUrl: '/components/files/fileDetails/fileDetails.view.html',
 				controller: 'fileDetails as vm',
 				size: 'lg',
 				resolve: {

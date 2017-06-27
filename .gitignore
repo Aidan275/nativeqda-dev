@@ -142,3 +142,7 @@ jspm_packages
 !.vscode/extensions.json
 
 # End of https://www.gitignore.io/api/macos,windows,linux,node,visualstudiocode
+
+# Ignore the dist directory
+dist
+/dist/

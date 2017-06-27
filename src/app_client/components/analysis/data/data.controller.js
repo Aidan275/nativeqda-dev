@@ -56,7 +56,7 @@
 		function deleteDataset(name, datasetId) {
 			datasetService.datasetDeleteOne(datasetId)
 			.then(function(response) {
-				logger.success('Dataset ' + name + ' was successfully deleted' ,'', 'Success');
+				logger.success('Dataset "' + name + '" was successfully deleted' ,'', 'Success');
 				removeFromList(datasetId);	// if deleting the dataset was successful, 
 			});								// the deleted dataset is removed from the local array
 		}
@@ -76,7 +76,7 @@
 
 		function popupViewDataset(datasetId) {
 			var modalInstance = $uibModal.open({
-				templateUrl: '/pages/analysis/data/viewDataset/viewDataset.view.html',
+				templateUrl: '/components/analysis/data/viewDataset/viewDataset.view.html',
 				controller: 'viewDatasetCtrl as vm',
 				size: 'lg',
 				resolve: {
@@ -93,7 +93,7 @@
 
 		function popupEditDataset(name, datasetId) {
 			var modalInstance = $uibModal.open({
-				templateUrl: '/pages/analysis/data/editDataset/editDataset.view.html',
+				templateUrl: '/components/analysis/data/editDataset/editDataset.view.html',
 				controller: 'editDatasetCtrl as vm',
 				size: 'xl'
 			});
@@ -105,7 +105,7 @@
 
 		function popupNewDataset() {
 			var modalInstance = $uibModal.open({
-				templateUrl: '/pages/analysis/data/newDataset/newDataset.view.html',
+				templateUrl: '/components/analysis/data/newDataset/newDataset.view.html',
 				controller: 'newDatasetCtrl as vm',
 				size: 'xl'
 			});
