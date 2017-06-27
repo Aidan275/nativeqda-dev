@@ -22,7 +22,7 @@
 		// To move - may move the majority of the mapping functions into it's own directive
 		var LeafIcon = L.Icon.extend({
 			options: {
-				shadowUrl: 'assets/img/markers/marker-shadow.png',
+				shadowUrl: 'assets/img/map/markers/marker-shadow.png',
 				iconSize:     [25, 41],
 				shadowSize:   [41, 41],
 				iconAnchor:   [12.5, 41],
@@ -31,8 +31,8 @@
 			}
 		});
 
-		var defaultIcon = new LeafIcon({iconUrl: 'assets/img/markers/marker-icon-2x.png'});
-		var posIcon = new LeafIcon({iconUrl: 'assets/img/markers/marker-icon-pos.png'});
+		var defaultIcon = new LeafIcon({iconUrl: 'assets/img/map/markers/marker-icon-2x.png'});
+		var posIcon = new LeafIcon({iconUrl: 'assets/img/map/markers/marker-icon-pos.png'});
 
 		activate();
 
@@ -194,6 +194,30 @@
 
 		function onLocationFound(response) {
 			var radius = response.accuracy / 2;
+			var zoom = (
+				radius < 9 ? 22 : 
+				radius > 8 && radius < 17 ? 21 : 
+				radius > 16 && radius < 32 ? 20 : 
+				radius > 31 && radius < 63 ? 19 : 
+				radius > 62 && radius < 126 ? 18 : 
+				radius > 125 && radius < 251 ? 17 : 
+				radius > 250 && radius < 551 ? 16 : 
+				radius > 550 && radius < 1101 ? 15 :
+				radius > 1100 && radius < 2201 ? 14 : 
+				radius > 2200 && radius < 4401 ? 13 : 
+				radius > 4400 && radius < 8801 ? 12 : 
+				radius > 8800 && radius < 17601 ? 11 : 
+				radius > 17600 && radius < 35201 ? 10 :
+				radius > 35200 && radius < 70401 ? 9 : 
+				radius > 70400 && radius < 140801 ? 8 : 
+				radius > 140800 && radius < 281601 ? 7 : 
+				radius > 281600 && radius < 563201 ? 6 : 
+				radius > 563200 && radius < 1126401 ? 5 :  		
+				radius > 1126400 && radius < 2252801 ? 4 :  		
+				radius > 2252800 && radius < 4505601 ? 3 :  		
+				radius > 4505600 && radius < 9011201 ? 2 :  		
+				radius > 9011200 && radius < 18022401 ? 1 : 1
+			);
 			var userPos = response.latlng;
 			var posMarker = L.marker(userPos, { icon: posIcon, title: 'Your Position' }).addTo(vm.map).bindPopup("You are within " + $filter('formatDistance')(radius) + " from this point");
 			var posCicle = L.circle(userPos, {
@@ -204,7 +228,9 @@
 			// Adds/removes the circle from the marker when focused/unfocused
 			posMarker.on("popupopen", function() { 
 				posCicle.addTo(vm.map); 
-				vm.map.setView(userPos, 18);
+				vm.map.setView(userPos, zoom);
+				console.log(radius);
+				console.log(vm.map.getZoom())
 			});
 			posMarker.on("popupclose", function() { vm.map.removeLayer(posCicle); });
 
