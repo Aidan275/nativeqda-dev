@@ -194,7 +194,7 @@
 
 		function onLocationFound(response) {
 			var radius = response.accuracy / 2;
-			// Set the zoom level depending on the radius of the accuracy circle
+			// Set the zoom level depending on the radius of the accuracy circle. Maybe a bit much
 			var zoom = (
 				radius < 9 ? 22 : 
 				radius > 8 && radius < 17 ? 21 : 

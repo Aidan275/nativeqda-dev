@@ -77,6 +77,12 @@
 			controllerAs: 'vm',
 			loginRequired: true
 		})
+		.when('/test-analysis', {
+			templateUrl: '/components/testAnalysis/testAnalysis.view.html',
+			controller: 'testAnalysisCtrl',
+			controllerAs: 'vm',
+			loginRequired: true
+		})
 		.otherwise({redirectTo: '/'});
 
 	    // use the HTML5 History API

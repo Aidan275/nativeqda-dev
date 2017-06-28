@@ -10,6 +10,7 @@ var ctrlAuth = require('../controllers/authentication');
 var ctrlDataset = require('../controllers/datasets');
 var ctrlEvent = require('../controllers/events');
 var ctrlFile = require('../controllers/files');
+var ctrlAnalysis = require('../controllers/analysis');
 
 // authentication
 router.post('/register', ctrlAuth.register);
@@ -34,5 +35,7 @@ router.delete('/files/deleteFileDB', auth, ctrlFile.deleteFileDB);
 router.post('/files/syncDBwithS3', auth, ctrlFile.syncDBwithS3);
 router.post('/files/objectAclS3', auth, ctrlFile.objectAclS3);
 router.post('/files/objectAclDB', auth, ctrlFile.objectAclDB);
+
+router.post('/analysis/concept', auth, ctrlAnalysis.analysisConcept);
 
 module.exports = router;

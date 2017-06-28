@@ -27,8 +27,9 @@ npm install -g gulp
 Gulp is used to automate deployment to production and provides additional development features. <br>
 Some of the commands that exist at the moment include:
  ```javascript
-gulp serve			/*	Serves the files for development located in /src and watches
-						these files and reloads the app/browser when changes are made */
+gulp serve			/*	Inject the paths into index.html then serves the files for development 
+						located in /src and watches	these files and reloads the app/browser 
+						when changes are made */
             
 gulp build			/* 	Builds the optimised app for production. Copies optimised code
 						to the dist folder */

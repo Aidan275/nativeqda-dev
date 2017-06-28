@@ -22,7 +22,7 @@ gulp.task('help', plug.taskListing);
 gulp.task('ng-app', function() {
 	log('Bundling, annotating, minifying, and copying the app JS');
 
-	var source = [].concat(paths.appjs, paths.dist + 'templates.js');
+	var source = [].concat(paths.appJS, paths.dist + 'templates.js');
 	return gulp.src(source)
 		.pipe(plug.concat('ng-app.min.js'))
 		.pipe(plug.ngAnnotate({
@@ -44,7 +44,7 @@ gulp.task('ng-app', function() {
 gulp.task('vendor-js', function() {
 	log('Bundling, minifying, and copying the vendor JS');
 
-	return gulp.src(paths.vendorjs)
+	return gulp.src(paths.minVendorJS)
 		.pipe(plug.concat('vendor.min.js'))
 		.pipe(plug.bytediff.start())
 		.pipe(plug.uglify())
@@ -59,7 +59,7 @@ gulp.task('vendor-js', function() {
 gulp.task('vendor-css', function() {
 	log('Bundling, minifying, and copying the vendor CSS');
 
-	return gulp.src(paths.vendorcss)
+	return gulp.src(paths.minVendorCSS)
 		.pipe(plug.concat('vendor.min.css'))
 		.pipe(plug.bytediff.start())
 		.pipe(plug.minifyCss({}))
@@ -74,7 +74,7 @@ gulp.task('vendor-css', function() {
 gulp.task('scripts-js', function() {
 	log('Bundling, minifying, and copying the JS scripts');
 
-	return gulp.src(paths.js)
+	return gulp.src(paths.JS)
 		.pipe(plug.concat('scripts.min.js'))
 		.pipe(plug.bytediff.start())
 		.pipe(plug.uglify())
@@ -89,7 +89,7 @@ gulp.task('scripts-js', function() {
 gulp.task('styles-css', function() {
 	log('Bundling, minifying, and copying the CSS styles');
 
-	return gulp.src(paths.css)
+	return gulp.src(paths.CSS)
 		.pipe(plug.concat('styles.min.css')) // Before bytediff or after
 		.pipe(plug.autoprefixer('last 2 version', '> 5%'))
 		.pipe(plug.bytediff.start())
@@ -105,7 +105,7 @@ gulp.task('styles-css', function() {
 gulp.task('html', function() {
 log('Minifying, and copying the app HTML');
 
-	return gulp.src(paths.apphtml)
+	return gulp.src(paths.appHTML)
 		//.pipe(plug.bytediff.start())
 		.pipe(plug.minifyHtml({
 			empty: true
@@ -140,11 +140,11 @@ gulp.task('fonts', function() {
 });
 
 /**
- * Inject all the files into the new index.html
+ * Inject all the optimised files into the index.html for production
  * @return {Stream}
  */
-gulp.task('inject', ['ng-app', 'vendor-js', 'vendor-css', 'scripts-js', 'styles-css'], function() {
-	log('Injecting paths into index.html');
+gulp.task('inject-min', ['ng-app', 'vendor-js', 'vendor-css', 'scripts-js', 'styles-css'], function() {
+	log('Injecting paths into index.html for production');
 	var dist = paths.dist;
 
 	gulp.src(paths.client + 'index.html')
@@ -168,12 +168,11 @@ gulp.task('inject', ['ng-app', 'vendor-js', 'vendor-css', 'scripts-js', 'styles-
 		}
 });
 
-
 /**
  * Build the optimised app for production
  * @return {Stream}
  */
-gulp.task('build', ['inject', 'html', 'images', 'fonts'], function() {
+gulp.task('build', ['inject-min', 'html', 'images', 'fonts'], function() {
 	log('Building the optimized app');
 
 	return gulp.src('').pipe(plug.notify({
@@ -204,12 +203,40 @@ gulp.task('clean', function(cb) {
  * This is also using nodemon so any edits to the AngularJS JS files 
  * will be detected and node and the browser will both reload.
  */
-gulp.task('serve', ['browser-sync'], function () {
-	gulp.watch(paths.apphtml, reload);		// Watches the apps HTML paths and reloads browser if changed
-	gulp.watch(paths.css, reload);			// Watches the CSS paths and reloads browser if changed
-	gulp.watch(paths.js, reload);			// Watches the JS paths and reloads browser if changed
+gulp.task('serve', ['browser-sync', 'inject'], function () {
+	gulp.watch(paths.appHTML, reload);		// Watches the apps HTML paths and reloads browser if changed
+	gulp.watch(paths.CSS, reload);			// Watches the CSS paths and reloads browser if changed
+	gulp.watch(paths.JS, reload);			// Watches the JS paths and reloads browser if changed
 	gulp.watch(paths.images, reload);		// Watches the images paths and reloads browser if changed
 	gulp.watch(paths.fonts, reload);		// Watches the fonts paths and reloads browser if changed
+});
+
+/**
+ * Inject all the file paths into index.html for development
+ * @return {Stream}
+ */
+gulp.task('inject', function() {
+	log('Injecting paths into index.html for development');
+
+	// Delete the existing index.html to create the new one with injected paths
+	del(paths.client + 'index.html');
+
+	gulp.src(paths.client + 'index-template.html')
+		.pipe(inject(paths.devVendorCSS, 'inject-vendor'))
+		.pipe(inject(paths.CSS, 'inject-styles'))
+		.pipe(inject(paths.devVendorJS, 'inject-vendor'))
+		.pipe(inject(paths.JS, 'inject-scripts'))
+		.pipe(inject(paths.appJS, 'inject-ng-app'))
+		.pipe(plug.concat('index.html'))
+		.pipe(gulp.dest(paths.client));
+
+		function inject(path, name) {
+			var options = {};
+			if (name) {
+				options.name = name;
+			}
+			return plug.inject(gulp.src(path, {read: false}), options);
+		}
 });
 
 gulp.task('browser-sync', ['nodemon'], function() {
@@ -260,14 +287,14 @@ gulp.task('nodemon', function (cb) {
 gulp.task('serve-build', ['browser-sync-build'], function () {
 	log('Watching all files');
 
-	gulp.watch(paths.appjs, ['ng-app']).on('change', logWatch);
-	gulp.watch(paths.vendorjs, ['vendor-js']).on('change', logWatch);
-	gulp.watch(paths.vendorcss, ['vendor-css']).on('change', logWatch);
-   	gulp.watch(paths.js, ['scripts-js']).on('change', logWatch);
-	gulp.watch(paths.css, ['styles-css']).on('change', logWatch);
+	gulp.watch(paths.appJS, ['ng-app']).on('change', logWatch);
+	gulp.watch(paths.minVendorJS, ['vendor-js']).on('change', logWatch);
+	gulp.watch(paths.minVendorCSS, ['vendor-css']).on('change', logWatch);
+   	gulp.watch(paths.JS, ['scripts-js']).on('change', logWatch);
+	gulp.watch(paths.CSS, ['styles-css']).on('change', logWatch);
 	gulp.watch(paths.images, ['images']).on('change', logWatch);
 	gulp.watch(paths.fonts, ['fonts']).on('change', logWatch);
-	gulp.watch(paths.apphtml, ['html']).on('change', reload);
+	gulp.watch(paths.appHTML, ['html']).on('change', reload);
 
 	function logWatch(event) {
 		log('*** File ' + event.path + ' was ' + event.type + ', running tasks...');

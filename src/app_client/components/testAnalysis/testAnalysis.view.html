@@ -1,0 +1,39 @@
+<navigation></navigation>
+
+<div class="container">
+
+	<page-header content="vm.pageHeader"></page-header>
+
+	<div class="row">
+		<div class="col-md-12">
+			<p>Enter text below and select a language for concept analysis.</p>
+		</div>
+	</div>
+
+	<form id="test" name="test" role="form" ng-submit="vm.onSubmit()" class="form-horizontal">
+		
+		<div class="form-group">
+			<label for="analysis" class="col-sm-2 control-label">Text for Analysis</label>
+			<div class="col-sm-10">
+				<textarea id="description" name="analysis-text" required="required" ng-model="vm.analysisText" rows="10" class="form-control"></textarea>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label for="analysis" class="col-sm-2 control-label">Text Language</label>
+			<select ng-model="vm.selectedLanguage" ng-options="x.language for x in vm.language"></select>
+		</div>
+
+		<button type="submit" class="btn btn-primary">Analyse</button>
+	</form>
+
+	<br />
+
+	<p>JSON Response:</p>
+	<div>
+		<pre>{{vm.responseData | json}}</pre>
+	</div>	
+
+	<footer-generic></footer-generic>
+
+</div>
