@@ -6,8 +6,8 @@
 	.module('nativeQDAApp')
 	.controller('homeCtrl', homeCtrl);
 	
-	homeCtrl.$inject = ['mapService', 'filesService', '$scope', '$filter', '$compile', '$window', '$uibModal', 'logger'];
-	function homeCtrl (mapService, filesService, $scope, $filter, $compile, $window, $uibModal, logger) {
+	homeCtrl.$inject = ['filesService', '$scope', '$filter', '$compile', '$window', '$uibModal', 'logger'];
+	function homeCtrl (filesService, $scope, $filter, $compile, $window, $uibModal, logger) {
 		var vm = this;
 
 		// Bindable Functions
@@ -15,131 +15,259 @@
 		vm.viewFile = viewFile;
 		vm.popupFileDetails = popupFileDetails;
 		vm.confirmDelete = confirmDelete;
-		
-		var lat = -34.4054039;	// Default position is UOW
-		var lng = 150.87842999999998;
-		var fileList = null;
-		var map = null;
-		var kangarooMarkers = [];
-		var kiwiMarkers = [];
-		var kaguMarkers = [];
-		var kangarooMarkerCluster = null;
-		var kiwiMarkerCluster = null;
-		var kaguMarkerCluster = null;
+
+		// Bindable Data
+		vm.map = null;
+		vm.markers = [];
+		vm.currentMarker = null;
 		vm.pageHeader = {
 			title: 'Dashboard',
 			strapline: 'summary of recent activity'
 		};
+
+		// To move - may move the majority of the mapping functions into it's own directive
+		var LeafIcon = L.Icon.extend({
+			options: {
+				shadowUrl: 'assets/img/map/markers/marker-shadow.png',
+				iconSize:     [25, 41],
+				shadowSize:   [41, 41],
+				iconAnchor:   [12.5, 41],
+				shadowAnchor: [12.5, 41],
+				popupAnchor:  [0, -50]
+			}
+		});
+
+		var defaultIcon = new LeafIcon({iconUrl: 'assets/img/map/markers/marker-icon-2x.png'});
+		var posIcon = new LeafIcon({iconUrl: 'assets/img/map/markers/marker-icon-pos.png'});
 
 		activate();
 
     	///////////////////////////
 
     	function activate() {
-    		initMap(lat, lng);
+    		initMap();
     	}
 
-    	function initMap(lat, lng) {
-    		var position = new google.maps.LatLng(lat, lng);
-    		var mapCanvas = document.getElementById('map-homepage');
-    		var mapOptions = {
-    			center: position,
-    			zoom: 4,
-    			panControl: false,
-    			mapTypeId: google.maps.MapTypeId.ROADMAP,
-    			mapTypeControl: true,
-    			mapTypeControlOptions: {
-    				style: google.maps.MapTypeControlStyle.DEFAULT,
-    				position: google.maps.ControlPosition.TOP_RIGHT
-    			}
-    		}
+    	function initMap() {
+			var mapOptions = {
+				center: [-34.4054039, 150.87842999999998],	// Default position is UOW
+				zoom: 4
+			};
 
-    		map = new google.maps.Map(mapCanvas, mapOptions);
+			vm.map = L.map('map-homepage', mapOptions);
 
-    		mapService.getPosition(getGeoData);
-    		getFileList();
-    	}
+			var maxZoom = 22;
 
-		// If getPosition returns successfully load the map at the users position
-		function getGeoData(position) {
-			lat = position.coords.latitude;
-			lng = position.coords.longitude;
-			updateUserPos();
-		}
+			var mapboxLight = L.tileLayer('https://api.mapbox.com/v4/{map}/{z}/{x}/{y}.png?access_token={accessToken}', {
+				map: 'mapbox.light',
+				accessToken: 'pk.eyJ1IjoiYWlkYW4yNzUiLCJhIjoiY2o0MWVrMmFxMGVuNjJxbnlocmV6ZDJ0cCJ9.h77mANND4PPZz9U1z4OC3w',
+				maxZoom: maxZoom
+			})
 
-		function updateUserPos() {
-			var userPos = new google.maps.LatLng(lat, lng);
-			var marker = new google.maps.Marker({
-				position: userPos,
-				map: map,
-				title: 'Your Position'
+			var mapboxDark = L.tileLayer('https://api.mapbox.com/v4/{map}/{z}/{x}/{y}.png?access_token={accessToken}', {
+				map: 'mapbox.dark',
+				accessToken: 'pk.eyJ1IjoiYWlkYW4yNzUiLCJhIjoiY2o0MWVrMmFxMGVuNjJxbnlocmV6ZDJ0cCJ9.h77mANND4PPZz9U1z4OC3w',
+				maxZoom: maxZoom
+			})
+
+			var mapboxSatellite = L.tileLayer('https://api.mapbox.com/v4/{map}/{z}/{x}/{y}.png?access_token={accessToken}', {
+				map: 'mapbox.satellite',
+				accessToken: 'pk.eyJ1IjoiYWlkYW4yNzUiLCJhIjoiY2o0MWVrMmFxMGVuNjJxbnlocmV6ZDJ0cCJ9.h77mANND4PPZz9U1z4OC3w',
+				maxZoom: maxZoom
+			})
+
+			var mapboxStreetsSatellite = L.tileLayer('https://api.mapbox.com/v4/{map}/{z}/{x}/{y}.png?access_token={accessToken}', {
+				map: 'mapbox.streets-satellite',
+				accessToken: 'pk.eyJ1IjoiYWlkYW4yNzUiLCJhIjoiY2o0MWVrMmFxMGVuNjJxbnlocmV6ZDJ0cCJ9.h77mANND4PPZz9U1z4OC3w',
+				maxZoom: maxZoom
+			})
+
+			var mapboxWheatpaste = L.tileLayer('https://api.mapbox.com/v4/{map}/{z}/{x}/{y}.png?access_token={accessToken}', {
+				map: 'mapbox.wheatpaste',
+				accessToken: 'pk.eyJ1IjoiYWlkYW4yNzUiLCJhIjoiY2o0MWVrMmFxMGVuNjJxbnlocmV6ZDJ0cCJ9.h77mANND4PPZz9U1z4OC3w',
+				maxZoom: maxZoom
+			})
+
+			var mapboxStreetsBasic = L.tileLayer('https://api.mapbox.com/v4/{map}/{z}/{x}/{y}.png?access_token={accessToken}', {
+				map: 'mapbox.streets-basic',
+				accessToken: 'pk.eyJ1IjoiYWlkYW4yNzUiLCJhIjoiY2o0MWVrMmFxMGVuNjJxbnlocmV6ZDJ0cCJ9.h77mANND4PPZz9U1z4OC3w',
+				maxZoom: maxZoom
+			}).addTo(vm.map);
+
+			var mapboxComic = L.tileLayer('https://api.mapbox.com/v4/{map}/{z}/{x}/{y}.png?access_token={accessToken}', {
+				map: 'mapbox.comic',
+				accessToken: 'pk.eyJ1IjoiYWlkYW4yNzUiLCJhIjoiY2o0MWVrMmFxMGVuNjJxbnlocmV6ZDJ0cCJ9.h77mANND4PPZz9U1z4OC3w',
+				maxZoom: maxZoom
+			})
+
+			var mapboxOutdoors = L.tileLayer('https://api.mapbox.com/v4/{map}/{z}/{x}/{y}.png?access_token={accessToken}', {
+				map: 'mapbox.outdoors',
+				accessToken: 'pk.eyJ1IjoiYWlkYW4yNzUiLCJhIjoiY2o0MWVrMmFxMGVuNjJxbnlocmV6ZDJ0cCJ9.h77mANND4PPZz9U1z4OC3w',
+				maxZoom: maxZoom
+			})
+
+			var mapboxRunBikeHike = L.tileLayer('https://api.mapbox.com/v4/{map}/{z}/{x}/{y}.png?access_token={accessToken}', {
+				map: 'mapbox.run-bike-hike',
+				accessToken: 'pk.eyJ1IjoiYWlkYW4yNzUiLCJhIjoiY2o0MWVrMmFxMGVuNjJxbnlocmV6ZDJ0cCJ9.h77mANND4PPZz9U1z4OC3w',
+				maxZoom: maxZoom
+			})
+
+			var mapboxPencil = L.tileLayer('https://api.mapbox.com/v4/{map}/{z}/{x}/{y}.png?access_token={accessToken}', {
+				map: 'mapbox.pencil',
+				accessToken: 'pk.eyJ1IjoiYWlkYW4yNzUiLCJhIjoiY2o0MWVrMmFxMGVuNjJxbnlocmV6ZDJ0cCJ9.h77mANND4PPZz9U1z4OC3w',
+				maxZoom: maxZoom
+			})
+
+			var mapboxPirates = L.tileLayer('https://api.mapbox.com/v4/{map}/{z}/{x}/{y}.png?access_token={accessToken}', {
+				map: 'mapbox.pirates',
+				accessToken: 'pk.eyJ1IjoiYWlkYW4yNzUiLCJhIjoiY2o0MWVrMmFxMGVuNjJxbnlocmV6ZDJ0cCJ9.h77mANND4PPZz9U1z4OC3w',
+				maxZoom: maxZoom
+			})
+
+			var mapboxEmerald = L.tileLayer('https://api.mapbox.com/v4/{map}/{z}/{x}/{y}.png?access_token={accessToken}', {
+				map: 'mapbox.emerald',
+				accessToken: 'pk.eyJ1IjoiYWlkYW4yNzUiLCJhIjoiY2o0MWVrMmFxMGVuNjJxbnlocmV6ZDJ0cCJ9.h77mANND4PPZz9U1z4OC3w',
+				maxZoom: maxZoom
+			})
+
+			var mapboxHighContrast = L.tileLayer('https://api.mapbox.com/v4/{map}/{z}/{x}/{y}.png?access_token={accessToken}', {
+				map: 'mapbox.high-contrast',
+				accessToken: 'pk.eyJ1IjoiYWlkYW4yNzUiLCJhIjoiY2o0MWVrMmFxMGVuNjJxbnlocmV6ZDJ0cCJ9.h77mANND4PPZz9U1z4OC3w',
+				maxZoom: maxZoom
+			})
+
+			var roadMutant = L.gridLayer.googleMutant({
+				maxZoom: maxZoom,
+				type:'roadmap'
+			})
+
+			var satMutant = L.gridLayer.googleMutant({
+				maxZoom: maxZoom,
+				type:'satellite'
 			});
-			map.setZoom(13);
-			map.panTo(userPos);
+
+			var terrainMutant = L.gridLayer.googleMutant({
+				maxZoom: maxZoom,
+				type:'terrain'
+			});
+
+			var hybridMutant = L.gridLayer.googleMutant({
+				maxZoom: maxZoom,
+				type:'hybrid'
+			});
+
+			var trafficMutant = L.gridLayer.googleMutant({
+				maxZoom: maxZoom,
+				type:'roadmap'
+			});
+
+			trafficMutant.addGoogleLayer('TrafficLayer');
+
+			// Might be worth putting this in the user settings, or at least a setting for the default map
+			L.control.layers({
+				'Mapbox Light': mapboxLight,
+				'Mapbox Dark': mapboxDark,
+				'Mapbox Satellite': mapboxSatellite,
+				'Mapbox Streets Satellite': mapboxStreetsSatellite,
+				'Mapbox Wheatpaste': mapboxWheatpaste,
+				'Mapbox Streets Basic': mapboxStreetsBasic,
+				'Mapbox Outdoors': mapboxOutdoors,
+				'Mapbox Run Bike Hike': mapboxRunBikeHike,
+				'Mapbox Pencil': mapboxPencil,
+				'Mapbox Pirates': mapboxPirates,
+				'Mapbox Emerald': mapboxEmerald,
+				'Mapbox High Contrast': mapboxHighContrast,
+				'Google Roadmap': roadMutant,
+				'Google Aerial': satMutant,
+				'Google Terrain': terrainMutant,
+				'Google Hybrid': hybridMutant,
+				'Google Traffic': trafficMutant
+			}, {}, {
+				collapsed: true
+			}).addTo(vm.map);
+
+			geoLocateUser();
+			getFileList();
 		}
 
-    	// Gets all the files from the MongoDB database to be displayed on the map
-    	function getFileList() {
-    		filesService.getFileListDB()
-    		.then(function(response) {
-    			fileList = response.data;
-    			clearMarkers();
-    			addMapMarkers();
-    		});
-    	}
+		// If getPosition returns successfully update the user's posistion on the map
+		function geoLocateUser(position) {
+			vm.map.on('locationfound', onLocationFound);
+			vm.map.on('locationerror', onLocationError);
+			vm.map.locate({setView: true, maxZoom: 15});
+		}
 
-    	function clearMarkers() {
-    		for (var i = 0; i < kangarooMarkers.length; i++) {
-    			kangarooMarkers[i].setMap(null);
-    		}
-    		for (var i = 0; i < kiwiMarkers.length; i++) {
-    			kiwiMarkers[i].setMap(null);
-    		}
-    		for (var i = 0; i < kaguMarkers.length; i++) {
-    			kaguMarkers[i].setMap(null);
-    		}
-    		kangarooMarkers = [];
-    		kiwiMarkers = [];
-    		kaguMarkers = [];
-    		if(kangarooMarkerCluster)
-    			kangarooMarkerCluster.clearMarkers();
-    		if(kiwiMarkerCluster)
-    			kiwiMarkerCluster.clearMarkers();
-    		if(kaguMarkerCluster)
-    			kaguMarkerCluster.clearMarkers();
-    	}
+		function onLocationFound(response) {
+			var radius = response.accuracy / 2;
+			// Set the zoom level depending on the radius of the accuracy circle. Maybe a bit much
+			var zoom = (
+				radius < 9 ? 22 : 
+				radius > 8 && radius < 17 ? 21 : 
+				radius > 16 && radius < 32 ? 20 : 
+				radius > 31 && radius < 63 ? 19 : 
+				radius > 62 && radius < 126 ? 18 : 
+				radius > 125 && radius < 251 ? 17 : 
+				radius > 250 && radius < 551 ? 16 : 
+				radius > 550 && radius < 1101 ? 15 :
+				radius > 1100 && radius < 2201 ? 14 : 
+				radius > 2200 && radius < 4401 ? 13 : 
+				radius > 4400 && radius < 8801 ? 12 : 
+				radius > 8800 && radius < 17601 ? 11 : 
+				radius > 17600 && radius < 35201 ? 10 :
+				radius > 35200 && radius < 70401 ? 9 : 
+				radius > 70400 && radius < 140801 ? 8 : 
+				radius > 140800 && radius < 281601 ? 7 : 
+				radius > 281600 && radius < 563201 ? 6 : 
+				radius > 563200 && radius < 1126401 ? 5 :  		
+				radius > 1126400 && radius < 2252801 ? 4 :  		
+				radius > 2252800 && radius < 4505601 ? 3 :  		
+				radius > 4505600 && radius < 9011201 ? 2 :  		
+				radius > 9011200 && radius < 18022401 ? 1 : 1
+			);
+			var userPos = response.latlng;
+			var posMarker = L.marker(userPos, { icon: posIcon, title: 'Your Position' }).addTo(vm.map).bindPopup("You are within " + $filter('formatDistance')(radius) + " from this point");
+			var posCicle = L.circle(userPos, {
+				radius: radius,
+				color: '#cb2529'
+			});
 
-    	// Adds markers for the files retrieved from the MongoDB database
-    	function addMapMarkers() {
-    		var icons = {
-    			australia: {
-    				icon: '/images/map/icons/kangaroo-markers/kangaroo-marker.png'
-    			},
-    			newZealand: {
-    				icon: '/images/map/icons/kiwi-markers/kiwi-marker.png'
-    			},
-    			newCaledonia: {
-    				icon: '/images/map/icons/kagu-markers/kagu-marker.png'
-    			}
-    		};
+			// Adds/removes the circle from the marker when focused/unfocused
+			posMarker.on("popupopen", function() { 
+				posCicle.addTo(vm.map); 
+				vm.map.setView(userPos, zoom);
+			});
+			posMarker.on("popupclose", function() { vm.map.removeLayer(posCicle); });
 
-    		var infowindow = new google.maps.InfoWindow();
+			logger.success('User\'s location found', response, 'Success');
+		}
+
+		function onLocationError(error) {
+			logger.error(error.message, error, 'Error');
+		}
+
+		// Gets all the files from the MongoDB database to be displayed on the map
+		function getFileList() {
+			filesService.getFileListDB()
+			.then(function(response) {
+				addMapMarkers(response.data);
+			});
+		}
+
+		// Adds markers for the files retrieved from the MongoDB database
+		function addMapMarkers(fileList) {
+			vm.markers = L.markerClusterGroup({showCoverageOnHover: false});
 
 			// For each file returned from the DB, a marker with an info 
 			// window is created. Each marker is then added to its 
 			// corresponding marker array to be displayed on the map
 			fileList.forEach(function(file) {
-				var marker = new google.maps.Marker({
-					position: new google.maps.LatLng(file.coords.lat, file.coords.lng),
-					icon: icons['australia'].icon,
-					title: file.name
-				});
+				var marker = L.marker([file.coords.lat, file.coords.lng], { icon: defaultIcon, title: file.name });
 
 				var contentString = '<div class="info-window">' +
 				'<h3>' + file.name + '</h3>' +
 				'<p>Created By: ' + file.createdBy + '</p>' +
-				'<p>Size: ' + $filter('formatFileSize')(file.size, 2) + '</p>' +	// using formatFileSize filter to format the file size
-				'<p>Last Modified: ' + $filter('date')(file.lastModified, "dd MMMM, yyyy h:mm a") + '</p>';
+				'<p>Size: ' + $filter('formatFileSize')(file.size, 2) + '</p>' +	// uses formatFileSize filter to format the file size
+				'<p>Last Modified: ' + $filter('date')(file.lastModified, "dd MMMM, yyyy h:mm a") + '</p>';	// uses date filter to format the date
 
 				// If the file has tags add an unsorted list, listing each tag
 				// otherwise skip and exclude the 'tags' label
@@ -158,27 +286,18 @@
 				'<a ng-click="vm.confirmDelete(\'' + file.key + '\', \'' + file.name + '\')" class="btn btn-danger" role="button">Delete</a>' +
 				'</div>';
 
-
 				// compiles the HTML so ng-click works
 				var compiledContentString = $compile(contentString)($scope)
 
-				marker.addListener('click', function () {
-					infowindow.setContent(compiledContentString[0]);
-					infowindow.open(map, marker);
-				});
+				marker.bindPopup(compiledContentString[0]);
 
-				if(marker.icon == '/images/map/icons/kangaroo-markers/kangaroo-marker.png'){
-					kangarooMarkers.push(marker);
-				} else if(marker.icon == '/images/map/icons/kiwi-markers/kiwi-marker.png'){
-					kiwiMarkers.push(marker);
-				} else if(marker.icon == '/images/map/icons/kagu-markers/kagu-marker.png'){
-					kaguMarkers.push(marker);
-				}
+				// When a marker is clicked and it's popup opens, the currentMaker variable is set
+				// so the marker can be removed if the file is deleted
+				marker.on("popupopen", function() { vm.currentMarker = this; });
+
+				vm.markers.addLayer(marker);
 			});
-
-			kangarooMarkerCluster = new MarkerClusterer(map, kangarooMarkers, {imagePath: '/images/map/icons/kangaroo-markers/m'});
-			kiwiMarkerCluster = new MarkerClusterer(map, kiwiMarkers, {imagePath: '/images/map/icons/kiwi-markers/m'});
-			kaguMarkerCluster = new MarkerClusterer(map, kaguMarkers, {imagePath: '/images/map/icons/kagu-markers/m'});
+			vm.map.addLayer(vm.markers);
 		}
 
 		// Get a signed URL to download the requested file from S3 
@@ -202,9 +321,7 @@
 				}
 			});
 
-			modalInstance.result.then(function() {
-
-			});
+			modalInstance.result.then(function() {});
 		}
 
 		function confirmDelete(key, fileName) {
@@ -225,8 +342,12 @@
 			filesService.deleteFileS3({key: key})
 			.then(function(response) {
 				logger.success('File ' + fileName + ' deleted successfully', '', 'Success');
-				getFileList();
+				removeMapMarker();
 			});
+		}
+
+		function removeMapMarker() {	
+			vm.markers.removeLayer(vm.currentMarker);
 		}
 	}
 

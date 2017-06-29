@@ -264,7 +264,7 @@ div[ng-table-pagination=params] {
 /* layers.png not in css folder, put into imgs folder for gulp image task */
 .leaflet-control-layers-toggle {
     background-image: url(/assets/img/map/layers-2x.png) !important;
-    background-size: 75% !important;
+    background-size: 60% !important;
     background-repeat: no-repeat !important;
 }
 

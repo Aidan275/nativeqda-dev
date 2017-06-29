@@ -42,8 +42,8 @@
 			initMap();
 		}
 
-		function initMap(coords) {
-			mapOptions = {
+		function initMap() {
+			var mapOptions = {
 				center: [-34.4054039, 150.87842999999998],	// Default position is UOW
 				zoom: 4
 			};
@@ -181,7 +181,6 @@
 			}).addTo(vm.map);
 
 			geoLocateUser();
-			
 			getFileList();
 		}
 
