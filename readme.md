@@ -2,7 +2,7 @@
 
 ### How to Run Locally
 
-* Download and install Node - [Node.js Download](https://nodejs.org/en/) 
+* Download and install Node v6 - [Node.js Download](https://nodejs.org/en/) 
 * Download and install MongoDB - [MongoDB Download](https://www.mongodb.com/download-center?jmp=nav#community) 
 * Clone repo from Github  (The development repo will have the most recent commits)
 
