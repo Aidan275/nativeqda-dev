@@ -1,5 +1,7 @@
 (function () {
 
+	'use strict';
+
 	angular
 	.module('nativeQDAApp')
 	.controller('mapCtrl', mapCtrl);
@@ -16,6 +18,7 @@
 
 		// Bindable Data
 		vm.map = null;
+		vm.fileList = null;
 		vm.markers = [];
 		vm.currentMarker = null;
 
@@ -184,7 +187,7 @@
 			getFileList();
 		}
 
-		// If getPosition returns successfully update the user's posistion on the map
+		// If getPosition returns successfully, update the user's posistion on the map
 		function geoLocateUser(position) {
 			vm.map.on('locationfound', onLocationFound);
 			vm.map.on('locationerror', onLocationError);
@@ -243,18 +246,19 @@
 		function getFileList() {
 			filesService.getFileListDB()
 			.then(function(response) {
-				addMapMarkers(response.data);
+				vm.fileList = response.data;
+				addMapMarkers();
 			});
 		}
 
 		// Adds markers for the files retrieved from the MongoDB database
-		function addMapMarkers(fileList) {
+		function addMapMarkers() {
 			vm.markers = L.markerClusterGroup({showCoverageOnHover: false});
 
 			// For each file returned from the DB, a marker with an info 
 			// window is created. Each marker is then added to its 
 			// corresponding marker array to be displayed on the map
-			fileList.forEach(function(file) {
+			vm.fileList.forEach(function(file) {
 				var marker = L.marker([file.coords.lat, file.coords.lng], { icon: defaultIcon, title: file.name });
 
 				var contentString = '<div class="info-window">' +
