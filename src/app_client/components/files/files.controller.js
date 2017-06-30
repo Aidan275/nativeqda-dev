@@ -309,7 +309,6 @@
 			filesService.getFileListDB()
 			.then(function(response) {
 				vm.fileList = response.data;
-				console.log(vm.fileList);
 				listFiles();
 				addMapMarkers();
 			});
@@ -329,8 +328,10 @@
 			// marker Cluster Group to be displayed on the map. 
 			// If the marker is clicked, it sets the upload marker to the file's location.
 			vm.fileList.forEach(function(file) {
-				var marker = L.marker([file.coords.lat, file.coords.lng], { icon: defaultIcon, title: file.name });
-
+				var marker = L.marker([file.coords.lat, file.coords.lng], { icon: defaultIcon })
+				.bindTooltip(	'<strong>File Name:</strong> ' + file.name + '<br />' + 
+								'<strong>Created By:</strong> ' + file.createdBy + '<br />' + 
+								'<strong>Last Modified:</strong> ' + $filter('date')(file.lastModified, "dd MMMM, yyyy h:mm a"));
 				// When a marker is clicked, the posMarker is moved to it
 				marker.on("click ", function() { 
 					vm.posMarker.setLatLng([file.coords.lat, file.coords.lng]);
