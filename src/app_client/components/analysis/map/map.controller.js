@@ -256,8 +256,8 @@
 			vm.markers = L.markerClusterGroup({showCoverageOnHover: false});
 
 			// For each file returned from the DB, a marker with an info 
-			// window is created. Each marker is then added to its 
-			// corresponding marker array to be displayed on the map
+			// window is created. Each marker is then added to the 
+			// markers cluster group to be displayed on the map
 			vm.fileList.forEach(function(file) {
 				var marker = L.marker([file.coords.lat, file.coords.lng], { icon: defaultIcon, title: file.name });
 
@@ -295,6 +295,8 @@
 
 				vm.markers.addLayer(marker);
 			});
+
+			// Adds the markers cluster group to the map
 			vm.map.addLayer(vm.markers);
 		}
 
