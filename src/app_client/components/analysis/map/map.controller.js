@@ -20,6 +20,9 @@
 		vm.map = null;
 		vm.fileList = null;
 		vm.markers = [];
+		vm.posMarker = null;
+		vm.lat = -34.4054039;	// Default position is UOW
+		vm.lng = 150.87842999999998;
 		vm.currentMarker = null;
 
 		// To move - may move the majority of the mapping functions into it's own directive
@@ -183,6 +186,9 @@
 				collapsed: true
 			}).addTo(vm.map);
 
+			vm.posMarker = L.marker([vm.lat, vm.lng], { icon: posIcon, zIndexOffset: -500 })
+				.bindTooltip('<strong>Your Position</strong>');
+
 			geoLocateUser();
 			getFileList();
 		}
@@ -222,18 +228,21 @@
 				radius > 9011200 && radius < 18022401 ? 1 : 1
 			);
 			var userPos = response.latlng;
-			var posMarker = L.marker(userPos, { icon: posIcon, title: 'Your Position' }).addTo(vm.map).bindPopup("You are within " + $filter('formatDistance')(radius) + " from this point");
+			vm.posMarker.setLatLng(userPos);
+			vm.posMarker.bindPopup("<p>You are within " + $filter('formatDistance')(radius) + " from this point</p>");
+			vm.posMarker.addTo(vm.map)
+
 			var posCicle = L.circle(userPos, {
 				radius: radius,
 				color: '#cb2529'
 			});
 
 			// Adds/removes the circle from the marker when focused/unfocused
-			posMarker.on("popupopen", function() { 
+			vm.posMarker.on("popupopen", function() { 
 				posCicle.addTo(vm.map); 
 				vm.map.setView(userPos, zoom);
 			});
-			posMarker.on("popupclose", function() { vm.map.removeLayer(posCicle); });
+			vm.posMarker.on("popupclose", function() { vm.map.removeLayer(posCicle); });
 
 			logger.success('User\'s location found', response, 'Success');
 		}
@@ -259,24 +268,27 @@
 			// window is created. Each marker is then added to the 
 			// markers cluster group to be displayed on the map
 			vm.fileList.forEach(function(file) {
-				var marker = L.marker([file.coords.lat, file.coords.lng], { icon: defaultIcon, title: file.name });
+				var lat = file.coords.coordinates[1];
+				var lng = file.coords.coordinates[0];
+				var marker = L.marker([lat, lng], { icon: defaultIcon })
+				.bindTooltip(	'<strong>File Name:</strong> ' + file.name + '<br />' + 
+								'<strong>Created By:</strong> ' + file.createdBy + '<br />' + 
+								'<strong>Last Modified:</strong> ' + $filter('date')(file.lastModified, "dd MMMM, yyyy h:mm a"));
 
 				var contentString = '<div class="info-window">' +
 				'<h3>' + file.name + '</h3>' +
-				'<p>Created By: ' + file.createdBy + '</p>' +
-				'<p>Size: ' + $filter('formatFileSize')(file.size, 2) + '</p>' +	// uses formatFileSize filter to format the file size
-				'<p>Last Modified: ' + $filter('date')(file.lastModified, "dd MMMM, yyyy h:mm a") + '</p>';	// uses date filter to format the date
+				'<p><strong>Created By:</strong> ' + file.createdBy + '<br />' +
+				'<strong>Size:</strong> ' + $filter('formatFileSize')(file.size, 2) + '<br />' +	// uses formatFileSize filter to format the file size
+				'<strong>Last Modified:</strong> ' + $filter('date')(file.lastModified, "dd MMMM, yyyy h:mm a");	// uses date filter to format the date
 
-				// If the file has tags add an unsorted list, listing each tag
+				// If the file has tags, add as a comma separated list, listing each tag
 				// otherwise skip and exclude the 'tags' label
 				if(file.tags.length != 0) { 
-					contentString += '<p>Tags: </p>' +
-					'<ul>';
+					contentString += '<br /><strong>Tags:</strong> ';
 					// lists each tag for current file
-					file.tags.forEach(function(tag){
-						contentString += '<li>' + tag + '</li>';
-					});
-					contentString += '</ul>';
+					contentString += file.tags.join(", ") + '</p>';
+				} else {
+					contentString += '</p>';
 				}
 
 				contentString += '<a ng-click="vm.viewFile(\'' + file.key + '\')" class="btn btn-success" role="button">View</a> ' +

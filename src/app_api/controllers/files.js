@@ -17,7 +17,7 @@ module.exports.signUploadS3 = function(req, res) {
 	// Generate date based key
 	var datePrefix = moment().format('YYYY[/]MM');
 	var key = crypto.randomBytes(10).toString('hex');
-	var hashFilename = key + '-' + req.body.filename;
+	var hashFilename = key + '-' + req.body.name;
 	var path = datePrefix + '/' + hashFilename;
 
 	var type = req.body.type
@@ -115,18 +115,18 @@ module.exports.addFileDB = function(req, res) {
 	file.size = req.body.size;
 	file.url = req.body.url;
 	file.createdBy = req.body.createdBy;
-	if(req.body.lng && req.body.lat){
+	if(req.body.coords.lng && req.body.coords.lat){
 		file.coords = { 
-			coordinates: [parseFloat(req.body.lng), parseFloat(req.body.lat)]
+			coordinates: [parseFloat(req.body.coords.lng), parseFloat(req.body.coords.lat)]
 		};
 	}
 	file.tags = req.body.tags;
 
-	file.save(function(err) {
+	file.save(function(err, response) {
 		if (err) {
 			sendJSONresponse(res, 404, err);
 		} else {
-			sendJSONresponse(res, 200);
+			sendJSONresponse(res, 200, response);
 		}
 	});	
 };
@@ -162,8 +162,10 @@ var buildFileListDB = function(req, res, results) {
 			lastModified: doc.lastModified,
 			name: doc.name,
 			coords: {
-				lng: doc.coords.coordinates[0],
-				lat: doc.coords.coordinates[1]
+				coordinates: {
+					0: doc.coords.coordinates[0],
+					1: doc.coords.coordinates[1]
+				}
 			},
 			tags: doc.tags,
 			_id: doc._id,

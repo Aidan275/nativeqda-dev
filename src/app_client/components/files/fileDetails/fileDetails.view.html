@@ -15,17 +15,13 @@
 		<br/>
 		<label>S3 Key: </label> {{vm.file.key}}
 		<br/>
-		<label>Coordinates:</label>
-		<br/>
 		<label>Latitude: </label> {{vm.file.coords.coordinates[1]}}
 		<br/>
 		<label>Longitude: </label> {{vm.file.coords.coordinates[0]}}
 		<br/>
 		<span ng-hide="vm.file.tags.length == 0">
-			<label>Tags: </label>
-			<ul>
-				<li ng-repeat="tag in vm.file.tags">{{tag}}</li>
-			</ul>
+			<label>Tags: </label> {{vm.tags}}
+			<br/>
 		</span>
 
 		<a ng-hide="vm.file.acl=='public-read'" ng-click="vm.updateAclS3(vm.file.key, 'public-read')" class="btn btn-primary" role="button" jp-ng-bs-animated-button is-submitting="vm.isSubmittingButton" result="vm.resultButton" options="vm.makePublicOptions">Make Public</a>

@@ -1,0 +1,68 @@
+
+<navigation></navigation>
+
+<div class="container">
+
+	<page-header content="vm.pageHeader"></page-header>
+
+	<div class="col-md-4" style="height:400px;">
+		<p>Please enter address or coordinates</p>
+
+		<div>
+			<input ng-model="vm.address" type="textbox">
+			<input id="submit" type="button" value="Geocode" ng-click="vm.geocodeAddress()">
+		</div>
+
+		<label>Returned Address:
+			{{vm.formattedAddress}}
+		</label>
+
+		<br />
+		<br />
+
+		<label>Latitude:
+			<input type="text" name="input" ng-model="vm.lat">
+		</label>
+		<br />
+		<label>Longitude:
+			<input type="text" name="input" ng-model="vm.lng">
+		</label>
+
+		<br />
+		<br />	
+
+		<p>Please enter Tags</p>
+		<tags-input ng-model="vm.tags"></tags-input>
+
+		<br />
+
+		<p>Please select a file</p>
+
+		<input type="file" ngf-select ngf-change="vm.onFileSelect($files)">
+
+		<br />
+
+		<label>File Name:</label> <input ng-model="vm.fileInfo.name" type="textbox">
+
+		<br />
+
+		<a class="btn btn-primary" role="button" ng-click="vm.uploadFile()">Upload</a>
+
+	</div>
+	<div class="col-md-8" style="height:400px;">
+		<div id="map-files-page"></div>
+	</div>
+
+	<div class="col-md-12">
+
+		<br />
+
+		<div ng-show="vm.currentPercentage>0" class="progress">
+			<div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="{{vm.currentPercentage}}" aria-valuemin="0" aria-valuemax="100" style="min-width: 2em; width: {{vm.currentPercentage}}%;">
+				{{vm.currentPercentage}}%
+			</div>
+		</div>
+
+	</div>
+
+</div>

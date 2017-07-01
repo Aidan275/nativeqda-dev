@@ -25,6 +25,7 @@
 			filesService.fileReadOneDB(key)
 			.then(function(response) {
 				vm.file = response.data;
+				vm.tags = vm.file.tags.join(", ");
 			});
 		}		
 

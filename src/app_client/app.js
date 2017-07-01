@@ -53,9 +53,15 @@
 			controllerAs: 'vm',
 			loginRequired: true
 		})
-		.when('/files', {
-			templateUrl: '/components/files/files.view.html',
-			controller: 'filesCtrl',
+		.when('/files/browse', {
+			templateUrl: '/components/files/filesBrowse/filesBrowse.view.html',
+			controller: 'filesBrowseCtrl',
+			controllerAs: 'vm',
+			loginRequired: true
+		})
+		.when('/files/upload', {
+			templateUrl: '/components/files/filesUpload/filesUpload.view.html',
+			controller: 'filesUploadCtrl',
 			controllerAs: 'vm',
 			loginRequired: true
 		})

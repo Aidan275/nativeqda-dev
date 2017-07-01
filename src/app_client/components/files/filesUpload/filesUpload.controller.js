@@ -1,36 +1,44 @@
 (function () { 
 
-	"use strict";
+	'use strict';
 
 	angular
 	.module('nativeQDAApp')
-	.controller('homeCtrl', homeCtrl);
+	.controller('filesUploadCtrl', filesUploadCtrl);
 	
-	homeCtrl.$inject = ['filesService', '$scope', '$filter', '$compile', '$window', '$uibModal', 'logger'];
-	function homeCtrl (filesService, $scope, $filter, $compile, $window, $uibModal, logger) {
+
+	/* @ngInject */
+	function filesUploadCtrl (mapService, $http, $window, $scope, $uibModal, Upload, NgTableParams, filesService, authentication, logger, $filter, $compile) {
 		var vm = this;
 
 		// Bindable Functions
-		vm.getFileList = getFileList;
-		vm.viewFile = viewFile;
-		vm.popupFileDetails = popupFileDetails;
-		vm.confirmDelete = confirmDelete;
+		//vm.geocodeAddress = geocodeAddress;
+		vm.onFileSelect = onFileSelect;
+		vm.uploadFile = uploadFile;
 
 		// Bindable Data
 		vm.map = null;
-		vm.markers = [];
-		vm.currentMarker = null;
-		vm.fileList = [];
+		vm.marker = null;
+		vm.markers = L.markerClusterGroup({showCoverageOnHover: false});
+		vm.posMarker = null;
+		vm.posMarkerMoved = false;		// After moving the marker, the accuracy circle will be removed, i.e. the posMarkerMoved bool will be true
+		vm.fileList = null;
+		vm.lat = -34.4054039;	// Default position is UOW
+		vm.lng = 150.87842999999998;
+		vm.tags = [];
+		vm.address = '';
+		vm.formattedAddress = '';
+		vm.currentPercentage = '0';
+		vm.file = null;
 		vm.pageHeader = {
-			title: 'Dashboard',
-			strapline: 'summary of recent activity'
+			title: 'Upload Files'
 		};
 
 		// To move - may move the majority of the mapping functions into it's own directive
 		var LeafIcon = L.Icon.extend({
 			options: {
 				shadowUrl: 'assets/img/map/markers/marker-shadow.png',
-				iconSize:     [25, 41],
+				iconSize:	 [25, 41],
 				shadowSize:   [41, 41],
 				iconAnchor:   [12.5, 41],
 				shadowAnchor: [12.5, 41],
@@ -41,21 +49,22 @@
 		var defaultIcon = new LeafIcon({iconUrl: 'assets/img/map/markers/marker-icon-2x.png'});
 		var posIcon = new LeafIcon({iconUrl: 'assets/img/map/markers/marker-icon-pos.png'});
 
+
 		activate();
 
-    	///////////////////////////
+		///////////////////////////
 
-    	function activate() {
-    		initMap();
-    	}
+		function activate() {
+			initMap();
+		}
 
-    	function initMap() {
+		function initMap() {
 			var mapOptions = {
 				center: [-34.4054039, 150.87842999999998],	// Default position is UOW
 				zoom: 4
 			};
 
-			vm.map = L.map('map-homepage', mapOptions);
+			vm.map = L.map('map-files-page', mapOptions);
 
 			var maxZoom = 22;
 
@@ -187,11 +196,38 @@
 				collapsed: true
 			}).addTo(vm.map);
 
-			geoLocateUser();
-			getFileList();
+			// Create new marker for the file upload position - default position
+			vm.posMarker = L.marker([vm.lat, vm.lng], { icon: posIcon, draggable: true, zIndexOffset: 1000 })
+				.addTo(vm.map)
+				.bindTooltip('<strong>File Upload Position</strong>')
+				.bindPopup(	"<p>Drag me to change the file upload position</p>");
+
+			// Event for when the file position marker is dragger
+			vm.posMarker.on('drag', function(event) {
+				updatePosMarker(event);
+			});
+
+			// Event for when map is clicked, moves the file position marker to the location clicked
+			vm.map.on('click', function(event) {
+				vm.posMarker.setLatLng(event.latlng);
+				updatePosMarker(event);
+			});
+
+			geoLocateUser();	// Find the position of the user
+			getFileList();		// Gets the file list form the DB
 		}
 
-		// If getPosition returns successfully update the user's posistion on the map
+		function updatePosMarker(event) {
+			if(!vm.posMarkerMoved){
+				vm.posMarkerMoved = true;
+				vm.posMarker.setPopupContent("<p>Drag me to change the file upload position</p>");
+			}
+			vm.lat = event.latlng.lat;
+			vm.lng = event.latlng.lng;
+			$scope.$apply();
+		}
+
+		// If getPosition returns successfully, update the user's posistion on the map
 		function geoLocateUser(position) {
 			vm.map.on('locationfound', onLocationFound);
 			vm.map.on('locationerror', onLocationError);
@@ -199,7 +235,14 @@
 		}
 
 		function onLocationFound(response) {
+			// If the user's location is found, the position of the file marker is updated
+			var userPos = response.latlng;
 			var radius = response.accuracy / 2;
+
+			vm.lat = userPos.lat;
+			vm.lng = userPos.lng;
+			$scope.$apply();		// Use $scope.$apply() to update the lat and lng on the page
+
 			// Set the zoom level depending on the radius of the accuracy circle. Maybe a bit much
 			var zoom = (
 				radius < 9 ? 22 : 
@@ -225,21 +268,31 @@
 				radius > 4505600 && radius < 9011201 ? 2 :  		
 				radius > 9011200 && radius < 18022401 ? 1 : 1
 			);
-			var userPos = response.latlng;
-			var posMarker = L.marker(userPos, { icon: posIcon, zIndexOffset: -500 }).addTo(vm.map)
-				.bindPopup("You are within " + $filter('formatDistance')(radius) + " from this point")
-				.bindTooltip('<strong>Your Position</strong>');
+
+			// Move the marker and update the popup content of the marker 
+			vm.posMarker.setLatLng(userPos);
+			vm.posMarker.setPopupContent("	<p>You are within " + $filter('formatDistance')(radius) + " from this point<br />" +
+											"Drag me to change the file upload position</p>");
+
+			// Create a circle to represent the accuracy radius
 			var posCicle = L.circle(userPos, {
 				radius: radius,
 				color: '#cb2529'
 			});
 
-			// Adds/removes the circle from the marker when focused/unfocused
-			posMarker.on("popupopen", function() { 
-				posCicle.addTo(vm.map); 
-				vm.map.setView(userPos, zoom);
+			// Adds/removes the accuracy circle from the marker when focused/unfocused (only if the marker hasn't been moved).
+			vm.posMarker.on("popupopen", function() {
+				if(!vm.posMarkerMoved) { 
+					posCicle.addTo(vm.map); 
+					vm.map.setView(userPos, zoom);
+				}
 			});
-			posMarker.on("popupclose", function() { vm.map.removeLayer(posCicle); });
+
+			vm.posMarker.on("popupclose", function() { 
+				if(!vm.posMarkerMoved) {
+					vm.map.removeLayer(posCicle); 
+				}
+			});
 
 			logger.success('User\'s location found', response, 'Success');
 		}
@@ -259,11 +312,9 @@
 
 		// Adds markers for the files retrieved from the MongoDB database
 		function addMapMarkers() {
-			vm.markers = L.markerClusterGroup({showCoverageOnHover: false});
-
-			// For each file returned from the DB, a marker with an info 
-			// window is created. Each marker is then added to the 
-			// markers cluster group to be displayed on the map
+			// For each file returned from the DB, a marker is added to the 
+			// marker Cluster Group to be displayed on the map. 
+			// If the marker is clicked, it sets the upload marker to the file's location.
 			vm.fileList.forEach(function(file) {
 				var lat = file.coords.coordinates[1];
 				var lng = file.coords.coordinates[0];
@@ -271,92 +322,81 @@
 				.bindTooltip(	'<strong>File Name:</strong> ' + file.name + '<br />' + 
 								'<strong>Created By:</strong> ' + file.createdBy + '<br />' + 
 								'<strong>Last Modified:</strong> ' + $filter('date')(file.lastModified, "dd MMMM, yyyy h:mm a"));
-
-				var contentString = '<div class="info-window">' +
-				'<h3>' + file.name + '</h3>' +
-				'<p><strong>Created By:</strong> ' + file.createdBy + '<br />' +
-				'<strong>Size:</strong> ' + $filter('formatFileSize')(file.size, 2) + '<br />' +	// uses formatFileSize filter to format the file size
-				'<strong>Last Modified:</strong> ' + $filter('date')(file.lastModified, "dd MMMM, yyyy h:mm a");	// uses date filter to format the date
-
-				// If the file has tags, add as a comma separated list, listing each tag
-				// otherwise skip and exclude the 'tags' label
-				if(file.tags.length != 0) { 
-					contentString += '<br /><strong>Tags:</strong> ';
-					// lists each tag for current file
-					contentString += file.tags.join(", ") + '</p>';
-				} else {
-					contentString += '</p>';
-				}
-
-				contentString += '<a ng-click="vm.viewFile(\'' + file.key + '\')" class="btn btn-success" role="button">View</a> ' +
-				'<a ng-click="vm.popupFileDetails(\'' + file.key + '\')" class="btn btn-primary" role="button">Details</a> ' +
-				'<a ng-click="vm.confirmDelete(\'' + file.key + '\', \'' + file.name + '\')" class="btn btn-danger" role="button">Delete</a>' +
-				'</div>';
-
-				// compiles the HTML so ng-click works
-				var compiledContentString = $compile(contentString)($scope)
-
-				marker.bindPopup(compiledContentString[0]);
-
-				// When a marker is clicked and it's popup opens, the currentMaker variable is set
-				// so the marker can be removed if the file is deleted
-				marker.on("popupopen", function() { vm.currentMarker = this; });
+				// When a marker is clicked, the posMarker is moved to it
+				marker.on("click ", function() { 
+					vm.posMarker.setLatLng([lat, lng]);
+					updatePosMarker( { latlng: { lat: lat, lng: lng } } );
+				});
 
 				vm.markers.addLayer(marker);
 			});
-
-			// Adds the markers cluster group to the map
 			vm.map.addLayer(vm.markers);
 		}
 
-		// Get a signed URL to download the requested file from S3 
-		// and if successful, open the signed URL in a new tab
-		function viewFile(key) {
-			filesService.signDownloadS3(key)
-			.then(function(response) {
-				$window.open(response.data, '_blank');
-			});
-		}
-
-		function popupFileDetails(key) {
-			var modalInstance = $uibModal.open({
-				templateUrl: '/components/files/fileDetails/fileDetails.view.html',
-				controller: 'fileDetails as vm',
-				size: 'lg',
-				resolve: {
-					key: function () {
-						return key;
-					}
-				}
-			});
-
-			modalInstance.result.then(function() {});
-		}
-
-		function confirmDelete(key, fileName) {
-			var deleteFile = $window.confirm("Are you sure you want to delete " + fileName + "?");
-			if(deleteFile){
-				deleteFileDB(key, fileName);
+		// Gets a signed URL for uploading a file then uploads the file to S3 with this signed URL
+		// If successful, the file info is then posted to the DB
+		// need to make neater
+		function onFileSelect(uploadFiles) {
+			if (uploadFiles.length > 0) {
+				vm.file = uploadFiles[0];
+				vm.fileInfo = {
+					name: vm.file.name,
+					type: vm.file.type
+				};
 			}
 		}
 
-		function deleteFileDB(key, fileName) {
-			filesService.deleteFileDB(key)
-			.then(function(response) {
-				deleteFileS3(key, fileName);
+		function uploadFile() {
+			filesService.signUploadS3(vm.fileInfo)
+			.then(function(result) {
+				Upload.upload({
+					method: 'POST',
+					url: result.data.url, 
+					fields: result.data.fields, 
+					file: vm.file
+				})
+				.progress(function(evt) {
+					vm.currentPercentage = parseInt(100.0 * evt.loaded / evt.total);
+				})
+				.then(function(response) {
+					console.log(response.config.file.name + ' successfully uploaded to S3');
+					// parses XML data response to jQuery object to be stored in the database
+					var xml = $.parseXML(response.data);
+					// maps the tag obects to an array of strings to be stored in the database
+					var tagStrings = vm.tags.map(function(item) {
+						return item['text'];
+					});
+					var key = result.data.fields.key;
+					var url = result.data.url + '/' + key;
+					var fileDetails = {
+						name : vm.fileInfo.name,
+						key : key,
+						size : response.config.file.size,
+						url : url,
+						createdBy : authentication.currentUser().name,
+						coords : { 
+							lat : vm.lat,
+							lng : vm.lng
+						},
+						tags : tagStrings
+					}
+					filesService.addFileDB(fileDetails)
+					.then(function(response) {
+						vm.fileList.push(response.data);
+						console.log(vm.fileInfo.name + ' successfully added to DB');
+						logger.success(vm.fileInfo.name + ' successfully uploaded', '', 'Success');
+						updateMapMarkers();
+					});
+				}, function(error) {
+					var xml = $.parseXML(error.data);
+					logger.error($(xml).find("Message").text(), '', 'Error');
+				});
 			});
 		}
 
-		function deleteFileS3(key, fileName) {
-			filesService.deleteFileS3({key: key})
-			.then(function(response) {
-				logger.success('File ' + fileName + ' deleted successfully', '', 'Success');
-				removeMapMarker();
-			});
-		}
-
-		function removeMapMarker() {	
-			vm.markers.removeLayer(vm.currentMarker);
+		function updateMapMarkers() {
+			vm.markers.clearLayers()
+			addMapMarkers();
 		}
 	}
 
