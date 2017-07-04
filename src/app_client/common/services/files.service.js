@@ -49,7 +49,9 @@
         };
 
         function signDownloadS3(key){
-        	return $http.get('/api/files/signDownloadS3?key=' + key, {
+            // Encode the key for the API URL incase it includes reserved characters (e.g '+', '&')
+            var encodedKey = encodeURIComponent(key);
+        	return $http.get('/api/files/signDownloadS3?key=' + encodedKey, {
         		headers: {
         			Authorization: 'Bearer ' + authentication.getToken()
         		}
@@ -61,7 +63,9 @@
         };
 
         function fileReadOneDB(key){
-        	return $http.get('/api/files/fileReadOneDB?key=' + key, {
+            // Encode the key for the API URL incase it includes reserved characters (e.g '+', '&')
+            var encodedKey = encodeURIComponent(key);
+        	return $http.get('/api/files/fileReadOneDB?key=' + encodedKey, {
         		headers: {
         			Authorization: 'Bearer ' + authentication.getToken()
         		}
@@ -109,7 +113,9 @@
         };
 
         function deleteFileDB(key){
-        	return $http.delete('/api/files/deleteFileDB?key=' + key, {
+            // Encode the key for the API URL incase it includes reserved characters (e.g '+', '&')
+            var encodedKey = encodeURIComponent(key);
+        	return $http.delete('/api/files/deleteFileDB?key=' + encodedKey, {
         		headers: {
         			Authorization: 'Bearer '+ authentication.getToken()
         		}

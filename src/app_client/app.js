@@ -83,9 +83,15 @@
 			controllerAs: 'vm',
 			loginRequired: true
 		})
-		.when('/test-analysis', {
-			templateUrl: '/components/testAnalysis/testAnalysis.view.html',
-			controller: 'testAnalysisCtrl',
+		.when('/test-analysis/aylien', {
+			templateUrl: '/components/testAnalysis/aylien/testAylien.view.html',
+			controller: 'testAylienCtrl',
+			controllerAs: 'vm',
+			loginRequired: true
+		})
+		.when('/test-analysis/watson', {
+			templateUrl: '/components/testAnalysis/watson/testWatson.view.html',
+			controller: 'testWatsonCtrl',
 			controllerAs: 'vm',
 			loginRequired: true
 		})

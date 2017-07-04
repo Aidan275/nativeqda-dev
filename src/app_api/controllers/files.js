@@ -177,6 +177,7 @@ var buildFileListDB = function(req, res, results) {
 
 module.exports.fileReadOneDB = function(req, res) {
 	var key = req.query.key;
+	console.log(key);
 	if(key) {
 		File
 		.findOne({key: key})
@@ -249,9 +250,9 @@ module.exports.objectAclDB = function(req, res) {
 	var key = req.body.key;
 	var acl = '';
 
-	if(req.body.acl == 'public-read')
+	if(req.body.acl === 'public-read')
 		acl = 'public-read';
-	else if(req.body.acl == 'private')
+	else if(req.body.acl === 'private')
 		acl = 'private';
 
 	if(!key || !acl) {
