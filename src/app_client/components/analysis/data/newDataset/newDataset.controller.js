@@ -60,6 +60,8 @@
 				return vm.formData.checkboxes[key]
 			});
 
+			logger.info("This may take a minute, please don't go anywhere", '', 'Info')
+
 			datasetService.datasetCreate({			// Using the datasetService, makes an API request to
 				name: vm.formData.datasetName,		// the server to add the new dataset
 				desc: vm.formData.description,
