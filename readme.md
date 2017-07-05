@@ -45,20 +45,9 @@ The scripts for these commands are located in gulpfile<span></span>.js. <br>
 ```
 npm install -g browser-sync
 ```
-* Before running the app, environmental variables need to be defined. 
-	* Create a new file in the root folder called **.env**
-	* Add the following text and save the file
-```
-NODE_ENV=development
-PORT=3000
-MONGODB_URI=mongodb://heroku_t0vt9rr2:lskjavvplpc89t6ggkp6pm9v9d@ds125481.mlab.com:25481/heroku_t0vt9rr2
-JWT_SECRET=WhateverYouWant
-AWS_ACCESS_KEY_ID=AKIAIP53REFZNB3H3GBA
-AWS_SECRET_ACCESS_KEY=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
-S3_BUCKET_NAME=nativeqda-assets
-```
-These variables should be kept secret and shouldn't be included here but oh well, no one can see them. <br>
-The MONGODB_URI is only used when NODE_ENV is set to production and the JWT_SECRET is for the authentication of users and passwords (salts and hashes).
+* Removed the .env file from gitignore so it's now included in pushes/pulls to/from github. <br>
+ **Note:** This may break others login authentication due to a different JWT_SECRET key.
+
 * Start MongoDB in a separate command line/terminal with
 ```
 mongod
