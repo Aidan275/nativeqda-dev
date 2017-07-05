@@ -2,10 +2,10 @@
 
 	angular
 	.module('nativeQDAApp')
-	.controller('testAnalysisCtrl', testAnalysisCtrl);
+	.controller('testAylienCtrl', testAylienCtrl);
 
-	testAnalysisCtrl.$inject = ['analysisService', '$scope'];
-	function testAnalysisCtrl (analysisService, $scope) {
+	testAylienCtrl.$inject = ['analysisService', '$scope'];
+	function testAylienCtrl (analysisService, $scope) {
 		var vm = this;
 
 		// Bindable Functions
@@ -24,13 +24,13 @@
 		// Bindable Data
 		vm.pageHeader = {
 			title: 'Test Analysis',
-			strapline: 'using AYLIEN-TextAPI'
+			strapline: 'Using AYLIEN-TextAPI'
 		};
 
 		///////////////////////////
 
 		function onSubmit() {
-			analysisService.conceptAnalysis({text: vm.analysisText, language: vm.selectedLanguage.value})
+			analysisService.aylienConceptAnalysis({text: vm.analysisText, language: vm.selectedLanguage.value})
 			.then(function(response) {
 				vm.responseData = response.data;
 				console.log(response);

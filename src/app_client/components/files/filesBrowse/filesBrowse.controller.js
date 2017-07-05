@@ -31,7 +31,7 @@
 			getFileList();
 		}
 
-		// Gets all the files from the MongoDB database to be displayed on the map
+		// Gets all the files from the MongoDB database
 		function getFileList() {
 			filesService.getFileListDB()
 			.then(function(response) {
@@ -80,10 +80,10 @@
 		}
 
 		function removeFileFromArray(key) {	
-			// Find the marker index for markerId, will return -1 if not found 
+			// Find the index for the file, will return -1 if not found 
 			var fileIndex = vm.fileList.findIndex(function(obj){return obj.key === key});
 
-			// Remove the marker from the file list array if found
+			// Remove the file from the file list array if found
 			if (fileIndex > -1) {
 				vm.fileList.splice(fileIndex, 1);
 			}

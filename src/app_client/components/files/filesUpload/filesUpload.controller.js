@@ -8,7 +8,7 @@
 	
 
 	/* @ngInject */
-	function filesUploadCtrl (mapService, $http, $window, $scope, $uibModal, Upload, NgTableParams, filesService, authentication, logger, $filter, $compile) {
+	function filesUploadCtrl (mapService, $http, $window, $scope, $uibModal, Upload, NgTableParams, filesService, authentication, logger, $filter, $compile, analysisService) {
 		var vm = this;
 
 		// Bindable Functions
@@ -198,9 +198,9 @@
 
 			// Create new marker for the file upload position - default position
 			vm.posMarker = L.marker([vm.lat, vm.lng], { icon: posIcon, draggable: true, zIndexOffset: 1000 })
-				.addTo(vm.map)
-				.bindTooltip('<strong>File Upload Position</strong>')
-				.bindPopup(	"<p>Drag me to change the file upload position</p>");
+			.addTo(vm.map)
+			.bindTooltip('<strong>File Upload Position</strong>')
+			.bindPopup(	"<p>Drag me to change the file upload position</p>");
 
 			// Event for when the file position marker is dragger
 			vm.posMarker.on('drag', function(event) {
@@ -267,12 +267,12 @@
 				radius > 2252800 && radius < 4505601 ? 3 :  		
 				radius > 4505600 && radius < 9011201 ? 2 :  		
 				radius > 9011200 && radius < 18022401 ? 1 : 1
-			);
+				);
 
 			// Move the marker and update the popup content of the marker 
 			vm.posMarker.setLatLng(userPos);
 			vm.posMarker.setPopupContent("	<p>You are within " + $filter('formatDistance')(radius) + " from this point<br />" +
-											"Drag me to change the file upload position</p>");
+				"Drag me to change the file upload position</p>");
 
 			// Create a circle to represent the accuracy radius
 			var posCicle = L.circle(userPos, {
@@ -320,8 +320,8 @@
 				var lng = file.coords.coordinates[0];
 				var marker = L.marker([lat, lng], { icon: defaultIcon })
 				.bindTooltip(	'<strong>File Name:</strong> ' + file.name + '<br />' + 
-								'<strong>Created By:</strong> ' + file.createdBy + '<br />' + 
-								'<strong>Last Modified:</strong> ' + $filter('date')(file.lastModified, "dd MMMM, yyyy h:mm a"));
+					'<strong>Created By:</strong> ' + file.createdBy + '<br />' + 
+					'<strong>Last Modified:</strong> ' + $filter('date')(file.lastModified, "dd MMMM, yyyy h:mm a"));
 				// When a marker is clicked, the posMarker is moved to it
 				marker.on("click ", function() { 
 					vm.posMarker.setLatLng([lat, lng]);
@@ -337,6 +337,7 @@
 		// If successful, the file info is then posted to the DB
 		// need to make neater
 		function onFileSelect(uploadFiles) {
+			//convertFile();
 			if (uploadFiles.length > 0) {
 				vm.file = uploadFiles[0];
 				vm.fileInfo = {
@@ -367,7 +368,7 @@
 						return item['text'];
 					});
 					var key = result.data.fields.key;
-					var url = result.data.url + '/' + key;
+					var url = result.data.url + '/' + encodeURIComponent(key);	// Encode the key for the API URL incase it includes reserved characters (e.g '+', '&')
 					var fileDetails = {
 						name : vm.fileInfo.name,
 						key : key,
@@ -380,11 +381,13 @@
 						},
 						tags : tagStrings
 					}
+					console.log(key);
 					filesService.addFileDB(fileDetails)
 					.then(function(response) {
 						vm.fileList.push(response.data);
 						console.log(vm.fileInfo.name + ' successfully added to DB');
 						logger.success(vm.fileInfo.name + ' successfully uploaded', '', 'Success');
+						
 						updateMapMarkers();
 					});
 				}, function(error) {
@@ -393,6 +396,161 @@
 				});
 			});
 		}
+
+		function convertFile(){
+
+			var processData = {
+				"apikey": "tZEO_JfLuf7_fJ1w6k8V31bVivFwcir6CODSjBtwj8erYWVY_H_7g5FqgNzqgh56UTllagqT8dWXVIl3AaO_fA",
+				"inputformat": "pdf",
+				"outputformat": "txt"
+			};
+
+			$http.post('https://api.cloudconvert.com/process', processData).then(completeProcessConvert)
+			.catch(failedProcessConvert);
+
+			function failedProcessConvert(e) { console.log(e); }
+
+			function completeProcessConvert(data) { 
+				var convertData = {
+					"input": {
+						"s3": {
+							"accesskeyid": "AKIAJ5RRRRKPR7ICCGTA",
+							"secretaccesskey": "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",
+							"bucket": "nativeqda-assets-dev"
+						}
+					},
+					"file": "txt/test/test01.pdf",
+					"outputformat": "txt",
+					"output": {
+						"s3": {
+							"accesskeyid": "AKIAJ5RRRRKPR7ICCGTA",
+							"secretaccesskey": "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",
+							"bucket": "nativeqda-assets-dev",
+							"path": "txt/test/test01.pdf.txt"
+						}
+					}
+				};
+
+				console.log(convertData); 
+				console.log(data); 
+
+				$http.post(data.data.url, convertData).then(completeConvert)
+				.catch(failedConvert);
+
+				function failedConvert(e) { console.log(e); }
+
+				function completeConvert(data) { 
+					console.log(data); 
+				}
+			}
+			
+
+
+		}
+
+		/*
+		var processData = {
+			"apikey": "tZEO_JfLuf7_fJ1w6k8V31bVivFwcir6CODSjBtwj8erYWVY_H_7g5FqgNzqgh56UTllagqT8dWXVIl3AaO_fA",
+			"mode": "combine",
+			"outputformat": "pdf"
+		};
+
+		$http.post('https://api.cloudconvert.com/process', processData).then(completeProcessConvert)
+		.catch(failedProcessConvert);
+
+		function failedProcessConvert(e) { console.log(e); }
+
+		function completeProcessConvert(data) { 
+			var convertData = {
+				"mode": "combine",
+				"input": {
+					"s3": {
+						"accesskeyid": "AKIAJ5RRRRKPR7ICCGTA",
+						"secretaccesskey": "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",
+						"bucket": "nativeqda-assets-dev"
+					}
+				},
+				"files": [
+				"2017/07/34257484d630831da908-ALICE.docx",
+				"2017/07/2d08844c50983787d101-I Have a Dream.pdf",
+				"2017/07/ef24406f5e953d6ceba1-Anna Pavlovna's drawing room was gradually filling.txt"
+				],
+				"outputformat": "pdf",
+				"output": {
+					"s3": {
+						"accesskeyid": "AKIAJ5RRRRKPR7ICCGTA",
+						"secretaccesskey": "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",
+						"bucket": "nativeqda-assets-dev",
+						"path": "txt/test/test01.pdf"
+					}
+				},
+				"wait": true
+			};
+
+			console.log(convertData); 
+			console.log(data); 
+
+			$http.post(data.data.url, convertData).then(completeConvert)
+			.catch(failedConvert);
+
+			function failedConvert(e) { console.log(e); }
+
+			function completeConvert(data) { 
+				console.log(data); 
+			}
+		}
+		*/
+
+
+
+
+		/*
+		var processData = {
+			"apikey": "tZEO_JfLuf7_fJ1w6k8V31bVivFwcir6CODSjBtwj8erYWVY_H_7g5FqgNzqgh56UTllagqT8dWXVIl3AaO_fA",
+			"inputformat": "pdf",
+			"outputformat": "txt"
+		};
+
+		$http.post('https://api.cloudconvert.com/process', processData).then(completeProcessConvert)
+		.catch(failedProcessConvert);
+
+		function failedProcessConvert(e) { console.log(e); }
+
+		function completeProcessConvert(data) { 
+			var convertData = {
+				"input": {
+					"s3": {
+						"accesskeyid": "AKIAJ5RRRRKPR7ICCGTA",
+						"secretaccesskey": "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",
+						"bucket": "nativeqda-assets-dev"
+					}
+				},
+				"file": key,
+				"outputformat": "txt",
+				"output": {
+					"s3": {
+						"accesskeyid": "AKIAJ5RRRRKPR7ICCGTA",
+						"secretaccesskey": "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",
+						"bucket": "nativeqda-assets-dev",
+						"path": "txt/" + key
+					}
+				}
+			};
+
+			console.log(convertData); 
+			console.log(data); 
+
+			$http.post(data.data.url, convertData).then(completeConvert)
+			.catch(failedConvert);
+
+			function failedConvert(e) { console.log(e); }
+
+			function completeConvert(data) { 
+				console.log(data); 
+			}
+		}
+		*/
+
 
 		function updateMapMarkers() {
 			vm.markers.clearLayers()

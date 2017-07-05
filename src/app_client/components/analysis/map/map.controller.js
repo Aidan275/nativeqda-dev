@@ -187,7 +187,7 @@
 			}).addTo(vm.map);
 
 			vm.posMarker = L.marker([vm.lat, vm.lng], { icon: posIcon, zIndexOffset: -500 })
-				.bindTooltip('<strong>Your Position</strong>');
+			.bindTooltip('<strong>Your Position</strong>');
 
 			geoLocateUser();
 			getFileList();
@@ -226,7 +226,7 @@
 				radius > 2252800 && radius < 4505601 ? 3 :  		
 				radius > 4505600 && radius < 9011201 ? 2 :  		
 				radius > 9011200 && radius < 18022401 ? 1 : 1
-			);
+				);
 			var userPos = response.latlng;
 			vm.posMarker.setLatLng(userPos);
 			vm.posMarker.bindPopup("<p>You are within " + $filter('formatDistance')(radius) + " from this point</p>");
@@ -271,9 +271,9 @@
 				var lat = file.coords.coordinates[1];
 				var lng = file.coords.coordinates[0];
 				var marker = L.marker([lat, lng], { icon: defaultIcon })
-				.bindTooltip(	'<strong>File Name:</strong> ' + file.name + '<br />' + 
-								'<strong>Created By:</strong> ' + file.createdBy + '<br />' + 
-								'<strong>Last Modified:</strong> ' + $filter('date')(file.lastModified, "dd MMMM, yyyy h:mm a"));
+				.bindTooltip('<strong>File Name:</strong> ' + file.name + '<br />' + 
+					'<strong>Created By:</strong> ' + file.createdBy + '<br />' + 
+					'<strong>Last Modified:</strong> ' + $filter('date')(file.lastModified, "dd MMMM, yyyy h:mm a"));
 
 				var contentString = '<div class="info-window">' +
 				'<h3>' + file.name + '</h3>' +
@@ -291,15 +291,19 @@
 					contentString += '</p>';
 				}
 
-				contentString += '<a ng-click="vm.viewFile(\'' + file.key + '\')" class="btn btn-success" role="button">View</a> ' +
-				'<a ng-click="vm.popupFileDetails(\'' + file.key + '\')" class="btn btn-primary" role="button">Details</a> ' +
-				'<a ng-click="vm.confirmDelete(\'' + file.key + '\', \'' + file.name + '\')" class="btn btn-danger" role="button">Delete</a>' +
+				contentString += '<a ng-click="vm.viewFile(fileKey)" class="btn btn-success" role="button">View</a> ' +
+				'<a ng-click="vm.popupFileDetails(fileKey)" class="btn btn-primary" role="button">Details</a> ' +
+				'<a ng-click="vm.confirmDelete(fileKey, fileName)" class="btn btn-danger" role="button">Delete</a>' +
 				'</div>';
 
 				// compiles the HTML so ng-click works
-				var compiledContentString = $compile(contentString)($scope)
+				var compiledContentString = $compile(angular.element(contentString));
+				var newScope = $scope.$new();
 
-				marker.bindPopup(compiledContentString[0]);
+				newScope.fileKey = file.key;
+				newScope.fileName = file.name;
+
+				marker.bindPopup(compiledContentString(newScope)[0]);
 
 				// When a marker is clicked and it's popup opens, the currentMaker variable is set
 				// so the marker can be removed if the file is deleted

@@ -36,6 +36,9 @@ router.post('/files/syncDBwithS3', auth, ctrlFile.syncDBwithS3);
 router.post('/files/objectAclS3', auth, ctrlFile.objectAclS3);
 router.post('/files/objectAclDB', auth, ctrlFile.objectAclDB);
 
-router.post('/analysis/concept', auth, ctrlAnalysis.analysisConcept);
+router.post('/analysis/aylien/concept', auth, ctrlAnalysis.aylienConceptAnalysis);
+router.post('/analysis/watson', auth, ctrlAnalysis.watsonNLUAnalysis);
+router.post('/file-conversion/watson', auth, ctrlAnalysis.watsonFileConversion);
+
 
 module.exports = router;
