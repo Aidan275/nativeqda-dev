@@ -25,7 +25,9 @@
 		"./node_modules/leaflet.markercluster/dist/leaflet.markercluster.js",
 		"./node_modules/leaflet.gridlayer.googlemutant/Leaflet.GoogleMutant.js",
 		"./node_modules/pdfjs-dist/build/pdf.min.js",
-		"./node_modules/pdfjs-dist/build/pdf.worker.min.js"
+		"./node_modules/pdfjs-dist/build/pdf.worker.min.js",
+		"./src/app_client/assets/js/docxjs-1.0.0.min.js",
+		"./node_modules/sweetalert/dist/sweetalert.min.js"
 	],
 	"minVendorCSS": [
 		"./node_modules/bootstrap/dist/css/bootstrap.min.css",
@@ -37,7 +39,8 @@
 		"./node_modules/ng-bs-animated-button/ng-bs-animated-button.css",
 		"./node_modules/leaflet/dist/leaflet.css",
 		"./node_modules/leaflet.markercluster/dist/MarkerCluster.css",
-		"./node_modules/leaflet.markercluster/dist/MarkerCluster.Default.css"
+		"./node_modules/leaflet.markercluster/dist/MarkerCluster.Default.css",
+		"./node_modules/sweetalert/dist/sweetalert.css"
 	],
 	"devVendorJS": [
 		"./node_modules/angular/angular.js",
@@ -57,7 +60,9 @@
 		"./node_modules/leaflet.markercluster/dist/leaflet.markercluster-src.js",
 		"./node_modules/leaflet.gridlayer.googlemutant/Leaflet.GoogleMutant.js",
 		"./node_modules/pdfjs-dist/build/pdf.js",
-		"./node_modules/pdfjs-dist/build/pdf.worker.js"
+		"./node_modules/pdfjs-dist/build/pdf.worker.js",
+		"./src/app_client/assets/js/docxjs-1.0.0.min.js",
+		"./node_modules/sweetalert/dist/sweetalert-dev.js"
 	],
 	"devVendorCSS": [
 		"./node_modules/bootstrap/dist/css/bootstrap.css",
@@ -69,7 +74,8 @@
 		"./node_modules/ng-bs-animated-button/ng-bs-animated-button.css",
 		"./node_modules/leaflet/dist/leaflet.css",
 		"./node_modules/leaflet.markercluster/dist/MarkerCluster.css",
-		"./node_modules/leaflet.markercluster/dist/MarkerCluster.Default.css"
+		"./node_modules/leaflet.markercluster/dist/MarkerCluster.Default.css",
+		"./node_modules/sweetalert/dist/sweetalert.css"
 	],
 	"CSS": [
 		"./src/app_client/assets/css/blue-style.css"

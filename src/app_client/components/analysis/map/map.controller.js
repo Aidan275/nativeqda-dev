@@ -341,10 +341,16 @@
 		}
 
 		function confirmDelete(key, fileName) {
-			var deleteFile = $window.confirm("Are you sure you want to delete " + fileName + "?");
-			if(deleteFile){
+			swal({
+				title: "Are you sure?",
+				text: "Confirm to delete the file '" + fileName + "'",
+				type: "warning",
+				showCancelButton: true,
+				confirmButtonColor: "#d9534f",
+				confirmButtonText: "Yes, delete it!"
+			}, function() {
 				deleteFileDB(key, fileName);
-			}
+			});
 		}
 
 		function deleteFileDB(key, fileName) {
@@ -357,8 +363,8 @@
 		function deleteFileS3(key, fileName) {
 			filesService.deleteFileS3({key: key})
 			.then(function(response) {
-				logger.success('File ' + fileName + ' deleted successfully', '', 'Success');
 				removeMapMarker();
+				logger.success("'" + fileName + "' was deleted successfully", "", "Success");
 			});
 		}
 

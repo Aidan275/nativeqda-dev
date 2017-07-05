@@ -52,10 +52,16 @@
 		}
 
 		function confirmDelete(name, visualId) {
-			var doDelete = $window.confirm("Are you sure you want to delete " + name + "?");
-			if(doDelete){
+			swal({
+				title: "Are you sure?",
+				text: "Confirm to delete the visualisation '" + name + "'",
+				type: "warning",
+				showCancelButton: true,
+				confirmButtonColor: "#d9534f",
+				confirmButtonText: "Yes, delete it!"
+			}, function() {
 				deleteVisual(visualId);
-			}
+			});
 		};
 
 		function deleteVisual(visualId) {

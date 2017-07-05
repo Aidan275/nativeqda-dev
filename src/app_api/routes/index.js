@@ -38,7 +38,5 @@ router.post('/files/objectAclDB', auth, ctrlFile.objectAclDB);
 
 router.post('/analysis/aylien/concept', auth, ctrlAnalysis.aylienConceptAnalysis);
 router.post('/analysis/watson', auth, ctrlAnalysis.watsonNLUAnalysis);
-router.post('/file-conversion/watson', auth, ctrlAnalysis.watsonFileConversion);
-
 
 module.exports = router;

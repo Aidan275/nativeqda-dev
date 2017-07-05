@@ -47,18 +47,24 @@
 		}
 
 		function confirmDelete(name, datasetId) {
-			var doDelete = $window.confirm("Are you sure you want to delete " + name + "?");
-			if(doDelete){
+			swal({
+				title: "Are you sure?",
+				text: "Confirm to delete the dataset '" + name + "'",
+				type: "warning",
+				showCancelButton: true,
+				confirmButtonColor: "#d9534f",
+				confirmButtonText: "Yes, delete it!"
+			}, function() {
 				deleteDataset(name, datasetId);
-			}
+			});
 		}
 
 		function deleteDataset(name, datasetId) {
 			datasetService.datasetDeleteOne(datasetId)
 			.then(function(response) {
+				removeFromList(datasetId);	// if deleting the dataset was successful, the deleted dataset is removed from the local array
 				logger.success('Dataset "' + name + '" was successfully deleted' ,'', 'Success');
-				removeFromList(datasetId);	// if deleting the dataset was successful, 
-			});								// the deleted dataset is removed from the local array
+			});
 		}
 
 		function removeFromList(datasetId) {

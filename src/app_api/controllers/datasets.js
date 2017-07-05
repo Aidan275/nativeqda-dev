@@ -28,8 +28,10 @@ module.exports.datasetCreate = function(req, res) {
 
 	console.log("datasets/" + path + ".pdf");
 
-	combineFiles();
-
+	addDatasetToDB();
+	// Skip combine files for now - just add to DB
+	// combineFiles();
+	
 	///////////////////////////
 
 	/* 	

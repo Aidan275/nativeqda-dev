@@ -8,7 +8,7 @@
 	
 
 	/* @ngInject */
-	function filesUploadCtrl (mapService, $http, $window, $scope, $uibModal, Upload, NgTableParams, filesService, authentication, logger, $filter, $compile, analysisService) {
+	function filesUploadCtrl (mapService, $http, $window, $scope, $uibModal, Upload, NgTableParams, filesService, authentication, logger, $filter, $compile) {
 		var vm = this;
 
 		// Bindable Functions
@@ -337,7 +337,20 @@
 		// If successful, the file info is then posted to the DB
 		// need to make neater
 		function onFileSelect(uploadFiles) {
-			//convertFile();
+			// Testing DocxJS for converting docx files to text... looks good
+			var docxJS = new DocxJS();
+			docxJS.parse(
+				uploadFiles[0],
+				function () {
+					console.log("Success");
+					docxJS.getPlainText(function(plainText){
+						console.log(plainText);
+					});
+				}, function (e) {
+					console.log("Error!", e);
+				}
+			);
+
 			if (uploadFiles.length > 0) {
 				vm.file = uploadFiles[0];
 				vm.fileInfo = {
@@ -396,161 +409,6 @@
 				});
 			});
 		}
-
-		function convertFile(){
-
-			var processData = {
-				"apikey": "tZEO_JfLuf7_fJ1w6k8V31bVivFwcir6CODSjBtwj8erYWVY_H_7g5FqgNzqgh56UTllagqT8dWXVIl3AaO_fA",
-				"inputformat": "pdf",
-				"outputformat": "txt"
-			};
-
-			$http.post('https://api.cloudconvert.com/process', processData).then(completeProcessConvert)
-			.catch(failedProcessConvert);
-
-			function failedProcessConvert(e) { console.log(e); }
-
-			function completeProcessConvert(data) { 
-				var convertData = {
-					"input": {
-						"s3": {
-							"accesskeyid": "AKIAJ5RRRRKPR7ICCGTA",
-							"secretaccesskey": "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",
-							"bucket": "nativeqda-assets-dev"
-						}
-					},
-					"file": "txt/test/test01.pdf",
-					"outputformat": "txt",
-					"output": {
-						"s3": {
-							"accesskeyid": "AKIAJ5RRRRKPR7ICCGTA",
-							"secretaccesskey": "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",
-							"bucket": "nativeqda-assets-dev",
-							"path": "txt/test/test01.pdf.txt"
-						}
-					}
-				};
-
-				console.log(convertData); 
-				console.log(data); 
-
-				$http.post(data.data.url, convertData).then(completeConvert)
-				.catch(failedConvert);
-
-				function failedConvert(e) { console.log(e); }
-
-				function completeConvert(data) { 
-					console.log(data); 
-				}
-			}
-			
-
-
-		}
-
-		/*
-		var processData = {
-			"apikey": "tZEO_JfLuf7_fJ1w6k8V31bVivFwcir6CODSjBtwj8erYWVY_H_7g5FqgNzqgh56UTllagqT8dWXVIl3AaO_fA",
-			"mode": "combine",
-			"outputformat": "pdf"
-		};
-
-		$http.post('https://api.cloudconvert.com/process', processData).then(completeProcessConvert)
-		.catch(failedProcessConvert);
-
-		function failedProcessConvert(e) { console.log(e); }
-
-		function completeProcessConvert(data) { 
-			var convertData = {
-				"mode": "combine",
-				"input": {
-					"s3": {
-						"accesskeyid": "AKIAJ5RRRRKPR7ICCGTA",
-						"secretaccesskey": "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",
-						"bucket": "nativeqda-assets-dev"
-					}
-				},
-				"files": [
-				"2017/07/34257484d630831da908-ALICE.docx",
-				"2017/07/2d08844c50983787d101-I Have a Dream.pdf",
-				"2017/07/ef24406f5e953d6ceba1-Anna Pavlovna's drawing room was gradually filling.txt"
-				],
-				"outputformat": "pdf",
-				"output": {
-					"s3": {
-						"accesskeyid": "AKIAJ5RRRRKPR7ICCGTA",
-						"secretaccesskey": "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",
-						"bucket": "nativeqda-assets-dev",
-						"path": "txt/test/test01.pdf"
-					}
-				},
-				"wait": true
-			};
-
-			console.log(convertData); 
-			console.log(data); 
-
-			$http.post(data.data.url, convertData).then(completeConvert)
-			.catch(failedConvert);
-
-			function failedConvert(e) { console.log(e); }
-
-			function completeConvert(data) { 
-				console.log(data); 
-			}
-		}
-		*/
-
-
-
-
-		/*
-		var processData = {
-			"apikey": "tZEO_JfLuf7_fJ1w6k8V31bVivFwcir6CODSjBtwj8erYWVY_H_7g5FqgNzqgh56UTllagqT8dWXVIl3AaO_fA",
-			"inputformat": "pdf",
-			"outputformat": "txt"
-		};
-
-		$http.post('https://api.cloudconvert.com/process', processData).then(completeProcessConvert)
-		.catch(failedProcessConvert);
-
-		function failedProcessConvert(e) { console.log(e); }
-
-		function completeProcessConvert(data) { 
-			var convertData = {
-				"input": {
-					"s3": {
-						"accesskeyid": "AKIAJ5RRRRKPR7ICCGTA",
-						"secretaccesskey": "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",
-						"bucket": "nativeqda-assets-dev"
-					}
-				},
-				"file": key,
-				"outputformat": "txt",
-				"output": {
-					"s3": {
-						"accesskeyid": "AKIAJ5RRRRKPR7ICCGTA",
-						"secretaccesskey": "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",
-						"bucket": "nativeqda-assets-dev",
-						"path": "txt/" + key
-					}
-				}
-			};
-
-			console.log(convertData); 
-			console.log(data); 
-
-			$http.post(data.data.url, convertData).then(completeConvert)
-			.catch(failedConvert);
-
-			function failedConvert(e) { console.log(e); }
-
-			function completeConvert(data) { 
-				console.log(data); 
-			}
-		}
-		*/
-
 
 		function updateMapMarkers() {
 			vm.markers.clearLayers()

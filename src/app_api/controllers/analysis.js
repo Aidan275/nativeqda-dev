@@ -10,7 +10,6 @@ var natural_language_understanding = new NaturalLanguageUnderstandingV1({
 	"password": "eAf38DQyEj1g",
 	'version_date': '2017-02-27'
 });
-var textract = require('textract');
 
 var sendJSONresponse = function(res, status, content) {
 	res.status(status);
@@ -64,21 +63,3 @@ module.exports.watsonNLUAnalysis = function(req, res) {
 	});
 
 };
-
-module.exports.watsonFileConversion = function(req, res) {
-	var buffer = req.body.buffer;
-	var type = req.body.buffer;
-
-	textract.fromBufferWithMime(type, buffer, function( error, text ) {
-		if (error) {
-			sendJSONresponse(res, 404, error);
-		}
-		else {
-			sendJSONresponse(res, 200, response);
-		}
-	});
-};
-
-
-
-
