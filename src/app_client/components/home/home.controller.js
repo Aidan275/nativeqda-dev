@@ -6,7 +6,7 @@
 	.module('nativeQDAApp')
 	.controller('homeCtrl', homeCtrl);
 	
-	homeCtrl.$inject = ['filesService', '$scope', '$filter', '$compile', '$window', '$uibModal', 'logger'];
+	/* @ngInject */
 	function homeCtrl (filesService, $scope, $filter, $compile, $window, $uibModal, logger) {
 		var vm = this;
 

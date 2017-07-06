@@ -20,7 +20,7 @@ router.post('/login', ctrlAuth.login);
 router.post('/analysis/data/create', auth, ctrlDataset.datasetCreate);
 router.get('/analysis/data/list', auth, ctrlDataset.listDatasets);
 router.get('/analysis/data/read/:datasetid', auth, ctrlDataset.datasetReadOne);
-router.delete('/analysis/data/delete/:datasetid', auth, ctrlDataset.datasetDeleteOne);
+router.delete('/analysis/data/delete', auth, ctrlDataset.deleteDatasetDB);
 
 router.post('/event', ctrlEvent.event);
 

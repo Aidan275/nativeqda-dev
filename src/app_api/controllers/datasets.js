@@ -57,9 +57,14 @@ var buildDatasetList = function(req, res, results) {
 	results.forEach(function(doc) {
 		datasetList.push({
 			name: doc.name,
+			desc: doc.desc,
+			size: doc.size,
+			key: doc.key,
+			url: doc.url,
 			createdBy: doc.createdBy,
 			dateCreated: doc.dateCreated,
-			desc: doc.desc,
+			lastModified: doc.lastModified,
+			files: doc.files,
 			_id: doc._id
 		});
 	});
@@ -91,11 +96,11 @@ module.exports.datasetReadOne = function(req, res) {
 	}
 }
 
-module.exports.datasetDeleteOne = function(req, res) {
-	var datasetid = req.params.datasetid;
-	if (datasetid) {
+module.exports.deleteDatasetDB = function(req, res) {
+	var key = req.query.key;
+	if (key) {
 		Dataset
-		.findByIdAndRemove(datasetid)
+		.remove({key: key})
 		.exec(
 			function(err, dataset) {
 				if (err) {
@@ -103,12 +108,12 @@ module.exports.datasetDeleteOne = function(req, res) {
 					sendJSONresponse(res, 404, err);
 					return;
 				}
-				console.log("dataset id " + datasetid + " deleted");
+				console.log("dataset with key " + key + " deleted");
 				sendJSONresponse(res, 204, null);
 			});
 	} else {
 		sendJSONresponse(res, 404, {
-			"message": "No datasetid"
+			"message": "No key"
 		});
 	}
 }

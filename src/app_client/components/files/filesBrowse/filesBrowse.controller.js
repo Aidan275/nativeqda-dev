@@ -58,7 +58,6 @@
 		}
 
 		function confirmDelete(key, fileName, textFileKey) {
-			console.log(textFileKey);
 			swal({
 				title: "Are you sure?",
 				text: "Confirm to delete the file '" + fileName + "'",

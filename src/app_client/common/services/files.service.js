@@ -6,7 +6,7 @@
 	.module('nativeQDAApp')
 	.service('filesService', filesService);
 
-	filesService.$inject = ['$http', 'authentication', 'exception'];
+    /* @ngInject */
 	function filesService ($http, authentication, exception) {
 		return {
 			signUploadS3	: signUploadS3,

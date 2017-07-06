@@ -10,7 +10,7 @@
 			datasetCreate	: datasetCreate,
 			listDatasets	: listDatasets,
 			datasetReadOne	: datasetReadOne,
-			datasetDeleteOne: datasetDeleteOne
+			deleteDatasetDB	: deleteDatasetDB
 		};
 
 		// Creates a dataset with a name and dexcription
@@ -50,16 +50,18 @@
         	function datasetReadOneFailed(e) { return exception.catcher('XHR Failed for datasetReadOne')(e); }
 		};
 
-		function datasetDeleteOne(datasetid){
-			return $http.delete('/api/analysis/data/delete/' + datasetid, {
+		function deleteDatasetDB(key){
+			// Encode the key for the API URL incase it includes reserved characters (e.g '+', '&')
+            var encodedKey = encodeURIComponent(key);
+			return $http.delete('/api/analysis/data/delete?key=' + encodedKey, {
 				headers: {
 					Authorization: 'Bearer '+ authentication.getToken()
 				}
-			}).then(datasetDeleteOneComplete)
-        	.catch(datasetDeleteOneFailed);
+			}).then(deleteDatasetDBComplete)
+        	.catch(deleteDatasetDBFailed);
 
-        	function datasetDeleteOneComplete(data) { return data; }
-        	function datasetDeleteOneFailed(e) { return exception.catcher('XHR Failed for datasetDeleteOne')(e); }
+        	function deleteDatasetDBComplete(data) { return data; }
+        	function deleteDatasetDBFailed(e) { return exception.catcher('XHR Failed for deleteDatasetDB')(e); }
 		};
 	}
 

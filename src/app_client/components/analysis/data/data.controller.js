@@ -4,8 +4,8 @@
 	.module('nativeQDAApp')
 	.controller('dataCtrl', dataCtrl);
 
-	dataCtrl.$inject = ['$window', '$sce', '$uibModal', 'NgTableParams', 'datasetService', 'logger'];
-	function dataCtrl($window, $sce, $uibModal, NgTableParams, datasetService, logger) {
+	/* @ngInject */
+	function dataCtrl($window, $sce, $uibModal, NgTableParams, datasetService, logger, filesService) {
 		var vm = this;
 		
 		// Bindable Functions
@@ -46,31 +46,39 @@
 			});
 		}
 
-		function confirmDelete(name, datasetId) {
+		function confirmDelete(key, datasetName) {
 			swal({
 				title: "Are you sure?",
-				text: "Confirm to delete the dataset '" + name + "'",
+				text: "Confirm to delete the dataset '" + datasetName + "'",
 				type: "warning",
 				showCancelButton: true,
 				allowOutsideClick: true,
 				confirmButtonColor: "#d9534f",
 				confirmButtonText: "Yes, delete it!"
 			}, function() {
-				deleteDataset(name, datasetId);
+				deleteDatasetDB(key, datasetName);
 			});
 		}
 
-		function deleteDataset(name, datasetId) {
-			datasetService.datasetDeleteOne(datasetId)
+		function deleteDatasetDB(key, datasetName) {
+			datasetService.deleteDatasetDB(key)
 			.then(function(response) {
-				removeFromList(datasetId);	// if deleting the dataset was successful, the deleted dataset is removed from the local array
-				logger.success('Dataset "' + name + '" was successfully deleted' ,'', 'Success');
+				deleteDatasetS3(key, datasetName);
 			});
 		}
 
-		function removeFromList(datasetId) {
-			// Find the dataset index for datasetId, will return -1 if not found 
-			var datasetIndex = vm.dataset.findIndex(function(obj){return obj._id == datasetId});
+		function deleteDatasetS3(key, datasetName) {
+			filesService.deleteFileS3({key: key})
+			.then(function(response) {
+
+				removeFromList(key);	// if deleting the dataset was successful, the deleted dataset is removed from the local array
+				logger.success('Dataset "' + datasetName + '" was successfully deleted' ,'', 'Success');
+			});
+		}
+
+		function removeFromList(key) {
+			// Find the dataset index for key, will return -1 if not found 
+			var datasetIndex = vm.dataset.findIndex(function(obj){return obj.key == key});
 
 			// Remove the dataset from the vm.dataset array
 			if (datasetIndex > -1) {
