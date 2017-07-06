@@ -52,6 +52,7 @@
 				text: "Confirm to delete the dataset '" + name + "'",
 				type: "warning",
 				showCancelButton: true,
+				allowOutsideClick: true,
 				confirmButtonColor: "#d9534f",
 				confirmButtonText: "Yes, delete it!"
 			}, function() {

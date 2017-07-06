@@ -252,7 +252,7 @@ gulp.task('nodemon', function (cb) {
 	return plug.nodemon({
 		script: paths.server + 'app.js',
 		env: {
-			'NODE_ENV': 'dev',		// Tells app.js to use the development files in the src folder
+			'NODE_ENV': 'development',		// Tells app.js to use the development files in the src folder
 			'PORT': 3000
 		},
 		ignore: [

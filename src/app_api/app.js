@@ -53,7 +53,7 @@ switch (environment){
 		    res.sendFile(path.join(__dirname, '../..', 'dist', 'index.html'));
 		});
         break;
-    case 'dev':
+    case 'development':
     default:
         console.log('------- LOCAL DEVELOPMENT ENVIRONMENT -------');
         console.log('serving from: \n / \n /src/app_client');

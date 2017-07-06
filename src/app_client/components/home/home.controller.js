@@ -343,6 +343,7 @@
 				text: "Confirm to delete the file '" + fileName + "'",
 				type: "warning",
 				showCancelButton: true,
+				allowOutsideClick: true,
 				confirmButtonColor: "#d9534f",
 				confirmButtonText: "Yes, delete it!"
 			}, function() {
