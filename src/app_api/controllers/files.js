@@ -13,15 +13,26 @@ var sendJSONresponse = function(res, status, content) {
 
 module.exports.signUploadS3 = function(req, res) {
 	var s3Url = 'https://' + process.env.S3_BUCKET_NAME + '.s3-ap-southeast-2.amazonaws.com';
-	
-	// Generate date based key
-	var datePrefix = moment().format('YYYY[/]MM');
-	var key = crypto.randomBytes(10).toString('hex');
-	var hashFilename = key + '-' + req.body.name;
-	var path = datePrefix + '/' + hashFilename;
+	var path = null;
+
+	// If a key is supplied in the request, use, otherwise generate a date based key
+	if(req.body.key) {
+		path = req.body.key;
+	}
+	else {
+		var datePrefix = moment().format('YYYY[/]MM');
+		var key = crypto.randomBytes(10).toString('hex');
+		var hashFilename = key + '-' + req.body.name;
+		path = datePrefix + '/' + hashFilename;
+	}
+
+	// If the file being uploaded is a dataset (concat text file) edit path to include 
+	// the parent datasets folder and the .txt file extension
+	if(req.body.dataset) {
+		path = 'datasets/' + path + '.txt';
+	}
 
 	var type = req.body.type
-
 	var readType = 'private';
 
     var expiration = moment().add(5, 'm').toDate(); //15 minutes
@@ -110,8 +121,10 @@ module.exports.addFileDB = function(req, res) {
 	var file = new File();
 
 	file.name = req.body.name;
-	file.eTag = req.body.eTag;
 	file.key = req.body.key;
+	if(req.body.textFileKey){
+		file.textFileKey = req.body.textFileKey;
+	}
 	file.size = req.body.size;
 	file.url = req.body.url;
 	file.createdBy = req.body.createdBy;
@@ -132,8 +145,13 @@ module.exports.addFileDB = function(req, res) {
 };
 
 module.exports.getFileListDB = function(req, res) {
+	var options = {};
+	if(req.query.onlyTextFiles === 'true'){
+		options = { textFileKey: { $exists: true } };
+	}
+
 	File
-	.find()
+	.find(options)
 	.exec(
 		function(err, results) {
 			if (!results) {
@@ -154,8 +172,8 @@ var buildFileListDB = function(req, res, results) {
 	var fileList = [];
 	results.forEach(function(doc) {
 		fileList.push({
-			eTag: doc.eTag,
 			key: doc.key,
+			textFileKey: doc.textFileKey,
 			size: doc.size,
 			url: doc.url,
 			createdBy: doc.createdBy,

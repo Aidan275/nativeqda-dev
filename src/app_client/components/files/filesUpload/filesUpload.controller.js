@@ -29,7 +29,10 @@
 		vm.address = '';
 		vm.formattedAddress = '';
 		vm.currentPercentage = '0';
-		vm.file = null;
+		vm.file = {};
+		vm.fileInfo = {};
+		vm.textFile = {};
+		vm.textFileInfo = {};
 		vm.pageHeader = {
 			title: 'Upload Files'
 		};
@@ -337,20 +340,6 @@
 		// If successful, the file info is then posted to the DB
 		// need to make neater
 		function onFileSelect(uploadFiles) {
-			// Testing DocxJS for converting docx files to text... looks good
-			var docxJS = new DocxJS();
-			docxJS.parse(
-				uploadFiles[0],
-				function () {
-					console.log("Success");
-					docxJS.getPlainText(function(plainText){
-						console.log(plainText);
-					});
-				}, function (e) {
-					console.log("Error!", e);
-				}
-			);
-
 			if (uploadFiles.length > 0) {
 				vm.file = uploadFiles[0];
 				vm.fileInfo = {
@@ -360,7 +349,112 @@
 			}
 		}
 
+		// Testing DocxJS for converting docx files to text... looks good
+		function convertDocxToText() {
+			var docxJS = new DocxJS();
+			docxJS.parse(
+				vm.file,
+				function () {
+					docxJS.getPlainText(function(text){
+						createTextFile(text);
+					});
+				}, function (error) {
+					logger.error(error.msg, error, 'Error');
+					cleanUpForNextUpload();
+				}
+				);
+		}
+
+		function convertPDFToText() {
+			var fileReader = new FileReader();
+			fileReader.onload = function() { 
+				var arrayBuffer = this.result;	
+
+				getPDFText(arrayBuffer).then(function (text) {
+					createTextFile(text);
+				}, function (error) {
+					logger.error(error.message, error, 'Error');
+					cleanUpForNextUpload();
+				});
+			}
+			fileReader.readAsArrayBuffer(vm.file);
+
+
+			function getPDFText(pdfFile){
+				var pdf = PDFJS.getDocument({data: pdfFile});
+				return pdf.then(function(pdf) {
+					var maxPages = pdf.pdfInfo.numPages;
+					var countPromises = [];
+					for (var j = 1; j <= maxPages; j++) {
+						var page = pdf.getPage(j);
+
+						var txt = "";
+						countPromises.push(page.then(function(page) {
+							var textContent = page.getTextContent();
+							return textContent.then(function(text){
+								return text.items.map(function (s) { return s.str; }).join('');
+							});
+						}));
+					}
+
+					return Promise.all(countPromises).then(function (texts) {
+						return texts.join('');
+					});
+				});
+			}
+		}
+
+		function createTextFile(text) {
+			// Replaces the file name extension with .txt
+			var textFileName = vm.fileInfo.name.replace(/\.[^/.]+$/, "")
+			textFileName += ".txt";
+			vm.textFile = new File([text], textFileName, {type: "text/plain"});
+			vm.textFileInfo = {
+				name: vm.textFile.name,
+				type: vm.textFile.type
+			};
+			uploadTextFile();
+		}
+
 		function uploadFile() {
+			var fileExtension = (vm.fileInfo.name.split('.').pop()).toLowerCase();
+			if(fileExtension === 'pdf'){
+				convertPDFToText()
+			} else if(fileExtension === 'docx') {
+				convertDocxToText();
+			} else if(fileExtension === 'txt') {
+				vm.fileInfo.isTxtFile = true;
+				uploadActualFile();
+			} else {
+				uploadActualFile();
+			}
+		}
+
+		function uploadTextFile() {
+			filesService.signUploadS3(vm.textFileInfo)
+			.then(function(result) {
+				Upload.upload({
+					method: 'POST',
+					url: result.data.url, 
+					fields: result.data.fields, 
+					file: vm.textFile
+				})
+				.then(function(response) {
+					console.log(vm.textFileInfo.name + ' successfully uploaded to S3');
+					vm.textFileInfo.key = result.data.fields.key;
+					// Use the same key but with the original file extension (e.g. use .pdf not .txt)
+					vm.fileInfo.key = vm.textFileInfo.key.substring(0, vm.textFileInfo.key.indexOf('-'));
+					vm.fileInfo.key += "-" + vm.fileInfo.name;
+					uploadActualFile();
+				}, function(error) {
+					var xml = $.parseXML(error.data);
+					logger.error($(xml).find("Message").text(), '', 'Error');
+					cleanUpForNextUpload();
+				});
+			});
+		}
+
+		function uploadActualFile() {
 			filesService.signUploadS3(vm.fileInfo)
 			.then(function(result) {
 				Upload.upload({
@@ -373,7 +467,7 @@
 					vm.currentPercentage = parseInt(100.0 * evt.loaded / evt.total);
 				})
 				.then(function(response) {
-					console.log(response.config.file.name + ' successfully uploaded to S3');
+					console.log(vm.fileInfo.name + ' successfully uploaded to S3');
 					// parses XML data response to jQuery object to be stored in the database
 					var xml = $.parseXML(response.data);
 					// maps the tag obects to an array of strings to be stored in the database
@@ -385,7 +479,7 @@
 					var fileDetails = {
 						name : vm.fileInfo.name,
 						key : key,
-						size : response.config.file.size,
+						size : vm.file.size,
 						url : url,
 						createdBy : authentication.currentUser().name,
 						coords : { 
@@ -394,18 +488,24 @@
 						},
 						tags : tagStrings
 					}
-					console.log(key);
+					if(vm.textFileInfo.key) {
+						fileDetails.textFileKey = vm.textFileInfo.key;
+					}
+					if(vm.fileInfo.isTxtFile){
+						fileDetails.textFileKey = key;
+					}
 					filesService.addFileDB(fileDetails)
 					.then(function(response) {
 						vm.fileList.push(response.data);
 						console.log(vm.fileInfo.name + ' successfully added to DB');
 						logger.success(vm.fileInfo.name + ' successfully uploaded', '', 'Success');
-						
 						updateMapMarkers();
+						cleanUpForNextUpload();
 					});
 				}, function(error) {
 					var xml = $.parseXML(error.data);
 					logger.error($(xml).find("Message").text(), '', 'Error');
+					cleanUpForNextUpload();
 				});
 			});
 		}
@@ -413,6 +513,13 @@
 		function updateMapMarkers() {
 			vm.markers.clearLayers()
 			addMapMarkers();
+		}
+
+		function cleanUpForNextUpload() {
+			vm.file = {};
+			vm.fileInfo = {};
+			vm.textFile = {};
+			vm.textFileInfo = {};
 		}
 	}
 

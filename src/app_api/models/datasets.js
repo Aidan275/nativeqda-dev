@@ -5,6 +5,20 @@ var datasetSchema = new mongoose.Schema({
 		type: String, 
 		required: true
 	},
+	desc: {
+		type: String, 
+		required: true
+	},
+	size: {
+		type: Number
+	},
+	key: {
+		type: String,
+		required: true
+	},
+	url: {
+		type: String
+	},
 	createdBy: {
 		type: String, 
 		required: true
@@ -13,18 +27,14 @@ var datasetSchema = new mongoose.Schema({
 		type: Date, 
 		"default": Date.now
 	},
-	desc: {
-		type: String, 
-		required: true
+	lastModified: {
+		type: Date,
+		"default": Date.now
 	},
 	files: [{
 		type: String, 
 		required: true
 	}],
-	key: {
-		type: String,
-		required: true
-	}
 });
 
 mongoose.model('Dataset', datasetSchema);

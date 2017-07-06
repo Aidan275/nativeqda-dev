@@ -26,8 +26,8 @@
 		function readDataset() {
 			datasetService.datasetReadOne(datasetId)
 			.then(function(response) {
-				vm.data = response.data;
-				vm.data.files.forEach(function(key){
+				vm.dataset = response.data;
+				vm.dataset.files.forEach(function(key){
 					var name = key.substring(key.indexOf("-") + 1);
 					var file = {};
 					file.key = key;

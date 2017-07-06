@@ -3,23 +3,23 @@
 	<div style="margin:30px;">
 		<h3>View Dataset</h3>
 
-		<label>Name: </label> {{vm.data.name}}
+		<label>Name: </label> {{vm.dataset.name}}
 		<br/>
-		<label>Description: </label> {{vm.data.desc}}
+		<label>Description: </label> {{vm.dataset.desc}}
 		<br/>
-		<label>Created By: </label> {{vm.data.createdBy}}
+		<label>Created By: </label> {{vm.dataset.createdBy}}
 		<br/>
-		<label>Date Created: </label> {{vm.data.dateCreated | date : "dd MMMM, yyyy hh:mm:ss a"}} 
+		<label>Date Created: </label> {{vm.dataset.dateCreated | date : "dd MMMM, yyyy hh:mm:ss a"}} 
 		<br/>
-		<label>ID: </label> {{vm.data._id}}
+		<label>ID: </label> {{vm.dataset._id}}
 		<br/>
-		<label>Included Files: </label> 
+		<label>Included Data: </label> 
 		<br />
 		<span ng-repeat="file in vm.files">
 			<a ng-click="vm.viewFile(file.key)" style="cursor:pointer;">{{file.name}}</a><br/> 
 		</span>
 		<br />
-		<a ng-click="vm.viewFile(vm.data.key)" class="btn btn-success btn" role="button">View Dataset</a>
+		<a ng-click="vm.viewFile(vm.dataset.key)" class="btn btn-success btn" role="button">View Dataset</a>
 	</div>
 
 </div>

@@ -18,12 +18,12 @@ var fileSchema = new mongoose.Schema({
 		type: String,
 		required: true
 	},
-	eTag: {
-		type: String
-	},
 	key: {
 		type: String,
 		required: true
+	},
+	textFileKey: {
+		type: String
 	},
 	lastModified: {
 		type: Date,

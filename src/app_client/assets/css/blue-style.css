@@ -90,11 +90,11 @@ body, html {
 }
 
 .navbar-default .navbar-toggle .icon-bar {
-    background-color: #fff;
+	background-color: #fff;
 }
 
 .navbar-default .navbar-toggle:hover, .navbar-default .navbar-toggle:focus {
-    background-color: #2d65ff;
+	background-color: #2d65ff;
 }
 
 #banner{
@@ -222,50 +222,50 @@ div[ng-table-pagination=params] {
 }
 
 #toast-container > .toast-warning {
-    background-image: none !important;
+	background-image: none !important;
 }
 
 #toast-container > .toast-warning:before {
-    position: fixed;
-    font-family: FontAwesome;
-    font-size: 24px;
-    float: left;
-    padding-right: 0.5em;
-    margin: auto 0.5em auto -1.5em;
+	position: fixed;
+	font-family: FontAwesome;
+	font-size: 24px;
+	float: left;
+	padding-right: 0.5em;
+	margin: auto 0.5em auto -1.5em;
 }        
 
 #toast-container > .toast-warning:before {
-    content: "\f071";
+	content: "\f071";
 }
 
 #toast-container > .toast-error {
-    background-image: none !important;
+	background-image: none !important;
 }
 
 #toast-container > .toast-error:before {
-    position: fixed;
-    font-family: FontAwesome;
-    font-size: 30px;
-    float: left;
-    padding-right: 0.5em;
-    margin: auto 0.5em auto -1em;
+	position: fixed;
+	font-family: FontAwesome;
+	font-size: 30px;
+	float: left;
+	padding-right: 0.5em;
+	margin: auto 0.5em auto -1em;
 }
 
 #toast-container > .toast-error:before {
-    content: "\f12a";
+	content: "\f12a";
 }
 
 /* ========== LEAFLET MAPS ========== */
 
 .leaflet-container .btn {
-    color: #fff !important;
+	color: #fff !important;
 }
 
 /* layers.png not in css folder, put into imgs folder for gulp image task */
 .leaflet-control-layers-toggle {
-    background-image: url(/assets/img/map/layers-2x.png) !important;
-    background-size: 60% !important;
-    background-repeat: no-repeat !important;
+	background-image: url(/assets/img/map/layers-2x.png) !important;
+	background-size: 60% !important;
+	background-repeat: no-repeat !important;
 }
 
 .leaflet-popup {

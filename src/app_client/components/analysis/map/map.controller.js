@@ -293,7 +293,7 @@
 
 				contentString += '<a ng-click="vm.viewFile(fileKey)" class="btn btn-success" role="button">View</a> ' +
 				'<a ng-click="vm.popupFileDetails(fileKey)" class="btn btn-primary" role="button">Details</a> ' +
-				'<a ng-click="vm.confirmDelete(fileKey, fileName)" class="btn btn-danger" role="button">Delete</a>' +
+				'<a ng-click="vm.confirmDelete(fileKey, fileName, textFileKey)" class="btn btn-danger" role="button">Delete</a>' +
 				'</div>';
 
 				// compiles the HTML so ng-click works
@@ -340,7 +340,7 @@
 			modalInstance.result.then(function() {});
 		}
 
-		function confirmDelete(key, fileName) {
+		function confirmDelete(key, fileName, textFileKey) {
 			swal({
 				title: "Are you sure?",
 				text: "Confirm to delete the file '" + fileName + "'",
@@ -350,20 +350,25 @@
 				confirmButtonColor: "#d9534f",
 				confirmButtonText: "Yes, delete it!"
 			}, function() {
-				deleteFileDB(key, fileName);
+				deleteFileDB(key, fileName, textFileKey);
 			});
 		}
 
-		function deleteFileDB(key, fileName) {
+		function deleteFileDB(key, fileName, textFileKey) {
 			filesService.deleteFileDB(key)
 			.then(function(response) {
-				deleteFileS3(key, fileName);
+				deleteFileS3(key, fileName, textFileKey);
 			});
 		}
 
-		function deleteFileS3(key, fileName) {
+		function deleteFileS3(key, fileName, textFileKey) {
 			filesService.deleteFileS3({key: key})
 			.then(function(response) {
+				// If a text file was generated for analysis, delete that file too.
+				// If the original file was a text file, just delete the original file
+				if(textFileKey && textFileKey != key){
+					filesService.deleteFileS3({key: textFileKey});
+				}
 				removeMapMarker();
 				logger.success("'" + fileName + "' was deleted successfully", "", "Success");
 			});

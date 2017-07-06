@@ -88,8 +88,8 @@
         	function getFileListS3Failed(e) { return exception.catcher('XHR Failed for getFileListS3')(e); }
         };
 
-        function getFileListDB(){
-        	return $http.get('/api/files/getFileListDB', {
+        function getFileListDB(onlyTextFiles){
+        	return $http.get('/api/files/getFileListDB?onlyTextFiles=' + onlyTextFiles, {
         		headers: {
         			Authorization: 'Bearer ' + authentication.getToken()
         		}
