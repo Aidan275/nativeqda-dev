@@ -7,7 +7,7 @@
 	.controller('mapCtrl', mapCtrl);
 
 	/* @ngInject */
-	function mapCtrl(filesService, $scope, $filter, $compile, $window, $uibModal, logger) {
+	function mapCtrl(filesService, $scope, $filter, $compile, $window, $uibModal, logger, bsLoadingOverlayService) {
 		var vm = this;
 
 		// Bindable Functions
@@ -49,6 +49,7 @@
 		}
 
 		function initMap() {
+			bsLoadingOverlayService.start({referenceId: 'map'});
 			var mapOptions = {
 				center: [-34.4054039, 150.87842999999998],	// Default position is UOW
 				zoom: 4
@@ -255,6 +256,7 @@
 		function getFileList() {
 			filesService.getFileListDB()
 			.then(function(response) {
+				bsLoadingOverlayService.stop({referenceId: 'map'});
 				vm.fileList = response.data;
 				addMapMarkers();
 			});

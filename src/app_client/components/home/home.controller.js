@@ -7,7 +7,7 @@
 	.controller('homeCtrl', homeCtrl);
 	
 	/* @ngInject */
-	function homeCtrl (filesService, $scope, $filter, $compile, $window, $uibModal, logger) {
+	function homeCtrl (filesService, $scope, $filter, $compile, $window, $uibModal, logger, bsLoadingOverlayService) {
 		var vm = this;
 
 		// Bindable Functions
@@ -50,7 +50,8 @@
     	}
 
     	function initMap() {
-			var mapOptions = {
+    		bsLoadingOverlayService.start({referenceId: 'home-map'});
+    		var mapOptions = {
 				center: [-34.4054039, 150.87842999999998],	// Default position is UOW
 				zoom: 4
 			};
@@ -224,11 +225,11 @@
 				radius > 2252800 && radius < 4505601 ? 3 :  		
 				radius > 4505600 && radius < 9011201 ? 2 :  		
 				radius > 9011200 && radius < 18022401 ? 1 : 1
-			);
+				);
 			var userPos = response.latlng;
 			var posMarker = L.marker(userPos, { icon: posIcon, zIndexOffset: -500 }).addTo(vm.map)
-				.bindPopup("You are within " + $filter('formatDistance')(radius) + " from this point")
-				.bindTooltip('<strong>Your Position</strong>');
+			.bindPopup("You are within " + $filter('formatDistance')(radius) + " from this point")
+			.bindTooltip('<strong>Your Position</strong>');
 			var posCicle = L.circle(userPos, {
 				radius: radius,
 				color: '#cb2529'
@@ -252,6 +253,7 @@
 		function getFileList() {
 			filesService.getFileListDB()
 			.then(function(response) {
+				bsLoadingOverlayService.stop({referenceId: 'home-map'});
 				vm.fileList = response.data;
 				addMapMarkers();
 			});
@@ -269,8 +271,8 @@
 				var lng = file.coords.coordinates[0];
 				var marker = L.marker([lat, lng], { icon: defaultIcon })
 				.bindTooltip(	'<strong>File Name:</strong> ' + file.name + '<br />' + 
-								'<strong>Created By:</strong> ' + file.createdBy + '<br />' + 
-								'<strong>Last Modified:</strong> ' + $filter('date')(file.lastModified, "dd MMMM, yyyy h:mm a"));
+					'<strong>Created By:</strong> ' + file.createdBy + '<br />' + 
+					'<strong>Last Modified:</strong> ' + $filter('date')(file.lastModified, "dd MMMM, yyyy h:mm a"));
 
 				var contentString = '<div class="info-window">' +
 				'<h3>' + file.name + '</h3>' +

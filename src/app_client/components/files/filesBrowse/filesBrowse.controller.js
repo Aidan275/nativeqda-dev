@@ -36,11 +36,9 @@
 			bsLoadingOverlayService.start({referenceId: 'file-list'});
 			filesService.getFileListDB()
 			.then(function(response) {
-				setTimeout(function(){ 
-					bsLoadingOverlayService.stop({referenceId: 'file-list'});
-					vm.fileList = response.data;
-					listFiles();
-				}, 3000);
+				bsLoadingOverlayService.stop({referenceId: 'file-list'});
+				vm.fileList = response.data;
+				listFiles();
 			});
 		}
 

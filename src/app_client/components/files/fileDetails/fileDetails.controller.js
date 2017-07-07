@@ -24,13 +24,10 @@
 		function activate() {
 			bsLoadingOverlayService.start({referenceId: 'file-details'});
 			filesService.fileReadOneDB(key)
-
 			.then(function(response) {
-				setTimeout(function(){ 
-					bsLoadingOverlayService.stop({referenceId: 'file-details'});
-					vm.file = response.data;
-					vm.tags = vm.file.tags.join(", ");
-				}, 3000);
+				bsLoadingOverlayService.stop({referenceId: 'file-details'});
+				vm.file = response.data;
+				vm.tags = vm.file.tags.join(", ");
 			});
 		}		
 

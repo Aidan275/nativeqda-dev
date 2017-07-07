@@ -49,8 +49,13 @@
 		<a class="btn btn-primary" role="button" ng-click="vm.uploadFile()">Upload</a>
 
 	</div>
+	
 	<div class="col-md-8" style="height:400px;">
-		<div id="map-files-page"></div>
+		<div class="bs-loading-container" bs-loading-overlay bs-loading-overlay-active-class="loading-overlay--active" bs-loading-overlay-reference-id="upload-map"> 
+			<div class="blur-this">
+				<div id="map-files-page"></div>
+			</div>
+		</div>
 	</div>
 
 	<div class="col-md-12">

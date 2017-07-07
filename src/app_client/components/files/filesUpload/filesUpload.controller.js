@@ -8,7 +8,7 @@
 	
 
 	/* @ngInject */
-	function filesUploadCtrl (mapService, $http, $window, $scope, $uibModal, Upload, NgTableParams, filesService, authentication, logger, $filter, $compile) {
+	function filesUploadCtrl (mapService, $http, $window, $scope, $uibModal, Upload, NgTableParams, filesService, authentication, logger, $filter, $compile, bsLoadingOverlayService) {
 		var vm = this;
 
 		// Bindable Functions
@@ -62,6 +62,7 @@
 		}
 
 		function initMap() {
+			bsLoadingOverlayService.start({referenceId: 'upload-map'});
 			var mapOptions = {
 				center: [-34.4054039, 150.87842999999998],	// Default position is UOW
 				zoom: 4
@@ -308,6 +309,7 @@
 		function getFileList() {
 			filesService.getFileListDB()
 			.then(function(response) {
+				bsLoadingOverlayService.stop({referenceId: 'upload-map'});
 				vm.fileList = response.data;
 				addMapMarkers();
 			});
