@@ -5,91 +5,43 @@
 
 	<page-header content="vm.pageHeader"></page-header>
 	
-	<!--User Settings-->
-	<div class="col-md-6" style="height:100%;">
-	<h2>User Settings</h2>
-	<div class="well" style="min-height:370px;height:100%;">	
-	<form class="form-horizontal" role="form">
-        <div class="form-group">
-          <label class="col-lg-3 control-label">First name:</label>
-          <div class="col-lg-8">
-            <input class="form-control" value="Anu" type="text">
-          </div>
-        </div>
-        <div class="form-group">
-          <label class="col-lg-3 control-label">Last name:</label>
-          <div class="col-lg-8">
-            <input class="form-control" value="Bissoonauth-Bedford" type="text">
-          </div>
-        </div>
-        <div class="form-group">
-          <label class="col-lg-3 control-label">Company:</label>
-          <div class="col-lg-8">
-            <input class="form-control" value="University of Wollongong" type="text">
-          </div>
-        </div>
-        <div class="form-group">
-          <label class="col-lg-3 control-label">Email:</label>
-          <div class="col-lg-8">
-            <input class="form-control" value="anu@uow.edu.au" type="text">
-          </div>
-        </div>
-        <div class="form-group">
-          <label class="col-lg-3 control-label">Time Zone:</label>
-          <div class="col-lg-8">
-            <div class="ui-select">
-              <select id="user_time_zone" class="form-control">
-                <option value="Hawaii">(GMT+12:00) New Zealand</option>
-                <option value="Mountain Time (US & Canada)">(GMT+11:00) New Caledonia</option>
-                <option value="Central Time (US & Canada)" selected="selected">(GMT+10:00) AEST Sydney</option>
-                <option value="Eastern Time (US & Canada)">(GMT+09:30) ACTZ Adelaide</option>
-                <option value="Indiana (East)">(GMT+08:00) AWST Perth</option>
-              </select>
-            </div>
-          </div>
-        </div>
-        <div class="form-group">
-          <label class="col-md-3 control-label">Username:</label>
-          <div class="col-md-8">
-            <input class="form-control" value="anu" type="text">
-          </div>
-        </div>
-        <div class="form-group">
-          <label class="col-md-3 control-label">Password:</label>
-          <div class="col-md-8">
-            <input class="form-control" value="Password17" type="password">
-          </div>
-        </div>
-        <div class="form-group">
-          <label class="col-md-3 control-label">Confirm password:</label>
-          <div class="col-md-8">
-            <input class="form-control" value="Password17" type="password">
-          </div>
-        </div>
-        <div class="form-group">
-          <label class="col-md-3 control-label"></label>
-          <div class="col-md-8">
-            <input class="btn btn-primary" value="Save Changes" type="button">
-            <span></span>
-            <input class="btn btn-default" value="Cancel" type="reset">
-          </div>
-        </div>
-      </form>
-	</div>
-	</div>
-	
 	<!--System Settings-->
-	<div class="col-md-6" style="height:100%;">
+	<div class="col-md-12" style="height:100%;">
 	<h2>System Settings</h2>
 	<div class="well" style="min-height:370px;height:100%;">
-	System Well
+	<form id="add-new-dataset" name="add-new-dataset" role="form" ng-submit="vm.onSubmit()" class="form-horizontal">
+	
+	<div class="form-group">
+		<label class="col-lg-2 control-label">License Code:</label>
+		<div class="col-lg-6">
+			<input disabled="disabled" class="form-control" value="2ABP-8QT5-SZE8-2DDM-VJL5-3JA6-ZNAA-AU4S-Z55B" type="text">
+		</div>
+	</div><br />
+	
+	<div class="form-group">
+		<label class="col-lg-2 control-label">Time Zone:</label>
+		<div class="col-lg-6">
+			<div class="ui-select">
+				<select id="user_time_zone" class="form-control">
+					<option value="Central Time (US & Canada)" selected="selected">Server Time</option>
+					<option value="Hawaii">(GMT+12:00) New Zealand</option>
+					<option value="Mountain Time (US & Canada)">(GMT+11:00) New Caledonia</option>
+					<option value="Central Time (US & Canada)">(GMT+10:00) AEST Sydney</option>
+					<option value="Eastern Time (US & Canada)">(GMT+09:30) ACTZ Adelaide</option>
+					<option value="Indiana (East)">(GMT+08:00) AWST Perth</option>
+				</select>
+			</div>
+		</div>
+	</div>
+	
+	</form>
 	</div>
 	</div>
 	
 	<!--User Management-->
 	<div class="col-md-12">
 	<h2>User Management</h2>
-	<div class="well" style="min-height:370px;height:100%;">
+	
 	
 	<table class="table table-condensed table-bordered table-striped" style="margin-top:5px;text-align:center;">
 		<tr>
@@ -150,7 +102,7 @@
 	</table>
 	<button style="float:right;" type="button" class="btn btn-default" aria-label="Right Align" title="New User"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
 	
-	</div>
+	
 	</div>
 
 	<footer-generic></footer-generic>
