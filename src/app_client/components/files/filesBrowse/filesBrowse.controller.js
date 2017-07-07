@@ -8,7 +8,7 @@
 	
 
 	/* @ngInject */
-	function filesBrowseCtrl (mapService, $http, $window, $scope, $uibModal, Upload, NgTableParams, filesService, authentication, logger, $filter, $compile) {
+	function filesBrowseCtrl (mapService, $http, $window, $scope, $uibModal, Upload, NgTableParams, filesService, authentication, logger, $filter, $compile, bsLoadingOverlayService) {
 		var vm = this;
 
 		// Bindable Functions
@@ -33,10 +33,14 @@
 
 		// Gets all the files from the MongoDB database
 		function getFileList() {
+			bsLoadingOverlayService.start({referenceId: 'file-list'});
 			filesService.getFileListDB()
 			.then(function(response) {
-				vm.fileList = response.data;
-				listFiles();
+				setTimeout(function(){ 
+					bsLoadingOverlayService.stop({referenceId: 'file-list'});
+					vm.fileList = response.data;
+					listFiles();
+				}, 3000);
 			});
 		}
 

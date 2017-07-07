@@ -5,7 +5,7 @@
 	.controller('fileDetails', fileDetails);
 
 	/* @ngInject */
-	function fileDetails ($uibModalInstance, $window, key, filesService) {
+	function fileDetails ($uibModalInstance, $window, key, filesService, bsLoadingOverlayService) {
 		var vm = this;
 
 		// Bindable Functions
@@ -22,10 +22,15 @@
 		///////////////////////////
 
 		function activate() {
+			bsLoadingOverlayService.start({referenceId: 'file-details'});
 			filesService.fileReadOneDB(key)
+
 			.then(function(response) {
-				vm.file = response.data;
-				vm.tags = vm.file.tags.join(", ");
+				setTimeout(function(){ 
+					bsLoadingOverlayService.stop({referenceId: 'file-details'});
+					vm.file = response.data;
+					vm.tags = vm.file.tags.join(", ");
+				}, 3000);
 			});
 		}		
 

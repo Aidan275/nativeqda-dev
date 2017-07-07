@@ -272,4 +272,12 @@ div[ng-table-pagination=params] {
 	word-wrap: break-word;
 }
 
-/* ========== SWEET ALERTS ========== */
+/* ========== ANGULAR LOADING OVERLAY ========== */
+
+.loading-overlay--active .blur-this{
+	-webkit-filter: blur(2px);
+	-moz-filter: blur(2px);
+	-o-filter: blur(2px);
+	-ms-filter: blur(2px);
+	filter: blur(2px);
+}

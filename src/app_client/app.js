@@ -101,7 +101,7 @@
 	    $locationProvider.html5Mode(true);
 	}
 
-	function run ($rootScope, $location, authentication) {
+	function run ($rootScope, $location, authentication, bsLoadingOverlayService) {
 		$rootScope.$on("$routeChangeStart", function(event, nextRoute, currentRoute) {
 			var postLogInRoute;
 			if(nextRoute.loginRequired && !authentication.isLoggedIn()){
@@ -113,11 +113,15 @@
 				postLogInRoute = null;
 			} 
 		});
+
+		bsLoadingOverlayService.setGlobalConfig({
+			templateUrl: '/common/views/loadingOverlayTemplate.html'
+		});
 	}
 
 	angular
 	.module('nativeQDAApp')
 	.config(['$routeProvider', '$locationProvider', config])
-	.run(['$rootScope', '$location', 'authentication', run]);
+	.run(['$rootScope', '$location', 'authentication', 'bsLoadingOverlayService', run]);
 
 })();
