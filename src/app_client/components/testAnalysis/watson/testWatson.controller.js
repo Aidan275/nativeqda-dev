@@ -16,7 +16,7 @@
 		vm.responseData = null;
 		vm.pageHeader = {
 			title: 'Test Analysis',
-			strapline: "Using IMB's Watson API"
+			strapline: "Using IBM's Watson API"
 		};
 
 		///////////////////////////

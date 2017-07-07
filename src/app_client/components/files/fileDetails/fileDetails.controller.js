@@ -4,7 +4,7 @@
 	.module('nativeQDAApp')
 	.controller('fileDetails', fileDetails);
 
-	fileDetails.$inject = ['$uibModalInstance', '$window', 'key', 'filesService'];
+	/* @ngInject */
 	function fileDetails ($uibModalInstance, $window, key, filesService) {
 		var vm = this;
 

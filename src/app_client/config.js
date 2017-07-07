@@ -6,7 +6,7 @@
     .module('nativeQDAApp')
     .config(configure);
 
-    configure.$inject = ['$qProvider', '$logProvider'];
+    /* @ngInject */
     function configure ($qProvider, $logProvider) {
 
         // Disables console errors for unhandled rejections since 
@@ -22,7 +22,7 @@
         // Turn debugging off/on (no info or warn)
         if ($logProvider.debugEnabled) {
             $logProvider.debugEnabled(true);
-        }    
+        }   
     }
 
 })();
