@@ -1,5 +1,6 @@
 <div class="modal-content">
 	<form id="add-new-dataset" name="add-new-dataset" role="form" ng-submit="vm.onSubmit()" class="form-horizontal">
+	
 		<div class="modal-header">
 			<button type="button" ng-click="vm.modal.cancel()" class="close">
 				<span aria-hidden="true">×</span>
@@ -8,6 +9,7 @@
 			<h4 id="dataset-modal-label" class="modal-title">Add New Dataset</h4>
 
 		</div>
+
 		<div class="modal-body">
 			<div role="alert" ng-show="vm.formError" class="alert alert-danger">{{ vm.formError }}</div>
 			<div class="form-group">

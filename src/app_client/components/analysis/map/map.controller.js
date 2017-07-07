@@ -7,7 +7,7 @@
 	.controller('mapCtrl', mapCtrl);
 
 	/* @ngInject */
-	function mapCtrl (filesService, $scope, $filter, $compile, $window, $uibModal, logger) {
+	function mapCtrl(filesService, $scope, $filter, $compile, $window, $uibModal, logger) {
 		var vm = this;
 
 		// Bindable Functions

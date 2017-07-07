@@ -5,7 +5,7 @@
 	.controller('newDatasetCtrl', newDatasetCtrl);
 
 	/* @ngInject */
-	function newDatasetCtrl ($uibModalInstance, datasetService, filesService, logger, NgTableParams, $window, Upload, authentication) {
+	function newDatasetCtrl($uibModalInstance, datasetService, filesService, logger, NgTableParams, $window, Upload, authentication) {
 		var vm = this;
 
 		// Bindable Functions
