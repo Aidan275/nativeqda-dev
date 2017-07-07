@@ -28,8 +28,7 @@
 		"./node_modules/pdfjs-dist/build/pdf.worker.min.js",
 		"./src/app_client/assets/js/docxjs-1.0.0.min.js",
 		"./node_modules/sweetalert/dist/sweetalert.min.js",
-		"./node_modules/angular-loading-overlay/dist/angular-loading-overlay.js",
-		"./node_modules/angular-loading-overlay-http-interceptor/dist/angular-loading-overlay-http-interceptor.js"
+		"./node_modules/angular-loading-overlay/dist/angular-loading-overlay.js"
 	],
 	"minVendorCSS": [
 		"./node_modules/bootstrap/dist/css/bootstrap.min.css",
@@ -65,8 +64,7 @@
 		"./node_modules/pdfjs-dist/build/pdf.worker.js",
 		"./src/app_client/assets/js/docxjs-1.0.0.min.js",
 		"./node_modules/sweetalert/dist/sweetalert-dev.js",
-		"./node_modules/angular-loading-overlay/dist/angular-loading-overlay.js",
-		"./node_modules/angular-loading-overlay-http-interceptor/dist/angular-loading-overlay-http-interceptor.js"
+		"./node_modules/angular-loading-overlay/dist/angular-loading-overlay.js"
 	],
 	"devVendorCSS": [
 		"./node_modules/bootstrap/dist/css/bootstrap.css",
