@@ -14,9 +14,11 @@
 
 		// Bindable Data
 		vm.credentials = {
-			name : "",
+			password : "",
 			email : "",
-			password : ""
+			firstName : "",
+			lastName : "",
+			company : ""
 		};
 		vm.pageHeader = {
 			title: 'Create a new NativeQDA account'
@@ -26,8 +28,8 @@
 		///////////////////////////
 
 		function onSubmit() {
-			if (!vm.credentials.name || !vm.credentials.email || !vm.credentials.password) {
-				logger.error("All fields required, please try again", '', 'Error');
+			if (!vm.credentials.password || !vm.credentials.email || !vm.credentials.firstName || !vm.credentials.lastName) {
+				logger.error("Missing fields required, please try again", '', 'Error');
 				return false;
 			} else {
 				register();

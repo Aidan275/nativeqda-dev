@@ -35,9 +35,9 @@
 			<ul class="nav navbar-nav navbar-right">
 				<li ng-hide="navvm.isLoggedIn"><a href="/login/?page={{ navvm.currentPath }}">Sign in</a></li>
 				<li ng-show="navvm.isLoggedIn" class="dropdown">
-					<a href="" class="dropdown-toggle" data-toggle="dropdown">{{ navvm.currentUser.name }} <span class="caret"></span></a>
+					<a href="" class="dropdown-toggle" data-toggle="dropdown">{{ navvm.currentUser.firstName }} <span class="caret"></span></a>
 					<ul class="dropdown-menu" role="menu">
-						<li><a ng-click="navvm.popupEditProfile()">Edit Profile</a></li>
+						<li><a ng-click="navvm.popupEditProfile(navvm.currentUser.email)">Edit Profile</a></li>
 						<li><a href="" ng-click="navvm.logout()">Logout</a></li>
 					</ul>
 				</li>

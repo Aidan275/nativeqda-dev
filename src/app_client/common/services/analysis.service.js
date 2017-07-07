@@ -6,11 +6,12 @@
 	.module('nativeQDAApp')
 	.service('analysisService', analysisService);
 
-	analysisService.$inject = ['$http', 'authentication', 'exception'];
+    /* @ngInject */
 	function analysisService ($http, authentication, exception) {
 		return {
 			aylienConceptAnalysis	: aylienConceptAnalysis,
-			watsonAnalysis			: watsonAnalysis
+			watsonAnalysis			: watsonAnalysis,
+			watsonConceptAnalysis 	: watsonConceptAnalysis
 		};
 
 		///////////////////////////
@@ -39,6 +40,18 @@
 			function watsonAnalysisFailed(e) { return exception.catcher('XHR Failed for watson analysis')(e); }
 		};
 	   
+		function watsonConceptAnalysis(data){
+			return $http.post('/api/analysis/watson-concept-analysis', data, {
+				headers: {
+					Authorization: 'Bearer ' + authentication.getToken()
+				}
+			}).then(watsonConceptAnalysisComplete)
+			.catch(watsonConceptAnalysisFailed);
+
+			function watsonConceptAnalysisComplete(data) { return data; }
+			function watsonConceptAnalysisFailed(e) { return exception.catcher('XHR Failed for Watson Concept Analysis')(e); }
+		};
+
 	}
 
 })();

@@ -145,6 +145,8 @@ module.exports.addFileDB = function(req, res) {
 };
 
 module.exports.getFileListDB = function(req, res) {
+	// If the "onlyTextFiles" flag is true, only return the files
+	// with associated text files for creating a dataset for analysis
 	var options = {};
 	if(req.query.onlyTextFiles === 'true'){
 		options = { textFileKey: { $exists: true } };
@@ -195,7 +197,6 @@ var buildFileListDB = function(req, res, results) {
 
 module.exports.fileReadOneDB = function(req, res) {
 	var key = req.query.key;
-	console.log(key);
 	if(key) {
 		File
 		.findOne({key: key})

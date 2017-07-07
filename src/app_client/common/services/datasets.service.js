@@ -4,7 +4,7 @@
 	.module('nativeQDAApp')
 	.service('datasetService', datasetService);
 
-	datasetService.$inject = ['$http', 'authentication', 'exception'];
+    /* @ngInject */
 	function datasetService ($http, authentication, exception) {
 		return {
 			datasetCreate	: datasetCreate,

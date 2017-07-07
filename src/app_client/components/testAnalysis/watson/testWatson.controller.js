@@ -22,7 +22,7 @@
 		///////////////////////////
 
 		function onSubmit() {
-			analysisService.watsonAnalysis({url: vm.analysisURL})
+			analysisService.watsonConceptAnalysis({url: vm.analysisURL})
 			.then(function(response) {
 				vm.responseData = response.data;
 				console.log(response);

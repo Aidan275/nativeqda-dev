@@ -4,7 +4,7 @@
 	.module('nativeQDAApp')
 	.service('authentication', authentication);
 
-	authentication.$inject = ['$http', '$window', 'exception'];
+    /* @ngInject */
 	function authentication ($http, $window, exception) {
 		return {
 			currentUser	: currentUser,
@@ -39,14 +39,14 @@
 			}
 		};
 
-		// Checks if logged in then returns the user's name and email from the JWT
+		// Checks if logged in then returns the user's firstName and email from the JWT
 		function currentUser() {
 			if(isLoggedIn()){
 				var token = getToken();
 				var payload = JSON.parse($window.atob(token.split('.')[1]));
 				return {
 					email	: payload.email,
-					name	: payload.name
+					firstName	: payload.firstName
 				};
 			}
 		};

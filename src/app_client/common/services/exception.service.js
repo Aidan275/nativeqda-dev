@@ -5,7 +5,7 @@
 	.module('nativeQDAApp')
 	.service('exception', exception);
 
-	exception.$inject = ['$q', 'logger'];
+    /* @ngInject */
 	function exception($q, logger) {
 		return {
 			catcher: catcher

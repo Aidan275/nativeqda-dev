@@ -63,3 +63,25 @@ module.exports.watsonNLUAnalysis = function(req, res) {
 	});
 
 };
+
+module.exports.watsonConceptAnalysis = function(req, res) {
+
+	var parameters = {
+		'url': req.body.url,
+		'features': {
+			'concepts': {
+				'limit': 50
+			}
+		}
+	};
+
+	natural_language_understanding.analyze(parameters, function(error, response) {
+		if (error) {
+			sendJSONresponse(res, 404, error);
+		}
+		else {
+			sendJSONresponse(res, 200, response);
+		}
+	});
+
+};

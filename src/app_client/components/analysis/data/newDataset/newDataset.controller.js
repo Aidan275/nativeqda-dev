@@ -124,7 +124,7 @@
 						size : newFile.size,
 						key : key,
 						url : url,
-						createdBy : authentication.currentUser().name,
+						createdBy : authentication.currentUser().firstName,
 						files: vm.datasetFiles
 					})
 					.then(function (response) {

@@ -483,7 +483,7 @@
 						key : key,
 						size : vm.file.size,
 						url : url,
-						createdBy : authentication.currentUser().name,
+						createdBy : authentication.currentUser().firstName,
 						coords : { 
 							lat : vm.lat,
 							lng : vm.lng

@@ -5,7 +5,7 @@
     .module('nativeQDAApp')
     .service('logger', logger);
 
-    logger.$inject = ['$log'];
+    /* @ngInject */
     function logger($log) {
         return {
             showToasts: true,

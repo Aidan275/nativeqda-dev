@@ -96,6 +96,7 @@
 		"./src/app_client/common/services/authentication.service.js",
 		"./src/app_client/common/services/events.service.js",
 		"./src/app_client/common/services/map.service.js",
+		"./src/app_client/common/services/users.service.js",
 		"./src/app_client/common/directives/navigation/navigation.controller.js",
 		"./src/app_client/common/directives/navigation/navigation.directive.js",
 		"./src/app_client/common/directives/footerGeneric/footerGeneric.directive.js",

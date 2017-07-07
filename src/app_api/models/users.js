@@ -8,9 +8,18 @@ var userSchema = new mongoose.Schema({
 		unique: true,
 		required: true
 	},
-	name: {
+	firstName: {
 		type: String,
+		unique: true,
 		required: true
+	},
+	lastName: {
+		type: String,
+		unique: true,
+		required: true
+	},
+	company: {
+		type: String
 	},
 	hash: String,
 	salt: String
@@ -32,7 +41,7 @@ userSchema.methods.generateJwt = function() {
 	return jwt.sign({
 		_id: this._id,
 		email: this.email,
-		name: this.name,
+		firstName: this.firstName,
 		exp: parseInt(expiry.getTime() / 1000),	// Sets the expiry date in seconds in the jwt
 	}, process.env.JWT_SECRET);
 };

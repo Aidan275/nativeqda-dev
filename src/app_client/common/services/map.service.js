@@ -6,7 +6,7 @@
 	.module('nativeQDAApp')
 	.service('mapService', mapService);
 
-	mapService.$inject = ['logger'];
+    /* @ngInject */
 	function mapService (logger) {
 		return {
 			getPosition : getPosition

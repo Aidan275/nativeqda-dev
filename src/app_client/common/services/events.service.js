@@ -4,7 +4,7 @@
 	.module('nativeQDAApp')
 	.service('events', events);
 
-	events.$inject = ['$http'];
+    /* @ngInject */
 	function events ($http) {
 		return {
 			event: event

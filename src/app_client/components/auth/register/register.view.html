@@ -7,16 +7,24 @@
 		<div class="col-md-6 col-sm-12">
 			<form ng-submit="vm.onSubmit()">
 				<div class="form-group">
-					<label for="name">Name</label>
-					<input type="text" class="form-control" id="name" required="required" placeholder="Name" ng-model="vm.credentials.name">
-				</div>
-				<div class="form-group">
 					<label for="email">Email address</label>
 					<input type="email" class="form-control" id="email" required="required" placeholder="Email" ng-model="vm.credentials.email">
 				</div>
 				<div class="form-group">
 					<label for="password">Password</label>
 					<input type="password" class="form-control" id="password" required="required" placeholder="Password" ng-model="vm.credentials.password">
+				</div>
+				<div class="form-group">
+					<label for="first-name">First Name</label>
+					<input type="text" class="form-control" id="first-name" required="required" placeholder="First Name" ng-model="vm.credentials.firstName">
+				</div>
+				<div class="form-group">
+					<label for="last-name">Last Name</label>
+					<input type="text" class="form-control" id="last-name" required="required" placeholder="Last Name" ng-model="vm.credentials.lastName">
+				</div>
+				<div class="form-group">
+					<label for="company">Company</label>
+					<input type="text" class="form-control" id="company" required="required" placeholder="Company" ng-model="vm.credentials.company">
 				</div>
 				<button type="submit" class="btn btn-primary">Register</button>
 			</form>
