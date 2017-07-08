@@ -316,8 +316,25 @@
 				}
 
 				// When a marker is clicked and it's popup opens, the currentMaker variable is set
-				// so the marker can be removed if the file is deleted
-				marker.on("popupopen", function() { vm.currentMarker = this; });
+				// so the marker can be removed if the file is deleted.
+				// Also hides the tooltip from the marker when the popup window is open
+				marker.on("popupopen", function() { 
+					vm.currentMarker = this; 
+					var toolTip = marker.getTooltip();
+					if(toolTip) {
+						toolTip.setOpacity(0);
+					}
+				});
+
+				// Sets the current marker to null and unhides the tooltip from the marker 
+				// when the popup window is closed
+				marker.on("popupclose", function() { 
+					vm.currentMarker = null; 
+					var toolTip = marker.getTooltip();
+					if(toolTip) {
+						toolTip.setOpacity(0.9);
+					}
+				});
 
 				vm.markers.addLayer(marker);
 			});

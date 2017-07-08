@@ -114,8 +114,9 @@
 			} 
 		});
 
+		// angular loading overlay config - should try put into the config.js file instead 
 		bsLoadingOverlayService.setGlobalConfig({
-			templateUrl: '/common/views/loadingOverlayTemplate.html'
+			templateUrl: '/common/views/loadingOverlayTemplate2.html'
 		});
 	}
 
