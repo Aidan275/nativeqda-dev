@@ -12,7 +12,8 @@
 			aylienConceptAnalysis	: aylienConceptAnalysis,
 			watsonAnalysis			: watsonAnalysis,
 			watsonConceptAnalysis 	: watsonConceptAnalysis,
-			saveConceptAnalysis 	: saveConceptAnalysis
+			saveConceptAnalysis 	: saveConceptAnalysis,
+			readConceptAnalysis 	: readConceptAnalysis
  		};
 
 		///////////////////////////
@@ -64,6 +65,20 @@
 			function saveConceptAnalysisComplete(data) { return data; }
 			function saveConceptAnalysisFailed(e) { return exception.catcher('XHR Failed for save concept analysis')(e); }
 		}
+
+		function readConceptAnalysis(id) {
+			return $http.get('/api/analysis/watson-concept-analysis/read?id=' + id, {
+				headers: {
+					Authorization: 'Bearer '+ authentication.getToken()
+				}
+			}).then(readConceptAnalysisComplete)
+			.catch(readConceptAnalysisFailed);
+
+			function readConceptAnalysisComplete(data) { return data; }
+			function readConceptAnalysisFailed(e) { return exception.catcher('XHR Failed for read concept analysis')(e); }
+		}
+
+
 
 	}
 

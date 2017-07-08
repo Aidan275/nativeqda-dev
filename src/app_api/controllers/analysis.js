@@ -104,3 +104,33 @@ module.exports.saveConceptAnalysis = function(req, res) {
 		}
 	});	
 };
+
+module.exports.listAnalyses = function(req, res) {
+
+
+};
+
+module.exports.readConceptAnalysis = function(req, res) {
+	var id = req.query.id;
+	if (id) {
+		AnalysisConcept
+		.findById(id)
+		.exec(
+			function(err, data) {
+				if (!data) {
+					sendJSONresponse(res, 404, {
+						"message": "analysis not found"
+					});
+					return;
+				} else if (err) {
+					sendJSONresponse(res, 404, err);
+					return;
+				}
+				sendJSONresponse(res, 200, data);
+			});
+	} else {
+		sendJSONresponse(res, 404, {
+			"message": "No id in request"
+		});
+	}
+};

@@ -88,7 +88,7 @@
 
 			analysisService.saveConceptAnalysis(saveData)
 			.then(function(response) {
-				logger.success();
+				logger.success('Visualisation "' + vm.formData.visualisationName + '" was created successfully', '', 'Success')
 				vm.resultButton = 'success';
 			}, function(err) {
 				vm.resultButton = 'error';

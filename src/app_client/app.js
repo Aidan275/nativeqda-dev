@@ -6,96 +6,119 @@
 	function config ($routeProvider, $locationProvider) {
 		$routeProvider
 		.when('/login', {
+			title: 'NativeQDA | Login',
 			templateUrl: '/components/auth/login/login.view.html',
 			controller: 'loginCtrl',
 			controllerAs: 'vm',
 			loginRequired: false
 		})
 		.when('/register', {
+			title: 'NativeQDA | Register',
 			templateUrl: '/components/auth/register/register.view.html',
 			controller: 'registerCtrl',
 			controllerAs: 'vm',
 			loginRequired: true
 		})
 		.when('/forgot-password', {
+			title: 'NativeQDA | Forgot Password',
 			templateUrl: '/components/auth/forgotPass/forgotPass.view.html',
 			controller: 'forgotPassCtrl',
 			controllerAs: 'vm',
 			loginRequired: false
 		})
 		.when('/', {
+			title: 'NativeQDA | Home',
 			templateUrl: '/components/home/home.view.html',
 			controller: 'homeCtrl',
 			controllerAs: 'vm',
 			loginRequired: true
 		})
 		.when('/analysis/map', {
+			title: 'NativeQDA | Map',
 			templateUrl: '/components/analysis/map/map.view.html',
 			controller: 'mapCtrl',
 			controllerAs: 'vm',
 			loginRequired: true
 		})
 		.when('/analysis/data', {
+			title: 'NativeQDA | Datasets',
 			templateUrl: '/components/analysis/data/data.view.html',
 			controller: 'dataCtrl',
 			controllerAs: 'vm',
 			loginRequired: true
 		})
 		.when('/analysis/visualisation', {
+			title: 'NativeQDA | Visualisations',
 			templateUrl: '/components/analysis/visualisation/visualisation.view.html',
 			controller: 'visualisationCtrl',
 			controllerAs: 'vm',
 			loginRequired: true
 		})
 		.when('/survey', {
+			title: 'NativeQDA | Surveys',
 			templateUrl: '/components/survey/survey.view.html',
 			controller: 'surveyCtrl',
 			controllerAs: 'vm',
 			loginRequired: true
 		})
 		.when('/files/browse', {
+			title: 'NativeQDA | File Browser',
 			templateUrl: '/components/files/filesBrowse/filesBrowse.view.html',
 			controller: 'filesBrowseCtrl',
 			controllerAs: 'vm',
 			loginRequired: true
 		})
 		.when('/files/upload', {
+			title: 'NativeQDA | Upload File',
 			templateUrl: '/components/files/filesUpload/filesUpload.view.html',
 			controller: 'filesUploadCtrl',
 			controllerAs: 'vm',
 			loginRequired: true
 		})
 		.when('/settings/system-settings', {
+			title: 'NativeQDA | System Settings',
 			templateUrl: '/components/settings/systemSettings/systemSettings.view.html',
 			controller: 'systemSettingsCtrl',
 			controllerAs: 'vm',
 			loginRequired: true
 		})
 		.when('/settings/user-settings', {
+			title: 'NativeQDA | User Settings',
 			templateUrl: '/components/settings/userSettings/userSettings.view.html',
 			controller: 'userSettingsCtrl',
 			controllerAs: 'vm',
 			loginRequired: true
 		})
 		.when('/complete-survey', {
+			title: 'NativeQDA | Survey',
 			templateUrl: '/components/survey/completeSurvey/completeSurvey.view.html',
 			controller: 'CompleteSurveyCtrl',
 			controllerAs: 'vm',
 			loginRequired: false
 		})
+		.when('/visualisation/bubble-chart', {
+			title: 'NativeQDA | Bubble Chart',
+			templateUrl: '/components/visualisations/bubbleChart/bubbleChart.view.html',
+			controller: 'bubbleChartCtrl',
+			controllerAs: 'vm',
+			loginRequired: true
+		})
 		.when('/heatmap-example', {
+			title: 'NativeQDA | Heatmap Example',
 			templateUrl: '/components/heatmapExample/heatmapExample.view.html',
 			controller: 'heatmapCtrl',
 			controllerAs: 'vm',
 			loginRequired: true
 		})
 		.when('/test-analysis/aylien', {
+			title: 'NativeQDA | Test Analysis - AYLIEN',
 			templateUrl: '/components/testAnalysis/aylien/testAylien.view.html',
 			controller: 'testAylienCtrl',
 			controllerAs: 'vm',
 			loginRequired: true
 		})
 		.when('/test-analysis/watson', {
+			title: 'NativeQDA | Test Analysis - Watson',
 			templateUrl: '/components/testAnalysis/watson/testWatson.view.html',
 			controller: 'testWatsonCtrl',
 			controllerAs: 'vm',
@@ -118,6 +141,16 @@
 				$location.path(postLogInRoute).replace();
 				postLogInRoute = null;
 			} 
+		});
+
+		// Sets the title of each page - gets the title string from the routeProvider above
+		// If no title string provided, sets the title to 'NativeQDA'
+		$rootScope.$on('$routeChangeSuccess', function (event, current, previous) {
+			if(current.$$route.title) {
+				$rootScope.title = current.$$route.title;
+			} else {
+				$rootScope.title = 'NativeQDA';
+			}
 		});
 
 		// angular loading overlay config - should try put into the config.js file instead 

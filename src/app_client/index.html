@@ -2,7 +2,7 @@
 <html ng-app="nativeQDAApp">
 <head>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>NativeQDA</title>
+	<title ng-bind="title"></title>
 	
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700">
 
@@ -52,6 +52,7 @@
 	<script src="/src/app_client/assets/js/docxjs-1.0.0.min.js"></script>
 	<script src="/node_modules/sweetalert/dist/sweetalert-dev.js"></script>
 	<script src="/node_modules/angular-loading-overlay/dist/angular-loading-overlay.js"></script>
+	<script src="/node_modules/d3/build/d3.js"></script>
 	<!-- endinject -->
 
 	<!-- inject-scripts:js -->
@@ -94,6 +95,7 @@
 	<script src="/src/app_client/components/files/filesBrowse/filesBrowse.controller.js"></script>
 	<script src="/src/app_client/components/files/filesUpload/filesUpload.controller.js"></script>
 	<script src="/src/app_client/components/files/fileDetails/fileDetails.controller.js"></script>
+	<script src="/src/app_client/components/visualisations/bubbleChart/bubbleChart.controller.js"></script>
 	<script src="/src/app_client/components/settings/systemSettings/systemSettings.controller.js"></script>
 	<script src="/src/app_client/components/settings/userSettings/userSettings.controller.js"></script>
 	<script src="/src/app_client/components/settings/editProfile/editProfile.controller.js"></script>

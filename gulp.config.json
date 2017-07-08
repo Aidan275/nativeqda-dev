@@ -28,7 +28,8 @@
 		"./node_modules/pdfjs-dist/build/pdf.worker.min.js",
 		"./src/app_client/assets/js/docxjs-1.0.0.min.js",
 		"./node_modules/sweetalert/dist/sweetalert.min.js",
-		"./node_modules/angular-loading-overlay/dist/angular-loading-overlay.js"
+		"./node_modules/angular-loading-overlay/dist/angular-loading-overlay.js",
+		"./node_modules/d3/build/d3.min.js"
 	],
 	"minVendorCSS": [
 		"./node_modules/bootstrap/dist/css/bootstrap.min.css",
@@ -64,7 +65,8 @@
 		"./node_modules/pdfjs-dist/build/pdf.worker.js",
 		"./src/app_client/assets/js/docxjs-1.0.0.min.js",
 		"./node_modules/sweetalert/dist/sweetalert-dev.js",
-		"./node_modules/angular-loading-overlay/dist/angular-loading-overlay.js"
+		"./node_modules/angular-loading-overlay/dist/angular-loading-overlay.js",
+		"./node_modules/d3/build/d3.js"
 	],
 	"devVendorCSS": [
 		"./node_modules/bootstrap/dist/css/bootstrap.css",
@@ -121,6 +123,7 @@
 		"./src/app_client/components/files/filesBrowse/filesBrowse.controller.js",
 		"./src/app_client/components/files/filesUpload/filesUpload.controller.js",
 		"./src/app_client/components/files/fileDetails/fileDetails.controller.js",
+		"./src/app_client/components/visualisations/bubbleChart/bubbleChart.controller.js",
 		"./src/app_client/components/settings/systemSettings/systemSettings.controller.js",
 		"./src/app_client/components/settings/userSettings/userSettings.controller.js",
 		"./src/app_client/components/settings/editProfile/editProfile.controller.js",

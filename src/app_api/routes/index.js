@@ -41,6 +41,7 @@ router.post('/analysis/aylien/concept', auth, ctrlAnalysis.aylienConceptAnalysis
 router.post('/analysis/watson', auth, ctrlAnalysis.watsonNLUAnalysis);
 router.post('/analysis/watson-concept-analysis', auth, ctrlAnalysis.watsonConceptAnalysis);
 router.post('/analysis/watson-concept-analysis/save', auth, ctrlAnalysis.saveConceptAnalysis);
+router.get('/analysis/watson-concept-analysis/read', auth, ctrlAnalysis.readConceptAnalysis);
 
 router.get('/users/info', auth, ctrlUsers.getUserInfo);
 
