@@ -276,3 +276,47 @@ div[ng-table-pagination=params] {
 	-ms-filter: blur(2px);
 	filter: blur(2px);
 }
+
+/* ========== AVATAR IMAGE UPLOAD OVERLAY ========== */
+
+.profile-img-container {
+    position: relative;
+    display: inline-block;
+    overflow: hidden;
+}
+
+.profile-img-container img {
+	min-width:200px;
+	min-height:200px;
+}
+
+
+.profile-img-container img:hover {
+    opacity: 0.5
+}
+.profile-img-container:hover a {
+    opacity: 1;
+    top: 0;
+    z-index: 500;
+}
+
+.profile-img-container:hover a span {
+    top: 50%;
+    position: absolute;
+    left: 0;
+    right: 0;
+    transform: translateY(-50%);
+	color:white;
+}
+
+.profile-img-container a {
+    display: block;
+    position: absolute;
+    top: -100%;
+    opacity: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    text-align: center;
+    color: inherit;
+}
