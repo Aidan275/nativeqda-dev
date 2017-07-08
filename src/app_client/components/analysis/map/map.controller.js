@@ -272,12 +272,9 @@
 			vm.fileList.forEach(function(file) {
 				var lat = file.coords.coordinates[1];
 				var lng = file.coords.coordinates[0];
-				var marker = L.marker([lat, lng], { icon: defaultIcon })
-				.bindTooltip('<strong>File Name:</strong> ' + file.name + '<br />' + 
-					'<strong>Created By:</strong> ' + file.createdBy + '<br />' + 
-					'<strong>Last Modified:</strong> ' + $filter('date')(file.lastModified, "dd MMMM, yyyy h:mm a"));
+				var marker = L.marker([lat, lng], { icon: defaultIcon });
 
-				var contentString = '<div class="info-window">' +
+				var popupString = '<div class="info-window">' +
 				'<h3>' + file.name + '</h3>' +
 				'<p><strong>Created By:</strong> ' + file.createdBy + '<br />' +
 				'<strong>Size:</strong> ' + $filter('formatFileSize')(file.size, 2) + '<br />' +	// uses formatFileSize filter to format the file size
@@ -286,26 +283,37 @@
 				// If the file has tags, add as a comma separated list, listing each tag
 				// otherwise skip and exclude the 'tags' label
 				if(file.tags.length != 0) { 
-					contentString += '<br /><strong>Tags:</strong> ';
+					popupString += '<br /><strong>Tags:</strong> ';
 					// lists each tag for current file
-					contentString += file.tags.join(", ") + '</p>';
+					popupString += file.tags.join(", ") + '</p>';
 				} else {
-					contentString += '</p>';
+					popupString += '</p>';
 				}
 
-				contentString += '<a ng-click="vm.viewFile(fileKey)" class="btn btn-success" role="button">View</a> ' +
+				popupString += '<a ng-click="vm.viewFile(fileKey)" class="btn btn-success" role="button">View</a> ' +
 				'<a ng-click="vm.popupFileDetails(fileKey)" class="btn btn-primary" role="button">Details</a> ' +
 				'<a ng-click="vm.confirmDelete(fileKey, fileName, textFileKey)" class="btn btn-danger" role="button">Delete</a>' +
 				'</div>';
 
 				// compiles the HTML so ng-click works
-				var compiledContentString = $compile(angular.element(contentString));
+				var compiledPopupString = $compile(angular.element(popupString));
 				var newScope = $scope.$new();
 
+				// New scope variables for the compiled string above
 				newScope.fileKey = file.key;
 				newScope.fileName = file.name;
 
-				marker.bindPopup(compiledContentString(newScope)[0]);
+				marker.bindPopup(compiledPopupString(newScope)[0]);
+
+				// Only include tooltips if the browser is not running on a mobile device
+				// so mobile devices do not display the tooltip when a pin is pressed.
+				if (L.Browser.mobile != true) {
+					var toolTipString = '<strong>File Name:</strong> ' + file.name + '<br />' + 
+					'<strong>Created By:</strong> ' + file.createdBy + '<br />' + 
+					'<strong>Last Modified:</strong> ' + $filter('date')(file.lastModified, "dd MMMM, yyyy h:mm a");
+
+					marker.bindTooltip(toolTipString);
+				}
 
 				// When a marker is clicked and it's popup opens, the currentMaker variable is set
 				// so the marker can be removed if the file is deleted
