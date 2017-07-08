@@ -116,7 +116,8 @@
 
 		// angular loading overlay config - should try put into the config.js file instead 
 		bsLoadingOverlayService.setGlobalConfig({
-			templateUrl: '/common/views/loadingOverlayTemplate2.html'
+			templateUrl: '/common/views/loadingOverlayTemplate4.html', // Template url for overlay element. If not specified - no overlay element is created.
+			delay: 300, // Minimal delay to hide loading overlay in ms.
 		});
 	}
 
