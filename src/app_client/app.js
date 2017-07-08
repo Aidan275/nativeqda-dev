@@ -65,9 +65,15 @@
 			controllerAs: 'vm',
 			loginRequired: true
 		})
-		.when('/settings', {
-			templateUrl: '/components/settings/settings.view.html',
-			controller: 'settingsCtrl',
+		.when('/settings/system-settings', {
+			templateUrl: '/components/settings/systemSettings/systemSettings.view.html',
+			controller: 'systemSettingsCtrl',
+			controllerAs: 'vm',
+			loginRequired: true
+		})
+		.when('/settings/user-settings', {
+			templateUrl: '/components/settings/userSettings/userSettings.view.html',
+			controller: 'userSettingsCtrl',
 			controllerAs: 'vm',
 			loginRequired: true
 		})

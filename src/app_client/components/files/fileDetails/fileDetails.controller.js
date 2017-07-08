@@ -14,8 +14,8 @@
 		// Bindable Data
 		vm.isSubmittingButton = null;	// variables for button animation - ng-bs-animated-button
 		vm.resultButton = null;
-		vm.makePublicOptions = { buttonDefaultText: 'Make Public', animationCompleteTime: 1000 };
-		vm.makePrivateOptions = { buttonDefaultText: 'Make Private', animationCompleteTime: 1000 };
+		vm.makePublicOptions = { buttonDefaultText: 'Make Public', animationCompleteTime: 1000, buttonSubmittingText: 'Processing...', buttonSuccessText: 'Done!' };
+		vm.makePrivateOptions = { buttonDefaultText: 'Make Private', animationCompleteTime: 1000, buttonSubmittingText: 'Processing...', buttonSuccessText: 'Done!' };
 
 		activate();
 
@@ -40,7 +40,7 @@
 			.then(function(response) {
 				updateAclDB(key, acl);
 			}, function(err) {
-				vm.resAclBtn = 'error';
+				vm.resultButton = 'error';
 			});
 		}
 

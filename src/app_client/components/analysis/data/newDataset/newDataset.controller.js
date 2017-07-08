@@ -1,5 +1,7 @@
 (function () {
 
+	'use strict';
+
 	angular
 	.module('nativeQDAApp')
 	.controller('newDatasetCtrl', newDatasetCtrl);
@@ -10,7 +12,6 @@
 
 		// Bindable Functions
 		vm.onSubmit = onSubmit;
-		vm.doCreateDataset = doCreateDataset;
 		vm.viewFile = viewFile;
 
 		// Bindable Data
@@ -52,20 +53,19 @@
 			});
 		}
 
-
 		function onSubmit() {
 			if(angular.isDefined(vm.formData)){
 				if(!vm.formData.datasetName || !vm.formData.description || !vm.formData.checkboxes) {
 					logger.error('All fields required, please try again', '', 'Error');
 				} else {
-					doCreateDataset(vm.formData);
+					doCreateDataset();
 				}
 			} else {
 				logger.error('All fields required, please try again', '', 'Error');
 			}
-		};
+		}
 
-		function doCreateDataset(formData) {
+		function doCreateDataset() {
 			var keys = Object.keys(vm.formData.checkboxes);		// Checks the checkbox object and any key that is true, 
 			vm.datasetFiles = keys.filter(function(key) {		// the key is saved into the vm.datasetFiles array
 				return vm.formData.checkboxes[key]

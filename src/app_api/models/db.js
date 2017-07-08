@@ -50,3 +50,4 @@ require('./users');
 require('./events');
 require('./datasets');
 require('./files');
+require('./analysis');

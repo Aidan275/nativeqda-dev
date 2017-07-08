@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+var AnalysisConcept = mongoose.model('AnalysisConcept');
 var AYLIENTextAPI = require('aylien_textapi');
 var textapi = new AYLIENTextAPI({
 	application_id: "82b88370",
@@ -65,7 +66,6 @@ module.exports.watsonNLUAnalysis = function(req, res) {
 };
 
 module.exports.watsonConceptAnalysis = function(req, res) {
-
 	var parameters = {
 		'url': req.body.url,
 		'features': {
@@ -84,4 +84,23 @@ module.exports.watsonConceptAnalysis = function(req, res) {
 		}
 	});
 
+};
+
+module.exports.saveConceptAnalysis = function(req, res) {
+	var analysisConcept = new AnalysisConcept();
+
+	analysisConcept.name = req.body.name
+	analysisConcept.description = req.body.description;
+	analysisConcept.createdBy = req.body.createdBy;
+	analysisConcept.sourceDataKey = req.body.sourceDataKey;
+	analysisConcept.language = req.body.language,
+	analysisConcept.concepts = req.body.concepts;
+
+	analysisConcept.save(function(err) {
+		if (err) {
+			sendJSONresponse(res, 404, err);
+		} else {
+			sendJSONresponse(res, 200, analysisConcept);
+		}
+	});	
 };

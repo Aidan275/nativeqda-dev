@@ -2,9 +2,9 @@
 
 	angular
 	.module('nativeQDAApp')
-	.controller('settingsCtrl', settingsCtrl);
+	.controller('userSettingsCtrl', userSettingsCtrl);
 	
-	function settingsCtrl () {
+	function userSettingsCtrl () {
 		var vm = this;
 
 		vm.pageHeader = {
