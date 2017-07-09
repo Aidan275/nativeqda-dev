@@ -8,7 +8,7 @@
 	function bubbleChartCtrl (analysisService) {
 		var vm = this;
 
-		var id = '596175efdc83c50590f1b5ab';
+		var id = '5960cfe6b27e412628b02bb2';
 		var analysisData = {};
 		var dataNodes = [];
 
