@@ -13,8 +13,9 @@
 			watsonAnalysis			: watsonAnalysis,
 			watsonConceptAnalysis 	: watsonConceptAnalysis,
 			saveConceptAnalysis 	: saveConceptAnalysis,
-			readConceptAnalysis 	: readConceptAnalysis
- 		};
+			readConceptAnalysis 	: readConceptAnalysis,
+			listConceptAnalyses 	: listConceptAnalyses
+		};
 
 		///////////////////////////
 
@@ -78,6 +79,17 @@
 			function readConceptAnalysisFailed(e) { return exception.catcher('XHR Failed for read concept analysis')(e); }
 		}
 
+		function listConceptAnalyses() {
+			return $http.get('/api/analysis/watson-concept-analysis/list', {
+				headers: {
+					Authorization: 'Bearer '+ authentication.getToken()
+				}
+			}).then(listConceptAnalysisComplete)
+			.catch(listConceptAnalysisFailed);
+
+			function listConceptAnalysisComplete(data) { return data; }
+			function listConceptAnalysisFailed(e) { return exception.catcher('XHR Failed for list concept analysis')(e); }
+		}
 
 
 	}

@@ -1,0 +1,32 @@
+<navigation></navigation>
+
+<div class="container">
+
+	<page-header content="vm.pageHeader"></page-header>
+
+	<div class="row">
+		<div class="col-md-12">
+			<p>Select a file or dataset for analysis. A number of visualisations can then be viewed by selecting an existing analysis below.</p>
+			</div>
+		</div>
+
+		<button type="button" class="btn btn-md btn-success" ng-click="vm.popupNewAnalysis()">New Analysis</button>
+
+		<table id="visualisation-table" ng-table="vm.tableParams" class="table table-condensed table-bordered table-striped" style="margin-top:5px">
+			<tr ng-repeat="row in $data">
+				<td data-title="'Analysis'" filter="{name: 'text'}" sortable="'name'">{{row.name}}</td>
+				<td data-title="'Created By'" filter="{createdBy: 'text'}" sortable="'createdBy'">{{row.createdBy}}</td>
+				<td data-title="'Date Created'" filter="{dateCreated: 'text'}" sortable="'dateCreated'">{{row.dateCreated | date : "dd MMMM, yyyy h:mm a"}}</td>
+				<td data-title="'Command'">
+					<a href="visualisations/{{row._id}}" class="btn btn-success btn-xs" role="button">View</a>
+					<a ng-click="vm.popupEditVisual(row.name, row._id)" class="btn btn-primary btn-xs" role="button">Edit</a>
+					<a ng-click="vm.confirmDelete(row.name, row._id)" class="btn btn-danger btn-xs" role="button">Delete</a>
+				</td class="data-command-cell">
+			</tr>
+
+
+		</table>
+
+		<footer-generic></footer-generic>
+
+	</div>

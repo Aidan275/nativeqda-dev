@@ -4,10 +4,10 @@
 
 	angular
 	.module('nativeQDAApp')
-	.controller('newVisualisationCtrl', newVisualisationCtrl);
+	.controller('newAnalysisCtrl', newAnalysisCtrl);
 
 	/* @ngInject */
-	function newVisualisationCtrl ($uibModalInstance, $window, NgTableParams, datasetService, filesService, analysisService, authentication, logger) {
+	function newAnalysisCtrl($uibModalInstance, $window, NgTableParams, datasetService, filesService, analysisService, authentication, logger, bsLoadingOverlayService) {
 		var vm = this;
 
 		// Bindable Functions
@@ -15,54 +15,73 @@
 		vm.viewFile = viewFile;
 
 		// Bindable Data
-		vm.datasetList;
+		vm.data = [];
 		vm.tableParams;
 		vm.formData;
 		vm.analysisResults;
 		vm.isSubmittingButton = null;	// variables for button animation - ng-bs-animated-button
 		vm.resultButton = null;
-		vm.createButtonOptions = { buttonDefaultText: 'Create Visualisation', animationCompleteTime: 1000, buttonSubmittingText: 'Processing...', buttonSuccessText: 'Done!' };
+		vm.createButtonOptions = { buttonDefaultText: 'Analyse', animationCompleteTime: 1000, buttonSubmittingText: 'Processing...', buttonSuccessText: 'Done!' };
 
 		activate();
 
 		///////////////////////////
 
 		function activate() {
+			bsLoadingOverlayService.start({referenceId: 'data-list'});
 			getDatasetList();
 		}
 
-		// Gets all the files from the MongoDB database
+		// Gets all the datasets from the MongoDB database
 		function getDatasetList() {
 			datasetService.listDatasets()
 			.then(function(response) {
-				vm.datasetList = response.data;
-				listDatasets();
+				response.data.forEach(function(data) {
+					data.type = 'Dataset';
+					vm.data.push(data);
+				});
+				getFileList();
 			});
 		}
 
-		function listDatasets() {
+		// Gets all the files from the MongoDB database
+		function getFileList() {
+			filesService.getFileListDB('true')
+			.then(function(response) {
+				response.data.forEach(function(data) {
+					data.type = 'File';
+					vm.data.push(data);
+				});
+				listData();
+			});
+		}
+
+		function listData() {
+			bsLoadingOverlayService.stop({referenceId: 'data-list'});
 			vm.tableParams = new NgTableParams({
-				sorting: {lastModified: "desc"}
+				sorting: {type: "desc"}
 			}, {
-				dataset: vm.datasetList
+				dataset: vm.data
 			});
 		}
 
 		function onSubmit() {
 			if(angular.isDefined(vm.formData)){
-				if(!vm.formData.visualisationName || !vm.formData.description || !vm.formData.selectedDatasetKey) {
+				if(!vm.formData.visualisationName || !vm.formData.description) {
 					logger.error('All fields required, please try again', '', 'Error');
+				} else if(!vm.formData.selectedDataKey) {
+					logger.error('Please select data for analysis', '', 'Error');
 				} else {
-					createVisualisation();
+					doAnalysis();
 				}
 			} else {
 				logger.error('All fields required, please try again', '', 'Error');
 			}
 		}
 
-		function createVisualisation() {
+		function doAnalysis() {
 			vm.isSubmittingButton = true;
-			filesService.signDownloadS3(vm.formData.selectedDatasetKey)
+			filesService.signDownloadS3(vm.formData.selectedDataKey)
 			.then(function(response) {
 				analysisService.watsonConceptAnalysis({url: response.data})
 				.then(function(response) {
@@ -81,7 +100,7 @@
 				name: vm.formData.visualisationName,
 				description: vm.formData.description,
 				createdBy: authentication.currentUser().firstName,
-				sourceDataKey: vm.formData.selectedDatasetKey,
+				sourceDataKey: vm.formData.selectedDataKey,
 				language: vm.analysisResults.language,
 				concepts: vm.analysisResults.concepts
 			};
@@ -90,6 +109,9 @@
 			.then(function(response) {
 				logger.success('Visualisation "' + vm.formData.visualisationName + '" was created successfully', '', 'Success')
 				vm.resultButton = 'success';
+				setTimeout(function() {
+					vm.modal.close(response.data);	// Close modal if the analysis was completed successfully and return the new analysis data
+				}, 1000);	// Timeout function so the user can see the analysis has completed before closing modal
 			}, function(err) {
 				vm.resultButton = 'error';
 			});
@@ -105,8 +127,8 @@
 		}
 
 		vm.modal = {
-			close : function () {
-				$uibModalInstance.close();
+			close : function(results) {
+				$uibModalInstance.close(results);	// Return results
 			}, 
 			cancel : function () {
 				$uibModalInstance.dismiss('cancel');

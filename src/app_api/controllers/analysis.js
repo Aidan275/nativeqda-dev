@@ -86,6 +86,44 @@ module.exports.watsonConceptAnalysis = function(req, res) {
 
 };
 
+module.exports.listConceptAnalyses = function(req, res) {
+	AnalysisConcept
+	.find()
+	.exec(
+		function(err, results) {
+			if (!results) {
+				sendJSONresponse(res, 404, {
+					"message": "No concept analyses found"
+				});
+				return;
+			} else if (err) {
+				sendJSONresponse(res, 404, err);
+				return;
+			}
+			conceptAnalysesList = buildConceptAnalysesList(req, res, results);
+			sendJSONresponse(res, 200, conceptAnalysesList);
+		});
+
+};
+
+var buildConceptAnalysesList = function(req, res, results) {
+	var conceptAnalysesList = [];
+	results.forEach(function(doc) {
+		conceptAnalysesList.push({
+			name: doc.name,
+			description: doc.description,
+			createdBy: doc.createdBy,
+			sourceDataKey: doc.sourceDataKey,
+			language: doc.language,
+			concepts: doc.concepts,
+			dateCreated: doc.dateCreated,
+			lastModified: doc.lastModified,
+			_id: doc._id
+		});
+	});
+	return conceptAnalysesList;
+};
+
 module.exports.saveConceptAnalysis = function(req, res) {
 	var analysisConcept = new AnalysisConcept();
 
@@ -103,11 +141,6 @@ module.exports.saveConceptAnalysis = function(req, res) {
 			sendJSONresponse(res, 200, analysisConcept);
 		}
 	});	
-};
-
-module.exports.listAnalyses = function(req, res) {
-
-
 };
 
 module.exports.readConceptAnalysis = function(req, res) {

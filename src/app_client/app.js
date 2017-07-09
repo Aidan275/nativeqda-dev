@@ -33,24 +33,24 @@
 			controllerAs: 'vm',
 			loginRequired: true
 		})
-		.when('/analysis/map', {
-			title: 'NativeQDA | Map',
-			templateUrl: '/components/analysis/map/map.view.html',
-			controller: 'mapCtrl',
+		.when('/analysis', {
+			title: 'NativeQDA | Analysis',
+			templateUrl: '/components/analysis/analysis.view.html',
+			controller: 'analysisCtrl',
 			controllerAs: 'vm',
 			loginRequired: true
 		})
-		.when('/analysis/data', {
-			title: 'NativeQDA | Datasets',
-			templateUrl: '/components/analysis/data/data.view.html',
-			controller: 'dataCtrl',
-			controllerAs: 'vm',
-			loginRequired: true
-		})
-		.when('/analysis/visualisation', {
+		.when('/visualisations/:id', {
 			title: 'NativeQDA | Visualisations',
-			templateUrl: '/components/analysis/visualisation/visualisation.view.html',
-			controller: 'visualisationCtrl',
+			templateUrl: '/components/visualisations/visualisations.view.html',
+			controller: 'visualisationsCtrl',
+			controllerAs: 'vm',
+			loginRequired: true
+		})
+		.when('/map', {
+			title: 'NativeQDA | Map',
+			templateUrl: '/components/map/map.view.html',
+			controller: 'mapCtrl',
 			controllerAs: 'vm',
 			loginRequired: true
 		})
@@ -61,6 +61,13 @@
 			controllerAs: 'vm',
 			loginRequired: true
 		})
+		.when('/files/upload', {
+			title: 'NativeQDA | Upload File',
+			templateUrl: '/components/files/filesUpload/filesUpload.view.html',
+			controller: 'filesUploadCtrl',
+			controllerAs: 'vm',
+			loginRequired: true
+		})
 		.when('/files/browse', {
 			title: 'NativeQDA | File Browser',
 			templateUrl: '/components/files/filesBrowse/filesBrowse.view.html',
@@ -68,10 +75,10 @@
 			controllerAs: 'vm',
 			loginRequired: true
 		})
-		.when('/files/upload', {
-			title: 'NativeQDA | Upload File',
-			templateUrl: '/components/files/filesUpload/filesUpload.view.html',
-			controller: 'filesUploadCtrl',
+		.when('/files/datasets', {
+			title: 'NativeQDA | Datasets',
+			templateUrl: '/components/files/datasets/datasets.view.html',
+			controller: 'datasetsCtrl',
 			controllerAs: 'vm',
 			loginRequired: true
 		})
@@ -96,9 +103,9 @@
 			controllerAs: 'vm',
 			loginRequired: false
 		})
-		.when('/visualisation/bubble-chart', {
+		.when('/bubble-chart/:id', {
 			title: 'NativeQDA | Bubble Chart',
-			templateUrl: '/components/visualisations/bubbleChart/bubbleChart.view.html',
+			templateUrl: '/components/visualisations/visuals/bubbleChart/bubbleChart.view.html',
 			controller: 'bubbleChartCtrl',
 			controllerAs: 'vm',
 			loginRequired: true

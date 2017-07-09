@@ -5,11 +5,11 @@
 	.controller('bubbleChartCtrl', bubbleChartCtrl);
 
 	/* @ngInject */
-	function bubbleChartCtrl (analysisService) {
+	function bubbleChartCtrl ($routeParams, analysisService) {
 		var vm = this;
 
-		var id = '5960cfe6b27e412628b02bb2';
-		var analysisData = {};
+		var id = $routeParams.id;
+		vm.analysisData = {};
 		var dataNodes = [];
 
 		var width,height
@@ -20,12 +20,12 @@
 
 		analysisService.readConceptAnalysis(id)
 		.then(function(response) {
-			analysisData = response.data.concepts;
+			vm.analysisData = response.data;
 			setupData();
 		});
 
 		function setupData() {
-			analysisData.forEach(function(concept){
+			vm.analysisData.concepts.forEach(function(concept){
 				dataNodes.push({text: concept.text, r: concept.relevance*100, dbpedia_resource: concept.dbpedia_resource});
 			});
 

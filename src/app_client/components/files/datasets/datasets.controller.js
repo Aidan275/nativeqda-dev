@@ -2,10 +2,10 @@
 
 	angular
 	.module('nativeQDAApp')
-	.controller('dataCtrl', dataCtrl);
+	.controller('datasetsCtrl', datasetsCtrl);
 
 	/* @ngInject */
-	function dataCtrl($window, $sce, $uibModal, NgTableParams, datasetService, logger, filesService) {
+	function datasetsCtrl($window, $sce, $uibModal, NgTableParams, datasetService, logger, filesService) {
 		var vm = this;
 		
 		// Bindable Functions
@@ -18,7 +18,7 @@
 		// Bindable Data
 		vm.dataset = [];
 		vm.pageHeader = {
-			title: 'Data',
+			title: 'Datasets',
 			strapline: 'where the Datasets live'
 		};
 
@@ -91,7 +91,7 @@
 
 		function popupViewDataset(datasetId) {
 			var modalInstance = $uibModal.open({
-				templateUrl: '/components/analysis/data/viewDataset/viewDataset.view.html',
+				templateUrl: '/components/files/datasets/viewDataset/viewDataset.view.html',
 				controller: 'viewDatasetCtrl as vm',
 				size: 'lg',
 				resolve: {
@@ -108,7 +108,7 @@
 
 		function popupEditDataset(name, datasetId) {
 			var modalInstance = $uibModal.open({
-				templateUrl: '/components/analysis/data/editDataset/editDataset.view.html',
+				templateUrl: '/components/files/datasets/editDataset/editDataset.view.html',
 				controller: 'editDatasetCtrl as vm',
 				size: 'xl'
 			});
@@ -120,7 +120,7 @@
 
 		function popupNewDataset() {
 			var modalInstance = $uibModal.open({
-				templateUrl: '/components/analysis/data/newDataset/newDataset.view.html',
+				templateUrl: '/components/files/datasets/newDataset/newDataset.view.html',
 				controller: 'newDatasetCtrl as vm',
 				size: 'xl'
 			});
