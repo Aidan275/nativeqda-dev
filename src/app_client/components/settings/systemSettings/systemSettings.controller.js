@@ -8,7 +8,7 @@
 		var vm = this;
 
 		vm.pageHeader = {
-			title: 'Settings',
+			title: 'System Settings',
 			strapline: 'change how things work'
 		};
 
