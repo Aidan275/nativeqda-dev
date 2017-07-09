@@ -4,10 +4,10 @@
 
 	angular
 	.module('nativeQDAApp')
-	.controller('userSettingsCtrl', userSettingsCtrl);
+	.controller('userManagementCtrl', userManagementCtrl);
 	
 	/* @ngInject */
-	function userSettingsCtrl ($scope, $window, NgTableParams, $sce, $uibModal) {
+	function userManagementCtrl ($scope, $window, NgTableParams, $sce, $uibModal) {
 		var vm = this;
 
 		vm.pageHeader = {

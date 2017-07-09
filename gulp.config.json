@@ -125,7 +125,7 @@
 		"./src/app_client/components/files/fileDetails/fileDetails.controller.js",
 		"./src/app_client/components/visualisations/bubbleChart/bubbleChart.controller.js",
 		"./src/app_client/components/settings/systemSettings/systemSettings.controller.js",
-		"./src/app_client/components/settings/userSettings/userSettings.controller.js",
+		"./src/app_client/components/settings/userManagement/userManagement.controller.js",
 		"./src/app_client/components/settings/editProfile/editProfile.controller.js",
 		"./src/app_client/components/heatmapExample/heatmapExample.controller.js",
 		"./src/app_client/components/testAnalysis/aylien/testAylien.controller.js",

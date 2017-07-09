@@ -82,10 +82,10 @@
 			controllerAs: 'vm',
 			loginRequired: true
 		})
-		.when('/settings/user-settings', {
-			title: 'NativeQDA | User Settings',
-			templateUrl: '/components/settings/userSettings/userSettings.view.html',
-			controller: 'userSettingsCtrl',
+		.when('/settings/user-management', {
+			title: 'NativeQDA | User Management',
+			templateUrl: '/components/settings/userManagement/userManagement.view.html',
+			controller: 'userManagementCtrl',
 			controllerAs: 'vm',
 			loginRequired: true
 		})
