@@ -4,7 +4,7 @@
 	.module('nativeQDAApp')
 	.controller('surveyCtrl', surveyCtrl);
 
-	surveyCtrl.$inject = ['$scope', '$window', 'NgTableParams', '$sce', '$uibModal'];
+	/* @ngInject */
 	function surveyCtrl ($scope, $window, NgTableParams, $sce, $uibModal) {
 		var vm = this;
 		
