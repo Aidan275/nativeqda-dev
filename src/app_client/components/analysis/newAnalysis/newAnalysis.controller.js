@@ -67,7 +67,7 @@
 
 		function onSubmit() {
 			if(angular.isDefined(vm.formData)){
-				if(!vm.formData.visualisationName || !vm.formData.description) {
+				if(!vm.formData.analysisName || !vm.formData.description) {
 					logger.error('All fields required, please try again', '', 'Error');
 				} else if(!vm.formData.selectedDataKey) {
 					logger.error('Please select data for analysis', '', 'Error');
@@ -83,10 +83,11 @@
 			vm.isSubmittingButton = true;
 			filesService.signDownloadS3(vm.formData.selectedDataKey)
 			.then(function(response) {
-				analysisService.watsonConceptAnalysis({url: response.data})
+				analysisService.watsonAnalysis({url: response.data})
 				.then(function(response) {
 					vm.analysisResults = response.data;
-					saveAnalysisResultsDB();
+					console.log(response.data);
+					saveAnalysisResults();
 				}, function(err) {
 					vm.resultButton = 'error';
 				});
@@ -95,19 +96,24 @@
 			});
 		}
 
-		function saveAnalysisResultsDB() {
+		function saveAnalysisResults() {
 			var saveData = {
-				name: vm.formData.visualisationName,
+				name: vm.formData.analysisName,
 				description: vm.formData.description,
 				createdBy: authentication.currentUser().firstName,
 				sourceDataKey: vm.formData.selectedDataKey,
 				language: vm.analysisResults.language,
-				concepts: vm.analysisResults.concepts
+				categories: vm.analysisResults.categories,
+				concepts: vm.analysisResults.concepts,
+				entities: vm.analysisResults.entities,
+				keywords: vm.analysisResults.keywords,
+				relations: vm.analysisResults.relations,
+				semanticRoles: vm.analysisResults.semanticRoles
 			};
 
-			analysisService.saveConceptAnalysis(saveData)
+			analysisService.saveWatsonAnalysis(saveData)
 			.then(function(response) {
-				logger.success('Visualisation "' + vm.formData.visualisationName + '" was created successfully', '', 'Success')
+				logger.success('Analysis "' + vm.formData.analysisName + '" successfully completed', '', 'Success')
 				vm.resultButton = 'success';
 				setTimeout(function() {
 					vm.modal.close(response.data);	// Close modal if the analysis was completed successfully and return the new analysis data

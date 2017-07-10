@@ -27,7 +27,7 @@
 		}
 
 		function getAnalysisData() {
-			analysisService.readConceptAnalysis(vm.analysisID)
+			analysisService.readWatsonAnalysis(vm.analysisID)
 			.then(function(response) {
 				vm.analysisData = response.data;
 			});

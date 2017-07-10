@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-var AnalysisConcept = mongoose.model('AnalysisConcept');
+var AnalysisResults = mongoose.model('analysisResults');
 var AYLIENTextAPI = require('aylien_textapi');
 var textapi = new AYLIENTextAPI({
 	application_id: "82b88370",
@@ -33,8 +33,7 @@ module.exports.aylienConceptAnalysis = function(req, res) {
 	});
 };
 
-module.exports.watsonNLUAnalysis = function(req, res) {
-
+module.exports.watsonAnalysis = function(req, res) {
 	var parameters = {
 		'url': req.body.url,
 		'features': {
@@ -65,91 +64,36 @@ module.exports.watsonNLUAnalysis = function(req, res) {
 			sendJSONresponse(res, 200, response);
 		}
 	});
-
 };
 
-module.exports.watsonConceptAnalysis = function(req, res) {
-	var parameters = {
-		'url': req.body.url,
-		'features': {
-			'concepts': {
-				'limit': 50
-			}
-		}
-	};
+module.exports.saveWatsonAnalysis = function(req, res) {
+	var analysisResults = new AnalysisResults();
 
-	natural_language_understanding.analyze(parameters, function(error, response) {
-		if (error) {
-			sendJSONresponse(res, 404, error);
-		}
-		else {
-			sendJSONresponse(res, 200, response);
-		}
-	});
+	analysisResults.name = req.body.name
+	analysisResults.description = req.body.description;
+	analysisResults.createdBy = req.body.createdBy;
+	analysisResults.sourceDataKey = req.body.sourceDataKey;
+	analysisResults.language = req.body.language,
+	analysisResults.categories = req.body.categories;
+	analysisResults.concepts = req.body.concepts;
+	analysisResults.entities = req.body.entities;
+	analysisResults.keywords = req.body.keywords;
+	analysisResults.relations = req.body.relations;
+	analysisResults.semanticRoles = req.body.semanticRoles;
 
-};
-
-module.exports.listConceptAnalyses = function(req, res) {
-	AnalysisConcept
-	.find()
-	.exec(
-		function(err, results) {
-			if (!results) {
-				sendJSONresponse(res, 404, {
-					"message": "No concept analyses found"
-				});
-				return;
-			} else if (err) {
-				sendJSONresponse(res, 404, err);
-				return;
-			}
-			conceptAnalysesList = buildConceptAnalysesList(req, res, results);
-			sendJSONresponse(res, 200, conceptAnalysesList);
-		});
-
-};
-
-var buildConceptAnalysesList = function(req, res, results) {
-	var conceptAnalysesList = [];
-	results.forEach(function(doc) {
-		conceptAnalysesList.push({
-			name: doc.name,
-			description: doc.description,
-			createdBy: doc.createdBy,
-			sourceDataKey: doc.sourceDataKey,
-			language: doc.language,
-			concepts: doc.concepts,
-			dateCreated: doc.dateCreated,
-			lastModified: doc.lastModified,
-			_id: doc._id
-		});
-	});
-	return conceptAnalysesList;
-};
-
-module.exports.saveConceptAnalysis = function(req, res) {
-	var analysisConcept = new AnalysisConcept();
-
-	analysisConcept.name = req.body.name
-	analysisConcept.description = req.body.description;
-	analysisConcept.createdBy = req.body.createdBy;
-	analysisConcept.sourceDataKey = req.body.sourceDataKey;
-	analysisConcept.language = req.body.language,
-	analysisConcept.concepts = req.body.concepts;
-
-	analysisConcept.save(function(err) {
+	analysisResults.save(function(err) {
 		if (err) {
 			sendJSONresponse(res, 404, err);
 		} else {
-			sendJSONresponse(res, 200, analysisConcept);
+			sendJSONresponse(res, 200, analysisResults);
 		}
 	});	
 };
 
-module.exports.readConceptAnalysis = function(req, res) {
+module.exports.readWatsonAnalysis = function(req, res) {
 	var id = req.query.id;
 	if (id) {
-		AnalysisConcept
+		AnalysisResults
 		.findById(id)
 		.exec(
 			function(err, data) {
@@ -169,4 +113,41 @@ module.exports.readConceptAnalysis = function(req, res) {
 			"message": "No id in request"
 		});
 	}
+};
+
+module.exports.listWatsonAnalysis = function(req, res) {
+	AnalysisResults
+	.find()
+	.exec(
+		function(err, results) {
+			if (!results) {
+				sendJSONresponse(res, 404, {
+					"message": "No concept analyses found"
+				});
+				return;
+			} else if (err) {
+				sendJSONresponse(res, 404, err);
+				return;
+			}
+			analysisList = buildAnalysisList(req, res, results);
+			sendJSONresponse(res, 200, analysisList);
+		});
+};
+
+var buildAnalysisList = function(req, res, results) {
+	var analysisList = [];
+	results.forEach(function(doc) {
+		analysisList.push({
+			name: doc.name,
+			description: doc.description,
+			createdBy: doc.createdBy,
+			sourceDataKey: doc.sourceDataKey,
+			language: doc.language,
+			concepts: doc.concepts,
+			dateCreated: doc.dateCreated,
+			lastModified: doc.lastModified,
+			_id: doc._id
+		});
+	});
+	return analysisList;
 };

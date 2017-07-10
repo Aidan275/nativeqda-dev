@@ -11,10 +11,9 @@
 		return {
 			aylienConceptAnalysis	: aylienConceptAnalysis,
 			watsonAnalysis			: watsonAnalysis,
-			watsonConceptAnalysis 	: watsonConceptAnalysis,
-			saveConceptAnalysis 	: saveConceptAnalysis,
-			readConceptAnalysis 	: readConceptAnalysis,
-			listConceptAnalyses 	: listConceptAnalyses
+			saveWatsonAnalysis 		: saveWatsonAnalysis,
+			readWatsonAnalysis 		: readWatsonAnalysis,
+			listWatsonAnalysis 		: listWatsonAnalysis
 		};
 
 		///////////////////////////
@@ -43,52 +42,40 @@
 			function watsonAnalysisFailed(e) { return exception.catcher('XHR Failed for watson analysis')(e); }
 		};
 
-		function watsonConceptAnalysis(data){
-			return $http.post('/api/analysis/watson-concept-analysis', data, {
+		function saveWatsonAnalysis(data){
+			return $http.post('/api/analysis/watson/save', data, {
 				headers: {
 					Authorization: 'Bearer ' + authentication.getToken()
 				}
-			}).then(watsonConceptAnalysisComplete)
-			.catch(watsonConceptAnalysisFailed);
+			}).then(saveWatsonAnalysisComplete)
+			.catch(saveWatsonAnalysisFailed);
 
-			function watsonConceptAnalysisComplete(data) { return data; }
-			function watsonConceptAnalysisFailed(e) { return exception.catcher('XHR Failed for Watson Concept Analysis')(e); }
+			function saveWatsonAnalysisComplete(data) { return data; }
+			function saveWatsonAnalysisFailed(e) { return exception.catcher('XHR Failed for save watson analysis')(e); }
 		};
 
-		function saveConceptAnalysis(data) {
-			return $http.post('/api/analysis/watson-concept-analysis/save', data, {
+		function readWatsonAnalysis(id) {
+			return $http.get('/api/analysis/watson/read?id=' + id, {
 				headers: {
 					Authorization: 'Bearer '+ authentication.getToken()
 				}
-			}).then(saveConceptAnalysisComplete)
-			.catch(saveConceptAnalysisFailed);
+			}).then(readWatsonAnalysisComplete)
+			.catch(readWatsonAnalysisFailed);
 
-			function saveConceptAnalysisComplete(data) { return data; }
-			function saveConceptAnalysisFailed(e) { return exception.catcher('XHR Failed for save concept analysis')(e); }
+			function readWatsonAnalysisComplete(data) { return data; }
+			function readWatsonAnalysisFailed(e) { return exception.catcher('XHR Failed for read concept analysis')(e); }
 		}
 
-		function readConceptAnalysis(id) {
-			return $http.get('/api/analysis/watson-concept-analysis/read?id=' + id, {
+		function listWatsonAnalysis() {
+			return $http.get('/api/analysis/watson/list', {
 				headers: {
 					Authorization: 'Bearer '+ authentication.getToken()
 				}
-			}).then(readConceptAnalysisComplete)
-			.catch(readConceptAnalysisFailed);
+			}).then(listWatsonAnalysisComplete)
+			.catch(listWatsonAnalysisFailed);
 
-			function readConceptAnalysisComplete(data) { return data; }
-			function readConceptAnalysisFailed(e) { return exception.catcher('XHR Failed for read concept analysis')(e); }
-		}
-
-		function listConceptAnalyses() {
-			return $http.get('/api/analysis/watson-concept-analysis/list', {
-				headers: {
-					Authorization: 'Bearer '+ authentication.getToken()
-				}
-			}).then(listConceptAnalysisComplete)
-			.catch(listConceptAnalysisFailed);
-
-			function listConceptAnalysisComplete(data) { return data; }
-			function listConceptAnalysisFailed(e) { return exception.catcher('XHR Failed for list concept analysis')(e); }
+			function listWatsonAnalysisComplete(data) { return data; }
+			function listWatsonAnalysisFailed(e) { return exception.catcher('XHR Failed for list concept analysis')(e); }
 		}
 
 

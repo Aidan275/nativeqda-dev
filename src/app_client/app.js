@@ -17,7 +17,7 @@
 			templateUrl: '/components/auth/register/register.view.html',
 			controller: 'registerCtrl',
 			controllerAs: 'vm',
-			loginRequired: true
+			loginRequired: false
 		})
 		.when('/forgot-password', {
 			title: 'NativeQDA | Forgot Password',

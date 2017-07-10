@@ -38,11 +38,10 @@ router.post('/files/objectAclS3', auth, ctrlFile.objectAclS3);
 router.post('/files/objectAclDB', auth, ctrlFile.objectAclDB);
 
 router.post('/analysis/aylien/concept', auth, ctrlAnalysis.aylienConceptAnalysis);
-router.post('/analysis/watson', auth, ctrlAnalysis.watsonNLUAnalysis);
-router.post('/analysis/watson-concept-analysis', auth, ctrlAnalysis.watsonConceptAnalysis);
-router.post('/analysis/watson-concept-analysis/save', auth, ctrlAnalysis.saveConceptAnalysis);
-router.get('/analysis/watson-concept-analysis/read', auth, ctrlAnalysis.readConceptAnalysis);
-router.get('/analysis/watson-concept-analysis/list', auth, ctrlAnalysis.listConceptAnalyses);
+router.post('/analysis/watson', auth, ctrlAnalysis.watsonAnalysis);
+router.post('/analysis/watson/save', auth, ctrlAnalysis.saveWatsonAnalysis);
+router.get('/analysis/watson/read', auth, ctrlAnalysis.readWatsonAnalysis);
+router.get('/analysis/watson/list', auth, ctrlAnalysis.listWatsonAnalysis);
 
 router.get('/users/info', auth, ctrlUsers.getUserInfo);
 

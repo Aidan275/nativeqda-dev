@@ -18,7 +18,7 @@
 		var svg = d3.select("#graph").append("svg")
 		var chartLayer = svg.append("g").classed("chartLayer", true)
 
-		analysisService.readConceptAnalysis(id)
+		analysisService.readWatsonAnalysis(id)
 		.then(function(response) {
 			vm.analysisData = response.data;
 			setupData();

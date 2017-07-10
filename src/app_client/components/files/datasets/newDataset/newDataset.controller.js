@@ -7,7 +7,7 @@
 	.controller('newDatasetCtrl', newDatasetCtrl);
 
 	/* @ngInject */
-	function newDatasetCtrl($uibModalInstance, datasetService, filesService, logger, NgTableParams, $window, Upload, authentication) {
+	function newDatasetCtrl($http, $uibModalInstance, datasetService, filesService, logger, NgTableParams, $window, Upload, authentication) {
 		var vm = this;
 
 		// Bindable Functions
@@ -79,10 +79,12 @@
 			var concatText = '';
 			vm.datasetFiles.forEach(function(key){
 				filesService.signDownloadS3(key)
-				.then(function(response) {
-					jQuery.get(response.data, function(data) {
+				.then(function(response) {	
+					// Might move this to the files or analysis service - which ever makes more sense...
+					$http.get(response.data)
+					.then(function(data) {
 						fileCounter++
-						concatText += data + '\n\n';
+						concatText += data.data + '\n\n';
 						if(fileCounter === vm.datasetFiles.length) {
 							createTextFile(concatText);
 						}

@@ -31,7 +31,7 @@
 		}
 
 		function getAnalysesList() {
-			analysisService.listConceptAnalyses()
+			analysisService.listWatsonAnalysis()
 			.then(function(response) {
 				vm.analyses = response.data;
 				listAnalyses();
