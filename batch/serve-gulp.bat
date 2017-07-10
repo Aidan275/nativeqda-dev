@@ -2,4 +2,5 @@ Powershell.exe -executionpolicy remotesigned -File  E:\Documents\GitHub\nativeqd
 start E:\Documents\GitHub\nativeqda-dev\batch\start-mongod.bat
 e:
 cd E:\Documents\GitHub\nativeqda-dev
+npm update
 gulp serve
