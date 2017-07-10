@@ -58,8 +58,6 @@
 			.attr("width", chartWidth)
 			.attr("height", chartHeight)
 			.attr("transform", "translate("+[margin.left, margin.top]+")")
-
-
 		}
 
 		function drawChart(data) {
@@ -97,7 +95,7 @@
 			.on("mouseout", function(d) {		
 				div.transition()		
 				.duration(500)		
-				.delay(1500)
+				.delay(1000)
 				.style("opacity", 0);	
 			})
 			.call(d3.drag()

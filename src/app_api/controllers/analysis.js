@@ -38,19 +38,22 @@ module.exports.watsonNLUAnalysis = function(req, res) {
 	var parameters = {
 		'url': req.body.url,
 		'features': {
+			'categories': {},
+			'concepts': {
+				'limit': 50
+			},
 			'entities': {
 				'emotion': true,
 				'sentiment': true,
-				'limit': 5
+				'limit': 250
 			},
 			'keywords': {
 				'emotion': true,
 				'sentiment': true,
-				'limit': 5
+				'limit': 250
 			},
-			'concepts': {
-				'limit': 5
-			}
+			'relations': {},
+			'semantic_roles': {}
 		}
 	}
 
