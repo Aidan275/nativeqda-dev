@@ -1,4 +1,5 @@
 var gulp = require('gulp');
+var debug = require('gulp-debug');
 var browserSync = require('browser-sync');
 var del = require('del');
 var paths = require('./gulp.config.json');
@@ -24,6 +25,7 @@ gulp.task('ng-app', function() {
 
 	var source = [].concat(paths.appJS, paths.dist + 'templates.js');
 	return gulp.src(source)
+		.pipe(debug({title: 'ng-app:'}))
 		.pipe(plug.concat('ng-app.min.js'))
 		.pipe(plug.ngAnnotate({
 			add: true,
@@ -45,6 +47,7 @@ gulp.task('vendor-js', function() {
 	log('Bundling, minifying, and copying the vendor JS');
 
 	return gulp.src(paths.minVendorJS)
+		.pipe(debug({title: 'vendor-js:'}))
 		.pipe(plug.concat('vendor.min.js'))
 		.pipe(plug.bytediff.start())
 		.pipe(plug.uglify())
@@ -60,6 +63,7 @@ gulp.task('vendor-css', function() {
 	log('Bundling, minifying, and copying the vendor CSS');
 
 	return gulp.src(paths.minVendorCSS)
+		.pipe(debug({title: 'vendor-css:'}))
 		.pipe(plug.concat('vendor.min.css'))
 		.pipe(plug.bytediff.start())
 		.pipe(plug.minifyCss({}))
@@ -75,6 +79,7 @@ gulp.task('scripts-js', function() {
 	log('Bundling, minifying, and copying the JS scripts');
 
 	return gulp.src(paths.JS)
+		.pipe(debug({title: 'scripts-js:'}))
 		.pipe(plug.concat('scripts.min.js'))
 		.pipe(plug.bytediff.start())
 		.pipe(plug.uglify())
@@ -90,6 +95,7 @@ gulp.task('styles-css', function() {
 	log('Bundling, minifying, and copying the CSS styles');
 
 	return gulp.src(paths.CSS)
+		.pipe(debug({title: 'styles-css:'}))
 		.pipe(plug.concat('styles.min.css')) // Before bytediff or after
 		.pipe(plug.autoprefixer('last 2 version', '> 5%'))
 		.pipe(plug.bytediff.start())
@@ -106,6 +112,7 @@ gulp.task('html', function() {
 log('Minifying, and copying the app HTML');
 
 	return gulp.src(paths.appHTML)
+		.pipe(debug({title: 'html:'}))
 		//.pipe(plug.bytediff.start())
 		.pipe(plug.minifyHtml({
 			empty: true
@@ -122,6 +129,7 @@ gulp.task('images', function() {
 	log('Compressing, caching, and copying the images');
 
 	return gulp.src(paths.images)
+		.pipe(debug({title: 'images:'}))
 		.pipe(plug.cache(plug.imagemin({
 			optimizationLevel: 3
 		})))
@@ -136,6 +144,7 @@ gulp.task('fonts', function() {
 	log('Copying the fonts');
 
 	return gulp.src(paths.fonts)
+		.pipe(debug({title: 'fonts:'}))
 		.pipe(gulp.dest(paths.dist + 'assets/fonts'));
 });
 
@@ -148,6 +157,7 @@ gulp.task('inject-min', ['ng-app', 'vendor-js', 'vendor-css', 'scripts-js', 'sty
 	var dist = paths.dist;
 
 	gulp.src(paths.client + 'index.html')
+		.pipe(debug({title: 'inject-min:'}))
 		.pipe(inject('assets/css/vendor.min.css', 'inject-vendor'))
 		.pipe(inject('assets/css/styles.min.css', 'inject-styles'))
 		.pipe(inject('assets/js/vendor.min.js', 'inject-vendor'))
@@ -175,7 +185,8 @@ gulp.task('inject-min', ['ng-app', 'vendor-js', 'vendor-css', 'scripts-js', 'sty
 gulp.task('build', ['inject-min', 'html', 'images', 'fonts'], function() {
 	log('Building the optimized app');
 
-	return gulp.src('').pipe(plug.notify({
+	return gulp.src('')
+	.pipe(plug.notify({
 		onLast: true,
 		message: 'Deployed code!'
 	}));
@@ -222,6 +233,7 @@ gulp.task('inject', function() {
 	del(paths.client + 'index.html');
 
 	gulp.src(paths.client + 'index-template.html')
+		.pipe(debug({title: 'inject:'}))
 		.pipe(inject(paths.devVendorCSS, 'inject-vendor'))
 		.pipe(inject(paths.CSS, 'inject-styles'))
 		.pipe(inject(paths.devVendorJS, 'inject-vendor'))
