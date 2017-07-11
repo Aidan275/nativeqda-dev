@@ -8,7 +8,9 @@
 	function bubbleChartCtrl ($routeParams, analysisService) {
 		var vm = this;
 
+		var analysisType = $routeParams.type;
 		var id = $routeParams.id;
+
 		vm.analysisData = {};
 		var dataNodes = [];
 
@@ -21,14 +23,23 @@
 		analysisService.readWatsonAnalysis(id)
 		.then(function(response) {
 			vm.analysisData = response.data;
+			console.log(response.data);
 			setupData();
 		});
 
 		function setupData() {
-			vm.analysisData.concepts.forEach(function(concept){
-				dataNodes.push({text: concept.text, r: concept.relevance*100, dbpedia_resource: concept.dbpedia_resource});
-			});
+			if(analysisType === 'concepts') {
+				vm.analysisData.concepts.forEach(function(concept){
+					dataNodes.push({text: concept.text, r: concept.relevance*100, dbpedia_resource: concept.dbpedia_resource});
+				});
 
+			} else if(analysisType === 'keywords') {
+				vm.analysisData.keywords.forEach(function(keyword){
+					dataNodes.push({text: keyword.text, r: keyword.relevance*100});
+				});
+
+			}
+			
 			main();
 		}
 

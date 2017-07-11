@@ -130,7 +130,8 @@
 		"./src/app_client/components/testAnalysis/aylien/testAylien.controller.js",
 		"./src/app_client/components/testAnalysis/watson/testWatson.controller.js",
 		"./src/app_client/components/visualisations/visualisations.controller.js",
-		"./src/app_client/components/visualisations/visuals/bubbleChart/bubbleChart.controller.js"
+		"./src/app_client/components/visualisations/visuals/bubbleChart/bubbleChart.controller.js",
+		"./src/app_client/components/visualisations/visuals/radarChart/radarChart.controller.js"
 	],
 	"nodeJS": [
 		"./src/app_api/**/*.js"

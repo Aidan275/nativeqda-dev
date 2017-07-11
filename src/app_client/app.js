@@ -103,10 +103,17 @@
 			controllerAs: 'vm',
 			loginRequired: false
 		})
-		.when('/bubble-chart/:id', {
+		.when('/bubble-chart/:type/:id', {
 			title: 'NativeQDA | Bubble Chart',
 			templateUrl: '/components/visualisations/visuals/bubbleChart/bubbleChart.view.html',
 			controller: 'bubbleChartCtrl',
+			controllerAs: 'vm',
+			loginRequired: true
+		})
+		.when('/radar-chart/:type/:id', {
+			title: 'NativeQDA | Radar Chart',
+			templateUrl: '/components/visualisations/visuals/radarChart/radarChart.view.html',
+			controller: 'radarChartCtrl',
 			controllerAs: 'vm',
 			loginRequired: true
 		})

@@ -143,7 +143,6 @@ var buildAnalysisList = function(req, res, results) {
 			createdBy: doc.createdBy,
 			sourceDataKey: doc.sourceDataKey,
 			language: doc.language,
-			concepts: doc.concepts,
 			dateCreated: doc.dateCreated,
 			lastModified: doc.lastModified,
 			_id: doc._id
