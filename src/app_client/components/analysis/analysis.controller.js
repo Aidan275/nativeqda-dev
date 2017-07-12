@@ -34,6 +34,7 @@
 			analysisService.listWatsonAnalysis()
 			.then(function(response) {
 				vm.analyses = response.data;
+				console.log(vm.analyses);
 				listAnalyses();
 			});
 		}

@@ -108,7 +108,7 @@
 				entities: vm.analysisResults.entities,
 				keywords: vm.analysisResults.keywords,
 				relations: vm.analysisResults.relations,
-				semanticRoles: vm.analysisResults.semanticRoles
+				semanticRoles: vm.analysisResults.semantic_roles
 			};
 
 			analysisService.saveWatsonAnalysis(saveData)

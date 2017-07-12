@@ -117,6 +117,20 @@
 			controllerAs: 'vm',
 			loginRequired: true
 		})
+		.when('/treemap-chart/:type/:id', {
+			title: 'NativeQDA | Treemap Chart',
+			templateUrl: '/components/visualisations/visuals/treemapChart/treemapChart.view.html',
+			controller: 'treemapChartCtrl',
+			controllerAs: 'vm',
+			loginRequired: true
+		})
+		.when('/basic-table/:type/:id', {
+			title: 'NativeQDA | Basic Table',
+			templateUrl: '/components/visualisations/visuals/basicTable/basicTable.view.html',
+			controller: 'basicTableCtrl',
+			controllerAs: 'vm',
+			loginRequired: true
+		})
 		.when('/heatmap-example', {
 			title: 'NativeQDA | Heatmap Example',
 			templateUrl: '/components/heatmapExample/heatmapExample.view.html',

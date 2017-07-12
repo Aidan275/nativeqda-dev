@@ -1,0 +1,20 @@
+ <navigation></navigation>
+
+ <div style="padding:0 100px;">
+
+ 	<page-header content="vm.pageHeader"></page-header>
+
+ 	<div class="col-md-12">
+
+ 		<table ng-table-dynamic="vm.tableParams with vm.cols" show-filter="true" class="table table-bordered table-striped">
+ 			<tr ng-repeat="row in $data track by row.id">
+ 				<td ng-repeat="col in $columns">{{::row[col.field]}}</td>
+ 			</tr>
+ 		</table>
+
+ 	</div>
+
+ 	<footer-generic></footer-generic>
+
+ </div>
+

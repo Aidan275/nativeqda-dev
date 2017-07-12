@@ -66,8 +66,13 @@ var relationSchema = new mongoose.Schema({
 });
 
 var semanticRoleSchema = new mongoose.Schema({
-	subject: {type: String},
+	subject: {
+		text: {type: String}
+	},
 	sentence: {type: String},
+	object: {
+		text: {type: String}
+	},
 	action: {
 		verb: {
 			text: {type: String},

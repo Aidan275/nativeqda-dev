@@ -35,6 +35,7 @@ gulp.task('ng-app', function() {
 		.pipe(plug.uglify({
 			mangle: true
 		}))
+		.on('error', function (err) { plug.util.log(colors.red('[Error]'), err.toString()); })
 		.pipe(plug.bytediff.stop(bytediffFormatter))
 		.pipe(gulp.dest(paths.dist + 'assets/js'));
 });
@@ -51,6 +52,7 @@ gulp.task('vendor-js', function() {
 		.pipe(plug.concat('vendor.min.js'))
 		.pipe(plug.bytediff.start())
 		.pipe(plug.uglify())
+		.on('error', function (err) { plug.util.log(colors.red('[Error]'), err.toString()); })
 		.pipe(plug.bytediff.stop(bytediffFormatter))
 		.pipe(gulp.dest(paths.dist + 'assets/js'));
 });
@@ -67,6 +69,7 @@ gulp.task('vendor-css', function() {
 		.pipe(plug.concat('vendor.min.css'))
 		.pipe(plug.bytediff.start())
 		.pipe(plug.minifyCss({}))
+		.on('error', function (err) { plug.util.log(colors.red('[Error]'), err.toString()); })
 		.pipe(plug.bytediff.stop(bytediffFormatter))
 		.pipe(gulp.dest(paths.dist + 'assets/css'));
 });
@@ -83,6 +86,7 @@ gulp.task('scripts-js', function() {
 		.pipe(plug.concat('scripts.min.js'))
 		.pipe(plug.bytediff.start())
 		.pipe(plug.uglify())
+		.on('error', function (err) { plug.util.log(colors.red('[Error]'), err.toString()); })
 		.pipe(plug.bytediff.stop(bytediffFormatter))
 		.pipe(gulp.dest(paths.dist + 'assets/js'));
 });
@@ -100,6 +104,7 @@ gulp.task('styles-css', function() {
 		.pipe(plug.autoprefixer('last 2 version', '> 5%'))
 		.pipe(plug.bytediff.start())
 		.pipe(plug.minifyCss({}))
+		.on('error', function (err) { plug.util.log(colors.red('[Error]'), err.toString()); })
 		.pipe(plug.bytediff.stop(bytediffFormatter))
 		.pipe(gulp.dest(paths.dist + 'assets/css'));
 });
