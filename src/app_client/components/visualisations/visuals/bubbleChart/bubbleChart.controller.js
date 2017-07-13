@@ -1,5 +1,7 @@
 (function () {
 
+	'use strict'
+
 	angular
 	.module('nativeQDAApp')
 	.controller('bubbleChartCtrl', bubbleChartCtrl);
@@ -8,67 +10,69 @@
 	function bubbleChartCtrl ($routeParams, analysisService) {
 		var vm = this;
 
+		vm.setColour = setColour;
+
 		var analysisType = $routeParams.type;
 		var id = $routeParams.id;
 
 		vm.analysisData = {};
 		var dataNodes = [];
+		var bubbleScale = 50;
+		var data;
 
-		var width,height
-		var chartWidth, chartHeight
-		var margin
+		var width = document.querySelector("#graph").clientWidth;
+		var height = document.querySelector("#graph").clientHeight;
+		var maxRelevance = 0;
+		var minRelevance = bubbleScale;
+		var minColour = ""; 
+		var maxColour = "";
 		var svg = d3.select("#graph").append("svg")
-		var chartLayer = svg.append("g").classed("chartLayer", true)
+		.attr("width", width)
+		.attr("height", height)
+		.call(d3.zoom().on("zoom", function () {
+			svg.attr("transform", d3.event.transform)
+		}))
+		.append("g");
 
-		analysisService.readWatsonAnalysis(id)
-		.then(function(response) {
-			vm.analysisData = response.data;
-			console.log(response.data);
-			setupData();
-		});
+		vm.options = [
+		{ name: "Misty Meadow", minCol: "#e4e4d9", maxCol: "#215f00" }, 
+		{ name: "Kyoto", minCol: "#c21500", maxCol: "#ffc500" }, 
+		{ name: "Pinot Noir", minCol: "#182848", maxCol: "#4b6cb7" }, 
+		{ name: "Miake", minCol: "#0ABFBC", maxCol: "#FC354C" }, 
+		{ name: "Calm Darya", minCol: "#5f2c82", maxCol: "#49a09d" }
+		];
 
-		function setupData() {
-			if(analysisType === 'concepts') {
-				vm.analysisData.concepts.forEach(function(concept){
-					dataNodes.push({text: concept.text, r: concept.relevance*100, dbpedia_resource: concept.dbpedia_resource});
-				});
+		vm.selectedOption = vm.options[0];
 
-			} else if(analysisType === 'keywords') {
-				vm.analysisData.keywords.forEach(function(keyword){
-					dataNodes.push({text: keyword.text, r: keyword.relevance*100});
-				});
+		activate();
 
-			}
-			
-			main();
-		}
+		///////////////////////////
 
-		function main() {
-			var range = 10
-			// var data = {nodes:d3.range(0, range).map(function(d){ return {label: "l"+d ,r:~~d3.randomUniform(40, 80)()}})};
-			var data = {nodes: dataNodes};
+		function activate() {
+			analysisService.readWatsonAnalysis(id)
+			.then(function(response) {
+				vm.analysisData = response.data;
+				console.log(response.data);
 
-			setSize(data)
-			drawChart(data)    
-		}
+				if(analysisType === 'concepts') {
+					vm.analysisData.concepts.forEach(function(concept){
+						maxRelevance = (concept.relevance > maxRelevance ? concept.relevance : maxRelevance);
+						minRelevance = (concept.relevance < minRelevance ? concept.relevance : minRelevance);
+						dataNodes.push({text: concept.text, r: concept.relevance*bubbleScale, dbpedia_resource: concept.dbpedia_resource});
+					});
 
-		function setSize(data) {
-			width = document.querySelector("#graph").clientWidth
-			height = document.querySelector("#graph").clientHeight
+				} else if(analysisType === 'keywords') {
+					vm.analysisData.keywords.forEach(function(keyword){
+						maxRelevance = (keyword.relevance > maxRelevance ? keyword.relevance : maxRelevance);
+						minRelevance = (keyword.relevance < minRelevance ? keyword.relevance : minRelevance);
+						dataNodes.push({text: keyword.text, r: keyword.relevance*bubbleScale});
+					});
 
-			margin = {top:0, left:0, bottom:0, right:0 }
+				}
 
-
-			chartWidth = width - (margin.left+margin.right)
-			chartHeight = height - (margin.top+margin.bottom)
-
-			svg.attr("width", width).attr("height", height)
-
-
-			chartLayer
-			.attr("width", chartWidth)
-			.attr("height", chartHeight)
-			.attr("transform", "translate("+[margin.left, margin.top]+")")
+				data = {nodes: dataNodes};
+				drawChart(data);
+			}); 
 		}
 
 		function drawChart(data) {
@@ -77,7 +81,7 @@
 			.force("link", d3.forceLink().id(function(d) { return d.index }))
 			.force("collide",d3.forceCollide( function(d){return d.r + 1 }).iterations(24) )
 			.force("charge", d3.forceManyBody())
-			.force("center", d3.forceCenter(chartWidth / 2, chartWidth / 2))
+			.force("center", d3.forceCenter(width / 2, height / 2))
 			.force("y", d3.forceY(0))
 			.force("x", d3.forceX(0))
 
@@ -95,13 +99,15 @@
 			.data(data.nodes)
 			.enter().append("circle")
 			.attr("r", function(d){  return d.r })
+			//.style("fill", function(d) { return colours(d.r) })
+			.style("cursor", "pointer")
 			.on("mouseover", function(d) {		
 				div.transition()		
 				.duration(200)		
 				.style("opacity", .9);		
 				div.html("Concept: " + d.text + "<br/>Relevance: " + d.r + "%" + "<br/>DBpedia Resource: <a href='" + d.dbpedia_resource + "' target='_blank'>" + d.dbpedia_resource + "</a>")	
 				.style("left", (d3.event.pageX) + "px")		
-				.style("top", (d3.event.pageY - 28) + "px");	
+				.style("top", (d3.event.pageY - 150) + "px");
 			})					
 			.on("mouseout", function(d) {		
 				div.transition()		
@@ -142,6 +148,19 @@
 				d.fy = null;
 			} 
 
+			setColour();
+
+		}
+
+		function setColour() {
+			minColour = vm.selectedOption.minCol;
+			maxColour = vm.selectedOption.maxCol;
+
+			var colours = d3.scaleLinear()
+			.domain([minRelevance*bubbleScale,maxRelevance*bubbleScale])
+			.range([minColour, maxColour]);
+
+			svg.selectAll("circle").style("fill", function(d) { return colours(d.r) });
 		}
 	}
 

@@ -1,6 +1,12 @@
 <style>
-	#graph {
-		width: 100%;
-		height: 1000px;
+	body {
+		overflow:hidden;
 	}
-</style><navigation></navigation><div class=container><div id=graph></div><footer-generic></footer-generic></div>
+	#graph {
+		position: absolute;
+		top: 0; 
+		right: 0; 
+		bottom: 0; 
+		left: 0;
+	}
+</style><navigation></navigation><div id=graph></div><div style="height: 100px; width: 100%; position: absolute; z-index: 1000; bottom: 0;"><select data-ng-options="o.name for o in vm.options" data-ng-model=vm.selectedOption ng-change=vm.setColour()></select></div>
