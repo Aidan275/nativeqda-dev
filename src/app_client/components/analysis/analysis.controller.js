@@ -5,7 +5,7 @@
 	.controller('analysisCtrl', analysisCtrl);
 
 	/* @ngInject */
-	function analysisCtrl ($scope, $window, NgTableParams, $sce, $uibModal, analysisService) {
+	function analysisCtrl ($scope, $window, NgTableParams, $sce, $uibModal, analysisService, bsLoadingOverlayService) {
 		var vm = this;
 
 		// Bindable Functions
@@ -31,8 +31,10 @@
 		}
 
 		function getAnalysesList() {
+			bsLoadingOverlayService.start({referenceId: 'analysis-list'});
 			analysisService.listWatsonAnalysis()
 			.then(function(response) {
+				bsLoadingOverlayService.stop({referenceId: 'analysis-list'});
 				vm.analyses = response.data;
 				console.log(vm.analyses);
 				listAnalyses();

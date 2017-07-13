@@ -21,7 +21,8 @@
 		vm.analysisResults;
 		vm.isSubmittingButton = null;	// variables for button animation - ng-bs-animated-button
 		vm.resultButton = null;
-		vm.createButtonOptions = { buttonDefaultText: 'Analyse', animationCompleteTime: 1000, buttonSubmittingText: 'Processing...', buttonSuccessText: 'Done!' };
+		vm.analyseButtonOptions = { buttonDefaultText: 'Analyse', animationCompleteTime: 1000, buttonSubmittingText: 'Processing...', buttonSuccessText: 'Done!' };
+		vm.isProcessing = false;
 
 		activate();
 
@@ -80,19 +81,18 @@
 		}
 
 		function doAnalysis() {
-			vm.isSubmittingButton = true;
+			processingEvent(true, null);
 			filesService.signDownloadS3(vm.formData.selectedDataKey)
 			.then(function(response) {
 				analysisService.watsonAnalysis({url: response.data})
 				.then(function(response) {
 					vm.analysisResults = response.data;
-					console.log(response.data);
 					saveAnalysisResults();
 				}, function(err) {
-					vm.resultButton = 'error';
+					processingEvent(false, 'error');
 				});
 			}, function(err) {
-				vm.resultButton = 'error';
+				processingEvent(false, 'error');
 			});
 		}
 
@@ -114,12 +114,12 @@
 			analysisService.saveWatsonAnalysis(saveData)
 			.then(function(response) {
 				logger.success('Analysis "' + vm.formData.analysisName + '" successfully completed', '', 'Success')
-				vm.resultButton = 'success';
+				processingEvent(false, 'success');
 				setTimeout(function() {
 					vm.modal.close(response.data);	// Close modal if the analysis was completed successfully and return the new analysis data
 				}, 1000);	// Timeout function so the user can see the analysis has completed before closing modal
 			}, function(err) {
-				vm.resultButton = 'error';
+				processingEvent(false, 'error');
 			});
 		}
 
@@ -130,6 +130,12 @@
 			.then(function(response) {
 				$window.open(response.data, '_blank');
 			});
+		}
+
+		function processingEvent(status, result) {
+			vm.isSubmittingButton = status;
+			vm.isProcessing = status;
+			vm.resultButton = result;			
 		}
 
 		vm.modal = {

@@ -7,7 +7,7 @@
 	.controller('newDatasetCtrl', newDatasetCtrl);
 
 	/* @ngInject */
-	function newDatasetCtrl($http, $uibModalInstance, datasetService, filesService, logger, NgTableParams, $window, Upload, authentication) {
+	function newDatasetCtrl($http, $uibModalInstance, datasetService, filesService, logger, NgTableParams, $window, Upload, authentication, bsLoadingOverlayService) {
 		var vm = this;
 
 		// Bindable Functions
@@ -18,6 +18,10 @@
 		vm.formData;
 		vm.fileList = null;
 		vm.datasetFiles = null;
+		vm.isSubmittingButton = null;	// variables for button animation - ng-bs-animated-button
+		vm.resultButton = null;
+		vm.createButtonOptions = { buttonDefaultText: 'Create Dataset', animationCompleteTime: 1000, buttonSubmittingText: 'Processing...', buttonSuccessText: 'Done!' };
+		vm.isProcessing = false;
 
 		activate();
 
@@ -29,8 +33,10 @@
 
 		// Gets all the files from the MongoDB database
 		function getFileList() {
+			bsLoadingOverlayService.start({referenceId: 'new-dataset'});
 			filesService.getFileListDB('true')	// Passing the true string as a parameter in the API request
 			.then(function(response) {			// returns only the files with associated text files for analysis
+				bsLoadingOverlayService.stop({referenceId: 'new-dataset'});
 				vm.fileList = response.data;
 				listFiles();
 			});
@@ -66,9 +72,12 @@
 		}
 
 		function doCreateDataset() {
+			processingEvent(true, null);
 			var keys = Object.keys(vm.formData.checkboxes);		// Checks the checkbox object and any key that is true, 
 			vm.datasetFiles = keys.filter(function(key) {		// the key is saved into the vm.datasetFiles array
 				return vm.formData.checkboxes[key]
+			}, function(err) {
+				processingEvent(false, 'error');
 			});
 
 			concatTextFiles();
@@ -88,7 +97,11 @@
 						if(fileCounter === vm.datasetFiles.length) {
 							createTextFile(concatText);
 						}
+					}, function(err) {
+						processingEvent(false, 'error');
 					});
+				}, function(err) {
+					processingEvent(false, 'error');
 				});
 			});			
 		}
@@ -120,8 +133,8 @@
 					var key = result.data.fields.key;
 					var url = result.data.url + '/' + encodeURIComponent(key);	// Encode the key for the API URL incase it includes reserved characters (e.g '+', '&')
 
-					datasetService.datasetCreate({			// Using the datasetService, makes an API request to
-						name: vm.formData.datasetName,		// the server to add the new dataset
+					datasetService.datasetCreate({			// Using the datasetService, makes an API request to the server to add the new dataset
+						name: vm.formData.datasetName,
 						desc: vm.formData.description,
 						size : newFile.size,
 						key : key,
@@ -130,16 +143,28 @@
 						files: vm.datasetFiles
 					})
 					.then(function (response) {
+						processingEvent(false, 'success');
 						console.log(vm.formData.datasetName + ' successfully added to DB');
 						logger.success('Dataset "' + vm.formData.datasetName + '" was created successfully', '', 'Success')
-						vm.modal.close(response.data);	// Close modal if dataset was created successfully in DB
-					});									// and return the response from the DB (the new dataset)
+						setTimeout(function() {
+							vm.modal.close(response.data);	// Close modal if dataset was created successfully in DB and return the response from the DB (the new dataset)
+						}, 1000);	// Timeout function so the user can see the analysis has completed before closing modal
+					});
 				}, function(error) {
+					processingEvent(false, 'error');
 					var xml = $.parseXML(error.data);
 					logger.error($(xml).find("Message").text(), '', 'Error');
 					cleanUpForNextUpload();
 				});
+			}, function(err) {
+				processingEvent(false, 'error');
 			});
+		}
+
+		function processingEvent(status, result) {
+			vm.isSubmittingButton = status;
+			vm.isProcessing = status;
+			vm.resultButton = result;			
 		}
 
 		vm.modal = {

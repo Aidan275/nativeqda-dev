@@ -7,7 +7,7 @@
 	.controller('bubbleChartCtrl', bubbleChartCtrl);
 
 	/* @ngInject */
-	function bubbleChartCtrl ($routeParams, analysisService) {
+	function bubbleChartCtrl ($routeParams, analysisService, bsLoadingOverlayService) {
 		var vm = this;
 
 		vm.setColour = setColour;
@@ -49,8 +49,10 @@
 		///////////////////////////
 
 		function activate() {
+			bsLoadingOverlayService.start({referenceId: 'bubble-chart'});
 			analysisService.readWatsonAnalysis(id)
 			.then(function(response) {
+				bsLoadingOverlayService.stop({referenceId: 'bubble-chart'});
 				vm.analysisData = response.data;
 				console.log(response.data);
 

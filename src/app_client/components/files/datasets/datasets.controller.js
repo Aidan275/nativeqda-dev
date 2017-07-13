@@ -5,7 +5,7 @@
 	.controller('datasetsCtrl', datasetsCtrl);
 
 	/* @ngInject */
-	function datasetsCtrl($window, $sce, $uibModal, NgTableParams, datasetService, logger, filesService) {
+	function datasetsCtrl($window, $sce, $uibModal, NgTableParams, datasetService, logger, filesService, bsLoadingOverlayService) {
 		var vm = this;
 		
 		// Bindable Functions
@@ -31,8 +31,10 @@
 		}
 
 		function getDatasetList() {
+			bsLoadingOverlayService.start({referenceId: 'dataset-list'});
 			datasetService.listDatasets()
 			.then(function(response) {
+				bsLoadingOverlayService.stop({referenceId: 'dataset-list'});
 				vm.dataset = response.data
 				ListDatasets();
 			});

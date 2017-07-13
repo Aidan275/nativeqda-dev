@@ -13,12 +13,16 @@
 
 <navigation></navigation>
 
-<div id="graph"></div>    
+<div class="bs-loading-container" bs-loading-overlay bs-loading-overlay-active-class="loading-overlay--active" bs-loading-overlay-reference-id="bubble-chart"> 
+	<div class="blur-this">
+		<div id="graph"></div>    
 
-<div style="height: 100px;
-width: 100%;
-position: absolute;
-z-index: 1000;
-bottom: 0;">
-	<select data-ng-options="o.name for o in vm.options" data-ng-model="vm.selectedOption" ng-change="vm.setColour()"></select>
+		<div style="height: 100px;
+		width: 100%;
+		position: absolute;
+		z-index: 1000;
+		bottom: 0;">
+		<select data-ng-options="o.name for o in vm.options" data-ng-model="vm.selectedOption" ng-change="vm.setColour()"></select>
+	</div>
+</div>
 </div>

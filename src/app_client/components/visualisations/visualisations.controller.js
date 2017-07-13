@@ -5,7 +5,7 @@
 	.controller('visualisationsCtrl', visualisationsCtrl);
 
 	/* @ngInject */
-	function visualisationsCtrl ($routeParams, $window, analysisService, filesService) {
+	function visualisationsCtrl ($routeParams, $window, analysisService, filesService, bsLoadingOverlayService) {
 		var vm = this;
 
 		// Bindable Functions
@@ -27,8 +27,10 @@
 		}
 
 		function getAnalysisData() {
+			bsLoadingOverlayService.start({referenceId: 'visuals-info'});
 			analysisService.readWatsonAnalysis(vm.analysisID)
 			.then(function(response) {
+				bsLoadingOverlayService.stop({referenceId: 'visuals-info'});
 				vm.analysisData = response.data;
 			});
 		}
