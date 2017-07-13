@@ -27,16 +27,17 @@
 		///////////////////////////
 
 		function activate() {
+			bsLoadingOverlayService.start({referenceId: 'dataset-list'});	// Start animated loading overlay
 			getDatasetList();
 		}
 
 		function getDatasetList() {
-			bsLoadingOverlayService.start({referenceId: 'dataset-list'});
 			datasetService.listDatasets()
 			.then(function(response) {
-				bsLoadingOverlayService.stop({referenceId: 'dataset-list'});
 				vm.dataset = response.data
 				ListDatasets();
+			}, function(err) {
+				bsLoadingOverlayService.stop({referenceId: 'dataset-list'});	// If error, stop animated loading overlay
 			});
 		}
 
@@ -46,6 +47,7 @@
 			}, {
 				dataset: vm.dataset
 			});
+			bsLoadingOverlayService.stop({referenceId: 'dataset-list'});	// Stop animated loading overlay
 		}
 
 		function confirmDelete(key, datasetName) {

@@ -41,18 +41,18 @@
 	</div>
 	
 	<div class="col-md-12" style="min-height:350px;margin:5px;">
-		<div class="blur-this">
-			<div class="col-md-8" style="min-height:350px;">
-				<div class="bs-loading-container" bs-loading-overlay bs-loading-overlay-active-class="loading-overlay--active" bs-loading-overlay-reference-id="home-map"> 
-					<div class="blur-this">
-						<div id="map-homepage"></div>
-					</div>
+		<div class="col-md-8" style="min-height:350px;">
+			<div class="bs-loading-container" bs-loading-overlay bs-loading-overlay-active-class="loading-overlay--active" bs-loading-overlay-reference-id="home-map"> 
+				<div class="blur-this">
+					<div id="map-homepage"></div>
 				</div>
 			</div>
-			<div class="col-md-4" style="min-height:350px;">
-				<!--<h6>Recently modified files</h6>-->
+		</div>
+		<div class="col-md-4" style="min-height:350px;">
+			<!--<h6>Recently modified files</h6>-->
 
-				<div class="bs-loading-container" bs-loading-overlay bs-loading-overlay-active-class="loading-overlay--active" bs-loading-overlay-reference-id="file-list"> 
+			<div class="bs-loading-container" bs-loading-overlay bs-loading-overlay-active-class="loading-overlay--active" bs-loading-overlay-reference-id="file-list"> 
+				<div class="blur-this">
 					<table ng-table="vm.tableParams" class="table table-condensed table-bordered table-striped" style="margin-top:5px">
 						<tr ng-repeat="row in $data">
 							<td data-title="'File'">{{row.name}}</td>
@@ -60,7 +60,6 @@
 							<td data-title="'User'">{{row.createdBy}}</td>
 						</tr>
 					</table>
-
 				</div>
 			</div>
 		</div>

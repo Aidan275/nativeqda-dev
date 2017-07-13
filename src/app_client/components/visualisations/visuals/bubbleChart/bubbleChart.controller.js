@@ -10,12 +10,30 @@
 	function bubbleChartCtrl ($routeParams, analysisService, bsLoadingOverlayService) {
 		var vm = this;
 
-		vm.setColour = setColour;
+		var slideout = new Slideout({
+			'panel': document.querySelector('#panel'),
+			'menu': document.querySelector('#menu'),
+			'padding': 256,
+			'tolerance': 70
+		});
+
+		vm.toggleOptions = toggleOptions;
+		vm.updateFontScale = updateFontScale;
+		vm.setCicleColour = setCicleColour;
+		
+		vm.textColour = '#000000';
+		vm.bubbleColour1 = '#e4e4d9';
+		vm.bubbleColour2 = '#4676fa';
+		vm.bgColour = '#ffffff';
+		vm.fontScale = {
+			value: 30
+		};
+
+		vm.textColourChange;
 
 		var analysisType = $routeParams.type;
 		var id = $routeParams.id;
 
-		vm.analysisData = {};
 		var dataNodes = [];
 		var bubbleScale = 50;
 		var data;
@@ -24,17 +42,22 @@
 		var height = document.querySelector("#graph").clientHeight;
 		var maxRelevance = 0;
 		var minRelevance = bubbleScale;
-		var minColour = ""; 
-		var maxColour = "";
-		var svg = d3.select("#graph").append("svg")
+
+		function toggleOptions() {
+			slideout.toggle();
+		}
+
+		var svg = d3.select("#graph")
+		.append("svg")
 		.attr("width", width)
 		.attr("height", height)
+		.attr("class", "graph-svg-component")
 		.call(d3.zoom().on("zoom", function () {
 			svg.attr("transform", d3.event.transform)
 		}))
 		.append("g");
 
-		vm.options = [
+		vm.circleColourOptions = [
 		{ name: "Misty Meadow", minCol: "#e4e4d9", maxCol: "#215f00" }, 
 		{ name: "Kyoto", minCol: "#c21500", maxCol: "#ffc500" }, 
 		{ name: "Pinot Noir", minCol: "#182848", maxCol: "#4b6cb7" }, 
@@ -44,38 +67,38 @@
 		{ name: "Sunrise", minCol: "#F09819", maxCol: "#FF512F" }
 		];
 
-		vm.selectedOption = vm.options[0];
+		vm.selectedCicleColour = vm.circleColourOptions[0];
 
 		activate();
 
 		///////////////////////////
 
 		function activate() {
-			bsLoadingOverlayService.start({referenceId: 'bubble-chart'});
+			bsLoadingOverlayService.start({referenceId: 'bubble-chart'});	// Start animated loading overlay
 			analysisService.readWatsonAnalysis(id)
 			.then(function(response) {
-				bsLoadingOverlayService.stop({referenceId: 'bubble-chart'});
-				vm.analysisData = response.data;
-				console.log(response.data);
+				var analysisData = response.data;
 
 				if(analysisType === 'concepts') {
-					vm.analysisData.concepts.forEach(function(concept){
+					analysisData.concepts.forEach(function(concept){
+						var text = concept.text.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});	// Capitalise each word
 						maxRelevance = (concept.relevance > maxRelevance ? concept.relevance : maxRelevance);
 						minRelevance = (concept.relevance < minRelevance ? concept.relevance : minRelevance);
-						dataNodes.push({text: concept.text, r: concept.relevance*bubbleScale, dbpedia_resource: concept.dbpedia_resource});
+						dataNodes.push({text: text, r: concept.relevance*bubbleScale, dbpedia_resource: concept.dbpedia_resource});
 					});
-
 				} else if(analysisType === 'keywords') {
-					vm.analysisData.keywords.forEach(function(keyword){
+					analysisData.keywords.forEach(function(keyword){
+						var text = keyword.text.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});	// Capitalise each word
 						maxRelevance = (keyword.relevance > maxRelevance ? keyword.relevance : maxRelevance);
 						minRelevance = (keyword.relevance < minRelevance ? keyword.relevance : minRelevance);
-						dataNodes.push({text: keyword.text, r: keyword.relevance*bubbleScale});
+						dataNodes.push({text: text, r: keyword.relevance*bubbleScale});
 					});
-
 				}
 
 				data = {nodes: dataNodes};
 				drawChart(data);
+			}, function(err) {
+				bsLoadingOverlayService.stop({referenceId: 'bubble-chart'});	// If error, stop animated loading overlay
 			}); 
 		}
 
@@ -101,17 +124,24 @@
 			.attr("class", "nodes")
 			.selectAll("circle")
 			.data(data.nodes)
-			.enter().append("circle")
+			.enter()
+			.append("circle")
 			.attr("r", function(d){  return d.r })
-			//.style("fill", function(d) { return colours(d.r) })
 			.style("cursor", "pointer")
 			.on("mouseover", function(d) {		
 				div.transition()		
 				.duration(200)		
-				.style("opacity", .9);		
-				div.html("Concept: " + d.text + "<br/>Relevance: " + d.r + "%" + "<br/>DBpedia Resource: <a href='" + d.dbpedia_resource + "' target='_blank'>" + d.dbpedia_resource + "</a>")	
-				.style("left", (d3.event.pageX) + "px")		
-				.style("top", (d3.event.pageY - 150) + "px");
+				.style("opacity", .9);
+				if(analysisType === 'concepts') {
+					div.html("Concept: " + d.text + "<br/>Relevance: " + d3.format(".2%")(d.r/bubbleScale) + "<br/>DBpedia Resource: <a href='" + d.dbpedia_resource + "' target='_blank'>" + d.dbpedia_resource + "</a>")	
+					.style("left", (d3.event.pageX) + "px")		
+					.style("top", (d3.event.pageY - 150) + "px");
+				} else {
+					div.html("Concept: " + d.text + "<br/>Relevance: " + d3.format(".2%")(d.r/bubbleScale))
+					.style("left", (d3.event.pageX) + "px")		
+					.style("top", (d3.event.pageY - 150) + "px");
+				}
+				
 			})					
 			.on("mouseout", function(d) {		
 				div.transition()		
@@ -122,14 +152,27 @@
 			.call(d3.drag()
 				.on("start", dragstarted)
 				.on("drag", dragged)
-				.on("end", dragended));    
+				.on("end", dragended));   
 
+			var textLabel = svg.selectAll(".mytext")
+			.data(data.nodes)
+			.enter()
+			.append("text")
+			.text(function (d) { return d.text; })
+			.style("text-anchor", "middle")
+			.style("fill", "#000")
+			.style("font-family", "Arial")
+			.style("font-size", (function (d) { return d.r*vm.fontScale.value/100; }))
+			.style("cursor", "pointer");
 
 			var ticked = function() {
 				node
 				.attr("cx", function(d) { return d.x; })
 				.attr("cy", function(d) { return d.y; });
-			}  
+				textLabel
+				.attr("x", function(d){ return d.x; })
+				.attr("y", function (d) {return d.y; });
+			}
 
 			simulation
 			.nodes(data.nodes)
@@ -152,20 +195,29 @@
 				d.fy = null;
 			} 
 
-			setColour();
-
+			setCicleColour();
+			bsLoadingOverlayService.stop({referenceId: 'bubble-chart'});	// Stop animated loading overlay
 		}
 
-		function setColour() {
-			minColour = vm.selectedOption.minCol;
-			maxColour = vm.selectedOption.maxCol;
-
+		function setCicleColour() {
 			var colours = d3.scaleLinear()
 			.domain([minRelevance*bubbleScale,maxRelevance*bubbleScale])
-			.range([minColour, maxColour]);
+			.range([vm.bubbleColour1, vm.bubbleColour2]);
 
 			svg.selectAll("circle").style("fill", function(d) { return colours(d.r) });
 		}
+
+		vm.bgColourOptions = { format:'hexString', case:'lower' };
+		vm.textColourOptions = { format:'hexString', case:'lower' };
+		vm.bubbleColourOptions1 = { format:'hexString', case:'lower' };
+		vm.bubbleColourOptions2 = { format:'hexString', case:'lower' };
+
+		vm.bgColourChange = { onChange: function(api, color) { document.querySelector(".graph-svg-component").style.background = color; } };
+		vm.textColourChange = {	onChange: function(api, color, $event) { svg.selectAll("text").style("fill", color); } };
+		vm.bubbleColourChange1 = { onChange: function() { setCicleColour(); } };
+		vm.bubbleColourChange2 = { onChange: function() { setCicleColour(); } };
+		function updateFontScale() { svg.selectAll("text").style("font-size", (function (d) { return d.r*vm.fontScale.value/100; }))}
+		
 	}
 
 })();

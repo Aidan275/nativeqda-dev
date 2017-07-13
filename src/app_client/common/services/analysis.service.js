@@ -13,7 +13,8 @@
 			watsonAnalysis			: watsonAnalysis,
 			saveWatsonAnalysis 		: saveWatsonAnalysis,
 			readWatsonAnalysis 		: readWatsonAnalysis,
-			listWatsonAnalysis 		: listWatsonAnalysis
+			listWatsonAnalysis 		: listWatsonAnalysis,
+			deleteWatsonAnalysis 	: deleteWatsonAnalysis
 		};
 
 		///////////////////////////
@@ -27,7 +28,7 @@
 			.catch(conceptAnalysisFailed);
 
 			function conceptAnalysisComplete(data) { return data; }
-			function conceptAnalysisFailed(e) { return exception.catcher('XHR Failed for aylien concept analysis')(e); }
+			function conceptAnalysisFailed(e) { return exception.catcher('XHR Failed for ALYIEN concept analysis')(e); }
 		};
 
 		function watsonAnalysis(data){
@@ -39,7 +40,7 @@
 			.catch(watsonAnalysisFailed);
 
 			function watsonAnalysisComplete(data) { return data; }
-			function watsonAnalysisFailed(e) { return exception.catcher('XHR Failed for watson analysis')(e); }
+			function watsonAnalysisFailed(e) { return exception.catcher('XHR Failed for Watson analysis')(e); }
 		};
 
 		function saveWatsonAnalysis(data){
@@ -51,7 +52,7 @@
 			.catch(saveWatsonAnalysisFailed);
 
 			function saveWatsonAnalysisComplete(data) { return data; }
-			function saveWatsonAnalysisFailed(e) { return exception.catcher('XHR Failed for save watson analysis')(e); }
+			function saveWatsonAnalysisFailed(e) { return exception.catcher('XHR Failed for save Watson analysis')(e); }
 		};
 
 		function readWatsonAnalysis(id) {
@@ -63,7 +64,7 @@
 			.catch(readWatsonAnalysisFailed);
 
 			function readWatsonAnalysisComplete(data) { return data; }
-			function readWatsonAnalysisFailed(e) { return exception.catcher('XHR Failed for read concept analysis')(e); }
+			function readWatsonAnalysisFailed(e) { return exception.catcher('XHR Failed for read Watson analysis')(e); }
 		}
 
 		function listWatsonAnalysis() {
@@ -75,9 +76,22 @@
 			.catch(listWatsonAnalysisFailed);
 
 			function listWatsonAnalysisComplete(data) { return data; }
-			function listWatsonAnalysisFailed(e) { return exception.catcher('XHR Failed for list concept analysis')(e); }
+			function listWatsonAnalysisFailed(e) { return exception.catcher('XHR Failed for list Watson analyses')(e); }
 		}
 
+		function deleteWatsonAnalysis(analysisID) {
+			// Encode the key for the API URL incase it includes reserved characters (e.g '+', '&')
+            var encodedID = encodeURIComponent(analysisID);
+        	return $http.delete('/api/analysis/watson/delete?id=' + encodedID, {
+        		headers: {
+        			Authorization: 'Bearer '+ authentication.getToken()
+        		}
+        	}).then(deleteWatsonAnalysisComplete)
+        	.catch(deleteWatsonAnalysisFailed);
+
+        	function deleteWatsonAnalysisComplete(data) { return data; }
+        	function deleteWatsonAnalysisFailed(e) { return exception.catcher('XHR Failed for delete Watson analysis')(e); }
+		}
 
 	}
 

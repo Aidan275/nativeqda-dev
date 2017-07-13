@@ -46,11 +46,12 @@
     	///////////////////////////
 
     	function activate() {
+    		bsLoadingOverlayService.start({referenceId: 'home-map'});	// Start animated loading overlay
+    		bsLoadingOverlayService.start({referenceId: 'file-list'});	// Start animated loading overlay
     		initMap();
     	}
 
     	function initMap() {
-    		bsLoadingOverlayService.start({referenceId: 'home-map'});
     		var mapOptions = {
 				center: [-34.4054039, 150.87842999999998],	// Default position is UOW
 				zoom: 4
@@ -253,10 +254,11 @@
 		function getFileList() {
 			filesService.getFileListDB()
 			.then(function(response) {
-				bsLoadingOverlayService.stop({referenceId: 'home-map'});
 				vm.fileList = response.data;
 				listFiles();
 				addMapMarkers();
+			}, function(err) {
+				bsLoadingOverlayService.stop({referenceId: 'file-list'});	// If error, stop animated loading overlay
 			});
 		}
 
@@ -267,10 +269,9 @@
 				sorting: {lastModified: "desc"}
 			}, {
 				counts: [],
-				total: 1,  // value less than count hide pagination
 				dataset: vm.fileList
 			});   
-
+			bsLoadingOverlayService.stop({referenceId: 'file-list'});	// Stop animated loading overlay
 		}
 
 		// Adds markers for the files retrieved from the MongoDB database
@@ -352,6 +353,7 @@
 
 			// Adds the markers cluster group to the map
 			vm.map.addLayer(vm.markers);
+			bsLoadingOverlayService.stop({referenceId: 'home-map'});	// Stop animated loading overlay
 		}
 
 

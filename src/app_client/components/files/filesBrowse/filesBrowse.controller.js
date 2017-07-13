@@ -28,17 +28,18 @@
 		///////////////////////////
 
 		function activate() {
+			bsLoadingOverlayService.start({referenceId: 'file-list'});	// Start animated loading overlay
 			getFileList();
 		}
 
 		// Gets all the files from the MongoDB database
 		function getFileList() {
-			bsLoadingOverlayService.start({referenceId: 'file-list'});
 			filesService.getFileListDB()
 			.then(function(response) {
-				bsLoadingOverlayService.stop({referenceId: 'file-list'});
 				vm.fileList = response.data;
 				listFiles();
+			}, function(err){
+				bsLoadingOverlayService.stop({referenceId: 'file-list'});	// If error, stop animated loading overlay
 			});
 		}
 
@@ -48,6 +49,7 @@
 			}, {
 				dataset: vm.fileList
 			});
+			bsLoadingOverlayService.stop({referenceId: 'file-list'});	// Stop animated loading overlay
 		}
 
 		// Gets signed URL to download the requested file from S3 
@@ -85,6 +87,8 @@
 			.then(function(response) {
 				// If a text file was generated for analysis, delete that file too.
 				// If the original file was a text file, just delete that file
+				// (files that were originally text files have the same key for both 
+				// key and textFileKey)
 				if(textFileKey && textFileKey != key){
 					filesService.deleteFileS3({key: textFileKey});
 				}

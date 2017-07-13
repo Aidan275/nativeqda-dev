@@ -29,13 +29,17 @@
 		vm.address = '';
 		vm.formattedAddress = '';
 		vm.currentPercentage = '0';
-		vm.file = {};
+		vm.file = null;
 		vm.fileInfo = {};
 		vm.textFile = {};
 		vm.textFileInfo = {};
 		vm.pageHeader = {
 			title: 'Upload Files'
 		};
+		vm.isSubmittingButton = null;	// variables for button animation - ng-bs-animated-button
+		vm.resultButton = null;
+		vm.uploadButtonOptions = { buttonDefaultText: 'Upload', animationCompleteTime: 1000, buttonSubmittingText: 'Uploading...', buttonSuccessText: 'Done!' };
+		vm.isProcessing = false;
 
 		// To move - may move the majority of the mapping functions into it's own directive
 		var LeafIcon = L.Icon.extend({
@@ -351,20 +355,23 @@
 			}
 		}
 
-		// Testing DocxJS for converting docx files to text... looks good
-		function convertDocxToText() {
-			var docxJS = new DocxJS();
-			docxJS.parse(
-				vm.file,
-				function () {
-					docxJS.getPlainText(function(text){
-						createTextFile(text);
-					});
-				}, function (error) {
-					logger.error(error.msg, error, 'Error');
-					cleanUpForNextUpload();
+		function uploadFile() {
+			if(vm.file) {
+				processingEvent(true, null);
+				var fileExtension = (vm.fileInfo.name.split('.').pop()).toLowerCase();
+				if(fileExtension === 'pdf'){
+					convertPDFToText()
+				} else if(fileExtension === 'docx') {
+					convertDocxToText();
+				} else if(fileExtension === 'txt') {
+					vm.fileInfo.isTxtFile = true;
+					uploadActualFile();
+				} else {
+					uploadActualFile();
 				}
-				);
+			} else {
+				logger.error("Please select a file to upload.", "", "Error");
+			}
 		}
 
 		function convertPDFToText() {
@@ -375,6 +382,7 @@
 				getPDFText(arrayBuffer).then(function (text) {
 					createTextFile(text);
 				}, function (error) {
+					processingEvent(false, 'error');
 					logger.error(error.message, error, 'Error');
 					cleanUpForNextUpload();
 				});
@@ -406,6 +414,23 @@
 			}
 		}
 
+		// Testing DocxJS for converting docx files to text... looks good
+		function convertDocxToText() {
+			var docxJS = new DocxJS();
+			docxJS.parse(
+				vm.file,
+				function () {
+					docxJS.getPlainText(function(text){
+						createTextFile(text);
+					});
+				}, function (error) {
+					processingEvent(false, 'error');
+					logger.error(error.msg, error, 'Error');
+					cleanUpForNextUpload();
+				}
+				);
+		}
+
 		function createTextFile(text) {
 			// Replaces the file name extension with .txt
 			var textFileName = vm.fileInfo.name.replace(/\.[^/.]+$/, "")
@@ -416,20 +441,6 @@
 				type: vm.textFile.type
 			};
 			uploadTextFile();
-		}
-
-		function uploadFile() {
-			var fileExtension = (vm.fileInfo.name.split('.').pop()).toLowerCase();
-			if(fileExtension === 'pdf'){
-				convertPDFToText()
-			} else if(fileExtension === 'docx') {
-				convertDocxToText();
-			} else if(fileExtension === 'txt') {
-				vm.fileInfo.isTxtFile = true;
-				uploadActualFile();
-			} else {
-				uploadActualFile();
-			}
 		}
 
 		function uploadTextFile() {
@@ -450,9 +461,12 @@
 					uploadActualFile();
 				}, function(error) {
 					var xml = $.parseXML(error.data);
+					processingEvent(false, 'error');
 					logger.error($(xml).find("Message").text(), '', 'Error');
 					cleanUpForNextUpload();
 				});
+			}, function(err) {
+				processingEvent(false, 'error');
 			});
 		}
 
@@ -498,6 +512,7 @@
 					}
 					filesService.addFileDB(fileDetails)
 					.then(function(response) {
+						processingEvent(false, 'success');
 						vm.fileList.push(response.data);
 						console.log(vm.fileInfo.name + ' successfully added to DB');
 						logger.success(vm.fileInfo.name + ' successfully uploaded', '', 'Success');
@@ -505,10 +520,13 @@
 						cleanUpForNextUpload();
 					});
 				}, function(error) {
+					processingEvent(false, 'error');
 					var xml = $.parseXML(error.data);
 					logger.error($(xml).find("Message").text(), '', 'Error');
 					cleanUpForNextUpload();
 				});
+			}, function(err) {
+				processingEvent(false, 'error');
 			});
 		}
 
@@ -518,10 +536,17 @@
 		}
 
 		function cleanUpForNextUpload() {
-			vm.file = {};
+			vm.file = null;
 			vm.fileInfo = {};
 			vm.textFile = {};
 			vm.textFileInfo = {};
+			document.getElementById("file-upload-input").value = "";
+		}
+
+		function processingEvent(status, result) {
+			vm.isSubmittingButton = status;
+			vm.isProcessing = status;
+			vm.resultButton = result;			
 		}
 	}
 

@@ -29,7 +29,7 @@
 		///////////////////////////
 
 		function activate() {
-			bsLoadingOverlayService.start({referenceId: 'data-list'});
+			bsLoadingOverlayService.start({referenceId: 'data-list'});	// Start animated loading overlay
 			getDatasetList();
 		}
 
@@ -54,16 +54,18 @@
 					vm.data.push(data);
 				});
 				listData();
+			}, function(err) {
+				bsLoadingOverlayService.stop({referenceId: 'data-list'});	// If error, stop animated loading overlay
 			});
 		}
 
 		function listData() {
-			bsLoadingOverlayService.stop({referenceId: 'data-list'});
 			vm.tableParams = new NgTableParams({
 				sorting: {type: "desc"}
 			}, {
 				dataset: vm.data
 			});
+			bsLoadingOverlayService.stop({referenceId: 'data-list'});	// Stop animated loading overlay
 		}
 
 		function onSubmit() {
