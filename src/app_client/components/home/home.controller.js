@@ -7,7 +7,7 @@
 	.controller('homeCtrl', homeCtrl);
 	
 	/* @ngInject */
-	function homeCtrl (filesService, $scope, $filter, $compile, $window, $uibModal, logger, bsLoadingOverlayService) {
+	function homeCtrl (filesService, $scope, $filter, $compile, $window, $uibModal, logger, bsLoadingOverlayService, NgTableParams) {
 		var vm = this;
 
 		// Bindable Functions
@@ -249,14 +249,28 @@
 			logger.error(error.message, error, 'Error');
 		}
 
-		// Gets all the files from the MongoDB database to be displayed on the map
+		// Gets all the files from the MongoDB database to be displayed on the map and the recent files table
 		function getFileList() {
 			filesService.getFileListDB()
 			.then(function(response) {
 				bsLoadingOverlayService.stop({referenceId: 'home-map'});
 				vm.fileList = response.data;
+				listFiles();
 				addMapMarkers();
 			});
+		}
+
+		function listFiles() {
+			vm.tableParams = new NgTableParams({
+				count: 5,
+				page: 1,
+				sorting: {lastModified: "desc"}
+			}, {
+				counts: [],
+				total: 1,  // value less than count hide pagination
+				dataset: vm.fileList
+			});   
+
 		}
 
 		// Adds markers for the files retrieved from the MongoDB database

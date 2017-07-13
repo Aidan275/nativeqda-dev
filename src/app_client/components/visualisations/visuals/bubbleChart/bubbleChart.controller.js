@@ -39,7 +39,9 @@
 		{ name: "Kyoto", minCol: "#c21500", maxCol: "#ffc500" }, 
 		{ name: "Pinot Noir", minCol: "#182848", maxCol: "#4b6cb7" }, 
 		{ name: "Miake", minCol: "#0ABFBC", maxCol: "#FC354C" }, 
-		{ name: "Calm Darya", minCol: "#5f2c82", maxCol: "#49a09d" }
+		{ name: "Calm Darya", minCol: "#5f2c82", maxCol: "#49a09d" },
+		{ name: "Electric Violet", minCol: "#8E54E9", maxCol: "#4776E6" },
+		{ name: "Sunrise", minCol: "#F09819", maxCol: "#FF512F" }
 		];
 
 		vm.selectedOption = vm.options[0];
