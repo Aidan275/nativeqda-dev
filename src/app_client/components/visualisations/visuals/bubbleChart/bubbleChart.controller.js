@@ -10,6 +10,10 @@
 	function bubbleChartCtrl ($routeParams, analysisService, bsLoadingOverlayService) {
 		var vm = this;
 
+		// Scrolls to the top of the page
+		document.body.scrollTop = 0; // For Chrome, Safari and Opera 
+	    document.documentElement.scrollTop = 0; // For IE and Firefox
+
 		var slideout = new Slideout({
 			'panel': document.querySelector('#panel'),
 			'menu': document.querySelector('#menu'),
@@ -81,14 +85,14 @@
 
 				if(analysisType === 'concepts') {
 					analysisData.concepts.forEach(function(concept){
-						var text = concept.text.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});	// Capitalise each word
+						var text = concept.text.charAt(0).toUpperCase() + concept.text.slice(1);	// Capitalise first letter
 						maxRelevance = (concept.relevance > maxRelevance ? concept.relevance : maxRelevance);
 						minRelevance = (concept.relevance < minRelevance ? concept.relevance : minRelevance);
 						dataNodes.push({text: text, r: concept.relevance*bubbleScale, dbpedia_resource: concept.dbpedia_resource});
 					});
 				} else if(analysisType === 'keywords') {
 					analysisData.keywords.forEach(function(keyword){
-						var text = keyword.text.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});	// Capitalise each word
+						var text = keyword.text.charAt(0).toUpperCase() + keyword.text.slice(1);	// Capitalise first letter
 						maxRelevance = (keyword.relevance > maxRelevance ? keyword.relevance : maxRelevance);
 						minRelevance = (keyword.relevance < minRelevance ? keyword.relevance : minRelevance);
 						dataNodes.push({text: text, r: keyword.relevance*bubbleScale});
