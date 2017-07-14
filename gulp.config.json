@@ -30,7 +30,13 @@
 		"./node_modules/sweetalert/dist/sweetalert.min.js",
 		"./node_modules/angular-loading-overlay/dist/angular-loading-overlay.js",
 		"./node_modules/d3/build/d3.min.js",
+<<<<<<< HEAD
 		"./node_modules/intro.js/intro.js"
+=======
+		"./node_modules/tinycolor2/dist/tinycolor-min.js",
+		"./node_modules/angularjs-color-picker/dist/angularjs-color-picker.min.js",
+		"./node_modules/slideout/dist/slideout.min.js"
+>>>>>>> 7debd543ca4ff18a419f3a4240bce1a8d6536a34
 	],
 	"minVendorCSS": [
 		"./node_modules/bootstrap/dist/css/bootstrap.min.css",
@@ -44,7 +50,12 @@
 		"./node_modules/leaflet.markercluster/dist/MarkerCluster.css",
 		"./node_modules/leaflet.markercluster/dist/MarkerCluster.Default.css",
 		"./node_modules/sweetalert/dist/sweetalert.css",
+<<<<<<< HEAD
 		"./node_modules/intro.js/introjs.css"
+=======
+		"./node_modules/angularjs-color-picker/dist/angularjs-color-picker.min.css",
+		"./node_modules/angularjs-color-picker/dist/themes/angularjs-color-picker-bootstrap.min.css"
+>>>>>>> 7debd543ca4ff18a419f3a4240bce1a8d6536a34
 	],
 	"devVendorJS": [
 		"./node_modules/angular/angular.js",
@@ -69,7 +80,13 @@
 		"./node_modules/sweetalert/dist/sweetalert-dev.js",
 		"./node_modules/angular-loading-overlay/dist/angular-loading-overlay.js",
 		"./node_modules/d3/build/d3.js",
+<<<<<<< HEAD
 		"./node_modules/intro.js/intro.js"
+=======
+		"./node_modules/tinycolor2/dist/tinycolor-min.js",
+		"./node_modules/angularjs-color-picker/dist/angularjs-color-picker.js",
+		"./node_modules/slideout/dist/slideout.js"
+>>>>>>> 7debd543ca4ff18a419f3a4240bce1a8d6536a34
 	],
 	"devVendorCSS": [
 		"./node_modules/bootstrap/dist/css/bootstrap.css",
@@ -83,7 +100,12 @@
 		"./node_modules/leaflet.markercluster/dist/MarkerCluster.css",
 		"./node_modules/leaflet.markercluster/dist/MarkerCluster.Default.css",
 		"./node_modules/sweetalert/dist/sweetalert.css",
+<<<<<<< HEAD
 		"./node_modules/intro.js/introjs.css"
+=======
+		"./node_modules/angularjs-color-picker/dist/angularjs-color-picker.css",
+		"./node_modules/angularjs-color-picker/dist/themes/angularjs-color-picker-bootstrap.css"
+>>>>>>> 7debd543ca4ff18a419f3a4240bce1a8d6536a34
 	],
 	"CSS": [
 		"./src/app_client/assets/css/style.css"
@@ -116,6 +138,7 @@
 		"./src/app_client/components/auth/register/register.controller.js",
 		"./src/app_client/components/auth/forgotPass/forgotPass.controller.js",
 		"./src/app_client/components/files/datasets/datasets.controller.js",
+		"./src/app_client/components/help/help.controller.js",
 		"./src/app_client/components/files/datasets/newDataset/newDataset.controller.js",
 		"./src/app_client/components/files/datasets/viewDataset/viewDataset.controller.js",
 		"./src/app_client/components/files/datasets/editDataset/editDataset.controller.js",

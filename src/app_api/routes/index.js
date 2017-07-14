@@ -42,6 +42,7 @@ router.post('/analysis/watson', auth, ctrlAnalysis.watsonAnalysis);
 router.post('/analysis/watson/save', auth, ctrlAnalysis.saveWatsonAnalysis);
 router.get('/analysis/watson/read', auth, ctrlAnalysis.readWatsonAnalysis);
 router.get('/analysis/watson/list', auth, ctrlAnalysis.listWatsonAnalysis);
+router.delete('/analysis/watson/delete', auth, ctrlAnalysis.deleteWatsonAnalysis);
 
 router.get('/users/info', auth, ctrlUsers.getUserInfo);
 

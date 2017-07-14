@@ -7,7 +7,7 @@
 	.controller('homeCtrl', homeCtrl);
 	
 	/* @ngInject */
-	function homeCtrl (filesService, $scope, $filter, $compile, $window, $uibModal, logger, bsLoadingOverlayService) {
+	function homeCtrl (filesService, $scope, $filter, $compile, $window, $uibModal, logger, bsLoadingOverlayService, NgTableParams) {
 		var vm = this;
 
 		// Bindable Functions
@@ -46,11 +46,12 @@
     	///////////////////////////
 
     	function activate() {
+    		bsLoadingOverlayService.start({referenceId: 'home-map'});	// Start animated loading overlay
+    		bsLoadingOverlayService.start({referenceId: 'file-list'});	// Start animated loading overlay
     		initMap();
     	}
 
     	function initMap() {
-    		bsLoadingOverlayService.start({referenceId: 'home-map'});
     		var mapOptions = {
 				center: [-34.4054039, 150.87842999999998],	// Default position is UOW
 				zoom: 4
@@ -249,14 +250,28 @@
 			logger.error(error.message, error, 'Error');
 		}
 
-		// Gets all the files from the MongoDB database to be displayed on the map
+		// Gets all the files from the MongoDB database to be displayed on the map and the recent files table
 		function getFileList() {
 			filesService.getFileListDB()
 			.then(function(response) {
-				bsLoadingOverlayService.stop({referenceId: 'home-map'});
 				vm.fileList = response.data;
+				listFiles();
 				addMapMarkers();
+			}, function(err) {
+				bsLoadingOverlayService.stop({referenceId: 'file-list'});	// If error, stop animated loading overlay
 			});
+		}
+
+		function listFiles() {
+			vm.tableParams = new NgTableParams({
+				count: 5,
+				page: 1,
+				sorting: {lastModified: "desc"}
+			}, {
+				counts: [],
+				dataset: vm.fileList
+			});   
+			bsLoadingOverlayService.stop({referenceId: 'file-list'});	// Stop animated loading overlay
 		}
 
 		// Adds markers for the files retrieved from the MongoDB database
@@ -338,6 +353,7 @@
 
 			// Adds the markers cluster group to the map
 			vm.map.addLayer(vm.markers);
+			bsLoadingOverlayService.stop({referenceId: 'home-map'});	// Stop animated loading overlay
 		}
 
 

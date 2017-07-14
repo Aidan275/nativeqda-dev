@@ -1,6 +1,6 @@
 (function () {
 	
-	angular.module('nativeQDAApp', ['ngRoute', 'ngSanitize', 'ngTable', 'ui.bootstrap', 'ui.bootstrap.datepicker', 'rzModule', 'ngFileUpload', 'ngTagsInput', 'jp.ng-bs-animated-button', 'bsLoadingOverlay']);
+	angular.module('nativeQDAApp', ['ngRoute', 'ngSanitize', 'ngTable', 'ui.bootstrap', 'ui.bootstrap.datepicker', 'rzModule', 'ngFileUpload', 'ngTagsInput', 'jp.ng-bs-animated-button', 'bsLoadingOverlay', 'color.picker']);
 
 	/* @ngInject */
 	function config ($routeProvider, $locationProvider) {

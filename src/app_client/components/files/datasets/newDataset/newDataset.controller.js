@@ -28,17 +28,18 @@
 		///////////////////////////
 
 		function activate() {
+			bsLoadingOverlayService.start({referenceId: 'new-dataset'});	// Start animated loading overlay
 			getFileList();
 		}
 
 		// Gets all the files from the MongoDB database
 		function getFileList() {
-			bsLoadingOverlayService.start({referenceId: 'new-dataset'});
 			filesService.getFileListDB('true')	// Passing the true string as a parameter in the API request
 			.then(function(response) {			// returns only the files with associated text files for analysis
-				bsLoadingOverlayService.stop({referenceId: 'new-dataset'});
 				vm.fileList = response.data;
 				listFiles();
+			}, function(err) {
+				bsLoadingOverlayService.stop({referenceId: 'new-dataset'});	// If error, stop animated loading overlay
 			});
 		}
 
@@ -48,6 +49,7 @@
 			}, {
 				dataset: vm.fileList
 			});
+			bsLoadingOverlayService.stop({referenceId: 'new-dataset'});	// Stop animated loading overlay
 		}
 
 		// Gets signed URL to download the requested file from S3 
