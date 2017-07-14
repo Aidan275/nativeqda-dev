@@ -150,3 +150,23 @@ var buildAnalysisList = function(req, res, results) {
 	});
 	return analysisList;
 };
+
+module.exports.deleteWatsonAnalysis = function(req, res) {
+	var id = req.query.id;
+	if(id) {
+		AnalysisResults
+		.findByIdAndRemove(id)
+		.exec(
+			function(err, results) {
+				if (err) {
+					sendJSONresponse(res, 404, err);
+					return;
+				}
+				sendJSONresponse(res, 204, null);
+			});
+	} else {
+		sendJSONresponse(res, 404, {
+			"message": "No id parameter in request"
+		});
+	}
+};

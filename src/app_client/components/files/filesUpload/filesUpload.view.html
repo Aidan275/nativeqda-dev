@@ -38,7 +38,7 @@
 
 		<p>Please select a file</p>
 
-		<input type="file" ngf-select ngf-change="vm.onFileSelect($files)">
+		<input type="file" id="file-upload-input" ngf-select ngf-change="vm.onFileSelect($files)">
 
 		<br />
 
@@ -46,7 +46,7 @@
 
 		<br />
 
-		<a class="btn btn-primary" role="button" ng-click="vm.uploadFile()">Upload</a>
+		<button class="btn btn-primary" role="button" jp-ng-bs-animated-button is-submitting="vm.isSubmittingButton" result="vm.resultButton" options="vm.uploadButtonOptions" ng-click="vm.uploadFile()">Upload</button>
 
 	</div>
 	

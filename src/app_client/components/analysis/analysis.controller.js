@@ -5,15 +5,13 @@
 	.controller('analysisCtrl', analysisCtrl);
 
 	/* @ngInject */
-	function analysisCtrl ($scope, $window, NgTableParams, $sce, $uibModal, analysisService, bsLoadingOverlayService) {
+	function analysisCtrl ($scope, $window, NgTableParams, $sce, $uibModal, analysisService, bsLoadingOverlayService, logger) {
 		var vm = this;
 
 		// Bindable Functions
 		vm.getAnalysesList = getAnalysesList;
 		vm.confirmDelete  = confirmDelete;
 		vm.popupNewAnalysis = popupNewAnalysis;
-		//vm.popupViewVisual = popupViewVisual;
-		//vm.popupEditVisual = popupEditVisual;
 		
 		// Bindable Data
 		vm.analyses = [];
@@ -27,17 +25,17 @@
 		///////////////////////////
 
 		function activate() {
+			bsLoadingOverlayService.start({referenceId: 'analysis-list'});	// Start animated loading overlay
 			getAnalysesList();
 		}
 
 		function getAnalysesList() {
-			bsLoadingOverlayService.start({referenceId: 'analysis-list'});
 			analysisService.listWatsonAnalysis()
 			.then(function(response) {
-				bsLoadingOverlayService.stop({referenceId: 'analysis-list'});
 				vm.analyses = response.data;
-				console.log(vm.analyses);
 				listAnalyses();
+			}, function(err) {
+				bsLoadingOverlayService.stop({referenceId: 'analysis-list'});	// If error, stop animated loading overlay
 			});
 		}
 
@@ -47,9 +45,10 @@
 			}, {
 				dataset: vm.analyses
 			});
+			bsLoadingOverlayService.stop({referenceId: 'analysis-list'});	// Stop animated loading overlay
 		}
 
-		function confirmDelete(name, visualId) {
+		function confirmDelete(analysisName, analysisId) {
 			swal({
 				title: "Are you sure?",
 				text: "Confirm to delete the analysis '" + name + "'",
@@ -59,24 +58,26 @@
 				confirmButtonColor: "#d9534f",
 				confirmButtonText: "Yes, delete it!"
 			}, function() {
-				deleteVisual(visualId);
+				deleteAnalysis(analysisName, analysisId);
 			});
 		};
 
-		function deleteVisual(visualId) {
-			// Add DB component
-			removeFromList(visualId);	// if deleting the visual was successful, 
-		}								// the deleted visual is removed from the local array
+		function deleteAnalysis(analysisName, analysisId) {
+			analysisService.deleteWatsonAnalysis(analysisId)
+			.then(function(response) {
+				removeFromList(analysisId);	// If deleting the analysis was successful, the deleted analysis is removed from the local array
+				logger.success("'" + analysisName + "' was deleted successfully", "", "Success");
+			});
+		}
 		
-		function removeFromList(visualId) {
-			// Find the visual index for visualId, will return -1 if not found 
-			var visualIndex = vm.visuals.findIndex(function(obj){return obj._id == visualId});
+		function removeFromList(analysisId) {
+			// Find the analysis index for analysisId, will return -1 if not found 
+			var analysisIndex = vm.analyses.findIndex(function(obj){return obj._id == analysisId});
 
-			// Remove the visual from the vm.visuals array
-			if (visualIndex > -1) {
-				vm.visuals.splice(visualIndex, 1);
+			// Remove the analysis from the vm.analyses array
+			if (analysisIndex > -1) {
+				vm.analyses.splice(analysisIndex, 1);
 			}
-
 			// List the analyses again
 			listAnalyses();
 		}

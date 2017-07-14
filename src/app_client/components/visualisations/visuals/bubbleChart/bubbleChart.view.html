@@ -1,7 +1,54 @@
 <style>
 	body {
+		width: 100%;
+		height: 100%;
 		overflow:hidden;
 	}
+
+	#menu {
+		padding: 75px 25px 25px 25px;
+		overflow: hidden;
+		background: #eee;
+	}
+
+	.slideout-menu {
+		position: fixed;
+		top: 0;
+		bottom: 0;
+		width: 256px;
+		min-height: 100vh;
+		overflow-y: scroll;
+		-webkit-overflow-scrolling: touch;
+		z-index: 0;
+		display: none;
+	}
+
+	.slideout-menu-left {
+		left: 0;
+	}
+
+	.slideout-menu-right {
+		right: 0;
+	}
+
+	.slideout-panel {
+		position: relative;
+		z-index: 1;
+		will-change: transform;
+		background-color: #FFF; /* A background-color is required */
+		min-height: 100vh;
+	}
+
+	.slideout-open,
+	.slideout-open body,
+	.slideout-open .slideout-panel {
+		overflow: hidden;
+	}
+
+	.slideout-open .slideout-menu {
+		display: block;
+	}
+
 	#graph {
 		position: absolute;
 		top: 0; 
@@ -9,20 +56,46 @@
 		bottom: 0; 
 		left: 0;
 	}
+
+	#graph svg {
+	}
+
+	#controls-button {
+
+		position:relative;
+	}
 </style>
 
 <navigation></navigation>
 
-<div class="bs-loading-container" bs-loading-overlay bs-loading-overlay-active-class="loading-overlay--active" bs-loading-overlay-reference-id="bubble-chart"> 
-	<div class="blur-this">
-		<div id="graph"></div>    
+<div id="menu">
 
-		<div style="height: 100px;
-		width: 100%;
-		position: absolute;
-		z-index: 1000;
-		bottom: 0;">
-		<select data-ng-options="o.name for o in vm.options" data-ng-model="vm.selectedOption" ng-change="vm.setColour()"></select>
-	</div>
+	<label>Background Colour</label>
+	<color-picker ng-model="vm.bgColour" options="vm.bgColourOptions" event-api="vm.bgColourChange"></color-picker>
+	<br />
+
+	<label>Bubble Colours</label>
+	<color-picker ng-model="vm.bubbleColour1" options="vm.bubbleColourOptions1" event-api="vm.bubbleColourChange1"></color-picker>
+	<color-picker ng-model="vm.bubbleColour2" options="vm.bubbleColourOptions2" event-api="vm.bubbleColourChange2"></color-picker>
+	<br />
+
+	<label>Text Colour</label>
+	<color-picker ng-model="vm.textColour" options="vm.textColourOptions" event-api="vm.textColourChange"></color-picker>
+	<br />
+
+	<label>Font Scale</label>
+	<input type="number" name="font-scale" ng-model="vm.fontScale.value" ng-change="vm.updateFontScale()" min="0" max="99" required>
+
 </div>
+
+<div id="panel">
+
+	<div class="bs-loading-container" bs-loading-overlay bs-loading-overlay-active-class="loading-overlay--active" bs-loading-overlay-reference-id="bubble-chart"> 
+		<div class="blur-this">
+			<div id="graph"></div>
+			<div id="controls-button">
+				<button ng-click="vm.toggleOptions()" class="btn btn-success">Controls</button>
+			</div>
+		</div>
+	</div>
 </div>
