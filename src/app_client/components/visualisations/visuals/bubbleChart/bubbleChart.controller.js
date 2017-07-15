@@ -176,11 +176,11 @@
 			.enter()
 			.append("text")
 			.text(function (d) { return d.text; })
-			.style("text-anchor", "middle")
-			.style("fill", "#000")
-			.style("font-family", "Arial")
-			.style("font-size", (function (d) { return d.radius*vm.fontScale.value/50; }))
-			.style("cursor", "pointer");
+			.attr("text-anchor", "middle")
+			.attr("fill", "#000")
+			.attr("font-family", "Arial")
+			.attr("font-size", (function (d) { return d.radius*vm.fontScale.value/50; }))
+			.attr("pointer-events", "none");
 
 			var linear = d3.scaleLinear()
 			.domain([minRelevance*100, maxRelevance*100])
@@ -323,7 +323,8 @@
 		}
 
 		function updateToPowScale() { 
-			if(vm.selectedScale === 'power' && vm.powScale.value) {
+			vm.selectedScale = 'power';
+			if(vm.powScale.value) {
 				var powerScale = d3.scalePow().exponent(vm.powScale.value)
 				.domain([0, 1])
 				.range([0, 100]);
