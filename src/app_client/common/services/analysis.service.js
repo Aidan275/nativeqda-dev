@@ -28,7 +28,7 @@
 			.catch(conceptAnalysisFailed);
 
 			function conceptAnalysisComplete(data) { return data; }
-			function conceptAnalysisFailed(e) { return exception.catcher('XHR Failed for ALYIEN concept analysis')(e); }
+			function conceptAnalysisFailed(e) { return exception.catcher('Failed ALYIEN concept analysis.')(e); }
 		};
 
 		function watsonAnalysis(data){
@@ -40,7 +40,7 @@
 			.catch(watsonAnalysisFailed);
 
 			function watsonAnalysisComplete(data) { return data; }
-			function watsonAnalysisFailed(e) { return exception.catcher('XHR Failed for Watson analysis')(e); }
+			function watsonAnalysisFailed(e) { return exception.catcher('Failed Watson analysis.')(e); }
 		};
 
 		function saveWatsonAnalysis(data){
@@ -52,7 +52,7 @@
 			.catch(saveWatsonAnalysisFailed);
 
 			function saveWatsonAnalysisComplete(data) { return data; }
-			function saveWatsonAnalysisFailed(e) { return exception.catcher('XHR Failed for save Watson analysis')(e); }
+			function saveWatsonAnalysisFailed(e) { return exception.catcher('Failed saving the analysis.')(e); }
 		};
 
 		function readWatsonAnalysis(id) {
@@ -64,7 +64,7 @@
 			.catch(readWatsonAnalysisFailed);
 
 			function readWatsonAnalysisComplete(data) { return data; }
-			function readWatsonAnalysisFailed(e) { return exception.catcher('XHR Failed for read Watson analysis')(e); }
+			function readWatsonAnalysisFailed(e) { return exception.catcher('Failed reading the analysis.')(e); }
 		}
 
 		function listWatsonAnalysis() {
@@ -76,7 +76,7 @@
 			.catch(listWatsonAnalysisFailed);
 
 			function listWatsonAnalysisComplete(data) { return data; }
-			function listWatsonAnalysisFailed(e) { return exception.catcher('XHR Failed for list Watson analyses')(e); }
+			function listWatsonAnalysisFailed(e) { return exception.catcher('Failed listing the analyses.')(e); }
 		}
 
 		function deleteWatsonAnalysis(analysisID) {
@@ -90,7 +90,7 @@
         	.catch(deleteWatsonAnalysisFailed);
 
         	function deleteWatsonAnalysisComplete(data) { return data; }
-        	function deleteWatsonAnalysisFailed(e) { return exception.catcher('XHR Failed for delete Watson analysis')(e); }
+        	function deleteWatsonAnalysisFailed(e) { return exception.catcher('Failed deleting the analysis.')(e); }
 		}
 
 	}

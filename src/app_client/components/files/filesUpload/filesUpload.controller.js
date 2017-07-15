@@ -62,11 +62,11 @@
 		///////////////////////////
 
 		function activate() {
+			bsLoadingOverlayService.start({referenceId: 'upload-map'});	// Start animated loading overlay
 			initMap();
 		}
 
 		function initMap() {
-			bsLoadingOverlayService.start({referenceId: 'upload-map'});
 			var mapOptions = {
 				center: [-34.4054039, 150.87842999999998],	// Default position is UOW
 				zoom: 4
@@ -313,9 +313,10 @@
 		function getFileList() {
 			filesService.getFileListDB()
 			.then(function(response) {
-				bsLoadingOverlayService.stop({referenceId: 'upload-map'});
 				vm.fileList = response.data;
 				addMapMarkers();
+			}, function(err) {
+				bsLoadingOverlayService.stop({referenceId: 'upload-map'});	// If error, stop animated loading overlay
 			});
 		}
 
@@ -340,6 +341,7 @@
 				vm.markers.addLayer(marker);
 			});
 			vm.map.addLayer(vm.markers);
+			bsLoadingOverlayService.stop({referenceId: 'upload-map'});	// Stop animated loading overlay
 		}
 
 		// Gets a signed URL for uploading a file then uploads the file to S3 with this signed URL
@@ -349,11 +351,11 @@
 			if (uploadFiles.length > 0 ) {
 				if(uploadFiles[0].size < 10485760) {	// Checks if file's size is less than 10 MB
 					vm.file = uploadFiles[0];
-					vm.fileInfo = {
-						name: vm.file.name,
-						type: vm.file.type
-					};
-				} else {
+				vm.fileInfo = {
+					name: vm.file.name,
+					type: vm.file.type
+				};
+			} else {
 					logger.error("Maximum file size is 10 MB. \nPlease select a smaller file.", "", "Error");	// If larger, display message and reinitialise the file variables
 					cleanUpForNextUpload();
 				}
@@ -388,12 +390,12 @@
 					createTextFile(text);
 				}, function (error) {
 					processingEvent(false, 'error');
+					$scope.$apply();	// To reflect the changes in the processingEvent (upload button animation) on the view
 					logger.error(error.message, error, 'Error');
 					cleanUpForNextUpload();
 				});
 			}
 			fileReader.readAsArrayBuffer(vm.file);
-
 
 			function getPDFText(pdfFile){
 				var pdf = PDFJS.getDocument({data: pdfFile});
@@ -432,8 +434,7 @@
 					processingEvent(false, 'error');
 					logger.error(error.msg, error, 'Error');
 					cleanUpForNextUpload();
-				}
-				);
+				});
 		}
 
 		function createTextFile(text) {
@@ -551,7 +552,7 @@
 		function processingEvent(status, result) {
 			vm.isSubmittingButton = status;
 			vm.isProcessing = status;
-			vm.resultButton = result;			
+			vm.resultButton = result;		
 		}
 	}
 

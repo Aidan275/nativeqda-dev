@@ -259,7 +259,8 @@
 				listFiles();
 				addMapMarkers();
 			}, function(err) {
-				bsLoadingOverlayService.stop({referenceId: 'file-list'});	// If error, stop animated loading overlay
+				bsLoadingOverlayService.stop({referenceId: 'file-list'});	// If error, stop animated loading overlays
+				bsLoadingOverlayService.stop({referenceId: 'home-map'});
 			});
 		}
 

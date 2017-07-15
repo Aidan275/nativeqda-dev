@@ -23,7 +23,7 @@
 			.catch(getUserInfoFailed);
 
 			function getUserInfoComplete(data) { return data; }
-			function getUserInfoFailed(e) { return exception.catcher('XHR Failed for get user info')(e); }
+			function getUserInfoFailed(e) { return exception.catcher('Failed getting the user\'s info.')(e); }
 		};
 
 	}

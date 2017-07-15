@@ -45,11 +45,11 @@
 		///////////////////////////
 
 		function activate() {
+			bsLoadingOverlayService.start({referenceId: 'map'});
 			initMap();
 		}
 
 		function initMap() {
-			bsLoadingOverlayService.start({referenceId: 'map'});
 			var mapOptions = {
 				center: [-34.4054039, 150.87842999999998],	// Default position is UOW
 				zoom: 4
@@ -256,9 +256,10 @@
 		function getFileList() {
 			filesService.getFileListDB()
 			.then(function(response) {
-				bsLoadingOverlayService.stop({referenceId: 'map'});
 				vm.fileList = response.data;
 				addMapMarkers();
+			}, function(err) {
+				bsLoadingOverlayService.stop({referenceId: 'map'});	// If error, stop animated loading overlay
 			});
 		}
 
@@ -341,6 +342,7 @@
 
 			// Adds the markers cluster group to the map
 			vm.map.addLayer(vm.markers);
+			bsLoadingOverlayService.stop({referenceId: 'map'});	// Stop animated loading overlay
 		}
 
 		// Get a signed URL to download the requested file from S3 
