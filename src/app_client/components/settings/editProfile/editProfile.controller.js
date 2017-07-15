@@ -24,16 +24,18 @@
 		///////////////////////////
 
 		function activate() {
+			bsLoadingOverlayService.start({referenceId: 'user-info'});	// Start animated loading overlay
 			getUserInfo();
 		}
 
 		// Gets all the files from the MongoDB database
 		function getUserInfo() {
-			bsLoadingOverlayService.start({referenceId: 'user-info'});
 			usersService.getUserInfo(userEmail)
 			.then(function(response) {
-				bsLoadingOverlayService.stop({referenceId: 'user-info'});
+				bsLoadingOverlayService.stop({referenceId: 'user-info'});	// Stop animated loading overlay
 				vm.userInfo = response.data;
+			}, function(err){
+				bsLoadingOverlayService.stop({referenceId: 'user-info'});	// If error, stop animated loading overlay
 			});
 		}
 

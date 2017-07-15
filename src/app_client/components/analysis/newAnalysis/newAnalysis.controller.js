@@ -42,6 +42,8 @@
 					vm.data.push(data);
 				});
 				getFileList();
+			}, function(err) {
+				bsLoadingOverlayService.stop({referenceId: 'data-list'});	// If error, stop animated loading overlay
 			});
 		}
 

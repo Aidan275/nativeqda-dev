@@ -33,7 +33,7 @@
         	.catch(signUploadS3Failed);
 
         	function signUploadS3Complete(data) { return data; }
-        	function signUploadS3Failed(e) { return exception.catcher('XHR Failed for signUploadS3')(e); }
+        	function signUploadS3Failed(e) { return exception.catcher('Failed signing the S3 upload URL.')(e); }
         };
 
         function addFileDB(fileInfo){
@@ -45,7 +45,7 @@
         	.catch(addFileDBFailed);
 
         	function addFileDBComplete(data) { return data; }
-        	function addFileDBFailed(e) { return exception.catcher('XHR Failed for addFileDB')(e); }
+        	function addFileDBFailed(e) { return exception.catcher('Failed adding the file to the DB.')(e); }
         };
 
         function signDownloadS3(key){
@@ -59,7 +59,7 @@
         	.catch(signDownloadS3Failed);
 
         	function signDownloadS3Complete(data) { return data; }
-        	function signDownloadS3Failed(e) { return exception.catcher('XHR Failed for signDownloadS3')(e); }
+        	function signDownloadS3Failed(e) { return exception.catcher('Failed signing the S3 download URL.')(e); }
         };
 
         function fileReadOneDB(key){
@@ -73,7 +73,7 @@
         	.catch(fileReadOneDBFailed);
 
         	function fileReadOneDBComplete(data) { return data; }
-        	function fileReadOneDBFailed(e) { return exception.catcher('XHR Failed for fileReadOneDB')(e); }
+        	function fileReadOneDBFailed(e) { return exception.catcher('Failed reading the file form the DB.')(e); }
         };
 
         function getFileListS3(){
@@ -85,7 +85,7 @@
         	.catch(getFileListS3Failed);
 
         	function getFileListS3Complete(data) { return data; }
-        	function getFileListS3Failed(e) { return exception.catcher('XHR Failed for getFileListS3')(e); }
+        	function getFileListS3Failed(e) { return exception.catcher('Failed listing the files from S3.')(e); }
         };
 
         function getFileListDB(onlyTextFiles){
@@ -97,7 +97,7 @@
         	.catch(getFileListDBFailed);
 
         	function getFileListDBComplete(data) { return data; }
-        	function getFileListDBFailed(e) { return exception.catcher('XHR Failed for getFileListDB')(e); }
+        	function getFileListDBFailed(e) { return exception.catcher('Failed listing the files from the DB.')(e); }
         };
 
         function deleteFileS3(key){
@@ -109,7 +109,7 @@
         	.catch(deleteFileS3Failed);
 
         	function deleteFileS3Complete(data) { return data; }
-        	function deleteFileS3Failed(e) { return exception.catcher('XHR Failed for deleteFileS3')(e); }
+        	function deleteFileS3Failed(e) { return exception.catcher('Failed deleting the file from S3.')(e); }
         };
 
         function deleteFileDB(key){
@@ -123,7 +123,7 @@
         	.catch(deleteFileDBFailed);
 
         	function deleteFileDBComplete(data) { return data; }
-        	function deleteFileDBFailed(e) { return exception.catcher('XHR Failed for deleteFileDB')(e); }
+        	function deleteFileDBFailed(e) { return exception.catcher('Failed deleting the file from the DB.')(e); }
         };
 
         function objectAclS3(objectData) {
@@ -135,7 +135,7 @@
         	.catch(objectAclS3Failed);
 
         	function objectAclS3Complete(data) { return data; }
-        	function objectAclS3Failed(e) { return exception.catcher('XHR Failed for objectAclS3')(e); }
+        	function objectAclS3Failed(e) { return exception.catcher('Failed changing the file\'s permissions on S3.')(e); }
         }
 
         function objectAclDB(objectData) {
@@ -147,7 +147,7 @@
         	.catch(objectAclDBFailed);
 
         	function objectAclDBComplete(data) { return data; }
-        	function objectAclDBFailed(e) { return exception.catcher('XHR Failed for objectAclDB')(e); }
+        	function objectAclDBFailed(e) { return exception.catcher('Failed changing the file\'s permissions in the DB.')(e); }
         }
 
         function syncDBwithS3(key){
@@ -159,7 +159,7 @@
         	.catch(syncDBwithS3Failed);
 
         	function syncDBwithS3Complete(data) { return data; }
-        	function syncDBwithS3Failed(e) { return exception.catcher('XHR Failed for syncDBwithS3')(e); }
+        	function syncDBwithS3Failed(e) { return exception.catcher('Failed syncDBwithS3.')(e); }
         };
     }
 

@@ -23,7 +23,7 @@
         	.catch(datasetCreateFailed);
 
         	function datasetCreateComplete(data) { return data; }
-        	function datasetCreateFailed(e) { return exception.catcher('XHR Failed for datasetCreate')(e); }
+        	function datasetCreateFailed(e) { return exception.catcher('Failed creating the dataset.')(e); }
 		};
 
 		function listDatasets(){
@@ -35,7 +35,7 @@
         	.catch(listDatasetsFailed);
 
         	function listDatasetsComplete(data) { return data; }
-        	function listDatasetsFailed(e) { return exception.catcher('XHR Failed for listDatasets')(e); }
+        	function listDatasetsFailed(e) { return exception.catcher('Failed listing the datasets.')(e); }
 		};
 
 		function datasetReadOne(datasetid){
@@ -47,7 +47,7 @@
         	.catch(datasetReadOneFailed);
 
         	function datasetReadOneComplete(data) { return data; }
-        	function datasetReadOneFailed(e) { return exception.catcher('XHR Failed for datasetReadOne')(e); }
+        	function datasetReadOneFailed(e) { return exception.catcher('Failed reading the dataset.')(e); }
 		};
 
 		function deleteDatasetDB(key){
@@ -61,7 +61,7 @@
         	.catch(deleteDatasetDBFailed);
 
         	function deleteDatasetDBComplete(data) { return data; }
-        	function deleteDatasetDBFailed(e) { return exception.catcher('XHR Failed for deleteDatasetDB')(e); }
+        	function deleteDatasetDBFailed(e) { return exception.catcher('Failed deleting the dataset from the DB.')(e); }
 		};
 	}
 
