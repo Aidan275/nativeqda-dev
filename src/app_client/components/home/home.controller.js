@@ -7,7 +7,7 @@
 	.controller('homeCtrl', homeCtrl);
 	
 	/* @ngInject */
-	function homeCtrl (filesService, $scope, $filter, $compile, $window, $uibModal, logger, bsLoadingOverlayService, NgTableParams) {
+	function homeCtrl (filesService, $scope, $filter, $compile, $window, $uibModal, logger, bsLoadingOverlayService, NgTableParams, analysisService) {
 		var vm = this;
 
 		// Bindable Functions
@@ -49,6 +49,7 @@
     		bsLoadingOverlayService.start({referenceId: 'home-map'});	// Start animated loading overlay
     		bsLoadingOverlayService.start({referenceId: 'file-list'});	// Start animated loading overlay
     		initMap();
+    		TEMPFUNCTION_getIdForButton();	// Temp function for getting an analysis ID for the bubble chart button on the home page - delete later
     	}
 
     	function initMap() {
@@ -418,6 +419,14 @@
 		function removeMapMarker() {	
 			vm.markers.removeLayer(vm.currentMarker);
 		}
+
+		function TEMPFUNCTION_getIdForButton() {	// Temp function for getting an analysis ID for the bubble chart button on the home page - delete later
+			analysisService.listWatsonAnalysis()
+			.then(function(response) {
+				vm.URL_ID = response.data[Math.floor(Math.random()*response.data.length)]._id;	// Picks random analysis ID
+			});
+		}
+
 	}
 
 })();
