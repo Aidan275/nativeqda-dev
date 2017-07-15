@@ -34,7 +34,7 @@
 	    vm.fontScale = {
 	    	value: 14
 	    };
-	    vm.scale = {
+	    vm.powScale = {
 	    	value: 2
 	    };
 	    vm.selectedScale = 'linear';
@@ -282,51 +282,12 @@
 		}
 
 		function updateToLinearScale() { 
-			var linearScale = d3.scaleLinear()
-			.domain([0, 1])
-			.range([0, 100]);
-
-			var colours = d3.scaleLinear()
-			.domain([minRelevance, maxRelevance])
-			.range([vm.bubbleColour1, vm.bubbleColour2]);
-
-			svg.selectAll("circle").style("fill", function(d) { return colours(d.relevance); });
-
-			node
-			.each(function(d) {
-				d.radius = linearScale(d.relevance);
-			})
-			.transition()
-			.duration(500)
-			.attr("r", function(d) { return d.radius; });
-			forceCollide.radius(function(d) { return d.radius; });
-
-			updateFontScale()
-
-			var linear = d3.scaleLinear()
-			.domain([minRelevance*100, maxRelevance*100])
-			.range([vm.bubbleColour1, vm.bubbleColour2]);
-			
-			var legendLinear = d3.legendColor()
-			.shapeWidth(30)
-			.cells(10)
-			.orient('horizontal')
-			.scale(linear)
-			.title("Relevance (%)");
-
-			legendSvg.select(".svg-legend-class")
-			.call(legendLinear);
-
-			simulation.alphaTarget(0.3).restart();
-		}
-
-		function updateToPowScale() { 
-			if(vm.selectedScale === 'power') {
-				var powScale = d3.scalePow().exponent(vm.scale.value)
+			if(vm.selectedScale === 'linear') {
+				var linearScale = d3.scaleLinear()
 				.domain([0, 1])
 				.range([0, 100]);
 
-				var colours = d3.scalePow().exponent(vm.scale.value)
+				var colours = d3.scaleLinear()
 				.domain([minRelevance, maxRelevance])
 				.range([vm.bubbleColour1, vm.bubbleColour2]);
 
@@ -334,7 +295,48 @@
 
 				node
 				.each(function(d) {
-					d.radius = powScale(d.relevance);
+					d.radius = linearScale(d.relevance);
+				})
+				.transition()
+				.duration(500)
+				.attr("r", function(d) { return d.radius; });
+				forceCollide.radius(function(d) { return d.radius; });
+
+				updateFontScale()
+
+				var linear = d3.scaleLinear()
+				.domain([minRelevance*100, maxRelevance*100])
+				.range([vm.bubbleColour1, vm.bubbleColour2]);
+
+				var legendLinear = d3.legendColor()
+				.shapeWidth(30)
+				.cells(10)
+				.orient('horizontal')
+				.scale(linear)
+				.title("Relevance (%)");
+
+				legendSvg.select(".svg-legend-class")
+				.call(legendLinear);
+
+				simulation.alphaTarget(0.3).restart();
+			}
+		}
+
+		function updateToPowScale() { 
+			if(vm.selectedScale === 'power' && vm.powScale.value) {
+				var powerScale = d3.scalePow().exponent(vm.powScale.value)
+				.domain([0, 1])
+				.range([0, 100]);
+
+				var colours = d3.scalePow().exponent(vm.powScale.value)
+				.domain([minRelevance, maxRelevance])
+				.range([vm.bubbleColour1, vm.bubbleColour2]);
+
+				svg.selectAll("circle").style("fill", function(d) { return colours(d.relevance); });
+
+				node
+				.each(function(d) {
+					d.radius = powerScale(d.relevance);
 				})
 				.transition()
 				.duration(500)
@@ -344,7 +346,7 @@
 
 				updateFontScale()
 
-				var legPower = d3.scalePow().exponent(vm.scale.value)
+				var legPower = d3.scalePow().exponent(vm.powScale.value)
 				.domain([minRelevance*100, maxRelevance*100])
 				.range([vm.bubbleColour1, vm.bubbleColour2]);
 
