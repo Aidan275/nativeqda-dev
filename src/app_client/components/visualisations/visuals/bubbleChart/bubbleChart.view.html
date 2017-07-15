@@ -84,7 +84,16 @@
 	<br />
 
 	<label>Font Scale</label>
-	<input type="number" name="font-scale" ng-model="vm.fontScale.value" ng-change="vm.updateFontScale()" min="0" max="99" required>
+	<input type="number" name="font-scale" ng-model="vm.fontScale.value" ng-change="vm.updateFontScale()" min="0" max="50" required>
+	<br />
+	<br />
+
+	<label>Bubble Scale</label>
+	<br />
+	<label>Linear</label> <input type="radio" name="radio-scale" ng-model="vm.selectedScale" ng-click="vm.updateToLinearScale()" value="linear" />
+	<br />
+	<label>Power</label> <input type="radio" name="radio-scale" ng-model="vm.selectedScale" ng-click="vm.updateToPowScale()" value="power"/>
+	<input type="number" name="bubble-scale" ng-model="vm.scale.value" ng-change="vm.updateToPowScale()" min="0" max="10" step="0.1" required>
 
 </div>
 
@@ -96,6 +105,7 @@
 			<div id="controls-button">
 				<button ng-click="vm.toggleOptions()" class="btn btn-success">Controls</button>
 			</div>
+			<svg id="svg-legend"></svg>
 		</div>
 	</div>
 </div>

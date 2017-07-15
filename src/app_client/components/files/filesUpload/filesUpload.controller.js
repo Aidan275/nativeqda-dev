@@ -346,12 +346,17 @@
 		// If successful, the file info is then posted to the DB
 		// need to make neater
 		function onFileSelect(uploadFiles) {
-			if (uploadFiles.length > 0) {
-				vm.file = uploadFiles[0];
-				vm.fileInfo = {
-					name: vm.file.name,
-					type: vm.file.type
-				};
+			if (uploadFiles.length > 0 ) {
+				if(uploadFiles[0].size < 10485760) {	// Checks if file's size is less than 10 MB
+					vm.file = uploadFiles[0];
+					vm.fileInfo = {
+						name: vm.file.name,
+						type: vm.file.type
+					};
+				} else {
+					logger.error("Maximum file size is 10 MB. \nPlease select a smaller file.", "", "Error");	// If larger, display message and reinitialise the file variables
+					cleanUpForNextUpload();
+				}
 			}
 		}
 

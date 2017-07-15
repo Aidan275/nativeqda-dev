@@ -11,6 +11,7 @@ var sendJSONresponse = function(res, status, content) {
 	res.json(content);
 };
 
+// Creates a signed URL for the user to upload a file directly to S3 from their browser/device, bypassing the server.
 module.exports.signUploadS3 = function(req, res) {
 	var s3Url = 'https://' + process.env.S3_BUCKET_NAME + '.s3-ap-southeast-2.amazonaws.com';
 	var path = null;
@@ -26,8 +27,8 @@ module.exports.signUploadS3 = function(req, res) {
 		path = datePrefix + '/' + hashFilename;
 	}
 
-	// If the file being uploaded is a dataset (concat text file) edit path to include 
-	// the parent datasets folder and the .txt file extension
+	// If the file being uploaded is a dataset (a concatenated text file), edit the path to include 
+	// the parent datasets folder and the .txt file extension.
 	if(req.body.dataset) {
 		path = 'datasets/' + path + '.txt';
 	}
@@ -35,7 +36,7 @@ module.exports.signUploadS3 = function(req, res) {
 	var type = req.body.type
 	var readType = 'private';
 
-    var expiration = moment().add(5, 'm').toDate(); //15 minutes
+    var expiration = moment().add(5, 'm').toDate();		//15 minutes
     var s3Policy = {
     	'expiration': expiration,
     	'conditions': [
@@ -44,7 +45,7 @@ module.exports.signUploadS3 = function(req, res) {
     	{'acl': readType},
     	{'success_action_status': '201'},
     	['starts-with', '$Content-Type', type],
-    	['content-length-range', 2048, 10485760],
+    	['content-length-range', 1, 10485760],	// File size range - 1 byte to 10 megabytes
     	]
     };
 
@@ -67,7 +68,8 @@ module.exports.signUploadS3 = function(req, res) {
     		success_action_status: 201
     	}
     };
-    res.jsonp(credentials);
+
+    sendJSONresponse(res, 200, credentials);
 };
 
 module.exports.signDownloadS3 = function(req, res) {

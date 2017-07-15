@@ -5,7 +5,7 @@
 	.module('nativeQDAApp')
 	.service('exception', exception);
 
-    /* @ngInject */
+	/* @ngInject */
 	function exception($q, logger) {
 		return {
 			catcher: catcher
@@ -19,8 +19,9 @@
 				var newMessage;
 
 				// if message parameter passed, add a new line to the end of the message
-				if (message) 
+				if (message) {
 					message += '\n';
+				}
 
 				if (err.data && err.data.description) {
 					newMessage = message + err.data.description;
@@ -35,6 +36,9 @@
 						newMessage = message + err.data.errmsg;
 						err.data.errmsg = newMessage;
 					}
+				} else if (err.data && err.data.error){	 // For Watson errors with err.data.error
+					newMessage = message + err.data.error;
+					err.data.error = newMessage;
 				}
 
 				logger.error(newMessage, err, 'Error');
