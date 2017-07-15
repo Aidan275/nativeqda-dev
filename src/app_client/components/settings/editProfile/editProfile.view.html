@@ -18,8 +18,10 @@
 						
 						<!--Container for Avatar with FA icon mouse hover overlay -->
 						<div class="profile-img-container">
-							<img src="assets/img/settings/default-avatar.png" class="vis-img-thumb img-thumbnail img-circle img-responsive" />
-							<a href="#"><span class="fa fa-upload fa-5x"></span></a>
+							<!-- <img src="assets/img/settings/default-avatar.png" class="vis-img-thumb img-thumbnail img-circle img-responsive" />
+							<a href="#"><span class="fa fa-upload fa-5x"></span></a> -->
+							<img src="{{vm.userInfo.avatar}}" height=256 width=256> <p></p>
+							<input type="file" id="file-upload-input" ngf-select ngf-change="vm.onFileSelect($files)">
 						</div>
 						
 							

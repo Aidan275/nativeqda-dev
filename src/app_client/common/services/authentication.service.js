@@ -13,7 +13,8 @@
 			isLoggedIn	: isLoggedIn,
 			register	: register,
 			login		: login,
-			logout		: logout
+			logout		: logout,
+			setavatar	: setavatar 
 		};
 
 		// Saves a JSON Web Token (JWT) to the browser's local storage
@@ -72,6 +73,10 @@
 		function logout(userInfo) {
 			$window.localStorage.removeItem('nativeQDA-token');
 			return $http.post('/api/event', userInfo);
+		};
+		
+		function setavatar(newavatarurl) {
+			return $http.post('/api/user/setavatar');
 		};
 	}
 

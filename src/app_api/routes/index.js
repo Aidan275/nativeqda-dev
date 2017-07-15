@@ -16,6 +16,7 @@ var ctrlUsers = require('../controllers/users');
 // authentication
 router.post('/register', ctrlAuth.register);
 router.post('/login', ctrlAuth.login);
+router.post('/user/setavatar', auth, ctrlAuth.setavatar);
 
 // datasets
 router.post('/analysis/data/create', auth, ctrlDataset.datasetCreate);
