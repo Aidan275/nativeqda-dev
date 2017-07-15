@@ -1,7 +1,7 @@
 ﻿$env:NODE_ENV="development"
 $env:PORT="3000"
 $env:MONGODB_URI="mongodb://heroku_t0vt9rr2:lskjavvplpc89t6ggkp6pm9v9d@ds125481.mlab.com:25481/heroku_t0vt9rr2"
-$env:JWT_SECRET="WhateverYouWant"
+$env:JWT_SECRET="SecretSultanaMash"
 $env:AWS_ACCESS_KEY_ID="AKIAIP53REFZNB3H3GBA"
 $env:AWS_SECRET_ACCESS_KEY="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"
 $env:S3_BUCKET_NAME="nativeqda-assets"
