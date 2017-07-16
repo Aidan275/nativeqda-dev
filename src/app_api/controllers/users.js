@@ -22,6 +22,8 @@ module.exports.getUserInfo = function(req, res) {
 					sendJSONresponse(res, 404, err);
 					return;
 				}
+				if (results.avatar == null || results.avatar === "") //If the user doesn't have an avatar image, return the default one.
+					results.avatar = "/assets/img/settings/default-avatar.png";
 				sendJSONresponse(res, 200, results);
 			});
 	} else {
