@@ -126,6 +126,11 @@ module.exports.addFileDB = function(req, res) {
 	var file = new File();
 
 	file.name = req.body.name;
+	
+	//Placeholder stuff to avoid breaking uploads
+	file.type = 'document';
+	file.folder = null;
+	
 	file.key = req.body.key;
 	if(req.body.textFileKey){
 		file.textFileKey = req.body.textFileKey;

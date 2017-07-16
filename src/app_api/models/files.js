@@ -13,10 +13,22 @@ var metaDataSchema = new mongoose.Schema({
 	}
 });
 
+var filetypes = ["folder", "text", "document", "image", "video", "audio", "survey", "dataset"];
+
 var fileSchema = new mongoose.Schema({
 	name: {
 		type: String,
 		required: true
+	},
+	type: { //The type or category of file, not file extension.
+		type: String,
+		required: true,
+		enum: filetypes //Must be one of strings in filetypes array
+	},
+	folder: { //The 'folder' the file is in.
+		type: String, //Reference the name field of another file with the 'folder' type
+		required: true,
+		"default": null //null means the root of the filesystem
 	},
 	key: {
 		type: String,
@@ -24,6 +36,10 @@ var fileSchema = new mongoose.Schema({
 	},
 	textFileKey: {
 		type: String
+	},
+	dateCreated: {
+		type: Date,
+		"default": Date.now
 	},
 	lastModified: {
 		type: Date,
