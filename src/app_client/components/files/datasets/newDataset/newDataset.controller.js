@@ -74,12 +74,12 @@
 		}
 
 		function doCreateDataset() {
-			processingEvent(true, null);
+			processingEvent(true, null);	// ng-bs-animated-button status & result
 			var keys = Object.keys(vm.formData.checkboxes);		// Checks the checkbox object and any key that is true, 
 			vm.datasetFiles = keys.filter(function(key) {		// the key is saved into the vm.datasetFiles array
 				return vm.formData.checkboxes[key]
 			}, function(err) {
-				processingEvent(false, 'error');
+				processingEvent(false, 'error');	// ng-bs-animated-button status & result
 			});
 
 			concatTextFiles();
@@ -100,10 +100,10 @@
 							createTextFile(concatText);
 						}
 					}, function(err) {
-						processingEvent(false, 'error');
+						processingEvent(false, 'error');	// ng-bs-animated-button status & result
 					});
 				}, function(err) {
-					processingEvent(false, 'error');
+					processingEvent(false, 'error');	// ng-bs-animated-button status & result
 				});
 			});			
 		}
@@ -145,7 +145,7 @@
 						files: vm.datasetFiles
 					})
 					.then(function (response) {
-						processingEvent(false, 'success');
+						processingEvent(false, 'success');	// ng-bs-animated-button status & result
 						console.log(vm.formData.datasetName + ' successfully added to DB');
 						logger.success('Dataset "' + vm.formData.datasetName + '" was created successfully', '', 'Success')
 						setTimeout(function() {
@@ -153,20 +153,22 @@
 						}, 1000);	// Timeout function so the user can see the analysis has completed before closing modal
 					});
 				}, function(error) {
-					processingEvent(false, 'error');
+					processingEvent(false, 'error');	// ng-bs-animated-button status & result
 					var xml = $.parseXML(error.data);
 					logger.error($(xml).find("Message").text(), '', 'Error');
 					cleanUpForNextUpload();
 				});
 			}, function(err) {
-				processingEvent(false, 'error');
+				processingEvent(false, 'error');	// ng-bs-animated-button status & result
 			});
 		}
 
+		// For the animated submit button and other elements that should be disabled during event processing
 		function processingEvent(status, result) {
-			vm.isSubmittingButton = status;
-			vm.isProcessing = status;
-			vm.resultButton = result;			
+			vm.isSubmittingButton = status;	// ng-bs-animated-button status
+			vm.resultButton = result;	// ng-bs-animated-button result (error/success)
+
+			vm.isProcessing = status;	// Processing flag for other view elements to check
 		}
 
 		vm.modal = {

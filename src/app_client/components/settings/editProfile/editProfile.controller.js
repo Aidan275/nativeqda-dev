@@ -58,7 +58,8 @@
 					vm.file = uploadFiles[0];
 					vm.fileInfo = {
 						name: vm.file.name,
-						type: vm.file.type
+						type: vm.file.type,
+						readType: 'public-read'		// Sets the ACL option in S3 to public-read so a signed URL doesn't need to be generated each time the avatar is requested.
 					};
 				} else {
 					logger.error("Maximum file size is 10 MB. \nPlease select a smaller file.", "", "Error");	// If larger, display message and reinitialise the file variables
@@ -77,7 +78,7 @@
 
 		function uploadFile() {
 			if(vm.file) {
-				processingEvent(true, null);
+				processingEvent(true, null);	// ng-bs-animated-button status & result
 				var fileExtension = (vm.fileInfo.name.split('.').pop()).toLowerCase();
 				if(fileExtension === 'png'){
 					uploadActualFile();
@@ -107,23 +108,29 @@
 					
 					//Set avatar
 					authenticationService.setavatar(url).then(function(response) {
-						processingEvent(false, 'success');
+						processingEvent(false, 'success');	// ng-bs-animated-button status & result
 						console.log(vm.fileInfo.name + ' successfully added to DB');
 						logger.success(vm.fileInfo.name + ' successfully uploaded', '', 'Success');
 						cleanUpForNextUpload();
 					});
 				}, function(error) {
-					processingEvent(false, 'error');
+					processingEvent(false, 'error');	// ng-bs-animated-button status & result
 					var xml = $.parseXML(error.data);
 					logger.error($(xml).find("Message").text(), '', 'Error');
 					cleanUpForNextUpload();
 				});
 			}, function(err) {
-				processingEvent(false, 'error');
+				processingEvent(false, 'error');	// ng-bs-animated-button status & result
 			});
 		}
-		
 
+		// For the animated submit button and other elements that should be disabled during event processing
+		function processingEvent(status, result) {
+			vm.isSubmittingButton = status;	// ng-bs-animated-button status
+			vm.resultButton = result;	// ng-bs-animated-button result (error/success)
+
+			vm.isProcessing = status;	// Processing flag for other view elements to check
+		}
 	}
 
 

@@ -85,7 +85,7 @@
 		}
 
 		function doAnalysis() {
-			processingEvent(true, null);
+			processingEvent(true, null);	// ng-bs-animated-button status & result
 			filesService.signDownloadS3(vm.formData.selectedDataKey)
 			.then(function(response) {
 				analysisService.watsonAnalysis({url: response.data})
@@ -93,10 +93,10 @@
 					vm.analysisResults = response.data;
 					saveAnalysisResults();
 				}, function(err) {
-					processingEvent(false, 'error');
+					processingEvent(false, 'error');	// ng-bs-animated-button status & result
 				});
 			}, function(err) {
-				processingEvent(false, 'error');
+				processingEvent(false, 'error');	// ng-bs-animated-button status & result
 			});
 		}
 
@@ -118,12 +118,12 @@
 			analysisService.saveWatsonAnalysis(saveData)
 			.then(function(response) {
 				logger.success('Analysis "' + vm.formData.analysisName + '" successfully completed', '', 'Success')
-				processingEvent(false, 'success');
+				processingEvent(false, 'success');	// ng-bs-animated-button status & result
 				setTimeout(function() {
 					vm.modal.close(response.data);	// Close modal if the analysis was completed successfully and return the new analysis data
 				}, 1000);	// Timeout function so the user can see the analysis has completed before closing modal
 			}, function(err) {
-				processingEvent(false, 'error');
+				processingEvent(false, 'error');	// ng-bs-animated-button status & result
 			});
 		}
 
@@ -136,10 +136,12 @@
 			});
 		}
 
+		// For the animated submit button and other elements that should be disabled during event processing
 		function processingEvent(status, result) {
-			vm.isSubmittingButton = status;
-			vm.isProcessing = status;
-			vm.resultButton = result;			
+			vm.isSubmittingButton = status;	// ng-bs-animated-button status
+			vm.resultButton = result;	// ng-bs-animated-button result (error/success)
+
+			vm.isProcessing = status;	// Processing flag for other view elements to check
 		}
 
 		vm.modal = {

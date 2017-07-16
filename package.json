@@ -40,7 +40,7 @@
     "leaflet.gridlayer.googlemutant": "^0.6.2",
     "leaflet.markercluster": "^1.0.6",
     "moment": "^2.18.1",
-    "mongoose": "^4.9.6",
+    "mongoose": "^4.11.3",
     "morgan": "~1.8.1",
     "ng-bs-animated-button": "^2.0.3",
     "ng-file-upload": "^12.2.13",

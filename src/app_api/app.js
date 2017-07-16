@@ -39,7 +39,7 @@ app.use('/api', routesApi);
 switch (environment){
     case 'production':
         console.log('------- PRODUCTION ENVIRONTMENT -------');
-        console.log('serving from: \n /dist \n /dist/app');
+        console.log('Serving from: ' + path.join(__dirname, '../../dist'));
         app.use(express.static(path.join(__dirname, '../../dist')));		// For the bundled/minified/compressed assets (e.g. ng-app.min.js, vendor.min.js, vendor.min.css, images, etc.)
 		app.use(express.static(path.join(__dirname, '../../dist/app')));	// For serving the static html files requested from AngularJS (e.g. home.view.html, data.view.html) ... i think
 		app.get('*', function(req, res) {
@@ -48,7 +48,7 @@ switch (environment){
         break;
     case 'build':
         console.log('------- BUILD ENVIRONEMNT WITH DIST FILES -------');
-        console.log('serving from: \n /dist \n /dist/app');
+        console.log('Serving from: ' + path.join(__dirname, '../../dist'));
         app.use(express.static(path.join(__dirname, '../../dist')));		// For the bundled/minified/compressed assets (e.g. ng-app.min.js, vendor.min.js, vendor.min.css, images, etc.)
 		app.use(express.static(path.join(__dirname, '../../dist/app')));	// For serving the static html files requested from AngularJS (e.g. home.view.html, data.view.html) ... i think
 		app.get('*', function(req, res) {
@@ -58,7 +58,7 @@ switch (environment){
     case 'development':
     default:
         console.log('------- LOCAL DEVELOPMENT ENVIRONMENT -------');
-        console.log('serving from: \n / \n /src/app_client');
+        console.log('Serving from: ' + path.join(__dirname, '../../src'));
 		app.use(express.static(path.join(__dirname, '../../')));				// For vendor assets in node_modules and AngularJS JS files (external vendor assets downloaded using NPM - jquery, ng-tables, angular, moment, bootstrap, etc.) 
 		app.use(express.static(path.join(__dirname, '../app_client')));			// For serving the static html files requested from AngularJS (e.g. home.view.html, data.view.html) ... i think
 		app.get('*', function(req, res) {
@@ -67,14 +67,49 @@ switch (environment){
         break;
 }
 
-console.log('Starting up Node');
-console.log('PORT=' + port);
-console.log('NODE_ENV=' + environment);
+// ======================== //
+// ==== Error Handlers ==== //
+// ======================== //
+
+// Catch unauthorised errors (e.g. missing authorization token)
+app.use(function (err, req, res, next) {
+    if (err.name === 'UnauthorizedError') {
+        res.status(401);
+        res.json({"message" : err.name + ": " + err.message});
+    }
+});
+
+// Development error handler
+// Will print stacktrace
+if (environment === 'development') {
+    app.use(function(err, req, res, next) {
+        res.status(err.status || 500);
+        res.render('error', {
+            message: err.message,
+            error: err
+        });
+    });
+}
+
+// Production error handler
+// no stacktraces leaked to user
+app.use(function(err, req, res, next) {
+    res.status(err.status || 500);
+    res.render('error', {
+        message: err.message,
+        error: {}
+    });
+});
+
+// ======================== //
+// ===== Start Server ===== //
+// ======================== //
+
+console.log('Starting up Node...');
+console.log('Port: ' + port);
+console.log('Environment: ' + environment);
 
 app.listen(port, function() {
     console.log('Express server listening on port ' + port);
-    console.log('env = ' + app.get('env') +
-        '\n__dirname = ' + __dirname  +
-        '\nprocess.cwd = ' + process.cwd());
 });
 

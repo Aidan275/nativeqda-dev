@@ -21,7 +21,7 @@
 		vm.marker = null;
 		vm.markers = L.markerClusterGroup({showCoverageOnHover: false});
 		vm.posMarker = null;
-		vm.posMarkerMoved = false;		// After moving the marker, the accuracy circle will be removed, i.e. the posMarkerMoved bool will be true
+		vm.posMarkerMoved = false;	// After moving the marker, the accuracy circle will be removed, i.e. the posMarkerMoved bool will be true
 		vm.fileList = null;
 		vm.lat = -34.4054039;	// Default position is UOW
 		vm.lng = 150.87842999999998;
@@ -364,7 +364,7 @@
 
 		function uploadFile() {
 			if(vm.file) {
-				processingEvent(true, null);
+				processingEvent(true, null);	// ng-bs-animated-button status & result
 				var fileExtension = (vm.fileInfo.name.split('.').pop()).toLowerCase();
 				if(fileExtension === 'pdf'){
 					convertPDFToText()
@@ -389,7 +389,7 @@
 				getPDFText(arrayBuffer).then(function (text) {
 					createTextFile(text);
 				}, function (error) {
-					processingEvent(false, 'error');
+					processingEvent(false, 'error');	// ng-bs-animated-button status & result
 					$scope.$apply();	// To reflect the changes in the processingEvent (upload button animation) on the view
 					logger.error(error.message, error, 'Error');
 					cleanUpForNextUpload();
@@ -431,7 +431,7 @@
 						createTextFile(text);
 					});
 				}, function (error) {
-					processingEvent(false, 'error');
+					processingEvent(false, 'error');	// ng-bs-animated-button status & result
 					logger.error(error.msg, error, 'Error');
 					cleanUpForNextUpload();
 				});
@@ -467,12 +467,12 @@
 					uploadActualFile();
 				}, function(error) {
 					var xml = $.parseXML(error.data);
-					processingEvent(false, 'error');
+					processingEvent(false, 'error');	// ng-bs-animated-button status & result
 					logger.error($(xml).find("Message").text(), '', 'Error');
 					cleanUpForNextUpload();
 				});
 			}, function(err) {
-				processingEvent(false, 'error');
+				processingEvent(false, 'error');	// ng-bs-animated-button status & result
 			});
 		}
 
@@ -518,7 +518,7 @@
 					}
 					filesService.addFileDB(fileDetails)
 					.then(function(response) {
-						processingEvent(false, 'success');
+						processingEvent(false, 'success');	// ng-bs-animated-button status & result
 						vm.fileList.push(response.data);
 						console.log(vm.fileInfo.name + ' successfully added to DB');
 						logger.success(vm.fileInfo.name + ' successfully uploaded', '', 'Success');
@@ -526,13 +526,13 @@
 						cleanUpForNextUpload();
 					});
 				}, function(error) {
-					processingEvent(false, 'error');
+					processingEvent(false, 'error');	// ng-bs-animated-button status & result
 					var xml = $.parseXML(error.data);
 					logger.error($(xml).find("Message").text(), '', 'Error');
 					cleanUpForNextUpload();
 				});
 			}, function(err) {
-				processingEvent(false, 'error');
+				processingEvent(false, 'error');	// ng-bs-animated-button status & result
 			});
 		}
 
@@ -549,10 +549,12 @@
 			document.getElementById("file-upload-input").value = "";
 		}
 
+		// For the animated submit button and other elements that should be disabled during event processing
 		function processingEvent(status, result) {
-			vm.isSubmittingButton = status;
-			vm.isProcessing = status;
-			vm.resultButton = result;		
+			vm.isSubmittingButton = status;	// ng-bs-animated-button status
+			vm.resultButton = result;	// ng-bs-animated-button result (error/success)
+
+			vm.isProcessing = status;	// Processing flag for other view elements to check
 		}
 	}
 

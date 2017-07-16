@@ -15,7 +15,7 @@
 		///////////////////////////
 
 		function getUserInfo(email){
-			return $http.get('/api/users/info?email=' + email, {
+			return $http.get('/api/user/info?email=' + email, {
 				headers: {
 					Authorization: 'Bearer ' + authentication.getToken()
 				}

@@ -4,7 +4,7 @@
 	.module('nativeQDAApp')
 	.service('authentication', authentication);
 
-    /* @ngInject */
+	/* @ngInject */
 	function authentication ($http, $window, exception) {
 		return {
 			currentUser	: currentUser,

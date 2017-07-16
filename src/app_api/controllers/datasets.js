@@ -13,52 +13,42 @@ var sendJSONresponse = function(res, status, content) {
 };
 
 module.exports.datasetCreate = function(req, res) {
-	// Checks the state of the connection to the DB is 'connected'
-	if(mongoose.connection.readyState === 1) {
-		var dataset = new Dataset();
+	var dataset = new Dataset();
 
-		dataset.name = req.body.name
-		dataset.desc = req.body.desc;
-		dataset.size = req.body.size,
-		dataset.key = req.body.key;
-		dataset.url = req.body.url,
-		dataset.createdBy = req.body.createdBy;
-		dataset.files = req.body.files;
+	dataset.name = req.body.name
+	dataset.desc = req.body.desc;
+	dataset.size = req.body.size,
+	dataset.key = req.body.key;
+	dataset.url = req.body.url,
+	dataset.createdBy = req.body.createdBy;
+	dataset.files = req.body.files;
 
-		dataset.save(function(err) {
-			if (err) {
-				sendJSONresponse(res, 404, err);
-			} else {
-				sendJSONresponse(res, 200, dataset);
-			}
-		});	
-	} else {
-		sendJSONresponse(res, 404, {errmsg: "Databse connection error."});
-	}
+	dataset.save(function(err) {
+		if (err) {
+			sendJSONresponse(res, 404, err);
+		} else {
+			sendJSONresponse(res, 200, dataset);
+		}
+	});	
 }
 
 module.exports.listDatasets = function(req, res) {
-	// Checks the state of the connection to the DB is 'connected'
-	if(mongoose.connection.readyState === 1) {
-		Dataset
-		.find()
-		.exec(
-			function(err, results) {
-				if (!results) {
-					sendJSONresponse(res, 404, {
-						"message": "No Datasets found"
-					});
-					return;
-				} else if (err) {
-					sendJSONresponse(res, 404, err);
-					return;
-				}
-				datasetList = buildDatasetList(req, res, results);
-				sendJSONresponse(res, 200, datasetList);
-			});
-	} else {
-		sendJSONresponse(res, 404, {errmsg: "Databse connection error."});
-	}
+	Dataset
+	.find()
+	.exec(
+		function(err, results) {
+			if (!results) {
+				sendJSONresponse(res, 404, {
+					"message": "No Datasets found"
+				});
+				return;
+			} else if (err) {
+				sendJSONresponse(res, 404, err);
+				return;
+			}
+			datasetList = buildDatasetList(req, res, results);
+			sendJSONresponse(res, 200, datasetList);
+		});
 }
 
 var buildDatasetList = function(req, res, results) {
@@ -81,59 +71,49 @@ var buildDatasetList = function(req, res, results) {
 };
 
 module.exports.datasetReadOne = function(req, res) {
-	// Checks the state of the connection to the DB is 'connected'
-	if(mongoose.connection.readyState === 1) {
-		var datasetid = req.params.datasetid;
-		if (datasetid) {
-			Dataset
-			.findById(datasetid)
-			.exec(
-				function(err, dataset) {
-					if (!dataset) {
-						sendJSONresponse(res, 404, {
-							"message": "datasetid not found"
-						});
-						return;
-					} else if (err) {
-						sendJSONresponse(res, 404, err);
-						return;
-					}
-					sendJSONresponse(res, 200, dataset);
-				});
-		} else {
-			sendJSONresponse(res, 404, {
-				"message": "No datasetid in request"
+	var datasetid = req.params.datasetid;
+	if (datasetid) {
+		Dataset
+		.findById(datasetid)
+		.exec(
+			function(err, dataset) {
+				if (!dataset) {
+					sendJSONresponse(res, 404, {
+						"message": "datasetid not found"
+					});
+					return;
+				} else if (err) {
+					sendJSONresponse(res, 404, err);
+					return;
+				}
+				sendJSONresponse(res, 200, dataset);
 			});
-		}
 	} else {
-		sendJSONresponse(res, 404, {errmsg: "Databse connection error."});
+		sendJSONresponse(res, 404, {
+			"message": "No datasetid in request"
+		});
 	}
 }
 
 module.exports.deleteDatasetDB = function(req, res) {
-	// Checks the state of the connection to the DB is 'connected'
-	if(mongoose.connection.readyState === 1) {
-		var key = req.query.key;
-		if (key) {
-			Dataset
-			.remove({key: key})
-			.exec(
-				function(err, dataset) {
-					if (err) {
-						console.log(err);
-						sendJSONresponse(res, 404, err);
-						return;
-					}
-					console.log("dataset with key " + key + " deleted");
-					sendJSONresponse(res, 204, null);
-				});
-		} else {
-			sendJSONresponse(res, 404, {
-				"message": "No key"
+	var key = req.query.key;
+	if (key) {
+		Dataset
+		.remove({key: key})
+		.exec(
+			function(err, dataset) {
+				if (err) {
+					console.log(err);
+					sendJSONresponse(res, 404, err);
+					return;
+				}
+				console.log("dataset with key " + key + " deleted");
+				sendJSONresponse(res, 204, null);
 			});
-		}
 	} else {
-		sendJSONresponse(res, 404, {errmsg: "Databse connection error."});
+		sendJSONresponse(res, 404, {
+			"message": "No key"
+		});
 	}
 }
 

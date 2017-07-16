@@ -67,86 +67,71 @@ module.exports.watsonAnalysis = function(req, res) {
 };
 
 module.exports.saveWatsonAnalysis = function(req, res) {
-	// Checks the state of the connection to the DB is 'connected'
-	if(mongoose.connection.readyState === 1) {
-		var analysisResults = new AnalysisResults();
+	var analysisResults = new AnalysisResults();
 
-		analysisResults.name = req.body.name
-		analysisResults.description = req.body.description;
-		analysisResults.createdBy = req.body.createdBy;
-		analysisResults.sourceDataKey = req.body.sourceDataKey;
-		analysisResults.language = req.body.language,
-		analysisResults.categories = req.body.categories;
-		analysisResults.concepts = req.body.concepts;
-		analysisResults.entities = req.body.entities;
-		analysisResults.keywords = req.body.keywords;
-		analysisResults.relations = req.body.relations;
-		analysisResults.semanticRoles = req.body.semanticRoles;
+	analysisResults.name = req.body.name
+	analysisResults.description = req.body.description;
+	analysisResults.createdBy = req.body.createdBy;
+	analysisResults.sourceDataKey = req.body.sourceDataKey;
+	analysisResults.language = req.body.language,
+	analysisResults.categories = req.body.categories;
+	analysisResults.concepts = req.body.concepts;
+	analysisResults.entities = req.body.entities;
+	analysisResults.keywords = req.body.keywords;
+	analysisResults.relations = req.body.relations;
+	analysisResults.semanticRoles = req.body.semanticRoles;
 
-		analysisResults.save(function(err) {
-			if (err) {
-				sendJSONresponse(res, 404, err);
-			} else {
-				sendJSONresponse(res, 200, analysisResults);
-			}
-		});	
-	} else {
-		sendJSONresponse(res, 404, {errmsg: "Databse connection error."});
-	}
+	analysisResults.save(function(err) {
+		if (err) {
+			sendJSONresponse(res, 404, err);
+		} else {
+			sendJSONresponse(res, 200, analysisResults);
+		}
+	});	
 };
 
 module.exports.readWatsonAnalysis = function(req, res) {
-	// Checks the state of the connection to the DB is 'connected'
-	if(mongoose.connection.readyState === 1) {
-		var id = req.query.id;
-		if (id) {
-			AnalysisResults
-			.findById(id)
-			.exec(
-				function(err, data) {
-					if (!data) {
-						sendJSONresponse(res, 404, {
-							"message": "analysis not found"
-						});
-						return;
-					} else if (err) {
-						sendJSONresponse(res, 404, err);
-						return;
-					}
-					sendJSONresponse(res, 200, data);
-				});
-		} else {
-			sendJSONresponse(res, 404, {
-				"message": "No id in request"
-			});
-		}
-	} else {
-		sendJSONresponse(res, 404, {errmsg: "Databse connection error."});
-	}
-};
-
-module.exports.listWatsonAnalysis = function(req, res) {
-	// Checks the state of the connection to the DB is 'connected'
-	if(mongoose.connection.readyState === 1) {	
+	var id = req.query.id;
+	if (id) {
 		AnalysisResults
-		.find()
+		.findById(id)
 		.exec(
-			function(err, results) {
-				if (!results) {
+			function(err, data) {
+				if (!data) {
 					sendJSONresponse(res, 404, {
-						"message": "No analyses found"
+						"message": "analysis not found"
 					});
 					return;
 				} else if (err) {
 					sendJSONresponse(res, 404, err);
 					return;
 				}
-				analysisList = buildAnalysisList(req, res, results);
-				sendJSONresponse(res, 200, analysisList);
+				sendJSONresponse(res, 200, data);
 			});
 	} else {
-		sendJSONresponse(res, 404, {errmsg: "Databse connection error."});
+		sendJSONresponse(res, 404, {
+			"message": "No id in request"
+		});
 	}
+};
+
+module.exports.listWatsonAnalysis = function(req, res) {
+	AnalysisResults
+	.find()
+	.exec(
+		function(err, results) {
+			if (!results) {
+				sendJSONresponse(res, 404, {
+					"message": "No analyses found"
+				});
+				return;
+			} else if (err) {
+				sendJSONresponse(res, 404, err);
+				return;
+			}
+			analysisList = buildAnalysisList(req, res, results);
+			sendJSONresponse(res, 200, analysisList);
+		});
 };
 
 var buildAnalysisList = function(req, res, results) {
@@ -167,26 +152,21 @@ var buildAnalysisList = function(req, res, results) {
 };
 
 module.exports.deleteWatsonAnalysis = function(req, res) {
-	// Checks the state of the connection to the DB is 'connected'
-	if(mongoose.connection.readyState === 1) {
-		var id = req.query.id;
-		if(id) {
-			AnalysisResults
-			.findByIdAndRemove(id)
-			.exec(
-				function(err, results) {
-					if (err) {
-						sendJSONresponse(res, 404, err);
-						return;
-					}
-					sendJSONresponse(res, 204, null);
-				});
-		} else {
-			sendJSONresponse(res, 404, {
-				"message": "No id parameter in request"
+	var id = req.query.id;
+	if(id) {
+		AnalysisResults
+		.findByIdAndRemove(id)
+		.exec(
+			function(err, results) {
+				if (err) {
+					sendJSONresponse(res, 404, err);
+					return;
+				}
+				sendJSONresponse(res, 204, null);
 			});
-		}
 	} else {
-		sendJSONresponse(res, 404, {errmsg: "Databse connection error."});
+		sendJSONresponse(res, 404, {
+			"message": "No id parameter in request"
+		});
 	}
 };
