@@ -16,7 +16,6 @@
 		"./node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js",
 		"./node_modules/moment/min/moment.min.js",
 		"./node_modules/toastr/build/toastr.min.js",
-		"./node_modules/angularjs-slider/dist/rzslider.min.js",
 		"./node_modules/ng-table/bundles/ng-table.min.js",
 		"./node_modules/ng-tags-input/build/ng-tags-input.min.js",
 		"./node_modules/ng-file-upload/dist/ng-file-upload-all.min.js",
@@ -34,13 +33,17 @@
 		"./node_modules/tinycolor2/dist/tinycolor-min.js",
 		"./node_modules/angularjs-color-picker/dist/angularjs-color-picker.min.js",
 		"./node_modules/slideout/dist/slideout.min.js",
-		"./node_modules/d3-svg-legend/d3-legend.min.js"
+		"./node_modules/d3-svg-legend/d3-legend.min.js",
+		"./node_modules/knockout/build/output/knockout-latest.js",
+		"./node_modules/survey-knockout/survey.ko.min.js",
+
+		"./node_modules/surveyjs-editor/surveyeditor.min.js",
+		"./node_modules/nouislider/distribute/nouislider.min.js"
 	],
 	"minVendorCSS": [
 		"./node_modules/bootstrap/dist/css/bootstrap.min.css",
 		"./node_modules/font-awesome/css/font-awesome.min.css",
 		"./node_modules/toastr/build/toastr.min.css",
-		"./node_modules/angularjs-slider/dist/rzslider.min.css",
 		"./node_modules/ng-table/bundles/ng-table.min.css",
 		"./node_modules/ng-tags-input/build/ng-tags-input.min.css",
 		"./node_modules/ng-bs-animated-button/ng-bs-animated-button.css",
@@ -50,7 +53,10 @@
 		"./node_modules/sweetalert/dist/sweetalert.css",
 		"./node_modules/intro.js/introjs.css",
 		"./node_modules/angularjs-color-picker/dist/angularjs-color-picker.min.css",
-		"./node_modules/angularjs-color-picker/dist/themes/angularjs-color-picker-bootstrap.min.css"
+		"./node_modules/angularjs-color-picker/dist/themes/angularjs-color-picker-bootstrap.min.css",
+		"./node_modules/survey-jquery/survey.css",
+		"./node_modules/surveyjs-editor/surveyeditor.css",
+		"./node_modules/nouislider/distribute/nouislider.min.css"
 	],
 	"devVendorJS": [
 		"./node_modules/angular/angular.js",
@@ -61,7 +67,6 @@
 		"./node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js",
 		"./node_modules/moment/moment.js",
 		"./node_modules/toastr/toastr.js",
-		"./node_modules/angularjs-slider/dist/rzslider.js",
 		"./node_modules/ng-table/bundles/ng-table.js",
 		"./node_modules/ng-tags-input/build/ng-tags-input.js",
 		"./node_modules/ng-file-upload/dist/ng-file-upload-all.js",
@@ -79,13 +84,17 @@
 		"./node_modules/tinycolor2/dist/tinycolor-min.js",
 		"./node_modules/angularjs-color-picker/dist/angularjs-color-picker.js",
 		"./node_modules/slideout/dist/slideout.js",
-		"./node_modules/d3-svg-legend/d3-legend.js"
+		"./node_modules/d3-svg-legend/d3-legend.js",
+		"./node_modules/knockout/build/output/knockout-latest.debug.js",
+		"./node_modules/survey-knockout/survey.ko.js",
+
+		"./node_modules/surveyjs-editor/surveyeditor.js",
+		"./node_modules/nouislider/distribute/nouislider.js"
 	],
 	"devVendorCSS": [
 		"./node_modules/bootstrap/dist/css/bootstrap.css",
 		"./node_modules/font-awesome/css/font-awesome.css",
 		"./node_modules/toastr/build/toastr.css",
-		"./node_modules/angularjs-slider/dist/rzslider.css",
 		"./node_modules/ng-table/bundles/ng-table.css",
 		"./node_modules/ng-tags-input/build/ng-tags-input.css",
 		"./node_modules/ng-bs-animated-button/ng-bs-animated-button.css",
@@ -95,7 +104,10 @@
 		"./node_modules/sweetalert/dist/sweetalert.css",
 		"./node_modules/intro.js/introjs.css",
 		"./node_modules/angularjs-color-picker/dist/angularjs-color-picker.css",
-		"./node_modules/angularjs-color-picker/dist/themes/angularjs-color-picker-bootstrap.css"
+		"./node_modules/angularjs-color-picker/dist/themes/angularjs-color-picker-bootstrap.css",
+		"./node_modules/survey-jquery/survey.css",
+		"./node_modules/surveyjs-editor/surveyeditor.css",
+		"./node_modules/nouislider/distribute/nouislider.css"
 	],
 	"CSS": [
 		"./src/app_client/assets/css/style.css"

@@ -4,33 +4,33 @@
 	.module('nativeQDAApp')
 	.controller('newSurveyCtrl', newSurveyCtrl);
 
-	newSurveyCtrl.$inject = ['$uibModalInstance'];
-	function newSurveyCtrl ($uibModalInstance) {
+	/* @ngInject */
+	function newSurveyCtrl () {
 		var vm = this;
-				
-		vm.onSubmit = function () {
-			vm.formError = "";
-			if(angular.isDefined(vm.formData)){
-				if(!vm.formData.surveyName) {
-					vm.formError = "All fields required, please try again";
-					return false;
-				} else {
-					console.log("Create Survey!")
-				}
-			} else {
-				vm.formError = "All fields required, please try again";
-				return false;
-			}
+
+		var editorOptions = {
+			// show the embeded survey tab. It is hidden by default
+			showEmbededSurveyTab : false,
+			// hide the test survey tab. It is shown by default
+			showTestSurveyTab : true,
+			// hide the JSON text editor tab. It is shown by default
+			showJSONEditorTab : false,
+			// show the "Options" button menu. It is hidden by default 
+			showOptions: false                          
 		};
 
-		vm.modal = {
-			close : function (result) {
-				$uibModalInstance.close(result);
-			}, 
-			cancel : function () {
-				$uibModalInstance.dismiss('cancel');
-			}
-		};
+		// pass the editorOptions into the constructor. It is an optional parameter.
+		var survey = new SurveyEditor.SurveyEditor("surveyEditorContainer", editorOptions);
+
+		//set function on save callback
+		survey.saveSurveyFunc = saveMySurvey;
+
+		function saveMySurvey(){
+			var yourNewSurveyJSON = survey.text;
+			alert(yourNewSurveyJSON);
+		}
+
+
 
 	}
 

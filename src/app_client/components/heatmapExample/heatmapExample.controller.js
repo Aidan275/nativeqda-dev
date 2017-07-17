@@ -13,6 +13,8 @@
 
 		events.event({email : authentication.currentUser().email});
 
+		vm.radiusValue = 100;
+		vm.opacityValue = 0.6;
 		vm.bothOver = true;
 		vm.fatherOver = true;
 		vm.MotherOver = true;
@@ -171,31 +173,40 @@
 
 			var heatmap = new google.maps.visualization.HeatmapLayer();
 			var gradient = null;
+
+			var radiusSlider = document.getElementById('radius-slider');
+			var opacitySlider = document.getElementById('opacity-slider');
+
+			noUiSlider.create(radiusSlider, {
+				start: vm.radiusValue,
+				connect: [true, false],
+				step: 1,
+				range: {
+					'min': 0,
+					'max': 200
+				}
+			});
+
+			noUiSlider.create(opacitySlider, {
+				start: vm.opacityValue,
+				connect: [true, false],
+				step: 0.01,
+				range: {
+					'min': 0,
+					'max': 1
+				}
+			});
+
+			radiusSlider.noUiSlider.on('change', function(value, handle, unencodedValue){
+				vm.radiusValue = unencodedValue[handle];
+				heatmap.set('radius', vm.radiusValue);
+			});
+
+			opacitySlider.noUiSlider.on('update', function(value, handle, unencodedValue){
+				vm.opacityValue = unencodedValue[handle];
+				heatmap.set('opacity', vm.opacityValue);
+			});
 			
-			vm.radiusSlider = {
-				value: 100,
-				options: {
-					floor: 0,
-					ceil: 200,
-					onChange: function() {
-						heatmap.set('radius', vm.radiusSlider.value);
-					}
-				}
-			};
-
-			vm.opacitySlider = {
-				value: 0.6,
-				options: {
-					floor: 0,
-					ceil: 1,
-					step: 0.01,
-					precision: 10,
-					onChange: function() {
-						heatmap.set('opacity', vm.opacitySlider.value);
-					}
-				}
-			};
-
 			vm.updateMap = function(){
 				if(heatmap){
 					heatmap.setMap(null);
@@ -218,8 +229,8 @@
 
 				heatmap.setData(heatmapData);
 				heatmap.setOptions({
-					radius: vm.radiusSlider.value,
-					opacity: vm.opacitySlider.value,
+					radius :vm.radiusValue,
+					opacity: vm.opacityValue,
 					gradient: gradient
 				});
 				heatmap.setMap(map);
@@ -266,8 +277,8 @@
 
 			vm.updateMap();	
 
+		}
 	}
-}
 
 
 })();

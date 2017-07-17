@@ -1,6 +1,6 @@
 (function () {
 	
-	angular.module('nativeQDAApp', ['ngRoute', 'ngSanitize', 'ngTable', 'ui.bootstrap', 'ui.bootstrap.datepicker', 'rzModule', 'ngFileUpload', 'ngTagsInput', 'jp.ng-bs-animated-button', 'bsLoadingOverlay', 'color.picker']);
+	angular.module('nativeQDAApp', ['ngRoute', 'ngSanitize', 'ngTable', 'ui.bootstrap', 'ui.bootstrap.datepicker', 'ngFileUpload', 'ngTagsInput', 'jp.ng-bs-animated-button', 'bsLoadingOverlay', 'color.picker']);
 
 	/* @ngInject */
 	function config ($routeProvider, $locationProvider) {
@@ -58,6 +58,13 @@
 			title: 'NativeQDA | Surveys',
 			templateUrl: '/components/survey/survey.view.html',
 			controller: 'surveyCtrl',
+			controllerAs: 'vm',
+			loginRequired: true
+		})
+		.when('/survey/new', {
+			title: 'NativeQDA | Create Survey',
+			templateUrl: '/components/survey/newSurvey/newSurvey.view.html',
+			controller: 'newSurveyCtrl',
 			controllerAs: 'vm',
 			loginRequired: true
 		})

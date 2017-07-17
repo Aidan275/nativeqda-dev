@@ -1,5 +1,5 @@
 (function () {
-	
+
 	'use strict';
 
 	angular
@@ -9,22 +9,10 @@
 	/* @ngInject */
 	function surveyCtrl ($scope, $window, NgTableParams, $sce, $uibModal) {
 		var vm = this;
-		
+
 		vm.pageHeader = {
 			title: 'Surveys',
 			strapline: 'for the masses'
-		};
-
-		vm.popupNewSurveyForm = function () {
-			var modalInstance = $uibModal.open({
-				templateUrl: '/pages/survey/newSurvey/newSurvey.view.html',
-				controller: 'newSurveyCtrl as vm',
-				size: 'xl'
-			});
-			
-			modalInstance.result.then(function () {
-
-			});
 		};
 
 		var dataset = [

@@ -1,3 +1,12 @@
+/* =================================== */
+/* ========== CSS VARIABLES ========== */
+/* =================================== */
+/* https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_variables */
+
+:root {
+    --main-colour: #4676fa;
+}
+
 /* ========== GLOBAL ========== */
 
 body, html {
@@ -26,13 +35,13 @@ body {
 }
 
 #navbar-main {
-	background-color: #4676fa;
-	border-color: #4676fa;
+	background-color: var(--main-colour);
+	border-color: var(--main-colour);
 }
 
 .navbar-default {
-	background-color: #4676fa;
-	border-color: #4676fa;
+	background-color: var(--main-colour);
+	border-color: var(--main-colour);
 }
 
 .navbar-default .navbar-brand {
@@ -328,4 +337,10 @@ div[ng-table-pagination=params] {
 	font-family: FontAwesome;
 	content: "\f06a";
 	padding-left: 5px;
+}
+
+/* ========== NO-UI-SLIDER ========== */
+
+.noUi-connect {
+	background: var(--main-colour) !important;
 }
