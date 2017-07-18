@@ -138,6 +138,13 @@
 			controllerAs: 'vm',
 			loginRequired: true
 		})
+		.when('/bar-chart/:type/:id', {
+			title: 'NativeQDA | Bar Chart',
+			templateUrl: '/components/visualisations/visuals/barChart/barChart.view.html',
+			controller: 'barChartCtrl',
+			controllerAs: 'vm',
+			loginRequired: true
+		})
 		.when('/heatmap-example', {
 			title: 'NativeQDA | Heatmap Example',
 			templateUrl: '/components/heatmapExample/heatmapExample.view.html',

@@ -85,19 +85,21 @@
 			concatTextFiles();
 		}
 
+		//datasetFile contains keys for files to be used
+
 		function concatTextFiles() {
 			var fileCounter = 0;
 			var concatText = '';
-			vm.datasetFiles.forEach(function(key){
-				filesService.signDownloadS3(key)
+			vm.datasetFiles.forEach(function(key){ //Get key from each file
+				filesService.signDownloadS3(key) //our server
 				.then(function(response) {	
 					// Might move this to the files or analysis service - which ever makes more sense...
 					$http.get(response.data)
 					.then(function(data) {
 						fileCounter++
 						concatText += data.data + '\n\n';
-						if(fileCounter === vm.datasetFiles.length) {
-							createTextFile(concatText);
+						if(fileCounter === vm.datasetFiles.length) { //check for last file
+							createTextFile(concatText); //concat text contains all text file names
 						}
 					}, function(err) {
 						processingEvent(false, 'error');	// ng-bs-animated-button status & result
@@ -108,10 +110,14 @@
 			});			
 		}
 
+
+
 		function createTextFile(concatText) {
 			var newFile = new File([concatText], vm.formData.datasetName, {type: "text/plain"});
 			uploadConcatFile(newFile);
 		}
+
+		//newFile now contains all text from chosen documents in dataset
 
 		function uploadConcatFile(newFile) {
 			filesService.signUploadS3({
