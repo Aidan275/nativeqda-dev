@@ -27,7 +27,6 @@ var fileSchema = new mongoose.Schema({
 	},
 	folder: { //The 'folder' the file is in.
 		type: String, //Reference the name field of another file with the 'folder' type
-		required: true,
 		"default": null //null means the root of the filesystem
 	},
 	key: {
