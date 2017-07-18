@@ -12,19 +12,22 @@
 
 	<a href="/survey/new" type="button" class="btn btn-md btn-success">New Survey</a>
 
-	<table ng-table="vm.tableParams" class="table table-condensed table-bordered table-striped" style="margin-top:5px">
-		<tr ng-repeat="row in $data">
-			<td data-title="'Survey'" filter="{survey: 'text'}" sortable="'survey'">{{row.survey}}</td>
-			<td data-title="'Created By'" filter="{createdBy: 'text'}" sortable="'createdBy'">{{row.createdBy}}</td>
-			<td data-title="'Responses'" filter="{responses: 'number'}" sortable="'responses'">{{row.responses}}</td>
-			<td data-title="'Date Created'" filter="{dateCreated: 'text'}" sortable="'dateCreated'">{{row.dateCreated}}</td>
-			<td data-title="'Command'"><a href="/survey/view/{{row.command}}" class="btn btn-success btn-xs" role="button">View</a> 
-				<a href="/survey/edit/{{row.command}}" class="btn btn-primary btn-xs" role="button">Edit</a>
-				<a href="/survey/delete/{{row.command}}" ng-click="confirmDelete()" class="btn btn-danger btn-xs" role="button">Delete</a>
-			</td class="data-command-cell">
-		</tr>
-
-	</table>
+	<div class="bs-loading-container" bs-loading-overlay bs-loading-overlay-active-class="loading-overlay--active" bs-loading-overlay-reference-id="survey-list"> 
+		<div class="blur-this">
+			<table ng-table="vm.tableParams" class="table table-condensed table-bordered table-striped" style="margin-top:5px">
+				<tr ng-repeat="row in $data">
+					<td data-title="'Survey Name'" filter="{name: 'text'}" sortable="'name'">{{row.name}}</td>
+					<td data-title="'Created By'" filter="{createdBy: 'text'}" sortable="'createdBy'">{{row.createdBy}}</td>
+					<td data-title="'Date Created'" filter="{dateCreated: 'text'}" sortable="'dateCreated'">{{row.dateCreated | date : "dd MMMM, yyyy h:mm a"}}</td>
+					<td data-title="'Command'">
+						<a href="/survey/view/{{row.accessID}}" class="btn btn-success btn-xs" role="button">View</a>
+						<a href="/survey" class="btn btn-primary btn-xs" role="button">Edit</a>
+						<a ng-click="vm.confirmDelete(row._id, row.name)" class="btn btn-danger btn-xs" role="button">Delete</a>
+					</td class="data-command-cell">
+				</tr>
+			</table>
+		</div>
+	</div>
 
 	<footer-generic></footer-generic>
 

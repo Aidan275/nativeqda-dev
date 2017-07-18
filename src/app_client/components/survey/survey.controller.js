@@ -7,29 +7,79 @@
 	.controller('surveyCtrl', surveyCtrl);
 
 	/* @ngInject */
-	function surveyCtrl ($scope, $window, NgTableParams, $sce, $uibModal) {
+	function surveyCtrl (NgTableParams, surveyService, bsLoadingOverlayService) {
 		var vm = this;
 
+		// Bindable Functions
+		vm.confirmDelete = confirmDelete;
 		vm.pageHeader = {
 			title: 'Surveys',
 			strapline: 'for the masses'
 		};
 
-		var dataset = [
-		{ survey: 'Survey', createdBy: 'Anu', responses: 12, dateCreated: '2017/05/26', command: 'id1'},
-		{ survey: 'Survey2', createdBy: 'Michael', responses: 50, dateCreated: '2017/05/02', command: 'id1'},
-		{ survey: 'Survey3', createdBy: 'Michael', responses: 23, dateCreated: '2017/02/12', command: 'id1'},
-		{ survey: 'Survey4', createdBy: 'Anu', responses: 50, dateCreated: '2017/02/15', command: 'id1'},
-		{ survey: 'Survey5', createdBy: 'Holly', responses: 11, dateCreated: '2017/04/02', command: 'id1'},
-		{ survey: 'Survey6', createdBy: 'Anu', responses: 1, dateCreated: '2017/01/11', command: 'id1'},
-		{ survey: 'Survey7', createdBy: 'Michael', responses: 100, dateCreated: '2017/01/23', command: 'id1'},
-		];
+		// Bindable Data
+		vm.surveyList = {};
 
-		vm.tableParams = new NgTableParams({}, { dataset: dataset});
+		activate();
 
-		$scope.confirmDelete = function () {
-			$window.confirm("Are ya sure?")
-		};
+		///////////////////////////
+
+		function activate() {
+			bsLoadingOverlayService.start({referenceId: 'survey-list'});	// Start animated loading overlay
+			getSurveyList();
+		}
+
+		// Gets all the files from the MongoDB database
+		function getSurveyList() {
+			surveyService.listSurveys()
+			.then(function(response) {
+				vm.surveyList = response.data;
+				console.log(vm.surveyList);
+				listSurveys();
+			}, function(err){
+				bsLoadingOverlayService.stop({referenceId: 'survey-list'});	// If error, stop animated loading overlay
+			});
+		}
+
+		function listSurveys() {
+			vm.tableParams = new NgTableParams({
+				sorting: {lastModified: "desc"}
+			}, {
+				dataset: vm.surveyList
+			});
+			bsLoadingOverlayService.stop({referenceId: 'survey-list'});	// Stop animated loading overlay
+		}
+
+		function confirmDelete(id, surveyName) {
+			swal({
+				title: "Are you sure?",
+				text: "Confirm to delete the survey '" + surveyName + "'",
+				type: "warning",
+				showCancelButton: true,
+				allowOutsideClick: true,
+				confirmButtonColor: "#d9534f",
+				confirmButtonText: "Yes, delete it!"
+			}, function() {
+				deleteSurvey(id);
+			});
+		}
+
+		function deleteSurvey(id) {
+			removeSurveyFromArray(id);
+		}
+
+		function removeSurveyFromArray(id) {	
+			// Find the index for the survey, will return -1 if not found 
+			var surveyIndex = vm.surveyList.findIndex(function(obj){return obj._id === id});
+
+			// Remove the survey from the survey list array if found
+			if (surveyIndex > -1) {
+				vm.surveyList.splice(surveyIndex, 1);
+			}
+
+			// Re-list surveys with the updated survey list array
+			listSurveys();
+		}
 
 	}
 

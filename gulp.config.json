@@ -36,7 +36,6 @@
 		"./node_modules/d3-svg-legend/d3-legend.min.js",
 		"./node_modules/knockout/build/output/knockout-latest.js",
 		"./node_modules/survey-knockout/survey.ko.min.js",
-
 		"./node_modules/surveyjs-editor/surveyeditor.min.js",
 		"./node_modules/nouislider/distribute/nouislider.min.js"
 	],
@@ -87,7 +86,6 @@
 		"./node_modules/d3-svg-legend/d3-legend.js",
 		"./node_modules/knockout/build/output/knockout-latest.debug.js",
 		"./node_modules/survey-knockout/survey.ko.js",
-
 		"./node_modules/surveyjs-editor/surveyeditor.js",
 		"./node_modules/nouislider/distribute/nouislider.js"
 	],
@@ -133,6 +131,7 @@
 		"./src/app_client/common/services/files.service.js",
 		"./src/app_client/common/services/logger.service.js",
 		"./src/app_client/common/services/map.service.js",
+		"./src/app_client/common/services/survey.service.js",
 		"./src/app_client/common/services/users.service.js",
 		"./src/app_client/components/analysis/analysis.controller.js",
 		"./src/app_client/components/analysis/newAnalysis/newAnalysis.controller.js",
@@ -156,6 +155,7 @@
 		"./src/app_client/components/survey/completeSurvey/completeSurvey.controller.js",
 		"./src/app_client/components/survey/survey.controller.js",
 		"./src/app_client/components/survey/newSurvey/newSurvey.controller.js",
+		"./src/app_client/components/survey/viewSurvey/viewSurvey.controller.js",
 		"./src/app_client/components/testAnalysis/aylien/testAylien.controller.js",
 		"./src/app_client/components/testAnalysis/watson/testWatson.controller.js",
 		"./src/app_client/components/visualisations/visualisations.controller.js",

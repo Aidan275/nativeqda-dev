@@ -80,3 +80,4 @@ require('./events');
 require('./datasets');
 require('./files');
 require('./analysis');
+require('./surveys');

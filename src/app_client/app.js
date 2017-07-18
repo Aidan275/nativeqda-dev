@@ -68,6 +68,20 @@
 			controllerAs: 'vm',
 			loginRequired: true
 		})
+		.when('/survey/view/:id', {
+			title: 'NativeQDA | View Survey',
+			templateUrl: '/components/survey/viewSurvey/viewSurvey.view.html',
+			controller: 'viewSurveyCtrl',
+			controllerAs: 'vm',
+			loginRequired: true
+		})
+		.when('/complete-survey', {
+			title: 'NativeQDA | Survey',
+			templateUrl: '/components/survey/completeSurvey/completeSurvey.view.html',
+			controller: 'CompleteSurveyCtrl',
+			controllerAs: 'vm',
+			loginRequired: false
+		})
 		.when('/files/upload', {
 			title: 'NativeQDA | Upload File',
 			templateUrl: '/components/files/filesUpload/filesUpload.view.html',
@@ -103,13 +117,7 @@
 			controllerAs: 'vm',
 			loginRequired: true
 		})
-		.when('/complete-survey', {
-			title: 'NativeQDA | Survey',
-			templateUrl: '/components/survey/completeSurvey/completeSurvey.view.html',
-			controller: 'CompleteSurveyCtrl',
-			controllerAs: 'vm',
-			loginRequired: false
-		})
+		
 		.when('/bubble-chart/:type/:id', {
 			title: 'NativeQDA | Bubble Chart',
 			templateUrl: '/components/visualisations/visuals/bubbleChart/bubbleChart.view.html',

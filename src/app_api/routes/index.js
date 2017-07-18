@@ -13,6 +13,7 @@ var ctrlEvent = require('../controllers/events');
 var ctrlFile = require('../controllers/files');
 var ctrlAnalysis = require('../controllers/analysis');
 var ctrlUsers = require('../controllers/users');
+var ctrlSurveys = require('../controllers/surveys');
 
 // Middleware to check the connection status of the database. For any request that involves 
 // the database, add this function to the request parameters to check the connection status. 
@@ -59,5 +60,9 @@ router.get('/analysis/watson/list', auth, checkDatabaseStatus, ctrlAnalysis.list
 router.delete('/analysis/watson/delete', auth, checkDatabaseStatus, ctrlAnalysis.deleteWatsonAnalysis);
 
 router.get('/user/info', auth, checkDatabaseStatus, ctrlUsers.getUserInfo);
+
+router.post('/survey/save', auth, checkDatabaseStatus, ctrlSurveys.saveSurvey);
+router.get('/survey/read', auth, checkDatabaseStatus, ctrlSurveys.readSurvey);
+router.get('/survey/list', auth, checkDatabaseStatus, ctrlSurveys.listSurveys);
 
 module.exports = router;

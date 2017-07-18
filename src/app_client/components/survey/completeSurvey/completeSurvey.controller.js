@@ -4,20 +4,52 @@
 	.module('nativeQDAApp')
 	.controller('CompleteSurveyCtrl', CompleteSurveyCtrl);
 
-	function CompleteSurveyCtrl() {
+	/* @ngInject */
+	function CompleteSurveyCtrl(logger, bsLoadingOverlayService, surveyService) {
 		var vm = this;
 
-		vm.surveyCode = "";
+		// Bindable Functions
+		vm.onSubmit = onSubmit;
 
-		vm.onSubmit = function () {
-			vm.formError = "";
+		// Bindable Data
+		vm.surveyCode = '';
+		vm.surveyFound = false;
+
+		///////////////////////////
+		
+		function onSubmit() {
 			if (!vm.surveyCode) {
-				vm.formError = "All fields required, please try again";
+				logger.error('All fields required, please try again', '', 'Error');
 				return false;
 			} else {
-				console.log("Find survey and display to user!")
+				var surveyCode = vm.surveyCode;
+				getSurvey(surveyCode);
 			}
 		};
+
+		function getSurvey(surveyCode) {
+			surveyService.readSurvey(surveyCode)
+			.then(function(response) {
+				vm.surveyFound = true;
+				showSurvey(response.data);
+			})
+		}
+
+		function showSurvey(data) {
+			console.log(data);
+			Survey.Survey.cssType = "bootstrap";
+			Survey.defaultBootstrapCss.navigationButton = "btn btn-green";
+
+			var surveyJSONObj = JSON.parse(data.surveyJSON);
+			window.survey = new Survey.Model(surveyJSONObj);
+			survey.onComplete.add(function(result) {
+				document.querySelector('#surveyResult').innerHTML = "result: " + JSON.stringify(result.data);
+			});
+
+			survey.render("surveyElement");
+			
+		}
+
 	}
 
 })();
