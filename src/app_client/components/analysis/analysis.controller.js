@@ -64,7 +64,7 @@
 
 		function deleteAnalysis(analysisName, analysisId) {
 			analysisService.deleteWatsonAnalysis(analysisId)
-			.then(function(response) {
+			.then(function() {
 				removeFromList(analysisId);	// If deleting the analysis was successful, the deleted analysis is removed from the local array
 				logger.success("'" + analysisName + "' was deleted successfully", "", "Success");
 			});

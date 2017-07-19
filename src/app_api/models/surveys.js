@@ -1,5 +1,29 @@
 var mongoose = require( 'mongoose' );
 
+var surveyResponseSchema = new mongoose.Schema({
+	responseJSON: {
+		type: String,
+		required: true
+	},
+	dateCreated: {
+		type: Date,
+		"default": Date.now
+	},
+	fullName: {
+		type: String,
+		required: true
+	},
+	email: {			// Not sure if all these fields should be included here or at all... 
+		type: String
+	},
+	age: {
+		type: Number
+	},
+	gender: {
+		type: String
+	}
+});
+
 var surveySchema = new mongoose.Schema({
 	surveyJSON: {
 		type: String,
@@ -24,7 +48,9 @@ var surveySchema = new mongoose.Schema({
 	createdBy: {
 		type: String,
 		required: true
-	}
+	},
+	responses: [surveyResponseSchema]
 });
 
 mongoose.model('Survey', surveySchema);
+mongoose.model('SurveyResponse', surveyResponseSchema);

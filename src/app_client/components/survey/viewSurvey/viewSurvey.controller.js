@@ -1,18 +1,19 @@
 (function () {
 
+	'use strict';
+
 	angular
 	.module('nativeQDAApp')
 	.controller('viewSurveyCtrl', viewSurveyCtrl);
 
 	function viewSurveyCtrl($routeParams, surveyService) {
 		var vm = this;
-
-		var id = $routeParams.id;
+		var accessID = $routeParams.id;
 
 		Survey.Survey.cssType = "bootstrap";
 		Survey.defaultBootstrapCss.navigationButton = "btn btn-green";
 
-		surveyService.readSurvey(id)
+		surveyService.readSurvey(accessID)
 		.then(function(response) {
 			var surveyJSONObj = JSON.parse(response.data.surveyJSON);
 			window.survey = new Survey.Model(surveyJSONObj);
@@ -22,7 +23,6 @@
 
 			survey.render("surveyElement");
 		});
-
 	}
 
 })();

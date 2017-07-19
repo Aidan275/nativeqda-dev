@@ -224,7 +224,7 @@ module.exports.fileReadOneDB = function(req, res) {
 				sendJSONresponse(res, 200, results);
 			});
 	} else {
-		sendJSONresponse(res, 404, {
+		sendJSONresponse(res, 400, {
 			"message": "No key parameter in request"
 		});
 	}
@@ -246,7 +246,7 @@ module.exports.deleteFileDB = function(req, res) {
 				sendJSONresponse(res, 204, null);
 			});
 	} else {
-		sendJSONresponse(res, 404, {
+		sendJSONresponse(res, 400, {
 			"message": "No key parameter in request"
 		});
 	}
@@ -302,7 +302,7 @@ module.exports.objectAclDB = function(req, res) {
 				sendJSONresponse(res, 204, null);
 			});
 	} else {
-		sendJSONresponse(res, 404, {
+		sendJSONresponse(res, 400, {
 			"message": "invalid ACL parameter in request - must be either 'public-read' or 'private'"
 		});		
 	}

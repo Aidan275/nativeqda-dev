@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var Survey = mongoose.model('Survey');
+var SurveyResponse = mongoose.model('SurveyResponse');
 var shortid = require('shortid');
 
 var sendJSONresponse = function(res, status, content) {
@@ -25,13 +26,13 @@ module.exports.saveSurvey = function(req, res) {
 };
 
 module.exports.readSurvey = function(req, res) {
-	var id = req.query.id;
-	if (id) {
+	var accessID = req.query.accessID;
+	if (accessID) {
 		Survey
-		.findOne({accessID: id})
+		.findOne({"accessID": accessID})
 		.exec(
-			function(err, data) {
-				if (!data) {
+			function(err, results) {
+				if (!results) {
 					sendJSONresponse(res, 404, {
 						"message": "Survey not found"
 					});
@@ -40,10 +41,10 @@ module.exports.readSurvey = function(req, res) {
 					sendJSONresponse(res, 404, err);
 					return;
 				}
-				sendJSONresponse(res, 200, data);
+				sendJSONresponse(res, 200, results);
 			});
 	} else {
-		sendJSONresponse(res, 404, {
+		sendJSONresponse(res, 400, {
 			"message": "No id in request"
 		});
 	}
@@ -83,3 +84,87 @@ var buildSurveyList = function(req, res, results) {
 	});
 	return surveyList;
 };
+
+module.exports.deleteSurvey = function(req, res) {
+	var id = req.query.id;
+	if(id) {
+		Survey
+		.findByIdAndRemove(id)
+		.exec(
+			function(err, results) {
+				if (!results) {
+					sendJSONresponse(res, 404, {
+						"message": "Survey not found"
+					});
+					return;
+				} else if (err) {
+					sendJSONresponse(res, 404, err);
+					return;
+				}
+				sendJSONresponse(res, 204, null);
+			});
+	} else {
+		sendJSONresponse(res, 400, {
+			"message": "No id parameter in request"
+		});
+	}
+};
+
+module.exports.saveSurveyResponse = function(req, res) {
+	var accessID = req.body.accessID;
+
+	if(accessID) {
+		var surveyResponse = new SurveyResponse();
+
+		surveyResponse.responseJSON = req.body.responseJSON;
+		surveyResponse.fullName = req.body.fullName;
+		surveyResponse.email = req.body.email;
+		surveyResponse.age = req.body.age;
+		surveyResponse.gender = req.body.gender;
+
+		Survey.updateOne(
+			{ "accessID" : accessID },
+			{
+				$push: { "responses": surveyResponse },
+			}, function(err, results) {
+				if (!results) {
+					sendJSONresponse(res, 404, {
+						"message": "Survey not found"
+					});
+					return;
+				} else if (err) {
+					sendJSONresponse(res, 404, err);
+					return;
+				}
+				sendJSONresponse(res, 204, null);
+			});
+	} else {
+		sendJSONresponse(res, 400, {
+			"message": "No accessID or survey response included in request"
+		});
+	}
+};
+
+module.exports.readSurveyResponses = function(req, res) {
+	var accessID = req.query.accessID;
+
+	if(accessID) {
+		Survey.findOne({ "accessID" : accessID }, 'responses', function(err, results) {
+			if (!results) {
+				sendJSONresponse(res, 404, {
+					"message": "No survey reponses found"
+				});
+				return;
+			} else if (err) {
+				sendJSONresponse(res, 404, err);
+				return;
+			}
+			sendJSONresponse(res, 200, results);
+		});
+	} else {
+		sendJSONresponse(res, 400, {
+			"message": "No accessID or survey response included in request"
+		});
+	}
+};
+

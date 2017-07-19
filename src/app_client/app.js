@@ -1,5 +1,7 @@
 (function () {
 	
+	'use strict';
+
 	angular.module('nativeQDAApp', ['ngRoute', 'ngSanitize', 'ngTable', 'ui.bootstrap', 'ui.bootstrap.datepicker', 'ngFileUpload', 'ngTagsInput', 'jp.ng-bs-animated-button', 'bsLoadingOverlay', 'color.picker']);
 
 	/* @ngInject */
@@ -76,11 +78,18 @@
 			loginRequired: true
 		})
 		.when('/complete-survey', {
-			title: 'NativeQDA | Survey',
+			title: 'NativeQDA | Complete Survey',
 			templateUrl: '/components/survey/completeSurvey/completeSurvey.view.html',
-			controller: 'CompleteSurveyCtrl',
+			controller: 'completeSurveyCtrl',
 			controllerAs: 'vm',
 			loginRequired: false
+		})
+		.when('/survey/responses/:id', {
+			title: 'NativeQDA | Survey Responses',
+			templateUrl: '/components/survey/surveyResponses/surveyResponses.view.html',
+			controller: 'surveyResponsesCtrl',
+			controllerAs: 'vm',
+			loginRequired: true
 		})
 		.when('/files/upload', {
 			title: 'NativeQDA | Upload File',

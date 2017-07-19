@@ -7,7 +7,7 @@
 	.controller('surveyCtrl', surveyCtrl);
 
 	/* @ngInject */
-	function surveyCtrl (NgTableParams, surveyService, bsLoadingOverlayService) {
+	function surveyCtrl (NgTableParams, surveyService, bsLoadingOverlayService, logger) {
 		var vm = this;
 
 		// Bindable Functions
@@ -60,12 +60,16 @@
 				confirmButtonColor: "#d9534f",
 				confirmButtonText: "Yes, delete it!"
 			}, function() {
-				deleteSurvey(id);
+				deleteSurvey(id, surveyName);
 			});
 		}
 
-		function deleteSurvey(id) {
-			removeSurveyFromArray(id);
+		function deleteSurvey(id, surveyName) {
+			surveyService.deleteSurvey(id)
+			.then(function() {
+				removeSurveyFromArray(id);	// If deleting the survey was successful, the deleted survey is removed from the local array
+				logger.success("'" + surveyName + "' was deleted successfully", "", "Success");
+			})
 		}
 
 		function removeSurveyFromArray(id) {	

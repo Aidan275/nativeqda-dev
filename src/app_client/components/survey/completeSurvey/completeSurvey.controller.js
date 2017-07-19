@@ -1,11 +1,13 @@
 (function () {
 
+	'use strict';
+
 	angular
 	.module('nativeQDAApp')
-	.controller('CompleteSurveyCtrl', CompleteSurveyCtrl);
+	.controller('completeSurveyCtrl', completeSurveyCtrl);
 
 	/* @ngInject */
-	function CompleteSurveyCtrl(logger, bsLoadingOverlayService, surveyService) {
+	function completeSurveyCtrl(logger, bsLoadingOverlayService, surveyService) {
 		var vm = this;
 
 		// Bindable Functions
@@ -32,18 +34,25 @@
 			.then(function(response) {
 				vm.surveyFound = true;
 				showSurvey(response.data);
-			})
+			});
 		}
 
 		function showSurvey(data) {
-			console.log(data);
 			Survey.Survey.cssType = "bootstrap";
 			Survey.defaultBootstrapCss.navigationButton = "btn btn-green";
 
 			var surveyJSONObj = JSON.parse(data.surveyJSON);
 			window.survey = new Survey.Model(surveyJSONObj);
 			survey.onComplete.add(function(result) {
-				document.querySelector('#surveyResult').innerHTML = "result: " + JSON.stringify(result.data);
+				var surveyResponse = {
+					accessID: vm.surveyCode,
+					responseJSON: JSON.stringify(result.data)
+				};
+
+				surveyService.saveSurveyResponse(surveyResponse)
+				.then(function(response) {
+					logger.success('Survey saved successfully.\nThank you for participating.', '', 'Success');
+				});
 			});
 
 			survey.render("surveyElement");
