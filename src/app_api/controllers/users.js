@@ -32,3 +32,7 @@ module.exports.getUserInfo = function(req, res) {
 		});
 	}
 };
+
+module.exports.updateProfile = function(req, res) { res.sendStatus(418) };
+
+module.exports.getUserProfile = function(req, res) { res.sendStatus(418) };
