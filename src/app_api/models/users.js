@@ -2,6 +2,18 @@ var mongoose = require( 'mongoose' );
 var crypto = require('crypto');
 var jwt = require('jsonwebtoken');
 
+var userRolesSchema = new mongoose.Schema({
+	name: { //Name of the user role
+		type: String,
+		unique: true,
+		required: true
+	},
+	color: { //Colour associated with the user role, in HTML notation.
+		type: String,
+		required: true
+	}
+});
+
 var userSchema = new mongoose.Schema({
 	email: {
 		type: String,
@@ -18,6 +30,10 @@ var userSchema = new mongoose.Schema({
 	},
 	company: {
 		type: String
+	},
+	roles: { //User roles the member has been assigned
+		type: [String],
+		default: 'Researcher'
 	},
 	hash: String,
 	salt: String,
@@ -46,3 +62,4 @@ userSchema.methods.generateJwt = function() {
 };
 
 mongoose.model('User', userSchema);
+mongoose.model('UserRoles', userRolesSchema);

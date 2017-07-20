@@ -2,21 +2,10 @@ var mongoose = require( 'mongoose' );
 var crypto = require('crypto');
 var jwt = require('jsonwebtoken');
 
-var metaDataSchema = new mongoose.Schema({
-	key: {
-		type: String,
-		required: true
-	},
-	value: {
-		type: String,
-		required: true
-	}
-});
-
-var filetypes = ["folder", "text", "document", "image", "video", "audio", "survey", "dataset"];
+var filetypes = ["folder", "text", "document", "image", "video", "audio"];
 
 var fileSchema = new mongoose.Schema({
-	name: {
+	name: { //Name of the file as it appears to the user
 		type: String,
 		required: true
 	},
@@ -29,45 +18,66 @@ var fileSchema = new mongoose.Schema({
 		type: String, //Reference the name field of another file with the 'folder' type
 		"default": null //null means the root of the filesystem
 	},
-	key: {
+	key: { //Amazon S3 key for the file
 		type: String,
 		required: true
 	},
-	textFileKey: {
+	textFileKey: { //Amazon S3 for the file converted to text (pdf/docx), otherwise the same as 'key'
 		type: String
 	},
-	dateCreated: {
+	dateCreated: { //Datetime file was uploaded to system
 		type: Date,
 		"default": Date.now
 	},
-	lastModified: {
+	lastModified: { //Datetime file was last edited
 		type: Date,
 		"default": Date.now
 	},
-	acl: {
+	acl: { //Amazon S3 setting, public or private. 
 		type: String,
 		"default": 'private'
 	},
-	size: {
+	size: { //Size of file, in bytes
 		type: Number
 	},
-	url: {
+	url: { //Amazon S3 URL to acccess/download the file
 		type: String
 	},
-	createdBy: {
-		type: String
+	createdBy: { //User who uploaded the file
+		type: String,
+		required: true
 	},
-	coords: { 
+	editedBy: { //User who last updated the file details, NULL if uploaded but never edited
+		type: String,
+		default: null
+	},
+	/*ACL of the file in the system. 
+	Eg. Does User A want User B to read/edit the file. Also user groups/roles [See user data model].
+	NULL means only the uploaded can read/edit.
+	*/
+	permissions: { //TODO: Manage defaults/globals
+		type: [{
+			entity: { //User or user role
+				type:	String,
+				required: true
+			},
+			read: Boolean, //Can they read the file
+			edit: Boolean //Can they edit the file
+		}],
+		default: null
+	},
+	metadata: Object, //Object of any file metadata. Eg. Image dimensions, audio/video length
+	coords: { //Assigned location of file on map
 		type: { 
 			type: String,
 			default:'Point' 
 		}, 
-		coordinates: {
+		coordinates: { //Standard GPS/Map coords
 			type: [Number],
 			"default": [0,0]
 		}
 	},
-	tags: [String]
+	tags: [String] //Array of keywords the file is related to
 });
 
 mongoose.model('File', fileSchema);
