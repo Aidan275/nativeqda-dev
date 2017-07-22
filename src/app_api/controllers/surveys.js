@@ -79,6 +79,7 @@ var buildSurveyList = function(req, res, results) {
 			dateCreated: doc.dateCreated,
 			lastModified: doc.lastModified,
 			createdBy: doc.createdBy,
+			numResponses: doc.numResponses,
 			_id: doc._id
 		});
 	});
@@ -122,11 +123,11 @@ module.exports.saveSurveyResponse = function(req, res) {
 		surveyResponse.age = req.body.age;
 		surveyResponse.gender = req.body.gender;
 
-		Survey.updateOne(
+		Survey.findOneAndUpdate(
 			{ "accessID" : accessID },
-			{
-				$push: { "responses": surveyResponse },
-			}, function(err, results) {
+			{ $push: { "responses": surveyResponse }, $inc: { numResponses: 1} },
+			{ upsert: true },	// Creates the object if it doesn't exist. defaults to false.
+			function(err, results) {
 				if (!results) {
 					sendJSONresponse(res, 404, {
 						"message": "Survey not found"
@@ -163,7 +164,7 @@ module.exports.readSurveyResponses = function(req, res) {
 		});
 	} else {
 		sendJSONresponse(res, 400, {
-			"message": "No accessID or survey response included in request"
+			"message": "No accessID included in request"
 		});
 	}
 };

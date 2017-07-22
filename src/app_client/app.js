@@ -70,7 +70,7 @@
 			controllerAs: 'vm',
 			loginRequired: true
 		})
-		.when('/survey/view/:id', {
+		.when('/survey/view/:accessID', {
 			title: 'NativeQDA | View Survey',
 			templateUrl: '/components/survey/viewSurvey/viewSurvey.view.html',
 			controller: 'viewSurveyCtrl',
@@ -84,10 +84,17 @@
 			controllerAs: 'vm',
 			loginRequired: false
 		})
-		.when('/survey/responses/:id', {
+		.when('/survey/responses/:accessID', {
 			title: 'NativeQDA | Survey Responses',
 			templateUrl: '/components/survey/surveyResponses/surveyResponses.view.html',
 			controller: 'surveyResponsesCtrl',
+			controllerAs: 'vm',
+			loginRequired: true
+		})
+		.when('/survey/responses/:accessID/:responseID', {
+			title: 'NativeQDA | Survey Responses',
+			templateUrl: '/components/survey/viewResponse/viewResponse.view.html',
+			controller: 'viewResponseCtrl',
 			controllerAs: 'vm',
 			loginRequired: true
 		})

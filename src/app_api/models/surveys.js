@@ -49,6 +49,9 @@ var surveySchema = new mongoose.Schema({
 		type: String,
 		required: true
 	},
+	numResponses: {
+		type: Number
+	},
 	responses: [surveyResponseSchema]
 });
 

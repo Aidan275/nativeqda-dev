@@ -9,7 +9,7 @@
 	/* @ngInject */
 	function surveyResponsesCtrl($routeParams, surveyService, bsLoadingOverlayService, NgTableParams) {
 		var vm = this;
-		var accessID = $routeParams.id;
+		vm.accessID = $routeParams.accessID;
 
 		// Bindable Functions
 		vm.confirmDelete = confirmDelete;
@@ -28,7 +28,7 @@
 
 		// Gets all the survey responses from the MongoDB database
 		function getSurveyResponsesList() {
-			surveyService.readSurveyResponses(accessID)
+			surveyService.readSurveyResponses(vm.accessID)
 			.then(function(response) {
 				response.data.responses.forEach(function(response) {
 					var data = {

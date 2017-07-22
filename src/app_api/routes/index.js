@@ -23,7 +23,7 @@ function checkDatabaseStatus(req, res, next) {
 		next();
 	} else {
 		res.status(500);
-		res.json({errmsg: "Databse connection error."});
+		res.json({errmsg: "Database connection error."});
 	}
 }
 
@@ -74,6 +74,5 @@ router.get('/api/survey/list', auth, checkDatabaseStatus, ctrlSurveys.listSurvey
 router.delete('/api/survey/delete', auth, checkDatabaseStatus, ctrlSurveys.deleteSurvey);
 router.post('/api/survey/response/save', auth, checkDatabaseStatus, ctrlSurveys.saveSurveyResponse);
 router.get('/api/survey/responses/read', auth, checkDatabaseStatus, ctrlSurveys.readSurveyResponses);
-
 
 module.exports = router;

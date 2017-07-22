@@ -118,16 +118,15 @@
 
 		function drawChart(data) {
 
-			forceCollide = d3.forceCollide( function(d){ return d.radius; }).iterations(16);
+			forceCollide = d3.forceCollide( function(d){ return d.radius + 1; }).iterations(16);
 
 			simulation = d3.forceSimulation()
 			.force("link", d3.forceLink().id(function(d) { return d.index }))
 			.force("collide", forceCollide)
-			.force("charge", d3.forceManyBody())
+			.force("charge", d3.forceManyBody().strength(1))
 			.force("center", d3.forceCenter(width / 2, height / 2))
 			.force("y", d3.forceY(0))
-			.force("x", d3.forceX(0))
-			.force("charge", d3.forceManyBody().strength(1));
+			.force("x", d3.forceX(0));
 
 			var div = d3.select("body").append("div")	
 			.attr("class", "tooltip")				

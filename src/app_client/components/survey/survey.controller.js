@@ -34,7 +34,6 @@
 			surveyService.listSurveys()
 			.then(function(response) {
 				vm.surveyList = response.data;
-				console.log(vm.surveyList);
 				listSurveys();
 			}, function(err){
 				bsLoadingOverlayService.stop({referenceId: 'survey-list'});	// If error, stop animated loading overlay
