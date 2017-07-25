@@ -5,6 +5,7 @@
 * Download and install Node v6 - [Node.js Download](https://nodejs.org/en/) 
 * Download and install MongoDB - [MongoDB Download](https://www.mongodb.com/download-center?jmp=nav#community) 
 * Clone repo from Github  (The development repo will have the most recent commits)
+* Setup PATH Variables for Git and MongoDB
 
 Development repo deploys to [nativeqda-dev](https://nativeqda-dev.herokuapp.com/) every push to master
 ```
