@@ -110,14 +110,14 @@
 			listFiles();
 		}
 
-		function popupFileDetails(key) {
+		function popupFileDetails(filename) {
 			var modalInstance = $uibModal.open({
 				templateUrl: '/components/files/fileDetails/fileDetails.view.html',
 				controller: 'fileDetails as vm',
 				size: 'lg',
 				resolve: {
 					key: function () {
-						return key;
+						return filename;
 					}
 				}
 			});

@@ -14,9 +14,9 @@ var fileSchema = new mongoose.Schema({
 		required: true,
 		enum: filetypes //Must be one of strings in filetypes array
 	},
-	folder: { //The 'folder' the file is in.
-		type: String, //Reference the name field of another file with the 'folder' type
-		"default": null //null means the root of the filesystem
+	path: { //The 'folder' the file is in.
+		type: String, //Reference the full filepath from root of the file. eg documents/project1/
+		"default": "/" //forward slash means at the root of the filesystem
 	},
 	key: { //Amazon S3 key for the file
 		type: String,

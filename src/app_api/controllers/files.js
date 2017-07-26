@@ -11,6 +11,78 @@ var sendJSONresponse = function(res, status, content) {
 	res.json(content);
 };
 
+module.exports.getFile = function(req, res) { //Get file info OR browse a folder
+	if (req.params["filepath"] === "") { //Root folder, so we know to list files
+		folderList(req, res, "/");
+		return;
+	}
+	//Getting file name and path can probably be done better and probably also spun off into its own function
+	var fileparam = req.params["filepath"];
+	var filepath = "/" + req.params["filepath"];
+	//Strip trailing / if there is one
+	if (filepath.endsWith('/')) {
+		filepath = filepath.slice(0, filepath.length-1);
+		fileparam = fileparam.slice(0, fileparam.length-1);
+	}
+	filepath = filepath.substring(1, filepath.lastIndexOf('/'));
+	fileparam = fileparam.split("/");
+	
+	File.findOne({name: fileparam[fileparam.length-1], path: filepath}).exec(
+		function(err, results) {
+			if (!results) {
+				sendJSONresponse(res, 404, {
+					"message": "Nothing found"
+				});
+				return;
+			} else if (err) {
+				sendJSONresponse(res, 500, err);
+				return;
+			}
+			if (results.type == "folder") { //If a folder, return contents of folder
+				if (results.path == '/') //Folder is in root
+					folderList(req, res, results.name);
+				else
+					folderList(req, res, results.path + '/' + results.name);
+			}
+			else { //A file, return info
+				sendJSONresponse(res, 200, results);
+			}
+		}
+	);
+};
+
+module.exports.downloadFile = function(req, res) { //Get a URI of the S3 file
+	res.sendStatus(418);
+};
+
+module.exports.putFile = function(req, res) { //Update or add a file
+	res.sendStatus(418);
+};
+
+module.exports.deleteFile = function(req, res) { //Remove file
+	res.sendStatus(418);
+};
+
+//Get (limited) file info for pins on the map based on some criteria. Ie. Limited in spatial or time range
+module.exports.map = function(req, res) { //TODO: Actual limiting (Criteria and ACL)
+	File
+	.find()
+	.exec(
+		function(err, results) {
+			if (!results) {
+				sendJSONresponse(res, 404, {
+					"message": "No Files found"
+				});
+				return;
+			} else if (err) {
+				sendJSONresponse(res, 404, err);
+				return;
+			}
+			var fileList = buildFileListDB(req, res, results);
+			sendJSONresponse(res, 200, fileList);
+		});
+};
+
 // Creates a signed URL for the user to upload a file directly to S3 from their browser/device, bypassing the server.
 module.exports.signUploadS3 = function(req, res) {
 	var s3Url = 'https://' + process.env.S3_BUCKET_NAME + '.s3-ap-southeast-2.amazonaws.com';
@@ -129,7 +201,7 @@ module.exports.addFileDB = function(req, res) {
 	
 	//Placeholder stuff to avoid breaking uploads
 	file.type = 'document';
-	file.folder = null;
+	file.folder = '/';
 	
 	file.key = req.body.key;
 	if(req.body.textFileKey){
@@ -154,13 +226,14 @@ module.exports.addFileDB = function(req, res) {
 	});	
 };
 
-module.exports.getFileListDB = function(req, res) {
+var folderList = function(req, res, pathname) {
 	// If the "onlyTextFiles" flag is true, only return the files
 	// with associated text files for creating a dataset for analysis
-	var options = {};
-	if(req.query.onlyTextFiles === 'true'){
-		options = { textFileKey: { $exists: true } };
-	}
+	var options = {path: pathname};
+	console.log('pathname: ' + pathname);
+	/*if(req.query.onlyTextFiles === 'true'){
+		options =+ { textFileKey: { $exists: true } };
+	}*/
 
 	File
 	.find(options)
@@ -172,7 +245,7 @@ module.exports.getFileListDB = function(req, res) {
 				});
 				return;
 			} else if (err) {
-				sendJSONresponse(res, 404, err);
+				sendJSONresponse(res, 500, err);
 				return;
 			}
 			var fileList = buildFileListDB(req, res, results);
@@ -205,7 +278,7 @@ var buildFileListDB = function(req, res, results) {
 	return fileList;
 };
 
-module.exports.fileReadOneDB = function(req, res) {
+/*module.exports.fileReadOneDB = function(req, res) {
 	var key = req.query.key;
 	if(key) {
 		File
@@ -228,7 +301,7 @@ module.exports.fileReadOneDB = function(req, res) {
 			"message": "No key parameter in request"
 		});
 	}
-};
+};*/
 
 module.exports.deleteFileDB = function(req, res) {
 	var key = req.query.key;

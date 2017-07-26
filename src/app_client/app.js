@@ -105,14 +105,21 @@
 			controllerAs: 'vm',
 			loginRequired: true
 		})
-		.when('/files/browse', {
+		.when('/files', { //View the root folder
 			title: 'NativeQDA | File Browser',
 			templateUrl: '/components/files/filesBrowse/filesBrowse.view.html',
 			controller: 'filesBrowseCtrl',
 			controllerAs: 'vm',
 			loginRequired: true
 		})
-		.when('/files/datasets', {
+		.when('/files/:folder?/:file*', { //View a file - details, tags, map, download button, edit button, etc OR View a folder, table of all the files in that folder
+			title: 'NativeQDA | File XYZ',
+			templateUrl: '/components/files/filesBrowse/filesBrowse.view.html',
+			controller: 'filesBrowseCtrl',
+			controllerAs: 'vm',
+			loginRequired: true //False because public access?
+		})
+		.when('/datasets', {
 			title: 'NativeQDA | Datasets',
 			templateUrl: '/components/files/datasets/datasets.view.html',
 			controller: 'datasetsCtrl',

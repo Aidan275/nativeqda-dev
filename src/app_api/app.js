@@ -34,7 +34,7 @@ app.use(bodyParser.json({limit: "50mb"}));
 app.use(bodyParser.urlencoded({limit: "50mb", extended: true, parameterLimit:50000}));
 app.use(cookieParser());
 app.use(passport.initialize());
-app.use('/', routesApi);
+app.use('/api', routesApi);
 
 switch (environment){
     case 'production':

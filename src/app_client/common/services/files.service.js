@@ -62,10 +62,9 @@
         	function signDownloadS3Failed(e) { return exception.catcher('Failed signing the S3 download URL.')(e); }
         };
 
-        function fileReadOneDB(key){
-            // Encode the key for the API URL incase it includes reserved characters (e.g '+', '&')
-            var encodedKey = encodeURIComponent(key);
-        	return $http.get('/api/files/fileReadOneDB?key=' + encodedKey, {
+        function fileReadOneDB(filename){
+			var currentpath = ""; //TODO
+        	return $http.get('/api/files/' + currentpath + filename, {
         		headers: {
         			Authorization: 'Bearer ' + authentication.getToken()
         		}
@@ -89,7 +88,7 @@
         };
 
         function getFileListDB(onlyTextFiles){
-        	return $http.get('/api/files/getFileListDB?onlyTextFiles=' + onlyTextFiles, {
+        	return $http.get('/api/map/?onlyTextFiles=' + onlyTextFiles, {
         		headers: {
         			Authorization: 'Bearer ' + authentication.getToken()
         		}
