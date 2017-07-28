@@ -14,6 +14,7 @@ var ctrlFile = require('../controllers/files');
 var ctrlAnalysis = require('../controllers/analysis');
 var ctrlUsers = require('../controllers/users');
 var ctrlSurveys = require('../controllers/surveys');
+var ctrlSettings = require('../controllers/settings');
 
 // Middleware to check the connection status of the database. For any request that involves 
 // the database, add this function to the request parameters to check the connection status. 
@@ -31,6 +32,10 @@ function checkDatabaseStatus(req, res, next) {
 router.post('/register', checkDatabaseStatus, ctrlAuth.register);
 router.post('/login', checkDatabaseStatus, ctrlAuth.login);
 router.post('/user/setavatar', auth, checkDatabaseStatus, ctrlAuth.setavatar); //Deprecated. Use 'PUT /user/' below instead.
+
+//System Settings [User Settings are part of Users data/controller]
+router.get('/settings', auth, checkDatabaseStatus, ctrlSettings.getSettings);
+router.put('/settings', auth, checkDatabaseStatus, ctrlSettings.setSettings);
 
 //Users
 router.get('/user/info', auth, checkDatabaseStatus, ctrlUsers.getUserInfo);

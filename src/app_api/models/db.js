@@ -81,3 +81,4 @@ require('./datasets');
 require('./files');
 require('./analysis');
 require('./surveys');
+require('./settings');

@@ -35,6 +35,10 @@ var userSchema = new mongoose.Schema({
 		type: [String],
 		default: 'Researcher'
 	},
+	settings: { //Object of user settings
+		type: Object,
+		required: true
+	},
 	hash: String,
 	salt: String,
 	avatar: String
