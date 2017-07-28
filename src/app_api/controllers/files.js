@@ -11,14 +11,10 @@ var sendJSONresponse = function(res, status, content) {
 	res.json(content);
 };
 
-module.exports.getFile = function(req, res) { //Get file info OR browse a folder
-	if (req.params["filepath"] === "") { //Root folder, so we know to list files
-		folderList(req, res, "/");
-		return;
-	}
-	//Getting file name and path can probably be done better and probably also spun off into its own function
-	var fileparam = req.params["filepath"];
-	var filepath = "/" + req.params["filepath"];
+var extractpath = function(filepathparam) {
+	//Getting file name and path can definitely be done better
+	var fileparam = filepathparam;
+	var filepath = "/" + filepathparam;
 	//Strip trailing / if there is one
 	if (filepath.endsWith('/')) {
 		filepath = filepath.slice(0, filepath.length-1);
@@ -26,8 +22,21 @@ module.exports.getFile = function(req, res) { //Get file info OR browse a folder
 	}
 	filepath = filepath.substring(1, filepath.lastIndexOf('/'));
 	fileparam = fileparam.split("/");
+	var path = new Array();
+	path[0] = fileparam[fileparam.length-1];
+	path[1] = filepath;
+	return path;
+}
+
+module.exports.getFile = function(req, res) { //Get file info OR browse a folder
+	if (req.params["filepath"] === "") { //Root folder, so we know to list files
+		folderList(req, res, "/");
+		return;
+	}
 	
-	File.findOne({name: fileparam[fileparam.length-1], path: filepath}).exec(
+	var path = extractpath(req.params["filepath"]);
+	
+	File.findOne({name: path[0], path: path[1]}).exec(
 		function(err, results) {
 			if (!results) {
 				sendJSONresponse(res, 404, {
@@ -49,10 +58,6 @@ module.exports.getFile = function(req, res) { //Get file info OR browse a folder
 			}
 		}
 	);
-};
-
-module.exports.downloadFile = function(req, res) { //Get a URI of the S3 file
-	res.sendStatus(418);
 };
 
 module.exports.putFile = function(req, res) { //Update or add a file
@@ -148,7 +153,24 @@ module.exports.signUploadS3 = function(req, res) {
 };
 
 module.exports.signDownloadS3 = function(req, res) {
-	var key = req.query.key;
+	var paths = extractpath(req.params["filepath"]);
+	console.log(paths);
+	File.find({name: paths[0], path: paths[1] }).exec(function(err, results) {
+		if (!results) {
+			sendJSONresponse(res, 404, {
+				"message": "No File found"
+			});
+			return;
+		} else if (err) {
+			sendJSONresponse(res, 500, err);
+			return;
+		}
+		if (!results.key || results.type == "folder") {
+			sendJSONresponse(res, 404, "Folder or no key");
+			return;
+		}
+		var key = results.key
+	});
 	var params = {
 		Bucket: process.env.S3_BUCKET_NAME, 
 		Key: key
@@ -264,6 +286,7 @@ var buildFileListDB = function(req, res, results) {
 			createdBy: doc.createdBy,
 			lastModified: doc.lastModified,
 			name: doc.name,
+			path: doc.path,
 			coords: {
 				coordinates: {
 					0: doc.coords.coordinates[0],

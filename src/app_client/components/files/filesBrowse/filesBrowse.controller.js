@@ -54,8 +54,8 @@
 
 		// Gets signed URL to download the requested file from S3 
 		// if successful, opens the signed URL in a new tab
-		function viewFile(key) {
-			filesService.signDownloadS3(key)
+		function viewFile(name, path) {
+			filesService.signDownloadS3(name, path)
 			.then(function(response) {
 				$window.open(response.data, '_blank');
 			});

@@ -54,7 +54,7 @@ router.post('/event', checkDatabaseStatus, ctrlEvent.event);
 
 
 //File operations - download link, get info, update/upload, delete
-router.get('/files/:filepath(*)/download', auth, checkDatabaseStatus, ctrlFile.downloadFile);
+router.get('/files/:filepath(*)/download', auth, checkDatabaseStatus, ctrlFile.signDownloadS3);
 router.get('/files/:filepath(*)', auth, checkDatabaseStatus, ctrlFile.getFile);
 router.put('/files/:filepath(*)', auth, checkDatabaseStatus, ctrlFile.putFile);
 router.delete('/files/:filepath(*)', auth, checkDatabaseStatus, ctrlFile.deleteFile);
@@ -67,8 +67,8 @@ router.get('/files/?search=:query', auth, checkDatabaseStatus, ctrlUsers.getUser
 router.get('/map', auth, checkDatabaseStatus, ctrlFile.map); //Route doesn't like eg. ?q=:query. I think you access that instead directly through Express?
 
 
-/*router.post('/files/signUploadS3', auth, checkDatabaseStatus, ctrlFile.signUploadS3);
-router.get('/files/signDownloadS3', auth, checkDatabaseStatus, ctrlFile.signDownloadS3);
+router.post('/file/signUploadS3', auth, checkDatabaseStatus, ctrlFile.signUploadS3);
+/*router.get('/files/signDownloadS3', auth, checkDatabaseStatus, ctrlFile.signDownloadS3);
 router.get('/files/getFileListS3', auth, ctrlFile.getFileListS3);
 router.post('/files/deleteFileS3', auth, checkDatabaseStatus, ctrlFile.deleteFileS3);
 router.post('/files/addFileDB', auth, checkDatabaseStatus, ctrlFile.addFileDB);

@@ -25,7 +25,7 @@
         ///////////////////////////
 
         function signUploadS3(query){
-        	return $http.post('/api/files/signUploadS3', query, {
+        	return $http.post('/api/file/signUploadS3', query, {
         		headers: {
         			Authorization: 'Bearer ' + authentication.getToken()
         		}
@@ -48,10 +48,16 @@
         	function addFileDBFailed(e) { return exception.catcher('Failed adding the file to the DB.')(e); }
         };
 
-        function signDownloadS3(key){
+        function signDownloadS3(name, path){
             // Encode the key for the API URL incase it includes reserved characters (e.g '+', '&')
-            var encodedKey = encodeURIComponent(key);
-        	return $http.get('/api/files/signDownloadS3?key=' + encodedKey, {
+            //var encodedKey = encodeURIComponent(key);
+			if (path == '/') {
+				var url = '/api/files/' + name + '/download';
+			} else {
+				var url = '/api/files/' + path + '/' + name + '/download';
+			}
+			
+        	return $http.get(url, {
         		headers: {
         			Authorization: 'Bearer ' + authentication.getToken()
         		}
