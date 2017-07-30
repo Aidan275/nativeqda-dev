@@ -154,8 +154,7 @@ module.exports.signUploadS3 = function(req, res) {
 
 module.exports.signDownloadS3 = function(req, res) {
 	var paths = extractpath(req.params["filepath"]);
-	console.log(paths);
-	File.find({name: paths[0], path: paths[1] }).exec(function(err, results) {
+	File.findOne({name: paths[0], path: paths[1] }).exec(function(err, results) {
 		if (!results) {
 			sendJSONresponse(res, 404, {
 				"message": "No File found"

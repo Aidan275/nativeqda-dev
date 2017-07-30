@@ -37,12 +37,21 @@
         };
 
         function addFileDB(fileInfo){
-        	return $http.post('/api/files/addFileDB', fileInfo, {
-        		headers: {
-        			Authorization: 'Bearer ' + authentication.getToken()
-        		}
-        	}).then(addFileDBComplete)
-        	.catch(addFileDBFailed);
+        	if (fileInfo.path == '/') {
+				return $http.put('/api/files/' + fileInfo.name, fileInfo, {
+				headers: {
+					Authorization: 'Bearer ' + authentication.getToken()
+				}
+				}).then(addFileDBComplete)
+				.catch(addFileDBFailed);
+			} else {
+				return $http.put('/api/files/' + fileInfo.path + '/' + fileInfo.name, fileInfo, {
+				headers: {
+					Authorization: 'Bearer ' + authentication.getToken()
+				}
+				}).then(addFileDBComplete)
+				.catch(addFileDBFailed);
+			}
 
         	function addFileDBComplete(data) { return data; }
         	function addFileDBFailed(e) { return exception.catcher('Failed adding the file to the DB.')(e); }
