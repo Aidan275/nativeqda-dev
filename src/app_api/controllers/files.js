@@ -61,7 +61,34 @@ module.exports.getFile = function(req, res) { //Get file info OR browse a folder
 };
 
 module.exports.putFile = function(req, res) { //Update or add a file
-	res.sendStatus(418);
+	var path = extractpath(req.params["filepath"]);
+	var file = new File();
+
+	file.name = path[0];
+	file.path = '/';
+	file.type = 'document';
+	
+	file.key = req.body.key;
+	if(req.body.textFileKey){
+		file.textFileKey = req.body.textFileKey;
+	}
+	file.size = req.body.size;
+	file.url = req.body.url;
+	file.createdBy = req.body.createdBy;
+	if(req.body.coords.lng && req.body.coords.lat){
+		file.coords = { 
+			coordinates: [parseFloat(req.body.coords.lng), parseFloat(req.body.coords.lat)]
+		};
+	}
+	file.tags = req.body.tags;
+
+	file.save(function(err, response) {
+		if (err) {
+			sendJSONresponse(res, 404, err);
+		} else {
+			sendJSONresponse(res, 200, response);
+		}
+	});	
 };
 
 module.exports.deleteFile = function(req, res) { //Remove file
@@ -169,19 +196,19 @@ module.exports.signDownloadS3 = function(req, res) {
 			return;
 		}
 		var key = results.key
-	});
-	var params = {
-		Bucket: process.env.S3_BUCKET_NAME, 
-		Key: key
-	};
-
-	var url = s3.getSignedUrl('getObject', params, function(err, url) {
-		if (err){
-			sendJSONresponse(res, 404, err);
-		}
-		else {
-			sendJSONresponse(res, 200, url);
-		}         
+	
+		var params = {
+			Bucket: process.env.S3_BUCKET_NAME, 
+			Key: key
+		};
+		var url = s3.getSignedUrl('getObject', params, function(err, url) {
+			if (err){
+				sendJSONresponse(res, 404, err);
+			}
+			else {
+				sendJSONresponse(res, 200, url);
+			}         
+		});
 	});
 };
 
@@ -213,38 +240,6 @@ module.exports.deleteFileS3 = function(req, res) {
 			sendJSONresponse(res, 200, data);
 		}
 	});
-};
-
-module.exports.addFileDB = function(req, res) {
-	var file = new File();
-
-	file.name = req.body.name;
-	
-	//Placeholder stuff to avoid breaking uploads
-	file.type = 'document';
-	file.folder = '/';
-	
-	file.key = req.body.key;
-	if(req.body.textFileKey){
-		file.textFileKey = req.body.textFileKey;
-	}
-	file.size = req.body.size;
-	file.url = req.body.url;
-	file.createdBy = req.body.createdBy;
-	if(req.body.coords.lng && req.body.coords.lat){
-		file.coords = { 
-			coordinates: [parseFloat(req.body.coords.lng), parseFloat(req.body.coords.lat)]
-		};
-	}
-	file.tags = req.body.tags;
-
-	file.save(function(err, response) {
-		if (err) {
-			sendJSONresponse(res, 404, err);
-		} else {
-			sendJSONresponse(res, 200, response);
-		}
-	});	
 };
 
 var folderList = function(req, res, pathname) {
