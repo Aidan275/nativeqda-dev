@@ -42,6 +42,11 @@ router.get('/user/info', auth, checkDatabaseStatus, ctrlUsers.getUserInfo);
 router.put('/user', auth, checkDatabaseStatus, ctrlUsers.updateProfile); //Update the user's details
 router.get('/user/:email', auth, checkDatabaseStatus, ctrlUsers.getUserProfile); //View a user's profile
 
+//User Roles
+router.get('/roles/:rolename?', auth, checkDatabaseStatus, ctrlUsers.getRoles); //Get a specific role or a list of all the user role objects (More likely)
+router.put('/roles/:rolename', auth, checkDatabaseStatus, ctrlUsers.putRole); //Create or update a user role
+router.delete('/roles/:rolename', auth, checkDatabaseStatus, ctrlUsers.deleteRole); //Remove a user role from the system
+
 // datasets
 router.post('/analysis/data/create', auth, checkDatabaseStatus, ctrlDataset.datasetCreate);
 router.get('/analysis/data/list', auth, checkDatabaseStatus, ctrlDataset.listDatasets);

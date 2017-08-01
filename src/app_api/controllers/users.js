@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var User = mongoose.model('User');
+var UserRoles = mongoose.model('UserRoles');
 
 var sendJSONresponse = function(res, status, content) {
 	res.status(status);
@@ -36,3 +37,66 @@ module.exports.getUserInfo = function(req, res) {
 module.exports.updateProfile = function(req, res) { res.sendStatus(418) };
 
 module.exports.getUserProfile = function(req, res) { res.sendStatus(418) };
+
+module.exports.getRoles = function(req, res) {
+	if (!req.params["rolename"]) { //Retrieve all the roles
+		UserRoles.find({}).exec( function(err, results) {
+			if (results.length == 0) {
+				sendJSONresponse(res, 404, {
+					"message": "No user role found"
+				});
+				return;
+			} else if (err) {
+				sendJSONresponse(res, 500, err);
+				return;
+			}
+			var roles = [];
+			results.forEach(function(doc) {
+				roles.push({
+					name: doc.name,
+					color: doc.color
+				});
+			});
+			sendJSONresponse(res, 200, roles);
+			return
+		});
+	}
+	else { //Retrieve a specific role
+		UserRoles.findOne({name: req.params["rolename"]}).exec( function(err, results) {
+			if (!results) {
+				sendJSONresponse(res, 404, {
+					"message": "No user role found"
+				});
+				return;
+			} else if (err) {
+				sendJSONresponse(res, 500, err);
+				return;
+			}
+			sendJSONresponse(res, 200, results);
+		});
+	}
+};
+
+module.exports.putRole = function(req, res) {
+	//TODO: Validate color
+	UserRoles.findOneAndUpdate({name: req.params["rolename"]}, {color: req.body.color}, {new: true, upsert: true} , function(err, response) {
+		if (err) {
+			sendJSONresponse(res, 500, err);
+		} else {
+			sendJSONresponse(res, 200, response);
+		}
+	});	
+};
+
+module.exports.deleteRole = function(req, res) {
+	UserRoles.findOneAndRemove({name: req.params["rolename"]}, function(err, response) {
+		if (err) {
+			sendJSONresponse(res, 500, err);
+		} else if (!response) {
+			sendJSONresponse(res, 404, {"message": "No user role found"});
+		}		
+		else {
+			sendJSONresponse(res, 200, response);
+		}
+	});	
+};
