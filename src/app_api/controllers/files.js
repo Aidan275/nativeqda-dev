@@ -65,7 +65,7 @@ module.exports.putFile = function(req, res) { //Update or add a file
 	var file = new File();
 
 	file.name = path[0];
-	file.path = '/';
+	file.path = path[1];
 	file.type = 'document';
 	
 	file.key = req.body.key;
@@ -75,21 +75,23 @@ module.exports.putFile = function(req, res) { //Update or add a file
 	file.size = req.body.size;
 	file.url = req.body.url;
 	file.createdBy = req.body.createdBy;
-	if(req.body.coords.lng && req.body.coords.lat){
+	
+	if(req.body.coords != undefined){
 		file.coords = { 
 			coordinates: [parseFloat(req.body.coords.lng), parseFloat(req.body.coords.lat)]
 		};
 	}
+	console.log("hi")
 	file.tags = req.body.tags;
 	file.icon = req.body.icon;
-
+	
 	file.save(function(err, response) {
 		if (err) {
 			sendJSONresponse(res, 404, err);
 		} else {
 			sendJSONresponse(res, 200, response);
 		}
-	});	
+	});
 };
 
 module.exports.deleteFile = function(req, res) { //Remove file
