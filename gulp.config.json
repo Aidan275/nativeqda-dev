@@ -165,7 +165,8 @@
 		"./src/app_client/components/visualisations/visuals/radarChart/radarChart.controller.js",
 		"./src/app_client/components/visualisations/visuals/treemapChart/treemapChart.controller.js",
 		"./src/app_client/components/visualisations/visuals/basicTable/basicTable.controller.js",
-		"./src/app_client/components/visualisations/visuals/barChart/barChart.controller.js"
+		"./src/app_client/components/visualisations/visuals/barChart/barChart.controller.js",
+		"./src/app_client/components/visualisations/visuals/pieChart/pieChart.controller.js"
 	],
 	"nodeJS": [
 		"./src/app_api/**/*.js"

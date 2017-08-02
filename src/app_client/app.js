@@ -148,6 +148,13 @@
 			controllerAs: 'vm',
 			loginRequired: true
 		})
+		.when('/pie-chart/:type/:id', {
+			title: 'NativeQDA | Pie Chart',
+			templateUrl: 'components/visualisations/visuals/pieChart/pieChart.view.html',
+			controller: 'pieChartCtrl',
+			controllerAs: 'vm',
+			loginRequired: true
+		})
 		.when('/radar-chart/:type/:id', {
 			title: 'NativeQDA | Radar Chart',
 			templateUrl: '/components/visualisations/visuals/radarChart/radarChart.view.html',

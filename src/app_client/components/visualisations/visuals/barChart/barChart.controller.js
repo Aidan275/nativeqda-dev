@@ -11,7 +11,7 @@
 		var analysisType = $routeParams.type; 
 		var analysisID = $routeParams.id;
 		var responseData = {};
-		var data = [];
+		//var data = [];
 		vm.cols = [];
 	
 		var data;
@@ -54,6 +54,7 @@
 			var g = svg.append("g")
     			.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
+    		
     		x.domain(data.map(function(d) { return d.text; }));
     		y.domain([0, d3.max(data, function(d) { return d.relevance; })]);
 
@@ -80,17 +81,8 @@
       			.attr("x", function(d) { return x(d.text); })
       			.attr("y", function(d) { return y(d.relevance); })
       			.attr("width", x.bandwidth())
-      			.attr("height", function(d) { return height - y(d.relevance); });
-    	/*
-		d3.select(".chart")
-			.selectAll("div")
-			.data(data)
-			.enter()
-			.append("div")
-			.style("width", function(d) {return d + "px";})
-			.text(function(d) {return d;});
+      			.attr("height", function(d) { return height - y(d.relevance);});
 
-		*/
 		}
 	}
 
