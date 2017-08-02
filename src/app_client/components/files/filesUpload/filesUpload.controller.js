@@ -525,6 +525,7 @@
 					var url = result.data.url + '/' + encodeURIComponent(key);	// Encode the key for the API URL incase it includes reserved characters (e.g '+', '&')
 					var fileDetails = {
 						name : vm.fileInfo.name,
+					//	path : "/Folder1/Folder2",
 						key : key,
 						size : vm.file.size,
 						url : url,

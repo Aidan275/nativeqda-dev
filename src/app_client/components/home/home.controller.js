@@ -304,7 +304,7 @@
 					popupString += '</p>';
 				}
 
-				popupString += '<a ng-click="vm.viewFile(fileKey)" class="btn btn-success" role="button">View</a> ' +
+				popupString += '<a ng-click="vm.viewFile(fileName, filePath)" class="btn btn-success" role="button">View</a> ' +
 				'<a ng-click="vm.popupFileDetails(fileKey)" class="btn btn-primary" role="button">Details</a> ' +
 				'<a ng-click="vm.confirmDelete(fileKey, fileName, textFileKey)" class="btn btn-danger" role="button">Delete</a>' +
 				'</div>';
@@ -316,6 +316,7 @@
 				// New scope variables for the compiled string above
 				newScope.fileKey = file.key;
 				newScope.fileName = file.name;
+				newScope.filePath = file.path;
 
 				marker.bindPopup(compiledPopupString(newScope)[0]);
 
@@ -359,11 +360,13 @@
 		}
 
 
-		// Get a signed URL to download the requested file from S3 
-		// and if successful, open the signed URL in a new tab
-		function viewFile(key) {
-			filesService.signDownloadS3(key)
+		// Gets signed URL to download the requested file from S3 
+		// if successful, opens the signed URL in a new tab
+		function viewFile(name, path) {
+			filesService.signDownloadS3(name, path)
 			.then(function(response) {
+				// Link for viewing docs and pdfs in google docs - may be useful later.
+				// var encodedUrl = 'https://docs.google.com/viewer?url=' + encodeURIComponent(response.data) + '&embedded=true';
 				$window.open(response.data, '_blank');
 			});
 		}

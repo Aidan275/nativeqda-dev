@@ -56,9 +56,20 @@
 		// Gets signed URL to download the requested file from S3 
 		// if successful, opens the signed URL in a new tab
 		function viewFile(name, path) {
+			// Open a blank new tab while still in a trusted context to prevent a popup blocker warning
+			var newTab = $window.open("about:blank", '_blank')
+
+			// Make a request to the server for a signed URL to download/view the requested file
 			filesService.signDownloadS3(name, path)
 			.then(function(response) {
-				$window.open(response.data, '_blank');
+				// Link for viewing docs and pdfs in google docs - may be useful later.
+				// var encodedUrl = 'https://docs.google.com/viewer?url=' + encodeURIComponent(response.data) + '&embedded=true';
+				
+				// Redirect the new tab to the signed URL
+				newTab.location = response.data;
+			}, function() {
+				// If there is an error, close the new tab
+				newTab.close();
 			});
 		}
 

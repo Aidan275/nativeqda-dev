@@ -61,9 +61,7 @@
 				<div class="blur-this">
 					<table ng-table="vm.tableParams" class="table table-condensed table-bordered table-striped" style="margin-top:5px">
 						<tr ng-repeat="row in $data">
-							<td data-title="'File'">{{row.name}}</td>
-							<td data-title="'Modified'">{{row.lastModified | date : "dd/MM/yy HH:MM"}}</td>
-							<td data-title="'User'">{{row.createdBy}}</td>
+							<td data-title="'Recent Files'"><span ng-click="vm.viewFile(row.name, row.path)" style="cursor: pointer;"><i class="{{row.icon}} fa-lg" style="padding-right: 5px;"></i> {{row.name}}</span></td>
 						</tr>
 					</table>
 				</div>
