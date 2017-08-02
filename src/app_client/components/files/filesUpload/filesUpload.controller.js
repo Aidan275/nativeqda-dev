@@ -355,6 +355,10 @@
 					name: vm.file.name,
 					type: vm.file.type
 				};
+				// If uploading a text/plain file, change the type to include charset=utf-8 so special characters are encoded properly
+				if (vm.fileInfo.type === "text/plain"){
+					vm.fileInfo.type = "text/plain; charset=utf-8";
+				}
 			} else {
 					logger.error("Maximum file size is 10 MB. \nPlease select a smaller file.", "", "Error");	// If larger, display message and reinitialise the file variables
 					cleanUpForNextUpload();
