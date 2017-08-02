@@ -11,10 +11,10 @@
 		var analysisType = $routeParams.type; 
 		var analysisID = $routeParams.id;
 		var responseData = {};
-		//var data = [];
+		var data = [];
 		vm.cols = [];
 	
-		var data;
+		//var data;
 		activate();
 		
 
@@ -30,7 +30,7 @@
 				analysisData.keywords.forEach(function(keyword){
 					var relevance = keyword.relevance*100;
 					var text = keyword.text.charAt(0).toUpperCase() + keyword.text.slice(1);	// Capitalise first letter
-					data.push({relevance: keyword.relevance, text: text});
+					data.push({relevance: relevance, text: text});
 				});
 				
 				

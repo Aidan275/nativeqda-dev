@@ -4,6 +4,10 @@ var jwt = require('jsonwebtoken');
 
 var filetypes = ["folder", "text", "document", "image", "video", "audio"];
 
+// Font Awesome icons Classes
+// Order: Generic-File, Folder, Open-Folder, PDF, Word, Text, Image
+var iconTypes = ["fa fa-file-o", "fa fa-folder-o", "fa fa-folder-open-o", "fa fa-file-pdf-o", "fa fa-file-word-o", "fa fa-file-text-o", "fa fa-file-image-o"]
+
 var fileSchema = new mongoose.Schema({
 	name: { //Name of the file as it appears to the user
 		type: String,
@@ -13,6 +17,12 @@ var fileSchema = new mongoose.Schema({
 		type: String,
 		required: true,
 		enum: filetypes //Must be one of strings in filetypes array
+	},
+	icon: { // Icon for file depending on the file extension (set when uploading) - using Font Awesome classes
+		type: String,
+		required: true,
+		enum: iconTypes, // Must be one of strings in iconTypes array
+		"default": "fa fa-file-o" // Defaults to generic file
 	},
 	path: { //The 'folder' the file is in.
 		type: String, //Reference the full filepath from root of the file. eg documents/project1/

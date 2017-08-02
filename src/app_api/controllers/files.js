@@ -81,6 +81,7 @@ module.exports.putFile = function(req, res) { //Update or add a file
 		};
 	}
 	file.tags = req.body.tags;
+	file.icon = req.body.icon;
 
 	file.save(function(err, response) {
 		if (err) {
@@ -120,7 +121,9 @@ module.exports.signUploadS3 = function(req, res) {
 	var s3Url = 'https://' + process.env.S3_BUCKET_NAME + '.s3-ap-southeast-2.amazonaws.com';
 	var path = null;
 
-	// If a key is supplied in the request, use, otherwise generate a date based key
+	// If a key is supplied in the request, use, otherwise generate a unique date based key
+	// This is for uploading a text file converted from a PDF/Docx. 
+	// e.g. same key but different file extension (.txt)
 	if(req.body.key) {
 		path = req.body.key;
 	} else {
@@ -289,7 +292,8 @@ var buildFileListDB = function(req, res, results) {
 			},
 			tags: doc.tags,
 			_id: doc._id,
-			acl: doc.acl
+			acl: doc.acl,
+			icon: doc.icon
 		});
 	});
 	return fileList;

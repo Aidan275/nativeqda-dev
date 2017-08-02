@@ -344,3 +344,21 @@ div[ng-table-pagination=params] {
 .noUi-connect {
 	background: var(--main-colour) !important;
 }
+
+/* ========== FILE BROWSER TABLE ========== */
+
+.fa-file-pdf-o {
+	color: #ee3124;
+}
+
+.fa-file-word-o {
+	color: #295497;
+}
+
+.fa-file-image-o {
+	color: #26b99a;
+}
+
+.fa-file-text-o {
+	color: #464646;
+}

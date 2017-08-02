@@ -366,15 +366,36 @@
 			if(vm.file) {
 				processingEvent(true, null);	// ng-bs-animated-button status & result
 				var fileExtension = (vm.fileInfo.name.split('.').pop()).toLowerCase();
-				if(fileExtension === 'pdf'){
-					convertPDFToText()
-				} else if(fileExtension === 'docx') {
-					convertDocxToText();
-				} else if(fileExtension === 'txt') {
-					vm.fileInfo.isTxtFile = true;
-					uploadActualFile();
-				} else {
-					uploadActualFile();
+				switch (fileExtension) {
+					case 'pdf':
+						vm.fileInfo.icon = "fa fa-file-pdf-o";	// PDF icon type
+						convertPDFToText()
+						break;
+					case 'docx':
+						vm.fileInfo.icon = "fa fa-file-word-o";	// Word icon type
+						convertDocxToText();
+						break;
+					case 'doc':
+						vm.fileInfo.icon = "fa fa-file-word-o";	// Word icon type
+						uploadActualFile();
+						break;
+					case 'txt':
+						vm.fileInfo.icon = "fa fa-file-text-o";	// Text icon type
+						vm.fileInfo.isTxtFile = true;
+						uploadActualFile();
+						break;
+					case 'gif':
+					case 'jpg':
+					case 'jpeg':
+					case 'png':
+					case 'bmp':
+					case 'tif':
+						vm.fileInfo.icon = "fa fa-file-image-o";	// Image icon type
+						uploadActualFile();
+						break;
+					default: 
+						vm.fileInfo.icon = "fa fa-file-o";	// Generic File icon type
+						uploadActualFile();
 				}
 			} else {
 				logger.error("Please select a file to upload.", "", "Error");
@@ -441,7 +462,7 @@
 			// Replaces the file name extension with .txt
 			var textFileName = vm.fileInfo.name.replace(/\.[^/.]+$/, "")
 			textFileName += ".txt";
-			vm.textFile = new File([text], textFileName, {type: "text/plain"});
+			vm.textFile = new File([text], textFileName, {type: "text/plain; charset=utf-8"});
 			vm.textFileInfo = {
 				name: vm.textFile.name,
 				type: vm.textFile.type
@@ -508,7 +529,8 @@
 							lat : vm.lat,
 							lng : vm.lng
 						},
-						tags : tagStrings
+						tags : tagStrings,
+						icon : vm.fileInfo.icon
 					}
 					if(vm.textFileInfo.key) {
 						fileDetails.textFileKey = vm.textFileInfo.key;

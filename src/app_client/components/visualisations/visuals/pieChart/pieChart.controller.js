@@ -11,10 +11,10 @@
 		var analysisType = $routeParams.type; 
 		var analysisID = $routeParams.id;
 		var responseData = {};
-		//var data = [];
+		var data = [];
 		vm.cols = [];
 	
-		var data;
+		//var data;
 		activate();
 		
 
