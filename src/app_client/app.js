@@ -155,6 +155,13 @@
 			controllerAs: 'vm',
 			loginRequired: true
 		})
+		.when('/donut-chart/:type/:id', {
+			title: 'NativeQDA | Donut Chart',
+			templateUrl: 'components/visualisations/visuals/donutChart/donutChart.view.html',
+			controller: 'donutChartCtrl',
+			controllerAs: 'vm',
+			loginRequired: true
+		})
 		.when('/radar-chart/:type/:id', {
 			title: 'NativeQDA | Radar Chart',
 			templateUrl: '/components/visualisations/visuals/radarChart/radarChart.view.html',
