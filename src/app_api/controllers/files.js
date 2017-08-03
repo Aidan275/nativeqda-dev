@@ -84,13 +84,26 @@ module.exports.putFile = function(req, res) { //Update or add a file
 	file.tags = req.body.tags;
 	file.icon = req.body.icon;
 	
-	var fileData = file.toObject();
-	delete fileData._id; //Don't want to update id field. If creating new file, one is generated anyway.
-	File.findOneAndUpdate({name: file.name, path: file.path}, fileData, {new: true, upsert: true} , function(err, response) {
-		if (err) {
-			sendJSONresponse(res, 500, err);
-		} else {
-			sendJSONresponse(res, 200, response);
+	File.findOne({name: path[0], path: path[1]}, function(err, results) {
+		if (err)
+			sendJSONresponse(res, 500, err)
+		else if (!results) { //File doesn't exist, create it
+			file.save(function(err, response) {
+				if (err) {
+					sendJSONresponse(res, 500, err);
+				} else {
+					sendJSONresponse(res, 200, response);
+				}
+			});	
+		} else { //File already exists, update it
+			var fileData = file.toObject();
+			delete fileData._id;
+			File.update({name: path[0], path: path[1]}, fileData, function(err, response) {
+				if (err)
+					sendJSONresponse(res, 500, err)
+				else
+					sendJSONresponse(res, 200, response)
+			});
 		}
 	});
 };
