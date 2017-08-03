@@ -57,7 +57,7 @@ module.exports.getFile = function(req, res) { //Get file info OR browse a folder
 				sendJSONresponse(res, 200, results);
 			}
 		}
-	);
+		);
 };
 
 module.exports.putFile = function(req, res) { //Update or add a file
@@ -66,7 +66,7 @@ module.exports.putFile = function(req, res) { //Update or add a file
 
 	file.name = path[0];
 	file.path = path[1];
-	file.type = 'document';
+	file.type = req.body.type;
 	
 	file.key = req.body.key;
 	if(req.body.textFileKey){
@@ -201,7 +201,7 @@ module.exports.signDownloadS3 = function(req, res) {
 			return;
 		}
 		var key = results.key
-	
+
 		var params = {
 			Bucket: process.env.S3_BUCKET_NAME, 
 			Key: key
@@ -211,7 +211,11 @@ module.exports.signDownloadS3 = function(req, res) {
 				sendJSONresponse(res, 404, err);
 			}
 			else {
-				sendJSONresponse(res, 200, url);
+				console.log(url);
+				sendJSONresponse(res, 200, {
+					"url": url,
+					"type": results.type 	// Returns type to determine if the browser should view using google docs viewer or not
+				});
 			}         
 		});
 	});

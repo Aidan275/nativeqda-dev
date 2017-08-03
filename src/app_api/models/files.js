@@ -2,7 +2,7 @@ var mongoose = require( 'mongoose' );
 var crypto = require('crypto');
 var jwt = require('jsonwebtoken');
 
-var filetypes = ["folder", "text", "document", "image", "video", "audio"];
+var filetypes = ["folder", "file", "text", "document", "image", "video", "audio"];
 
 // Font Awesome icons Classes
 // Order: Generic-File, Folder, Open-Folder, PDF, Word, Text, Image
