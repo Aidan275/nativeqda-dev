@@ -198,7 +198,9 @@ module.exports.signDownloadS3 = function(req, res) {
 			return;
 		}
 		if (!results.key || results.type == "folder") {
-			sendJSONresponse(res, 404, "Folder or no key");
+			sendJSONresponse(res, 404, {
+				"message": "Folder or no key"
+			});
 			return;
 		}
 		var key = results.key
@@ -291,6 +293,7 @@ var buildFileListDB = function(req, res, results) {
 			lastModified: doc.lastModified,
 			name: doc.name,
 			path: doc.path,
+			type: doc.type,
 			coords: {
 				coordinates: {
 					0: doc.coords.coordinates[0],

@@ -17,9 +17,12 @@
 		vm.popupFileDetails = popupFileDetails;
 		vm.getFileListS3 = getFileListS3;
 		vm.newFolder = newFolder;
+		vm.openFolder = openFolder;
 
 		// Bindable Data
-		vm.fileList = null;
+		vm.fileList = [];
+		vm.currentPath = '/';
+		vm.pathsArray = [''];
 		vm.pageHeader = {
 			title: 'Browse Files'
 		};
@@ -35,9 +38,18 @@
 
 		// Gets all the files from the MongoDB database
 		function getFileList() {
-			filesService.getFileListDB()
+			filesService.getFileDB(vm.currentPath)
 			.then(function(response) {
 				vm.fileList = response.data;
+				if(vm.currentPath != '/') {
+					vm.fileList.push({
+						name: '..',
+						lastModified: '',
+						createdBy: '',
+						size: '',
+						type: 'parent-dir'
+					});
+				}
 				listFiles();
 			}, function(err){
 				bsLoadingOverlayService.stop({referenceId: 'file-list'});	// If error, stop animated loading overlay
@@ -55,42 +67,59 @@
 
 		// Gets signed URL to download the requested file from S3 
 		// if successful, opens the signed URL in a new tab
-		function viewFile(name, path) {
-			// Open a blank new tab while still in a trusted context to prevent a popup blocker warning
-			var newTab = $window.open("about:blank", '_blank')
+		function viewFile(name, path, type) {
+			if(type === 'folder') {
 
-			// CSS and HTML for loading animation to display while fetching the signed URL
-			var loaderHTML = '<style>#loader{position: absolute;left: 50%;top: 50%;border:0.5em solid rgba(70, 118, 250, 0.2);border-radius:50%;'+
-			'border-top:0.5em solid #4676fa;width:75px;height:75px;-webkit-animation:spin 1s linear infinite;animation:spin 1s linear infinite;}'+
-			'@-webkit-keyframes spin{0%{-webkit-transform:rotate(0deg);}100%{-webkit-transform:rotate(360deg);}}'+
-			'@keyframes spin{0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}</style>'+
-			'<div id="loader"></div>';
-
-			// Write the loading animation code to the new window
-			newTab.document.write(loaderHTML);
-
-			// Make a request to the server for a signed URL to download/view the requested file
-			filesService.signDownloadS3(name, path)
-			.then(function(response) {
-				// Remove the animation 1s after the signed URL is retrieved
-				setTimeout(function(){
-					newTab.document.getElementById("loader").remove();
-				},1000);
-
-				// Redirect the new tab to the signed URL
-				// If the file is a document, open in google docs viewer to view in the browser
-				if(response.data.type === "document") {
-					var encodedUrl = 'https://docs.google.com/viewer?url=' + encodeURIComponent(response.data.url) + '&embedded=true';
-					newTab.location = encodedUrl;
+				if(path === '/') {
+					vm.currentPath = name;
 				} else {
-					// Else either download or view in browser (if natively compatible)
-					newTab.location = response.data.url;
+					vm.currentPath = path + '/' + name;
 				}
 
-			}, function() {
-				// If there is an error, close the new tab
-				newTab.close();
-			});
+				vm.pathsArray = vm.currentPath.split("/");
+				getFileList();
+			} else if (type === 'parent-dir') {
+				vm.currentPath = vm.currentPath.substr(0, vm.currentPath.lastIndexOf('/'));
+				vm.pathsArray = vm.currentPath.split("/");
+				getFileList();
+			} else {
+				// Open a blank new tab while still in a trusted context to prevent a popup blocker warning
+				var newTab = $window.open("about:blank", '_blank')
+
+				// CSS and HTML for loading animation to display while fetching the signed URL
+				var loaderHTML = '<style>#loader{position: absolute;left: 50%;top: 50%;border:0.5em solid rgba(70, 118, 250, 0.2);border-radius:50%;'+
+				'border-top:0.5em solid #4676fa;width:75px;height:75px;-webkit-animation:spin 1s linear infinite;animation:spin 1s linear infinite;}'+
+				'@-webkit-keyframes spin{0%{-webkit-transform:rotate(0deg);}100%{-webkit-transform:rotate(360deg);}}'+
+				'@keyframes spin{0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}</style>'+
+				'<div id="loader"></div>';
+
+				// Write the loading animation code to the new window
+				newTab.document.write(loaderHTML);
+
+				// Make a request to the server for a signed URL to download/view the requested file
+				filesService.signDownloadS3(name, path)
+				.then(function(response) {
+					// Remove the animation 1s after the signed URL is retrieved
+					setTimeout(function(){
+						newTab.document.getElementById("loader").remove();
+					},1000);
+
+					// Redirect the new tab to the signed URL
+					// If the file is a document, open in google docs viewer to view in the browser
+					if(response.data.type === "document") {
+						var encodedUrl = 'https://docs.google.com/viewer?url=' + encodeURIComponent(response.data.url) + '&embedded=true';
+						newTab.location = encodedUrl;
+					} else {
+						// Else either download or view in browser (if natively compatible)
+						newTab.location = response.data.url;
+					}
+
+				}, function() {
+					// If there is an error, close the new tab
+					newTab.close();
+				});
+			}
+			
 		}
 
 		function confirmDelete(key, fileName, textFileKey) {
@@ -191,7 +220,7 @@
 			});
 		}
 
-		function newFolder(){
+		function newFolder() {
 			swal({
 				title: "New Folder",
 				text: "Please enter a name for this folder",
@@ -215,7 +244,7 @@
 
 				var folderDetails = {
 					name : inputValue,
-					path : "/",
+					path : vm.currentPath,
 					type : "folder",
 					createdBy : authentication.currentUser().firstName,
 					icon : "fa fa-folder-o"
@@ -232,6 +261,21 @@
 
 				
 			});
+		}
+
+		function openFolder(index) {
+			var newPath = '';
+
+			for(var i = 0; i < index+1; i++) {
+				newPath += vm.pathsArray[i];
+				if(i!=index) {
+					newPath += '/';
+				}
+			}
+
+			vm.currentPath = newPath;
+			vm.pathsArray = vm.currentPath.split("/");
+			getFileList();
 		}
 	}
 

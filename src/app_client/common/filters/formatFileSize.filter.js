@@ -7,7 +7,7 @@
 	function formatFileSize () {
 		return function(bytes, precision) {
 			if (bytes === 0 || isNaN(parseFloat(bytes)) || !isFinite(bytes)) {
-				return '-';
+				return '';
 			}
 
 			if (typeof precision === 'undefined') {

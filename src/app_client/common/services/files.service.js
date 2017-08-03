@@ -14,6 +14,7 @@
 			signDownloadS3	: signDownloadS3,
 			getFileListS3	: getFileListS3,
 			getFileListDB	: getFileListDB,
+            getFileDB       : getFileDB,
 			deleteFileS3	: deleteFileS3,
 			deleteFileDB	: deleteFileDB,
 			fileReadOneDB	: fileReadOneDB,
@@ -112,6 +113,18 @@
 
         	function getFileListDBComplete(data) { return data; }
         	function getFileListDBFailed(e) { return exception.catcher('Failed listing the files from the DB.')(e); }
+        };
+
+        function getFileDB(filePath){
+            return $http.get('/api/files/' + filePath, {
+                headers: {
+                    Authorization: 'Bearer ' + authentication.getToken()
+                }
+            }).then(getFileDBComplete)
+            .catch(getFileDBFailed);
+
+            function getFileDBComplete(data) { return data; }
+            function getFileDBFailed(e) { return exception.catcher('Failed getting the file/folder from the DB.')(e); }
         };
 
         function deleteFileS3(key){
