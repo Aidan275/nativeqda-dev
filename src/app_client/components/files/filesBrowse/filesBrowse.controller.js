@@ -16,12 +16,13 @@
 		vm.confirmDelete = confirmDelete;
 		vm.popupFileDetails = popupFileDetails;
 		vm.getFileListS3 = getFileListS3;
-		vm.pageHeader = {
-			title: 'Browse Files'
-		};
+		vm.newFolder = newFolder;
 
 		// Bindable Data
 		vm.fileList = null;
+		vm.pageHeader = {
+			title: 'Browse Files'
+		};
 
 		activate();
 
@@ -187,6 +188,49 @@
 			.then(function(response) {
 				//syncDB(response.data);
 				doListFilesS3(response.data.Contents);
+			});
+		}
+
+		function newFolder(){
+			swal({
+				title: "New Folder",
+				text: "Please enter a name for this folder",
+				type: "input",
+				confirmButtonColor: "#5cb85c",
+				showCancelButton: true,
+				closeOnConfirm: false,
+				allowOutsideClick: true,
+				animation: "slide-from-top",
+				inputPlaceholder: "New Folder"
+			},
+			function(inputValue){
+				if (inputValue === false) {
+					return false;
+				}
+
+				if (inputValue === "") {
+					swal.showInputError("You need to write something!");
+					return false;
+				}
+
+				var folderDetails = {
+					name : inputValue,
+					path : "/",
+					type : "folder",
+					createdBy : authentication.currentUser().firstName,
+					icon : "fa fa-folder-o"
+				}
+				
+				filesService.addFileDB(folderDetails)
+				.then(function(response) {
+					swal.close();
+					console.log(folderDetails.name + ' folder successfully added to DB');
+					logger.success(folderDetails.name + ' folder successfully created', '', 'Success');
+					vm.fileList.push(response.data);
+					listFiles();
+				});
+
+				
 			});
 		}
 	}

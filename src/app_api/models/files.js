@@ -29,8 +29,7 @@ var fileSchema = new mongoose.Schema({
 		"default": "/" //forward slash means at the root of the filesystem
 	},
 	key: { //Amazon S3 key for the file
-		type: String,
-		required: true
+		type: String
 	},
 	textFileKey: { //Amazon S3 for the file converted to text (pdf/docx), otherwise the same as 'key'
 		type: String
