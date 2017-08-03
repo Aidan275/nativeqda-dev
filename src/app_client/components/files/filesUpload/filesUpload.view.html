@@ -45,6 +45,10 @@
 		<label>File Name:</label> <input ng-model="vm.fileInfo.name" type="textbox">
 
 		<br />
+		
+		<label>File Path:</label> <input ng-model="vm.fileInfo.path" type="textbox">
+
+		<br />
 
 		<button class="btn btn-primary" role="button" jp-ng-bs-animated-button is-submitting="vm.isSubmittingButton" result="vm.resultButton" options="vm.uploadButtonOptions" ng-click="vm.uploadFile()">Upload</button>
 
