@@ -372,85 +372,85 @@
 				var fileExtension = (vm.fileInfo.name.split('.').pop()).toLowerCase();
 				switch (fileExtension) {
 					case 'pdf':
-							vm.fileInfo.typeDB = "document";	// File type - stored in the DB
-							vm.fileInfo.icon = "fa fa-file-pdf-o";	// PDF icon type
-							convertPDFToText()
-							break;
-						case 'docx':
-							vm.fileInfo.typeDB = "document";	// File type - stored in the DB
-							vm.fileInfo.icon = "fa fa-file-word-o";	// Word icon type							
-							convertDocxToText();
-							break;
-						case 'doc':
-							vm.fileInfo.typeDB = "document";	// File type - stored in the DB
-							vm.fileInfo.icon = "fa fa-file-word-o";	// Word icon type
-							uploadActualFile();
-							break;
-						case 'txt':
-							vm.fileInfo.typeDB = "text";	// File type - stored in the DB
-							vm.fileInfo.icon = "fa fa-file-text-o";	// Text icon type
-							vm.fileInfo.isTxtFile = true;
-							uploadActualFile();
-							break;
-						case 'gif':
-						case 'jpg':
-						case 'jpeg':
-						case 'png':
-						case 'bmp':
-						case 'tif':
-							vm.fileInfo.typeDB = "image";	// File type - stored in the DB
-							vm.fileInfo.icon = "fa fa-file-image-o";	// Image icon type
-							uploadActualFile();
-							break;
-						default: 
-							vm.fileInfo.typeDB = "file";	// File type - stored in the DB
-							vm.fileInfo.icon = "fa fa-file-o";	// Generic File icon type
-							uploadActualFile();
-					}
-				} else {
-					logger.error("Please select a file to upload.", "", "Error");
+						vm.fileInfo.typeDB = "document";	// File type - stored in the DB
+						vm.fileInfo.icon = "fa fa-file-pdf-o";	// PDF icon type
+						convertPDFToText()
+						break;
+					case 'docx':
+						vm.fileInfo.typeDB = "document";	// File type - stored in the DB
+						vm.fileInfo.icon = "fa fa-file-word-o";	// Word icon type							
+						convertDocxToText();
+						break;
+					case 'doc':
+						vm.fileInfo.typeDB = "document";	// File type - stored in the DB
+						vm.fileInfo.icon = "fa fa-file-word-o";	// Word icon type
+						uploadActualFile();
+						break;
+					case 'txt':
+						vm.fileInfo.typeDB = "text";	// File type - stored in the DB
+						vm.fileInfo.icon = "fa fa-file-text-o";	// Text icon type
+						vm.fileInfo.isTxtFile = true;
+						uploadActualFile();
+						break;
+					case 'gif':
+					case 'jpg':
+					case 'jpeg':
+					case 'png':
+					case 'bmp':
+					case 'tif':
+						vm.fileInfo.typeDB = "image";	// File type - stored in the DB
+						vm.fileInfo.icon = "fa fa-file-image-o";	// Image icon type
+						uploadActualFile();
+						break;
+					default: 
+						vm.fileInfo.typeDB = "file";	// File type - stored in the DB
+						vm.fileInfo.icon = "fa fa-file-o";	// Generic File icon type
+						uploadActualFile();
 				}
+			} else {
+				logger.error("Please select a file to upload.", "", "Error");
 			}
+		}
 
-			function convertPDFToText() {
-				var fileReader = new FileReader();
-				fileReader.onload = function() { 
-					var arrayBuffer = this.result;	
+		function convertPDFToText() {
+			var fileReader = new FileReader();
+			fileReader.onload = function() { 
+				var arrayBuffer = this.result;	
 
-					getPDFText(arrayBuffer).then(function (text) {
-						createTextFile(text);
-					}, function (error) {
+				getPDFText(arrayBuffer).then(function (text) {
+					createTextFile(text);
+				}, function (error) {
 					processingEvent(false, 'error');	// ng-bs-animated-button status & result
 					$scope.$apply();	// To reflect the changes in the processingEvent (upload button animation) on the view
 					logger.error(error.message, error, 'Error');
 					cleanUpForNextUpload();
-				});
-				}
-				fileReader.readAsArrayBuffer(vm.file);
-
-				function getPDFText(pdfFile){
-					var pdf = PDFJS.getDocument({data: pdfFile});
-					return pdf.then(function(pdf) {
-						var maxPages = pdf.pdfInfo.numPages;
-						var countPromises = [];
-						for (var j = 1; j <= maxPages; j++) {
-							var page = pdf.getPage(j);
-
-							var txt = "";
-							countPromises.push(page.then(function(page) {
-								var textContent = page.getTextContent();
-								return textContent.then(function(text){
-									return text.items.map(function (s) { return s.str; }).join('');
-								});
-							}));
-						}
-
-						return Promise.all(countPromises).then(function (texts) {
-							return texts.join('');
-						});
-					});
-				}
+				});	
 			}
+			fileReader.readAsArrayBuffer(vm.file);
+
+			function getPDFText(pdfFile){
+				var pdf = PDFJS.getDocument({data: pdfFile});
+				return pdf.then(function(pdf) {
+					var maxPages = pdf.pdfInfo.numPages;
+					var countPromises = [];
+					for (var j = 1; j <= maxPages; j++) {
+						var page = pdf.getPage(j);
+
+						var txt = "";
+						countPromises.push(page.then(function(page) {
+							var textContent = page.getTextContent();
+							return textContent.then(function(text){
+								return text.items.map(function (s) { return s.str; }).join('');
+							});
+						}));
+					}
+
+					return Promise.all(countPromises).then(function (texts) {
+						return texts.join('');
+					});
+				});
+			}
+		}
 
 		// Testing DocxJS for converting docx files to text... looks good
 		function convertDocxToText() {
