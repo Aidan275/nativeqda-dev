@@ -359,15 +359,43 @@
 			bsLoadingOverlayService.stop({referenceId: 'home-map'});	// Stop animated loading overlay
 		}
 
-
 		// Gets signed URL to download the requested file from S3 
 		// if successful, opens the signed URL in a new tab
 		function viewFile(name, path) {
+			// Open a blank new tab while still in a trusted context to prevent a popup blocker warning
+			var newTab = $window.open("about:blank", '_blank')
+
+			// CSS and HTML for loading animation to display while fetching the signed URL
+			var loaderHTML = '<style>#loader{position: absolute;left: 50%;top: 50%;border:0.5em solid rgba(70, 118, 250, 0.2);border-radius:50%;'+
+			'border-top:0.5em solid #4676fa;width:75px;height:75px;-webkit-animation:spin 1s linear infinite;animation:spin 1s linear infinite;}'+
+			'@-webkit-keyframes spin{0%{-webkit-transform:rotate(0deg);}100%{-webkit-transform:rotate(360deg);}}'+
+			'@keyframes spin{0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}</style>'+
+			'<div id="loader"></div>';
+
+			// Write the loading animation code to the new window
+			newTab.document.write(loaderHTML);
+
+			// Make a request to the server for a signed URL to download/view the requested file
 			filesService.signDownloadS3(name, path)
 			.then(function(response) {
-				// Link for viewing docs and pdfs in google docs - may be useful later.
-				// var encodedUrl = 'https://docs.google.com/viewer?url=' + encodeURIComponent(response.data) + '&embedded=true';
-				$window.open(response.data, '_blank');
+				// Remove the animation 1s after the signed URL is retrieved
+				setTimeout(function(){
+					newTab.document.getElementById("loader").remove();
+				},1000);
+
+				// Redirect the new tab to the signed URL
+				// If the file is a document, open in google docs viewer to view in the browser
+				if(response.data.type === "document") {
+					var encodedUrl = 'https://docs.google.com/viewer?url=' + encodeURIComponent(response.data.url) + '&embedded=true';
+					newTab.location = encodedUrl;
+				} else {
+					// Else either download or view in browser (if natively compatible)
+					newTab.location = response.data.url;
+				}
+
+			}, function() {
+				// If there is an error, close the new tab
+				newTab.close();
 			});
 		}
 

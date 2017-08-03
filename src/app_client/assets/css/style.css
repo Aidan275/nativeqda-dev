@@ -4,7 +4,7 @@
 /* https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_variables */
 
 :root {
-    --main-colour: #4676fa;
+	--main-colour: #4676fa;
 }
 
 /* ========== GLOBAL ========== */
@@ -19,6 +19,19 @@ body, html {
 body {
 	font-family: 'Roboto', sans-serif;
 	padding-top: 50px;
+}
+
+footer{
+	text-align: left;
+	margin-bottom: 5px;
+	position: inherit;
+}
+
+@media (min-width: 768px) {
+	.modal-xl {
+		width: 90%;
+		max-width:1200px;
+	}
 }
 
 /* ========== NAVIGATION ========== */
@@ -111,38 +124,7 @@ body {
 	margin-top: 30px;
 }
 
-#map-controls{
-	position: absolute;
-	top: 60px;
-	left: 10px;
-	padding: 0;
-	z-index: 2;
-	box-shadow: 0 2px 4px rgba(0,0,0,0.2), 0 -1px 0px rgba(0,0,0,0.02);
-	background-color: #fff;
-}
-
-#map-controls .tab-content{
-	padding: 0 15px;
-}
-
-#map-controls .nav-tabs li{
-	cursor: pointer;
-}
-
-#map-controls .tab-content .list-group a{
-	cursor: pointer;
-}
-
-#map-warning {
-	z-index: 2;
-	display: inline-block;
-	text-align: center;
-	position: fixed;
-	top: 60px;
-	left: 50%;
-	-webkit-transform: translate(-50%);
-	transform: translate(-50%);
-}
+/* ========== MAPS ========== */
 
 #map{
 	position: absolute; 
@@ -153,7 +135,7 @@ body {
 	background: rgb(229, 227, 223);
 }
 
-#map-files-page{
+#map-homepage{
 	position: absolute; 
 	top: 0; 
 	left: 0; 
@@ -162,45 +144,7 @@ body {
 	background: rgb(229, 227, 223);
 }
 
-footer{
-	text-align: left;
-	margin-bottom: 5px;
-	position: inherit;
-}
-
-td[data-title-text=Command] {
-	width: 175px;
-	text-align: center;
-	vertical-align: middle !important;
-}
-
-#visualisation-table td{
-	text-align: center;
-	vertical-align: middle !important;
-}
-
-#visualisation-table td[data-title-text=Visualisation] {
-	text-align: left !important;
-}
-
-.vis-img-thumb{
-	height: 75px;
-	border: 1px solid #000;
-	margin-right: 5px;
-}
-
-div[ng-table-pagination=params] {
-	height: 60px;
-}
-
-@media (min-width: 768px) {
-	.modal-xl {
-		width: 90%;
-		max-width:1200px;
-	}
-}
-
-#map-homepage{
+#map-files-page{
 	position: absolute; 
 	top: 0; 
 	left: 0; 
@@ -331,7 +275,7 @@ div[ng-table-pagination=params] {
 	color: inherit;
 }
 
-/* ========== BUBBLE CHART ========== */
+/* ========== BUBBLE CHART PAGE ========== */
 
 .number-input-bubble:invalid+span:after {
 	font-family: FontAwesome;
@@ -345,7 +289,7 @@ div[ng-table-pagination=params] {
 	background: var(--main-colour) !important;
 }
 
-/* ========== FILE BROWSER TABLE ========== */
+/* ========== FILE TYPE ICONS ========== */
 
 .fa-file-pdf-o {
 	color: #ee3124;
@@ -361,4 +305,68 @@ div[ng-table-pagination=params] {
 
 .fa-file-text-o {
 	color: #464646;
+}
+
+/* ========== FILE BROWSER PAGE ========== */
+
+.file-browser-table .file-name-cell {
+	cursor: pointer;
+}
+
+.file-browser-table .table-row:hover {
+	background: rgba(70,118,250,0.15) !important;
+}
+
+.file-browser-table .file-name-cell i{
+	padding-right: 5px;
+}
+
+.file-browser-table td.file-name-cell {
+	vertical-align: middle !important;
+}
+
+.file-browser-table td.last-modified-cell {
+	white-space: nowrap;
+	text-align: center;
+	vertical-align: middle !important;
+}
+
+.file-browser-table td.uploaded-by-cell {
+	white-space: nowrap;
+	text-align: center;
+	vertical-align: middle !important;
+}
+
+.file-browser-table td.size-cell {
+	white-space: nowrap;
+	text-align: center;
+	vertical-align: middle !important;
+}
+
+.file-browser-table td.command-cell {
+	white-space: nowrap;
+	text-align: center;
+	vertical-align: middle !important;
+}
+
+/* ========== HOME PAGE ========== */
+
+.home-recent-files-table .file-name-cell {
+	cursor: pointer;
+}
+
+.home-recent-files-table .table-row:hover {
+	background: rgba(70,118,250,0.15) !important;
+}
+
+.home-recent-files-table .file-name-cell i{
+	padding-right: 5px;
+}
+
+.home-recent-files-table td.file-name-cell {
+	vertical-align: middle !important;
+}
+
+.home-recent-files-table-container .ng-table-pager {
+	display:none;
 }
