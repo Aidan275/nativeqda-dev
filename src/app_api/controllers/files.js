@@ -81,13 +81,14 @@ module.exports.putFile = function(req, res) { //Update or add a file
 			coordinates: [parseFloat(req.body.coords.lng), parseFloat(req.body.coords.lat)]
 		};
 	}
-	console.log("hi")
 	file.tags = req.body.tags;
 	file.icon = req.body.icon;
 	
-	file.save(function(err, response) {
+	var fileData = file.toObject();
+	delete fileData._id; //Don't want to update id field. If creating new file, one is generated anyway.
+	File.findOneAndUpdate({name: file.name, path: file.path}, fileData, {new: true, upsert: true} , function(err, response) {
 		if (err) {
-			sendJSONresponse(res, 404, err);
+			sendJSONresponse(res, 500, err);
 		} else {
 			sendJSONresponse(res, 200, response);
 		}
