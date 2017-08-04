@@ -21,7 +21,7 @@
 
 		// Bindable Data
 		vm.fileList = [];
-		vm.currentPath = '/';
+		vm.currentPath = '';
 		vm.pathsArray = [''];
 		vm.pageHeader = {
 			title: 'Browse Files'
@@ -41,7 +41,7 @@
 			filesService.getFileDB(vm.currentPath)
 			.then(function(response) {
 				vm.fileList = response.data;
-				if(vm.currentPath != '/') {
+				if(vm.currentPath != '') {
 					vm.fileList.push({
 						name: '..',
 						lastModified: '',
@@ -50,6 +50,7 @@
 						type: 'parent-dir'
 					});
 				}
+				console.log(vm.currentPath);
 				listFiles();
 			}, function(err){
 				bsLoadingOverlayService.stop({referenceId: 'file-list'});	// If error, stop animated loading overlay
