@@ -42,6 +42,9 @@ switch (environment){
         console.log('Serving from: ' + path.join(__dirname, '../../dist'));
         app.use(express.static(path.join(__dirname, '../../dist')));		// For the bundled/minified/compressed assets (e.g. ng-app.min.js, vendor.min.js, vendor.min.css, images, etc.)
 		app.use(express.static(path.join(__dirname, '../../dist/app')));	// For serving the static html files requested from AngularJS (e.g. home.view.html, data.view.html) ... i think
+		app.get('/api/*', function(req, res) {
+			res.sendStatus(404);
+		});
 		app.get('*', function(req, res) {
 		    res.sendFile(path.join(__dirname, '../..', 'dist', 'index.html'));
 		});
@@ -51,6 +54,9 @@ switch (environment){
         console.log('Serving from: ' + path.join(__dirname, '../../dist'));
         app.use(express.static(path.join(__dirname, '../../dist')));		// For the bundled/minified/compressed assets (e.g. ng-app.min.js, vendor.min.js, vendor.min.css, images, etc.)
 		app.use(express.static(path.join(__dirname, '../../dist/app')));	// For serving the static html files requested from AngularJS (e.g. home.view.html, data.view.html) ... i think
+		app.get('/api/*', function(req, res) {
+			res.sendStatus(404);
+		});
 		app.get('*', function(req, res) {
 		    res.sendFile(path.join(__dirname, '../..', 'dist', 'index.html'));
 		});
@@ -61,6 +67,9 @@ switch (environment){
         console.log('Serving from: ' + path.join(__dirname, '../../src'));
 		app.use(express.static(path.join(__dirname, '../../')));				// For vendor assets in node_modules and AngularJS JS files (external vendor assets downloaded using NPM - jquery, ng-tables, angular, moment, bootstrap, etc.) 
 		app.use(express.static(path.join(__dirname, '../app_client')));			// For serving the static html files requested from AngularJS (e.g. home.view.html, data.view.html) ... i think
+		app.get('/api/*', function(req, res) {
+			res.sendStatus(404);
+		});
 		app.get('*', function(req, res) {
    			res.sendFile(path.join(__dirname, '../app_client', 'index.html'));
    		});

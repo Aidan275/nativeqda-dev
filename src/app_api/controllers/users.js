@@ -11,7 +11,7 @@ module.exports.getUserInfo = function(req, res) {
 	var email = req.query.email;
 	if(email) {
 		User
-		.findOne({email: email}, { email: 1, firstName: 1, lastName: 1, company: 1, avatar: 1 })
+		.findOne({email: email}, { email: 1, firstName: 1, lastName: 1, company: 1, avatar: 1, roles: 1, settings: 1 })
 		.exec(
 			function(err, results) {
 				if (!results) {
@@ -34,7 +34,15 @@ module.exports.getUserInfo = function(req, res) {
 	}
 };
 
-module.exports.updateProfile = function(req, res) { res.sendStatus(418) };
+//WARNING: THIS FUNCTION IS NOT SECURE. ANY LOGGED IN USER MAY ALTER ANY OTHER USER'S DETAILS
+module.exports.updateProfile = function(req, res) {
+	User.update({email: req.body.email}, req.body, function(err, response) { //req.body.email needs to be the email payload of the JWT
+				if (err)
+					sendJSONresponse(res, 500, err)
+				else
+					sendJSONresponse(res, 200, response)
+			});
+};
 
 module.exports.getUserProfile = function(req, res) { res.sendStatus(418) };
 

@@ -115,7 +115,7 @@ module.exports.deleteFile = function(req, res) { //Remove file
 //Get (limited) file info for pins on the map based on some criteria. Ie. Limited in spatial or time range
 module.exports.map = function(req, res) { //TODO: Actual limiting (Criteria and ACL)
 	File
-	.find()
+	.find({type: {$ne: 'folder'} })
 	.exec(
 		function(err, results) {
 			if (!results) {
