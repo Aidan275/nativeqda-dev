@@ -5,6 +5,9 @@
 	<meta name="theme-color" content="#4676fa">
 	<title ng-bind="title"></title>
 	
+	<!-- CSS for initial loading screen -->
+	<link rel="stylesheet" href="/node_modules/please-wait/build/please-wait.css">
+	
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700">
 
 	<!-- inject-vendor:css -->
@@ -16,6 +19,10 @@
 	<base href="/">
 </head>
 <body ng-view>
+
+	<!-- JS for initial loading screen -->
+	<script type="text/javascript" src="/node_modules/please-wait/build/please-wait.min.js"></script>
+	<script type="text/javascript" src="/src/app_client/assets/js/please-wait-script.js"></script>
 
 	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCEMpLtx0n2Pk4ggQonEyD0iPZbGHYhR5o&libraries=visualization"></script>
 
