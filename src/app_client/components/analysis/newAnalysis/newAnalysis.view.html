@@ -25,19 +25,25 @@
 				</div>
 				<div class="form-group">
 					<div class="col-sm-12">
-						<table ng-table="vm.tableParams" class="table table-condensed table-bordered table-striped" style="margin-top:5px">
-							<tr ng-repeat="row in $data">
+						<table ng-table="vm.tableParams" class="table table-condensed table-bordered table-striped analysis-file-browser-table">
+							<tr class="table-row" ng-repeat="row in $data">
 								<td style="text-align: center;">
-									<input type="radio" ng-if="row.type == 'Dataset'" ng-model="vm.formData.selectedDataKey" ng-value="row.key"/>
-									<input type="radio" ng-if="row.type == 'File'" ng-model="vm.formData.selectedDataKey" ng-value="row.textFileKey"/>
+									<input type="radio" ng-if="row.type != 'folder' && row.type != 'parent-dir'" ng-model="vm.formData.selectedID" ng-value="row._id"/>
 								</td>
-								<td data-title="'Name'" filter="{name: 'text'}" sortable="'name'">{{row.name}}</td>
-								<td data-title="'Type'" filter="{type: 'text'}" sortable="'type'">{{row.type}}</td>
-								<td data-title="'Last Modified'" filter="{lastModified: 'text'}" sortable="'lastModified'">{{row.lastModified | date : "dd MMMM, yyyy h:mm a"}}</td>
-								<td data-title="'Command'">
-									<a ng-if="row.type == 'Dataset'" ng-click="vm.viewFile(row.key)" class="btn btn-primary btn-xs" role="button">Raw Text</a>
-									<a ng-if="row.type == 'File'" ng-click="vm.viewFile(row.textFileKey)" class="btn btn-primary btn-xs" role="button">Raw Text</a>
-								</td class="data-command-cell">
+								<td data-title="'Name'" filter="{name: 'text'}" sortable="'name'" class="name-cell" ng-click="vm.viewFile(row.name, row.path, row.type)">
+									<span>
+										<i class="{{row.icon}} fa-lg"></i> {{row.name}}
+									</span>
+								</td>
+								<td data-title="'Created By'" filter="{createdBy: 'text'}" sortable="'createdBy'" class="uploaded-by-cell hidden-xs" header-class="'hidden-xs'">{{row.createdBy}}</td>
+								<td data-title="'Last Modified'" filter="{lastModified: 'text'}" sortable="'lastModified'" class="last-modified-cell hidden-xs hidden-sm" header-class="'hidden-xs hidden-sm'">{{row.lastModified | date : "dd MMMM, yyyy h:mm a"}}</td>
+								<td data-title="'Command'" class="command-cell">
+									<a ng-if="row.type!='parent-dir'" ng-click="vm.viewFile(row.name, row.path, row.type)" class="btn btn-primary btn-xs" role="button">
+										<span ng-if="row.type!='folder'">Raw Text</span>
+										<span ng-if="row.type=='folder'">Open</span>
+									</a>
+
+								</td>
 							</tr>
 						</table>
 					</div>

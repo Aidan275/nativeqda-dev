@@ -120,7 +120,6 @@
 					newTab.close();
 				});
 			}
-			
 		}
 
 		function confirmDelete(key, fileName, textFileKey) {

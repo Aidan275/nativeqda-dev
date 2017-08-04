@@ -200,6 +200,7 @@ module.exports.signUploadS3 = function(req, res) {
 
 module.exports.signDownloadS3 = function(req, res) {
 	var paths = extractpath(req.params["filepath"]);
+	var key = '';
 	File.findOne({name: paths[0], path: paths[1] }).exec(function(err, results) {
 		if (!results) {
 			sendJSONresponse(res, 404, {
@@ -216,7 +217,12 @@ module.exports.signDownloadS3 = function(req, res) {
 			});
 			return;
 		}
-		var key = results.key
+
+		if(req.query.getTextFile === 'true') {
+			key = results.textFileKey;
+		} else {
+			key = results.key;
+		}
 
 		var params = {
 			Bucket: process.env.S3_BUCKET_NAME, 
@@ -227,7 +233,6 @@ module.exports.signDownloadS3 = function(req, res) {
 				sendJSONresponse(res, 404, err);
 			}
 			else {
-				console.log(url);
 				sendJSONresponse(res, 200, {
 					"url": url,
 					"type": results.type 	// Returns type to determine if the browser should view using google docs viewer or not
@@ -271,10 +276,16 @@ var folderList = function(req, res, pathname) {
 	// If the "onlyTextFiles" flag is true, only return the files
 	// with associated text files for creating a dataset for analysis
 	var options = {path: pathname};
-	console.log('pathname: ' + pathname);
-	/*if(req.query.onlyTextFiles === 'true'){
-		options =+ { textFileKey: { $exists: true } };
-	}*/
+	
+	if(req.query.getTextFile === 'true'){	// If text files only flag, return text files and folders
+		options = {path: pathname,
+			$or: [{
+				textFileKey: { $exists: true }
+			}, {
+				type: 'folder'
+			}]
+		}
+	}
 
 	File
 	.find(options)
