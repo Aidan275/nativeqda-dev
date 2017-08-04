@@ -30,12 +30,12 @@
 								<td style="text-align: center;">
 									<input type="radio" ng-if="row.type != 'folder' && row.type != 'parent-dir'" ng-model="vm.formData.selectedID" ng-value="row._id"/>
 								</td>
-								<td data-title="'Name'" filter="{name: 'text'}" sortable="'name'" class="name-cell" ng-click="vm.viewFile(row.name, row.path, row.type)">
+								<td data-title="'Name'" filter="{name: 'text'}" sortable="'name'" class="name-cell" ng-click="vm.viewFile(row.name, row.path, row.type, true, row._id)">
 									<span>
 										<i class="{{row.icon}} fa-lg" title="{{row.type | capitalise}}"></i> {{row.name}}
 									</span>
 								</td>
-								<td data-title="'Created By'" filter="{createdBy: 'text'}" sortable="'createdBy'" class="uploaded-by-cell hidden-xs" header-class="'hidden-xs'">{{row.createdBy}}</td>
+								<td data-title="'Created By'" filter="{createdBy: 'text'}" sortable="'createdBy'" class="created-by-cell hidden-xs" header-class="'hidden-xs'">{{row.createdBy}}</td>
 								<td data-title="'Last Modified'" filter="{lastModified: 'text'}" sortable="'lastModified'" class="last-modified-cell hidden-xs hidden-sm" header-class="'hidden-xs hidden-sm'">{{row.lastModified | date : "dd MMMM, yyyy h:mm a"}}</td>
 								<td data-title="'Command'" class="command-cell">
 									<a ng-if="row.type!='parent-dir'" ng-click="vm.viewFile(row.name, row.path, row.type)" class="btn btn-primary btn-xs" role="button">

@@ -415,3 +415,39 @@ footer{
 .home-recent-files-table-container .ng-table-pager {
 	display:none;
 }
+
+/* ========== NEW ANALYSIS MODAL ========== */
+
+.analysis-file-browser-table .name-cell {
+	cursor: pointer;
+}
+
+.analysis-file-browser-table .table-row:hover {
+	background: rgba(70,118,250,0.15) !important;
+}
+
+.analysis-file-browser-table .name-cell i{
+	padding-right: 5px;
+}
+
+.analysis-file-browser-table td.name-cell {
+	vertical-align: middle !important;
+}
+
+.analysis-file-browser-table td.last-modified-cell {
+	white-space: nowrap;
+	text-align: center;
+	vertical-align: middle !important;
+}
+
+.analysis-file-browser-table td.created-by-cell {
+	white-space: nowrap;
+	text-align: center;
+	vertical-align: middle !important;
+}
+
+.analysis-file-browser-table td.command-cell {
+	white-space: nowrap;
+	text-align: center;
+	vertical-align: middle !important;
+}

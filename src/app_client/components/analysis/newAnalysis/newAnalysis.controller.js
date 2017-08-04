@@ -143,10 +143,12 @@
 			});
 		}
 
-		// Gets signed URL to download the requested file from S3 
-		// if successful, opens the signed URL in a new tab
-		function viewFile(name, path, type) {
-			if(type === 'folder') {
+		// Gets signed URL to download the requested file from S3. If successful, opens the signed URL in a new tab.
+		// If folder or parent directory type, navigate to directory.
+		// If tick is true, select the file/dataset, otherwise load the file/dataset raw text to view
+		// id is for marking the radio button of the selected file/dataset
+		function viewFile(name, path, type, tick, id) {	
+			if(type === 'folder') {	
 
 				if(path === '/') {
 					vm.currentPath = name;
@@ -155,11 +157,13 @@
 				}
 
 				vm.pathsArray = vm.currentPath.split("/");
-				activate();
+				activate();	// Re-fetch the data with the new path and re-list the data in the table
 			} else if (type === 'parent-dir') {
 				vm.currentPath = vm.currentPath.substr(0, vm.currentPath.lastIndexOf('/'));
 				vm.pathsArray = vm.currentPath.split("/");
-				activate();
+				activate();	// Re-fetch the data with the new path and re-list the data in the table
+			} else if (tick) {
+				vm.formData.selectedID = id;
 			} else {
 				// Open a blank new tab while still in a trusted context to prevent a popup blocker warning
 				var newTab = $window.open("about:blank", '_blank')
