@@ -41,9 +41,20 @@
 		var defaultIcon = new LeafIcon({iconUrl: 'assets/img/map/markers/marker-icon-2x.png'});
 		var posIcon = new LeafIcon({iconUrl: 'assets/img/map/markers/marker-icon-pos.png'});
 
-		activate();
+		isPageReady();
 
-    	///////////////////////////
+		///////////////////////////
+
+		// If the App is started on a page with a map the loading screen would cause the map not to 
+		// display correctly. This function checks if the loading screen is loaded before adding the
+		// map to the DOM.
+		function isPageReady() {
+			if(!initial_loading_screen.loaded) {
+				setTimeout(isPageReady, 100);	// Checks every 100 ms
+			} else {
+				activate();
+			}
+		}
 
     	function activate() {
     		bsLoadingOverlayService.start({referenceId: 'home-map'});	// Start animated loading overlay
