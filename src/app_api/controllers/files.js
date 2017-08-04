@@ -109,7 +109,18 @@ module.exports.putFile = function(req, res) { //Update or add a file
 };
 
 module.exports.deleteFile = function(req, res) { //Remove file
-	res.sendStatus(418);
+	var path = extractpath(req.params["filepath"]);
+	File.remove({name: path[0], path: path[1]}).exec(function(err, results) {
+		if (err) {
+			sendJSONresponse(res, 500, err);
+			return;
+		}
+		if (!results) {
+			sendJSONresponse(res, 404, "Nothing found");
+			return;
+		}
+		sendJSONresponse(res, 204, null);			
+	});
 };
 
 //Get (limited) file info for pins on the map based on some criteria. Ie. Limited in spatial or time range
@@ -358,7 +369,7 @@ var buildFileListDB = function(req, res, results) {
 	}
 };*/
 
-module.exports.deleteFileDB = function(req, res) {
+/*module.exports.deleteFileDB = function(req, res) {
 	var key = req.query.key;
 	if(key) {
 		File
@@ -378,7 +389,7 @@ module.exports.deleteFileDB = function(req, res) {
 			"message": "No key parameter in request"
 		});
 	}
-};
+};*/
 
 module.exports.syncDBwithS3 = function(req, res) {
 	console.log("Need to get DB to sync with S3! Need to: add file info to DB for files that only exist in S3 and remove file info from DB that don't exist in S3");
