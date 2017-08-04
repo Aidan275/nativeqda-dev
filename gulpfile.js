@@ -154,7 +154,7 @@ gulp.task('fonts', function() {
 });
 
 /**
- * Copy the Please Wait files for the initial loading animation
+ * Copy the Please Wait files for the initial loading screen
  * @return {Stream}
  */
 gulp.task('please-wait', function() {
@@ -174,25 +174,6 @@ gulp.task('please-wait', function() {
 });
 
 /**
- * Minify and bundle the CSS styles
- * @return {Stream}
- */
-gulp.task('styles-css', function() {
-	log('Bundling, minifying, and copying the CSS styles');
-
-	return gulp.src(paths.CSS)
-		.pipe(debug({title: 'styles-css:'}))
-		.pipe(plug.concat('styles.min.css')) // Before bytediff or after
-		.pipe(plug.autoprefixer('last 2 version', '> 5%'))
-		.pipe(plug.bytediff.start())
-		.pipe(plug.minifyCss({}))
-		.on('error', function (err) { plug.util.log(colors.red('[Error]'), err.toString()); })
-		.pipe(plug.bytediff.stop(bytediffFormatter))
-		.pipe(gulp.dest(paths.dist + 'assets/css'));
-});
-
-
-/**
  * Inject all the optimised files into the index.html for production
  * @return {Stream}
  */
@@ -207,8 +188,8 @@ gulp.task('inject-min', ['ng-app', 'vendor-js', 'vendor-css', 'scripts-js', 'sty
 		.pipe(inject('assets/js/vendor.min.js', 'inject-vendor'))
 		.pipe(inject('assets/js/scripts.min.js', 'inject-scripts'))
 		.pipe(inject('assets/js/ng-app.min.js', 'inject-ng-app'))
-		.pipe(inject('assets/css/please-wait.css', 'inject-please-wait-css'))
-		.pipe(inject('assets/js/please-wait.min.js', 'inject-please-wait-js'))
+		.pipe(inject('assets/css/please-wait.css', 'inject-please-wait'))
+		.pipe(inject('assets/js/please-wait.min.js', 'inject-please-wait'))
 		.pipe(inject('assets/js/please-wait-start.js', 'inject-please-wait-start'))
 		.pipe(inject('assets/js/please-wait-stop.js', 'inject-please-wait-stop'))
 		.pipe(gulp.dest(dist));
