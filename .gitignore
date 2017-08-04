@@ -116,6 +116,9 @@ bower_components
 /bower_components/
 jspm_packages
 
+# Ignore Batch Directory
+/batch/
+
 # Environment variables
 # .env
 
