@@ -5,8 +5,9 @@
 	<meta name="theme-color" content="#4676fa">
 	<title ng-bind="title"></title>
 	
-	<!-- CSS for initial loading screen -->
+	<!-- inject-please-wait:css -->
 	<link rel="stylesheet" href="/node_modules/please-wait/build/please-wait.css">
+	<!-- endinject -->
 	
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700">
 
@@ -34,11 +35,18 @@
 
 	<base href="/">
 </head>
-<body ng-view>
+<body>
 
-	<!-- JS for initial loading screen -->
-	<script type="text/javascript" src="/node_modules/please-wait/build/please-wait.min.js"></script>
-	<script type="text/javascript" src="/src/app_client/assets/js/please-wait-script.js"></script>
+	<div class="inner" ng-view>
+	</div>
+
+	<!-- inject-please-wait:js -->
+	<script src="/node_modules/please-wait/build/please-wait.min.js"></script>
+	<!-- endinject -->
+
+	<!-- inject-please-wait-start:js -->
+	<script src="/src/app_client/assets/js/please-wait-start.js"></script>
+	<!-- endinject -->
 
 	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCEMpLtx0n2Pk4ggQonEyD0iPZbGHYhR5o&libraries=visualization"></script>
 
@@ -133,6 +141,10 @@
 	<script src="/src/app_client/components/visualisations/visuals/barChart/barChart.controller.js"></script>
 	<script src="/src/app_client/components/visualisations/visuals/pieChart/pieChart.controller.js"></script>
 	<script src="/src/app_client/components/visualisations/visuals/donutChart/donutChart.controller.js"></script>
+	<!-- endinject -->
+
+	<!-- inject-please-wait-stop:js -->
+	<script src="/src/app_client/assets/js/please-wait-stop.js"></script>
 	<!-- endinject -->
 
 </body>

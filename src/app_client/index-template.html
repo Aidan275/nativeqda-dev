@@ -5,8 +5,8 @@
 	<meta name="theme-color" content="#4676fa">
 	<title ng-bind="title"></title>
 	
-	<!-- CSS for initial loading screen -->
-	<link rel="stylesheet" href="/node_modules/please-wait/build/please-wait.css">
+	<!-- inject-please-wait:css -->
+	<!-- endinject -->
 	
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700">
 
@@ -18,11 +18,16 @@
 
 	<base href="/">
 </head>
-<body ng-view>
+<body>
 
-	<!-- JS for initial loading screen -->
-	<script type="text/javascript" src="/node_modules/please-wait/build/please-wait.min.js"></script>
-	<script type="text/javascript" src="/src/app_client/assets/js/please-wait-script.js"></script>
+	<div class="inner" ng-view>
+	</div>
+
+	<!-- inject-please-wait:js -->
+	<!-- endinject -->
+
+	<!-- inject-please-wait-start:js -->
+	<!-- endinject -->
 
 	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCEMpLtx0n2Pk4ggQonEyD0iPZbGHYhR5o&libraries=visualization"></script>
 
@@ -33,6 +38,9 @@
 	<!-- endinject -->
 
 	<!-- inject-ng-app:js -->
+	<!-- endinject -->
+
+	<!-- inject-please-wait-stop:js -->
 	<!-- endinject -->
 
 </body>

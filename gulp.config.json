@@ -179,6 +179,18 @@
 	"images": [
 		"./src/app_client/assets/img/**/*"
 	],
+	"pleaseWaitCSS": [
+		"./node_modules/please-wait/build/please-wait.css"
+	],
+	"pleaseWaitJS": [
+		"./node_modules/please-wait/build/please-wait.min.js"
+	],
+	"pleaseWaitStartJS": [
+		"./src/app_client/assets/js/please-wait-start.js"
+	],
+	"pleaseWaitStopJS": [
+		"./src/app_client/assets/js/please-wait-stop.js"
+	],
 	"report": "./report/",
 	"dist": "./dist/"
 }

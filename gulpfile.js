@@ -154,10 +154,49 @@ gulp.task('fonts', function() {
 });
 
 /**
+ * Copy the Please Wait files for the initial loading animation
+ * @return {Stream}
+ */
+gulp.task('please-wait', function() {
+	log('Copying the Please Wait scripts');
+
+	gulp.src(paths.pleaseWaitCSS)
+		.pipe(gulp.dest(paths.dist + 'assets/css'));
+
+	gulp.src(paths.pleaseWaitJS)
+		.pipe(gulp.dest(paths.dist + 'assets/js'));
+
+	gulp.src(paths.pleaseWaitStartJS)
+		.pipe(gulp.dest(paths.dist + 'assets/js'));
+
+	return gulp.src(paths.pleaseWaitStopJS)
+		.pipe(gulp.dest(paths.dist + 'assets/js'));
+});
+
+/**
+ * Minify and bundle the CSS styles
+ * @return {Stream}
+ */
+gulp.task('styles-css', function() {
+	log('Bundling, minifying, and copying the CSS styles');
+
+	return gulp.src(paths.CSS)
+		.pipe(debug({title: 'styles-css:'}))
+		.pipe(plug.concat('styles.min.css')) // Before bytediff or after
+		.pipe(plug.autoprefixer('last 2 version', '> 5%'))
+		.pipe(plug.bytediff.start())
+		.pipe(plug.minifyCss({}))
+		.on('error', function (err) { plug.util.log(colors.red('[Error]'), err.toString()); })
+		.pipe(plug.bytediff.stop(bytediffFormatter))
+		.pipe(gulp.dest(paths.dist + 'assets/css'));
+});
+
+
+/**
  * Inject all the optimised files into the index.html for production
  * @return {Stream}
  */
-gulp.task('inject-min', ['ng-app', 'vendor-js', 'vendor-css', 'scripts-js', 'styles-css'], function() {
+gulp.task('inject-min', ['ng-app', 'vendor-js', 'vendor-css', 'scripts-js', 'styles-css', 'please-wait'], function() {
 	log('Injecting paths into index.html for production');
 	var dist = paths.dist;
 
@@ -168,6 +207,10 @@ gulp.task('inject-min', ['ng-app', 'vendor-js', 'vendor-css', 'scripts-js', 'sty
 		.pipe(inject('assets/js/vendor.min.js', 'inject-vendor'))
 		.pipe(inject('assets/js/scripts.min.js', 'inject-scripts'))
 		.pipe(inject('assets/js/ng-app.min.js', 'inject-ng-app'))
+		.pipe(inject('assets/css/please-wait.css', 'inject-please-wait-css'))
+		.pipe(inject('assets/js/please-wait.min.js', 'inject-please-wait-js'))
+		.pipe(inject('assets/js/please-wait-start.js', 'inject-please-wait-start'))
+		.pipe(inject('assets/js/please-wait-stop.js', 'inject-please-wait-stop'))
 		.pipe(gulp.dest(dist));
 
 		// the inject function is used above to remove 'dist' from the path before inserting into index.html 
@@ -244,6 +287,10 @@ gulp.task('inject', function() {
 		.pipe(inject(paths.devVendorJS, 'inject-vendor'))
 		.pipe(inject(paths.JS, 'inject-scripts'))
 		.pipe(inject(paths.appJS, 'inject-ng-app'))
+		.pipe(inject(paths.pleaseWaitCSS, 'inject-please-wait'))
+		.pipe(inject(paths.pleaseWaitJS, 'inject-please-wait'))
+		.pipe(inject(paths.pleaseWaitStartJS, 'inject-please-wait-start'))
+		.pipe(inject(paths.pleaseWaitStopJS, 'inject-please-wait-stop'))
 		.pipe(plug.concat('index.html'))
 		.pipe(gulp.dest(paths.client));
 

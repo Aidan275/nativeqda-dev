@@ -9,6 +9,14 @@
 
 /* ========== GLOBAL ========== */
 
+body > .inner {
+  display: none;
+}
+
+body.pg-loaded > .inner {
+  display: block;
+}
+
 body, html {
 	width: 100%; 
 	height: 100%;
@@ -68,7 +76,7 @@ footer{
 }
 
 .pg-loading-logo {
-	width: 10%;
+	width: 250px;
 }
 
 /* ========== NAVIGATION ========== */
