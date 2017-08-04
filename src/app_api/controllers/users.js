@@ -1,10 +1,16 @@
 var mongoose = require('mongoose');
 var User = mongoose.model('User');
 var UserRoles = mongoose.model('UserRoles');
+var jwt = require('jsonwebtoken');
 
 var sendJSONresponse = function(res, status, content) {
 	res.status(status);
 	res.json(content);
+};
+
+function extractJWT(authheader) { //Extract the JWT from the Authorization header and then verify it and return the payload (email, etc)
+	var jwtheader = authheader.split(' ');
+	return jwt.verify(jwtheader[1], process.env.JWT_SECRET);
 };
 
 module.exports.getUserInfo = function(req, res) {
@@ -34,14 +40,46 @@ module.exports.getUserInfo = function(req, res) {
 	}
 };
 
-//WARNING: THIS FUNCTION IS NOT SECURE. ANY LOGGED IN USER MAY ALTER ANY OTHER USER'S DETAILS
+//Note: This should be able to be done better but I've spent too long trying to get it to work elegantly...
 module.exports.updateProfile = function(req, res) {
-	User.update({email: req.body.email}, req.body, function(err, response) { //req.body.email needs to be the email payload of the JWT
-				if (err)
-					sendJSONresponse(res, 500, err)
-				else
-					sendJSONresponse(res, 200, response)
-			});
+	var jwtpayload = extractJWT(req.headers["authorization"]);
+	
+	User.findOne({email: jwtpayload.email}, function(err, response) { //Find the logged in user's object
+		if (err) {
+			sendJSONresponse(res, 500, err)
+			return
+		}
+		if (!response) { //If the user is in some quantum superposition where it both exists and doesn't exist
+			sendJSONresponse(res, 404, response)
+			return
+		}
+		
+		var tmpuser = new User();
+		tmpuser = response;
+		
+		//"Update" fields
+		if (req.body.email)
+			tmpuser.email = req.body.email
+		if (req.body.firstName)
+			tmpuser.firstName = req.body.firstName
+		if (req.body.lastName)
+			tmpuser.lastName = req.body.lastName
+		if (req.body.company)
+			tmpuser.company = req.body.company
+		if (req.body.settings)
+			tmpuser.settings = req.body.settings
+		if (req.body.avatar)
+			tmpuser.avatar = req.body.avatar
+		if (req.body.password)
+			tmpuser.setPassword(req.body.password)
+		
+		tmpuser.save(function(err, response) {
+			if (err)
+				sendJSONresponse(res, 500, err)
+			else
+				sendJSONresponse(res, 200, tmpuser.generateJwt()) //Send new JWT
+		})
+	});
 };
 
 module.exports.getUserProfile = function(req, res) { res.sendStatus(418) };

@@ -37,7 +37,8 @@ var userSchema = new mongoose.Schema({
 	},
 	settings: { //Object of user settings
 		type: Object,
-		required: true
+		required: true,
+		default: '{}'
 	},
 	hash: String,
 	salt: String,
@@ -61,6 +62,8 @@ userSchema.methods.generateJwt = function() {
 		_id: this._id,
 		email: this.email,
 		firstName: this.firstName,
+		settings: this.settings,
+		avatar: this.avatar,
 		exp: parseInt(expiry.getTime() / 1000),	// Sets the expiry date in seconds in the jwt
 	}, process.env.JWT_SECRET);
 };
