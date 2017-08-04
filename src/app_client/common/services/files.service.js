@@ -23,6 +23,8 @@
 			syncDBwithS3	: syncDBwithS3
 		};
 
+		///////////////////////////
+
 		function signUploadS3(query){
 			return $http.post('/api/file/signUploadS3', query, {
 				headers: {

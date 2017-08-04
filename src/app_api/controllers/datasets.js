@@ -64,6 +64,7 @@ var buildDatasetList = function(req, res, results) {
 			dateCreated: doc.dateCreated,
 			lastModified: doc.lastModified,
 			files: doc.files,
+			icon: doc.icon,
 			_id: doc._id
 		});
 	});
