@@ -5,6 +5,11 @@ var datasetSchema = new mongoose.Schema({
 		type: String, 
 		required: true
 	},
+	type: {
+		type: String,
+		required: true,
+		"default": "dataset" // Defaults to dataset
+	},
 	icon: { // Icon for dataset- using Font Awesome classes
 		type: String,
 		required: true,

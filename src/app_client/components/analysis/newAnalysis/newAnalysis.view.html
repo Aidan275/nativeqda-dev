@@ -32,7 +32,7 @@
 								</td>
 								<td data-title="'Name'" filter="{name: 'text'}" sortable="'name'" class="name-cell" ng-click="vm.viewFile(row.name, row.path, row.type)">
 									<span>
-										<i class="{{row.icon}} fa-lg"></i> {{row.name}}
+										<i class="{{row.icon}} fa-lg" title="{{row.type | capitalise}}"></i> {{row.name}}
 									</span>
 								</td>
 								<td data-title="'Created By'" filter="{createdBy: 'text'}" sortable="'createdBy'" class="uploaded-by-cell hidden-xs" header-class="'hidden-xs'">{{row.createdBy}}</td>
