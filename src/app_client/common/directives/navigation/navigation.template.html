@@ -1,5 +1,5 @@
-<div id="navigation-main" class="navbar navbar-default navbar-fixed-top">
-	<div class="container">
+<div id="navigation-main" class="navbar navbar-default navbar-fixed-top" >
+	<div class="container" >
 		<div class="navbar-header">
 			<a href="/" class="navbar-brand">
 				<img alt="NativeQDA" src="assets/img/Logo.png" height="36"/>
@@ -33,8 +33,8 @@
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
 				<li ng-hide="navvm.isLoggedIn"><a href="/login/?page={{ navvm.currentPath }}">Sign in</a></li>
-				<li ng-show="navvm.isLoggedIn" class="dropdown">
-					<a href="" class="dropdown-toggle" data-toggle="dropdown">{{ navvm.currentUser.firstName }} <span class="caret"></span></a>
+				<li ng-show="navvm.isLoggedIn" class="dropdown" style="max-height:58px;margin-top:-10px;">
+					<a href="" class="" style="max-height:58px;" data-toggle="dropdown"><img src="{{ navvm.currentUser.avatar }}" class="img-circle" height="40px" width="40px" />&nbsp;{{ navvm.currentUser.firstName }} <span class="caret"></span></a>
 					<ul class="dropdown-menu" role="menu">
 						<li><a href="" ng-click="navvm.popupEditProfile(navvm.currentUser.email)">Edit Profile</a></li>
 						<li><a href="" ng-click="navvm.logout()">Logout</a></li>
