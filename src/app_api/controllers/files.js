@@ -166,6 +166,12 @@ module.exports.signUploadS3 = function(req, res) {
 		path = 'datasets/' + path + '.txt';
 	}
 
+	// If the file being uploaded is an avatar, edit the path to include 
+	// the parent avatar folder.
+	if(req.body.avatar) {
+		path = 'avatars/' + path ;
+	}
+
 	var type = req.body.type
 	var readType = 'private';
 

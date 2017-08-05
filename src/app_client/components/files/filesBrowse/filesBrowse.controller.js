@@ -50,7 +50,6 @@
 						type: 'parent-dir'
 					});
 				}
-				console.log(vm.currentPath);
 				listFiles();
 			}, function(err){
 				bsLoadingOverlayService.stop({referenceId: 'file-list'});	// If error, stop animated loading overlay

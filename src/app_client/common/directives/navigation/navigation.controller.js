@@ -35,7 +35,6 @@
 			});
 
 			modalInstance.result.then(function() {
-				console.log("ASD");
 				vm.currentUser = authentication.currentUser();
 			});
 		}
