@@ -59,19 +59,22 @@ module.exports.updateProfile = function(req, res) {
 		
 		//"Update" fields
 		if (req.body.email)
-			tmpuser.email = req.body.email
+			tmpuser.email = req.body.email;
 		if (req.body.firstName)
-			tmpuser.firstName = req.body.firstName
+			tmpuser.firstName = req.body.firstName;
 		if (req.body.lastName)
-			tmpuser.lastName = req.body.lastName
+			tmpuser.lastName = req.body.lastName;
 		if (req.body.company)
-			tmpuser.company = req.body.company
+			tmpuser.company = req.body.company;	/* If the company field is an empty string this won't be reached */
+		else {
+			tmpuser.company = "";
+		}							
 		if (req.body.settings)
-			tmpuser.settings = req.body.settings
+			tmpuser.settings = req.body.settings;
 		if (req.body.avatar)
-			tmpuser.avatar = req.body.avatar
+			tmpuser.avatar = req.body.avatar;
 		if (req.body.password)
-			tmpuser.setPassword(req.body.password)
+			tmpuser.setPassword(req.body.password);
 		
 		tmpuser.save(function(err, response) {
 			if (err)

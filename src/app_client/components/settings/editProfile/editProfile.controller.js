@@ -12,7 +12,6 @@
 		vm.getUserInfo = getUserInfo;
 		vm.onAvatarSelect = onAvatarSelect;
 		vm.onSubmit = onSubmit;
-		vm.setDelay = setDelay;	/* function to set delay on view element change (e.g. entering password) */
 
 		/* Bindable Data */
 		vm.userInfo = {
@@ -23,7 +22,6 @@
 			settings: '',
 			avatar: ''
 		};
-		vm.delay = false;	/* variable added to view element that should be delayed (e.g. un-matching password error) */
 		vm.isSubmittingButton = null;	/* variables for button animation - ng-bs-animated-button */
 		vm.resultButton = null;
 		vm.saveProfileButtonOptions = { buttonDefaultText: 'Save Profile', animationCompleteTime: 1000, buttonSubmittingText: 'Saving...', buttonSuccessText: 'Done!' };
@@ -112,11 +110,19 @@
 		}
 
 		function onSubmit() {
-			if(!vm.userInfo.firstName || !vm.userInfo.lastName || !vm.userInfo.email || !vm.userInfo.company) {
-				logger.error('All fields required, please try again', '', 'Error');
+			if(!vm.userInfo.firstName) {	/* company not included since it is not required */
+				logger.error('Please enter your first name', '', 'Error');
+			} else if (!vm.userInfo.lastName) {
+				logger.error('Please enter your last name', '', 'Error');
+			} else if (!vm.userInfo.email) {
+				logger.error('Please enter a valid email address', '', 'Error');
+			} else if (!vm.userInfo.password && vm.profileForm.password.$dirty) {	/* Checks if the password is not empty and if the password field has been editted */
+				logger.error('Please enter a password', '', 'Error');				/* If the password field has not been editted, the original password is kept */
+			} else if (!vm.userInfo.confirmPassword && vm.profileForm.confirmPassword.$dirty) {
+				logger.error('Please confirm your password', '', 'Error');
 			} else if (vm.userInfo.password === '' ||  vm.userInfo.confirmPassword === '') {
 				logger.error('Password cannot be blank', '', 'Error');
-			} else if(vm.userInfo.password != vm.userInfo.confirmPassword) {
+			}else if(vm.userInfo.password != vm.userInfo.confirmPassword) {
 				logger.error('Passwords do not match', '', 'Error');
 			} else {
 				updateProfile();
@@ -181,14 +187,6 @@
 			vm.isProcessing = status;	/* Processing flag for other view elements to check */
 		}
 
-		/* Delay for showing error message if passwords don't match */
-		function setDelay() {
-			vm.delay = true;
-			setTimeout(function(){
-				vm.delay = false;
-				$scope.$apply();
-			}, 300);
-		}
 	}
 
 

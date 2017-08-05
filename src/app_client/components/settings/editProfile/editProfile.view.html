@@ -1,6 +1,6 @@
 <div class="modal-content bs-loading-container" bs-loading-overlay bs-loading-overlay-active-class="loading-overlay--active" bs-loading-overlay-reference-id="user-info"> 
 	<div class="blur-this">
-		<form id="updateProfile" name="updateProfile" role="form" ng-submit="vm.onSubmit()" class="form-horizontal">
+		<form id="update-profile" name="vm.profileForm" role="form" ng-submit="vm.onSubmit()" class="form-horizontal" novalidate> <!-- novalidate prevents HTML5 validation -->
 
 			<div class="modal-header">
 				<button type="button" ng-click="vm.modal.cancel()" class="close">
@@ -21,53 +21,54 @@
 								<img id="avatar-img" src="{{vm.userInfo.avatar}}" class="vis-img-thumb img-thumbnail img-circle img-responsive" />
 								<a href="#" type="file"  id="file-upload-input" ngf-select ngf-change="vm.onAvatarSelect($files)"><span class="fa fa-upload fa-5x"></span></a>
 							</div>
-							
+
+						</div>
+					</div>
+					<div class="form-group has-feedback" ng-class="{ 'has-error': vm.profileForm.firstName.$dirty && vm.profileForm.firstName.$invalid, 'has-success': vm.profileForm.firstName.$dirty && vm.profileForm.firstName.$valid }">
+						<label for="first-name" class="col-lg-3 control-label">First name:</label>
+						<div class="col-lg-8">
+							<input id="first-name" name="firstName" ng-model="vm.userInfo.firstName" class="form-control" type="text" placeholder="First Name" required>
+							<span class="glyphicon form-control-feedback" ng-class="{ 'glyphicon-remove': vm.profileForm.firstName.$dirty && vm.profileForm.firstName.$invalid, 'glyphicon-ok': vm.profileForm.firstName.$dirty && vm.profileForm.firstName.$valid }" aria-hidden="true"></span>
+						</div>
+					</div>
+					<div class="form-group has-feedback" ng-class="{ 'has-error': vm.profileForm.lastName.$dirty && vm.profileForm.lastName.$invalid, 'has-success': vm.profileForm.lastName.$dirty && vm.profileForm.lastName.$valid }">
+						<label for="last-name" class="col-lg-3 control-label">Last name:</label>
+						<div class="col-lg-8">
+							<input id="last-name" name="lastName" ng-model="vm.userInfo.lastName" class="form-control" type="text" placeholder="Last Name" required>
+							<span class="glyphicon form-control-feedback" ng-class="{ 'glyphicon-remove': vm.profileForm.lastName.$dirty && vm.profileForm.lastName.$invalid, 'glyphicon-ok': vm.profileForm.lastName.$dirty && vm.profileForm.lastName.$valid }" aria-hidden="true"></span>
+						</div>
+					</div>
+					<div class="form-group has-feedback" ng-class="{ 'has-error': vm.profileForm.email.$dirty && vm.profileForm.email.$invalid, 'has-success': vm.profileForm.email.$dirty && vm.profileForm.email.$valid }">
+						<label for="email" class="col-lg-3 control-label">Email:</label>
+						<div class="col-lg-8">
+							<input id="email" name="email" ng-model="vm.userInfo.email" class="form-control" type="email" placeholder="Email" required>
+							<span class="glyphicon form-control-feedback" ng-class="{ 'glyphicon-remove': vm.profileForm.email.$dirty && vm.profileForm.email.$invalid, 'glyphicon-ok': vm.profileForm.email.$dirty && vm.profileForm.email.$valid }" aria-hidden="true"></span>
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="col-lg-3 control-label">First name:</label>
+						<label for="company" class="col-lg-3 control-label">Company:</label>
 						<div class="col-lg-8">
-							<input id="first-name" name="first-name" ng-model="vm.userInfo.firstName" class="form-control" type="text">
+							<input id="company" name="company" ng-model="vm.userInfo.company" class="form-control" type="text" placeholder="Company">
 						</div>
 					</div>
-					<div class="form-group">
-						<label class="col-lg-3 control-label">Last name:</label>
+					<div class="form-group has-feedback" ng-class="{ 'has-error': vm.profileForm.password.$dirty && vm.profileForm.password.$invalid, 'has-success': vm.profileForm.password.$dirty && vm.profileForm.password.$valid }">
+						<label for="password" class="col-lg-3 control-label">Password:</label>
 						<div class="col-lg-8">
-							<input id="last-name" name="last-name" ng-model="vm.userInfo.lastName" class="form-control" type="text">
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="col-lg-3 control-label">Email:</label>
-						<div class="col-lg-8">
-							<input id="email" name="email" ng-model="vm.userInfo.email" class="form-control" type="text">
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="col-lg-3 control-label">Company:</label>
-						<div class="col-lg-8">
-							<input id="company" name="company" ng-model="vm.userInfo.company" class="form-control" type="text">
-						</div>
-					</div>
-					<div class="form-group has-feedback" ng-class="{ 'has-error': updateProfile.password.$dirty && updateProfile.password.$invalid, 'has-success': updateProfile.password.$dirty && updateProfile.password.$valid }">
-						<label class="col-lg-3 control-label">Password:</label>
-						<div class="col-lg-8">
-							<input ng-change="vm.setDelay()" id="password" name="password" ng-model="vm.userInfo.password" required class="form-control .has-error" type="password" placeholder="Password">
-							<span class="glyphicon glyphicon-remove form-control-feedback" style="display:none;" ng-class="{ 'show': updateProfile.password.$dirty && updateProfile.password.$invalid }" aria-hidden="true"></span>
-							<span class="glyphicon glyphicon-ok form-control-feedback" style="display:none;" ng-class="{ 'show': updateProfile.password.$dirty && updateProfile.password.$valid }" aria-hidden="true"></span>
-							<div ng-show="!vm.delay && (updateProfile.$dirty || submitted)">
-								<span class="password-error-msg" ng-show="updateProfile.password.$error.required">Please enter a password.</span>
+						<input id="password" name="password" ng-model="vm.userInfo.password" class="form-control .has-error" type="password" placeholder="Password" required="true">
+							<span class="glyphicon form-control-feedback" ng-class="{ 'glyphicon-remove': vm.profileForm.password.$dirty && vm.profileForm.password.$invalid, 'glyphicon-ok': vm.profileForm.password.$dirty && vm.profileForm.password.$valid }" aria-hidden="true"></span>
+							<div ng-show="(vm.profileForm.password.$dirty || submitted)">
+								<span class="password-error-msg" ng-show="vm.profileForm.password.$error.required">Please enter a password.</span>
 							</div>
 						</div>
 					</div>
-					<div class="form-group has-feedback" ng-class="{ 'has-error': updateProfile.confirmPassword.$dirty && updateProfile.confirmPassword.$invalid, 'has-success': updateProfile.confirmPassword.$dirty && updateProfile.confirmPassword.$valid }">
-						<label class="col-lg-3 control-label">Confirm password:</label>
+					<div class="form-group has-feedback" ng-class="{ 'has-error': vm.profileForm.confirmPassword.$dirty && vm.profileForm.confirmPassword.$invalid, 'has-success': vm.profileForm.confirmPassword.$dirty && vm.profileForm.confirmPassword.$valid }">
+						<label for="confirm-password" class="col-lg-3 control-label">Confirm password:</label>
 						<div class="col-lg-8">
-							<input ng-change="vm.setDelay()" id="confirmPassword" name="confirmPassword" ng-model="vm.userInfo.confirmPassword" pw-check='password' required class="form-control .has-error" type="password" placeholder="Password">
-							<span class="glyphicon glyphicon-remove form-control-feedback" style="display:none;" ng-class="{ 'show': updateProfile.confirmPassword.$dirty && updateProfile.confirmPassword.$invalid }" aria-hidden="true"></span>
-							<span class="glyphicon glyphicon-ok form-control-feedback" style="display:none;" ng-class="{ 'show': updateProfile.confirmPassword.$dirty && updateProfile.confirmPassword.$valid }" aria-hidden="true"></span>
-							<div ng-show="!vm.delay && (updateProfile.confirmPassword.$dirty || submitted)">
-								<span class="password-error-msg" ng-show="updateProfile.confirmPassword.$error.required">Please confirm your password.</span>
-								<span class="password-error-msg" ng-show="updateProfile.confirmPassword.$error.pwcheck && !updateProfile.confirmPassword.$error.required">Your passwords don't match.</span>
+							<input id="confirm-password" name="confirmPassword" ng-model="vm.userInfo.confirmPassword" pw-check='password' class="form-control .has-error" type="password" placeholder="Confirm Password" required="true">
+							<span class="glyphicon form-control-feedback" ng-class="{ 'glyphicon-remove': vm.profileForm.confirmPassword.$dirty && vm.profileForm.confirmPassword.$invalid, 'glyphicon-ok': vm.profileForm.confirmPassword.$dirty && vm.profileForm.confirmPassword.$valid }" aria-hidden="true"></span>
+							<div ng-show="(vm.profileForm.confirmPassword.$dirty || submitted)">
+								<span class="password-error-msg" ng-show="vm.profileForm.confirmPassword.$error.required">Please confirm your password.</span>
+								<span class="password-error-msg" ng-show="vm.profileForm.confirmPassword.$error.pwcheck && !vm.profileForm.confirmPassword.$error.required">Your passwords don't match.</span>
 							</div>
 						</div>
 					</div>
