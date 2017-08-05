@@ -120,6 +120,7 @@
 		"./src/app_client/common/directives/navigation/navigation.controller.js",
 		"./src/app_client/common/directives/navigation/navigation.directive.js",
 		"./src/app_client/common/directives/pageHeader/pageHeader.directive.js",
+		"./src/app_client/common/directives/pwCheck.directive.js",
 		"./src/app_client/common/filters/addHtmlLineBreaks.filter.js",
 		"./src/app_client/common/filters/capitalise.filter.js",
 		"./src/app_client/common/filters/formatDistance.filter.js",

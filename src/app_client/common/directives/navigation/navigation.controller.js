@@ -5,7 +5,7 @@
 	.controller('navigationCtrl', navigationCtrl);
 
 	/* @ngInject */
-	function navigationCtrl($location, authentication, events, $uibModal) {
+	function navigationCtrl($location, authentication, events, $uibModal, $scope) {
 		var vm = this;
 
 		// Bindable Functions
@@ -34,7 +34,10 @@
 				}
 			});
 
-			modalInstance.result.then(function() {});
+			modalInstance.result.then(function() {
+				console.log("ASD");
+				vm.currentUser = authentication.currentUser();
+			});
 		}
 
 		function logout() {

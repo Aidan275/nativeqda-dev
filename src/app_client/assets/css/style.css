@@ -451,3 +451,11 @@ footer{
 	text-align: center;
 	vertical-align: middle !important;
 }
+
+/* ========== UPDATE PROFILE MODAL ========== */
+
+.password-error-msg {
+	color: #a94442;
+    font-weight: bold;
+    padding: 5px 0;
+}
