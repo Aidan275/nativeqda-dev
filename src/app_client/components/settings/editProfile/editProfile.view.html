@@ -51,7 +51,7 @@
 					<div class="form-group has-feedback" ng-class="{ 'has-error': updateProfile.password.$dirty && updateProfile.password.$invalid, 'has-success': updateProfile.password.$dirty && updateProfile.password.$valid }">
 						<label class="col-lg-3 control-label">Password:</label>
 						<div class="col-lg-8">
-							<input ng-change="vm.setDelay()" id="password" name="password" ng-model="vm.userInfo.password" class="form-control .has-error" type="password" placeholder="Password">
+							<input ng-change="vm.setDelay()" id="password" name="password" ng-model="vm.userInfo.password" required class="form-control .has-error" type="password" placeholder="Password">
 							<span class="glyphicon glyphicon-remove form-control-feedback" style="display:none;" ng-class="{ 'show': updateProfile.password.$dirty && updateProfile.password.$invalid }" aria-hidden="true"></span>
 							<span class="glyphicon glyphicon-ok form-control-feedback" style="display:none;" ng-class="{ 'show': updateProfile.password.$dirty && updateProfile.password.$valid }" aria-hidden="true"></span>
 							<div ng-show="!vm.delay && (updateProfile.$dirty || submitted)">
@@ -62,7 +62,7 @@
 					<div class="form-group has-feedback" ng-class="{ 'has-error': updateProfile.confirmPassword.$dirty && updateProfile.confirmPassword.$invalid, 'has-success': updateProfile.confirmPassword.$dirty && updateProfile.confirmPassword.$valid }">
 						<label class="col-lg-3 control-label">Confirm password:</label>
 						<div class="col-lg-8">
-							<input ng-change="vm.setDelay()" id="confirmPassword" name="confirmPassword" ng-model="vm.userInfo.confirmPassword" pw-check='password' class="form-control .has-error" type="password" placeholder="Password">
+							<input ng-change="vm.setDelay()" id="confirmPassword" name="confirmPassword" ng-model="vm.userInfo.confirmPassword" pw-check='password' required class="form-control .has-error" type="password" placeholder="Password">
 							<span class="glyphicon glyphicon-remove form-control-feedback" style="display:none;" ng-class="{ 'show': updateProfile.confirmPassword.$dirty && updateProfile.confirmPassword.$invalid }" aria-hidden="true"></span>
 							<span class="glyphicon glyphicon-ok form-control-feedback" style="display:none;" ng-class="{ 'show': updateProfile.confirmPassword.$dirty && updateProfile.confirmPassword.$valid }" aria-hidden="true"></span>
 							<div ng-show="!vm.delay && (updateProfile.confirmPassword.$dirty || submitted)">

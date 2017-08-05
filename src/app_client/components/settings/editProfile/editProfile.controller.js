@@ -73,27 +73,27 @@
 						case 'jpeg':
 						case 'png':
 						case 'bmp':
-							vm.file = uploadFiles[0];
-							vm.fileInfo = {
-								name: vm.userInfo.firstName + '-avatar.' + fileExtension,
-								type: vm.file.type,
-								readType: 'public-read',	/* Sets the ACL option in S3 to public-read so a signed URL doesn't need to be generated each time the avatar is requested. */
-								avatar: true
-							};
+						vm.file = uploadFiles[0];
+						vm.fileInfo = {
+							name: vm.userInfo.firstName + '-avatar.' + fileExtension,
+							type: vm.file.type,
+							readType: 'public-read',	/* Sets the ACL option in S3 to public-read so a signed URL doesn't need to be generated each time the avatar is requested. */
+							avatar: true
+						};
 
-							// File reader to display the image before confirming upload.
-							var reader = new FileReader();
+						/* File reader to display the image before confirming upload. */
+						var reader = new FileReader();
 
-							reader.onload = function (e) {
-								var avatarImg = document.getElementById("avatar-img");
-								avatarImg.src = e.target.result; 
-							}
+						reader.onload = function (e) {
+							var avatarImg = document.getElementById("avatar-img");
+							avatarImg.src = e.target.result; 
+						}
 
-							reader.readAsDataURL(vm.file);
-							break;
+						reader.readAsDataURL(vm.file);
+						break;
 						default: 
-							logger.error("The selected file is not a supported image file", "", "Error");	/* If not an image file (by file extension) */
-							cleanUpForNextUpload();
+						logger.error("The selected file is not a supported image file", "", "Error");	/* If not an image file (by file extension) */
+						cleanUpForNextUpload();
 					}
 				} else {
 					logger.error("Maximum file size is 10 MB. \nPlease select a smaller file.", "", "Error");	/* If larger, display message and reinitialise the file variables */
@@ -114,6 +114,8 @@
 		function onSubmit() {
 			if(!vm.userInfo.firstName || !vm.userInfo.lastName || !vm.userInfo.email || !vm.userInfo.company) {
 				logger.error('All fields required, please try again', '', 'Error');
+			} else if (vm.userInfo.password === '' ||  vm.userInfo.confirmPassword === '') {
+				logger.error('Password cannot be blank', '', 'Error');
 			} else if(vm.userInfo.password != vm.userInfo.confirmPassword) {
 				logger.error('Passwords do not match', '', 'Error');
 			} else {
