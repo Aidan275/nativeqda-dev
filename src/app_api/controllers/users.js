@@ -76,7 +76,10 @@ module.exports.updateProfile = function(req, res) {
 		if (req.body.password)
 			tmpuser.setPassword(req.body.password);
 
-		tmpuser.lastModified = new Date();
+		var currentDate = new Date();
+		currentDate.setSeconds(currentDate.getSeconds() - 10);	/* Sets the last modified date to 10 seconds in the past to account for generating and passing the JWT to the browser */
+
+		tmpuser.lastModified = currentDate;
 		
 		tmpuser.save(function(err, response) {
 			if (err)
