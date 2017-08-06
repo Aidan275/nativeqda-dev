@@ -11,6 +11,7 @@
 			saveToken		: saveToken,
 			getToken		: getToken,
 			isLoggedIn		: isLoggedIn,
+			checkJWT 		: checkJWT,
 			lastModified 	: lastModified,
 			register		: register,
 			login			: login,
@@ -35,7 +36,6 @@
 			var token = getToken();
 			if(token){
 				var payload = JSON.parse($window.atob(token.split('.')[1]));
-
 				if(payload.exp < Date.now() / 1000) {	/* Checks if the token has expired */
 					swal({
 						title: "You have been logged out",
@@ -48,33 +48,39 @@
 						logout();	
 						$location.path('/login');
 						return false;
-					});					
-				} else {
-					lastModified().then(function(response) {		/* Checks if the database for the date/time the user profile was last modified */
-						var date = new Date(response.data.lastModified);
-						var lastModifiedTime = parseInt(date.getTime() / 1000);	/* Checks the date/time the users token was created */
-						if(lastModifiedTime > payload.iat) {		/* If the token was created before the last modified date of the user profile display message and logout */
-							swal({
-								title: "You have been logged out",
-								text: "Your security token is not up to date, please login again to continue",
-								type: "warning",
-								confirmButtonColor: "#d9534f",
-								confirmButtonText: "Okay"
-							},
-							function() {
-								logout();	
-								$location.path('/login');
-								return false;
-							});							
-						}
 					});
-				}
+				} 
 
-				return true;	// If token has not expired or been modified, return true
+				return true;	// If token has not expired, return true
 			} else {
 				return false;	// Returns false if no token is found
 			}
 		};
+
+		function checkJWT() {
+			var token = getToken();
+			if(token){
+				var payload = JSON.parse($window.atob(token.split('.')[1]));
+				lastModified().then(function(response) {		/* Checks the database for the date/time the user profile was last modified */
+					var date = new Date(response.data.lastModified);
+					var lastModifiedTime = parseInt(date.getTime() / 1000);	/* Checks the date/time the user's token was created */
+					if(lastModifiedTime > payload.iat) {		/* If the token was created before the last modified date of the user profile display message and logout */
+						swal({
+							title: "You have been logged out",
+							text: "Your security token is not up to date, please login again to continue",
+							type: "warning",
+							confirmButtonColor: "#d9534f",
+							confirmButtonText: "Okay"
+						},
+						function() {
+							logout();	
+							$location.path('/login');
+							return false;
+						});							
+					}
+				});
+			}
+		}
 
 		function lastModified(){
 			return $http.get('/api/user/last-modified', {

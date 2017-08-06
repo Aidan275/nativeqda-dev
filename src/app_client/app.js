@@ -217,7 +217,7 @@
 	    $locationProvider.html5Mode(true);
 	}
 
-	function run ($rootScope, $location, authentication, bsLoadingOverlayService) {
+	function run($rootScope, $location, authentication, bsLoadingOverlayService) {
 		$rootScope.$on("$routeChangeStart", function(event, nextRoute, currentRoute) {
 			var postLogInRoute;
 			if(nextRoute.loginRequired && !authentication.isLoggedIn()){
@@ -225,6 +225,7 @@
 				$location.path('/login').replace();
 				$location.search('page', postLogInRoute);
 			} else if (nextRoute.loginRequired && authentication.isLoggedIn()) {
+				authentication.checkJWT();
 				$location.path(postLogInRoute).replace();
 				postLogInRoute = null;
 			} 
