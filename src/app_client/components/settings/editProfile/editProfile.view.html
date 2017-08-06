@@ -51,17 +51,26 @@
 							<input id="company" name="company" ng-model="vm.userInfo.company" class="form-control" type="text" placeholder="Company">
 						</div>
 					</div>
-					<div class="form-group has-feedback" ng-class="{ 'has-error': vm.profileForm.password.$dirty && vm.profileForm.password.$invalid, 'has-success': vm.profileForm.password.$dirty && vm.profileForm.password.$valid }">
+
+					<div class="form-group">
+						<label class="col-lg-3 control-label"></label>
+						<div class="col-lg-8">
+							<button ng-if="!vm.changePassword" ng-click="vm.togglePassword()" type="button" class="btn btn-primary">Change Password</button>
+							<button ng-if="vm.changePassword" ng-click="vm.togglePassword()" type="button" class="btn btn-primary">Cancel</button>
+						</div>
+					</div>
+
+					<div ng-show="vm.changePassword" class="form-group has-feedback animate-show-hide" ng-class="{ 'has-error': vm.profileForm.password.$dirty && vm.profileForm.password.$invalid, 'has-success': vm.profileForm.password.$dirty && vm.profileForm.password.$valid }">
 						<label for="password" class="col-lg-3 control-label">Password:</label>
 						<div class="col-lg-8">
-						<input id="password" name="password" ng-model="vm.userInfo.password" class="form-control .has-error" type="password" placeholder="Password" required="true">
+							<input id="password" name="password" ng-model="vm.userInfo.password" class="form-control .has-error" type="password" placeholder="Password" required="true">
 							<span class="glyphicon form-control-feedback" ng-class="{ 'glyphicon-remove': vm.profileForm.password.$dirty && vm.profileForm.password.$invalid, 'glyphicon-ok': vm.profileForm.password.$dirty && vm.profileForm.password.$valid }" aria-hidden="true"></span>
 							<div ng-show="(vm.profileForm.password.$dirty || submitted)">
 								<span class="password-error-msg" ng-show="vm.profileForm.password.$error.required">Please enter a password.</span>
 							</div>
 						</div>
 					</div>
-					<div class="form-group has-feedback" ng-class="{ 'has-error': vm.profileForm.confirmPassword.$dirty && vm.profileForm.confirmPassword.$invalid, 'has-success': vm.profileForm.confirmPassword.$dirty && vm.profileForm.confirmPassword.$valid }">
+					<div ng-show="vm.changePassword" class="form-group has-feedback animate-show-hide" ng-class="{ 'has-error': vm.profileForm.confirmPassword.$dirty && vm.profileForm.confirmPassword.$invalid, 'has-success': vm.profileForm.confirmPassword.$dirty && vm.profileForm.confirmPassword.$valid }">
 						<label for="confirm-password" class="col-lg-3 control-label">Confirm password:</label>
 						<div class="col-lg-8">
 							<input id="confirm-password" name="confirmPassword" ng-model="vm.userInfo.confirmPassword" pw-check='password' class="form-control .has-error" type="password" placeholder="Confirm Password" required="true">
@@ -75,7 +84,7 @@
 				</div>
 			</div>	
 			<div class="modal-footer">
-				<button ng-click="vm.modal.cancel()" type="button" class="btn btndefault">Cancel</button>
+				<button ng-click="vm.modal.cancel()" type="button" class="btn btn-default">Cancel</button>
 				<button type="submit" class="btn btn-primary" role="button" jp-ng-bs-animated-button is-submitting="vm.isSubmittingButton" result="vm.resultButton" options="vm.saveProfileButtonOptions">Save Profile</button>
 			</div>
 		</form>

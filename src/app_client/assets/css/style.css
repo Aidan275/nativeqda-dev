@@ -10,11 +10,11 @@
 /* ========== GLOBAL ========== */
 
 body > .inner {
-  display: none;
+	display: none;
 }
 
 body.pg-loaded > .inner {
-  display: block;
+	display: block;
 }
 
 body, html {
@@ -456,6 +456,15 @@ footer{
 
 .password-error-msg {
 	color: #a94442;
-    font-weight: bold;
-    padding: 5px 0;
+	font-weight: bold;
+	padding: 5px 0;
+}
+
+.animate-show-hide.ng-hide {
+  opacity: 0;
+}
+
+.animate-show-hide.ng-hide-add,
+.animate-show-hide.ng-hide-remove {
+	transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.3s;
 }

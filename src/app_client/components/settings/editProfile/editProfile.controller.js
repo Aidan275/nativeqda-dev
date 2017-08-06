@@ -5,27 +5,22 @@
 	.controller('editProfileCtrl', editProfileCtrl);
 	
 	/* @ngInject */
-	function editProfileCtrl($scope, $uibModalInstance, userEmail, usersService, bsLoadingOverlayService, logger, authentication, filesService, Upload) {
+	function editProfileCtrl($scope, $uibModalInstance, userEmail, usersService, bsLoadingOverlayService, logger, authentication, filesService, Upload, $animate) {
 		var vm = this;
 
 		/* Bindable Functions */
 		vm.getUserInfo = getUserInfo;
 		vm.onAvatarSelect = onAvatarSelect;
 		vm.onSubmit = onSubmit;
+		vm.togglePassword = togglePassword;
 
 		/* Bindable Data */
-		vm.userInfo = {
-			email: '', 
-			firstName: '',
-			lastName: '',
-			company: '',
-			settings: '',
-			avatar: ''
-		};
+		vm.userInfo = {};
 		vm.isSubmittingButton = null;	/* variables for button animation - ng-bs-animated-button */
 		vm.resultButton = null;
 		vm.saveProfileButtonOptions = { buttonDefaultText: 'Save Profile', animationCompleteTime: 1000, buttonSubmittingText: 'Saving...', buttonSuccessText: 'Done!' };
 		vm.isProcessing = false;
+		vm.changePassword = false;
 
 		activate();
 
@@ -47,15 +42,6 @@
 			});
 		}
 
-		vm.modal = {
-			close : function() {
-				$uibModalInstance.close();
-			}, 
-			cancel : function() {
-				$uibModalInstance.dismiss('cancel');
-			}
-		};
-		
 		/* Gets a signed URL for uploading a file then uploads the file to S3 with this signed URL */
 		/* If successful, the file info is then posted to the DB */
 		/* need to make neater */
@@ -98,15 +84,6 @@
 					cleanUpForNextUpload();
 				}
 			}
-		}
-
-
-		function cleanUpForNextUpload() {
-			vm.file = null;
-			vm.fileInfo = {};
-			vm.textFile = {};
-			vm.textFileInfo = {};
-			document.getElementById("file-upload-input").value = "";
 		}
 
 		function onSubmit() {
@@ -180,6 +157,18 @@
 			});
 		}
 
+		function togglePassword() {
+			if(vm.changePassword === false) {
+				vm.changePassword = true;
+			} else {
+				vm.changePassword = false;
+				vm.userInfo.confirmPassword = null;
+				vm.userInfo.password = null;
+				vm.profileForm.confirmPassword.$setPristine();
+				vm.profileForm.password.$setPristine();
+			}
+		}
+
 		/* For the animated submit button and other elements that should be disabled during event processing */
 		function processingEvent(status, result) {
 			vm.isSubmittingButton = status;	/* ng-bs-animated-button status */
@@ -187,6 +176,23 @@
 			vm.isProcessing = status;	/* Processing flag for other view elements to check */
 		}
 
+		function cleanUpForNextUpload() {
+			vm.file = null;
+			vm.fileInfo = {};
+			vm.textFile = {};
+			vm.textFileInfo = {};
+			document.getElementById("file-upload-input").value = "";
+		}
+
+		vm.modal = {
+			close : function() {
+				$uibModalInstance.close();
+			}, 
+			cancel : function() {
+				$uibModalInstance.dismiss('cancel');
+			}
+		};
+		
 	}
 
 
