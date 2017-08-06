@@ -71,6 +71,8 @@
 						reader.onload = function (e) {
 							var avatarImg = document.getElementById("avatar-img");
 							avatarImg.src = e.target.result; 
+							var avatarImgContainer = document.getElementById("edit-profile-avatar");
+							avatarImgContainer.style.backgroundImage  = "url('" + e.target.result + "')"; 
 						}
 
 						reader.readAsDataURL(vm.file);

@@ -169,6 +169,27 @@ footer{
 	margin-top: 30px;
 }
 
+#nav-avatar-container {
+	position: relative;
+	display: inline-block;
+	width: 40px;
+	height: 40px;
+	background-position: center center;
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+
+#nav-avatar {
+	height: 100%;
+	width: 100%;
+	/* IE 8 */
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+	/* IE 5-7 */
+	filter: alpha(opacity=0);
+	/* modern browsers */
+	opacity: 0;
+}
+
 /* ========== MAPS ========== */
 
 #map{
@@ -281,14 +302,24 @@ footer{
 .profile-img-container {
 	position: relative;
 	display: inline-block;
+	width: 200px;
+	height: 200px;
+	background-position: center center;
+	background-repeat: no-repeat;
+	background-size: cover;
 	overflow: hidden;
 }
 
 .profile-img-container img {
-	width:200px;
-	height:200px;
+	height: 100%;
+	width: 100%;
+	/* IE 8 */
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+	/* IE 5-7 */
+	filter: alpha(opacity=0);
+	/* modern browsers */
+	opacity: 0;
 }
-
 
 .profile-img-container img:hover {
 	opacity: 0.5
@@ -461,7 +492,7 @@ footer{
 }
 
 .animate-show-hide.ng-hide {
-  opacity: 0;
+	opacity: 0;
 }
 
 .animate-show-hide.ng-hide-add,
