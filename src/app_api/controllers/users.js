@@ -29,8 +29,6 @@ module.exports.getUserInfo = function(req, res) {
 					sendJSONresponse(res, 404, err);
 					return;
 				}
-				if (results.avatar == null || results.avatar === "") //If the user doesn't have an avatar image, return the default one.
-					results.avatar = "/assets/img/settings/default-avatar.png";
 				sendJSONresponse(res, 200, results);
 			});
 	} else {
@@ -38,6 +36,24 @@ module.exports.getUserInfo = function(req, res) {
 			"message": "No email parameter in request"
 		});
 	}
+};
+
+module.exports.getAllUsersInfo = function(req, res) {
+	User
+	.find({}, { email: 1, firstName: 1, lastName: 1, company: 1, avatar: 1, roles: 1 })
+	.exec(
+		function(err, results) {
+			if (!results) {
+				sendJSONresponse(res, 404, {
+					"message": "No users found"
+				});
+				return;
+			} else if (err) {
+				sendJSONresponse(res, 404, err);
+				return;
+			}
+			sendJSONresponse(res, 200, results);
+		});
 };
 
 //Note: This should be able to be done better but I've spent too long trying to get it to work elegantly...
@@ -175,3 +191,4 @@ module.exports.userLastModified = function(req, res) {
 		});
 	
 };
+

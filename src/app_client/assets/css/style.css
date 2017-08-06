@@ -42,6 +42,52 @@ footer{
 	}
 }
 
+/* ========== AVATAR IMAGES ========== */
+
+.sml-avatar-container {
+	position: relative;
+	display: inline-block;
+	width: 40px;
+	height: 40px;
+	background-position: center center;
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+
+.med-avatar-container {
+	position: relative;
+	display: inline-block;
+	width: 100px;
+	height: 100px;
+	background-position: center center;
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+
+.lrg-avatar-container {
+	position: relative;
+	display: inline-block;
+	width: 200px;
+	height: 200px;
+	background-position: center center;
+	background-repeat: no-repeat;
+	background-size: cover;
+	overflow: hidden;
+}
+
+.sml-avatar,
+.med-avatar,
+.lrg-avatar {
+	height: 100%;
+	width: 100%;
+	/* IE 8 */
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+	/* IE 5-7 */
+	filter: alpha(opacity=0);
+	/* modern browsers */
+	opacity: 0;
+}
+
 /* ========== INITIAL LOADING SCREEN ========== */
 
 .spinner {
@@ -169,27 +215,6 @@ footer{
 	margin-top: 30px;
 }
 
-#nav-avatar-container {
-	position: relative;
-	display: inline-block;
-	width: 40px;
-	height: 40px;
-	background-position: center center;
-	background-repeat: no-repeat;
-	background-size: cover;
-}
-
-#nav-avatar {
-	height: 100%;
-	width: 100%;
-	/* IE 8 */
-	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
-	/* IE 5-7 */
-	filter: alpha(opacity=0);
-	/* modern browsers */
-	opacity: 0;
-}
-
 /* ========== MAPS ========== */
 
 #map{
@@ -297,60 +322,6 @@ footer{
 	filter: blur(2px);
 }
 
-/* ========== AVATAR IMAGE UPLOAD OVERLAY ========== */
-
-.profile-img-container {
-	position: relative;
-	display: inline-block;
-	width: 200px;
-	height: 200px;
-	background-position: center center;
-	background-repeat: no-repeat;
-	background-size: cover;
-	overflow: hidden;
-}
-
-.profile-img-container img {
-	height: 100%;
-	width: 100%;
-	/* IE 8 */
-	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
-	/* IE 5-7 */
-	filter: alpha(opacity=0);
-	/* modern browsers */
-	opacity: 0;
-}
-
-.profile-img-container img:hover {
-	opacity: 0.5
-}
-.profile-img-container:hover a {
-	opacity: 1;
-	top: 0;
-	z-index: 500;
-}
-
-.profile-img-container:hover a span {
-	top: 50%;
-	position: absolute;
-	left: 0;
-	right: 0;
-	transform: translateY(-50%);
-	color:white;
-}
-
-.profile-img-container a {
-	display: block;
-	position: absolute;
-	top: -100%;
-	opacity: 0;
-	left: 0;
-	bottom: 0;
-	right: 0;
-	text-align: center;
-	color: inherit;
-}
-
 /* ========== BUBBLE CHART PAGE ========== */
 
 .number-input-bubble:invalid+span:after {
@@ -401,24 +372,9 @@ footer{
 	vertical-align: middle !important;
 }
 
-.file-browser-table td.last-modified-cell {
-	white-space: nowrap;
-	text-align: center;
-	vertical-align: middle !important;
-}
-
-.file-browser-table td.uploaded-by-cell {
-	white-space: nowrap;
-	text-align: center;
-	vertical-align: middle !important;
-}
-
-.file-browser-table td.size-cell {
-	white-space: nowrap;
-	text-align: center;
-	vertical-align: middle !important;
-}
-
+.file-browser-table td.last-modified-cell,
+.file-browser-table td.uploaded-by-cell,
+.file-browser-table td.size-cell,
 .file-browser-table td.command-cell {
 	white-space: nowrap;
 	text-align: center;
@@ -465,18 +421,8 @@ footer{
 	vertical-align: middle !important;
 }
 
-.analysis-file-browser-table td.last-modified-cell {
-	white-space: nowrap;
-	text-align: center;
-	vertical-align: middle !important;
-}
-
-.analysis-file-browser-table td.created-by-cell {
-	white-space: nowrap;
-	text-align: center;
-	vertical-align: middle !important;
-}
-
+.analysis-file-browser-table td.last-modified-cell,
+.analysis-file-browser-table td.created-by-cell,
 .analysis-file-browser-table td.command-cell {
 	white-space: nowrap;
 	text-align: center;
@@ -485,6 +431,38 @@ footer{
 
 /* ========== UPDATE PROFILE MODAL ========== */
 
+/* Upload Avatar */
+#upload-avatar-container img:hover {
+	opacity: 0.5
+}
+#upload-avatar-container:hover a {
+	opacity: 1;
+	top: 0;
+	z-index: 500;
+}
+
+#upload-avatar-container:hover a span {
+	top: 50%;
+	position: absolute;
+	left: 0;
+	right: 0;
+	transform: translateY(-50%);
+	color:white;
+}
+
+#upload-avatar-container a {
+	display: block;
+	position: absolute;
+	top: -100%;
+	opacity: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	text-align: center;
+	color: inherit;
+}
+
+/* Password Fields */
 .password-error-msg {
 	color: #a94442;
 	font-weight: bold;
@@ -498,4 +476,25 @@ footer{
 .animate-show-hide.ng-hide-add,
 .animate-show-hide.ng-hide-remove {
 	transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.3s;
+}
+
+/* ========== USER MANAGEMENT PAGE ========== */
+
+.users-table .table-row:hover {
+	background: rgba(70,118,250,0.15) !important;
+}
+
+.users-table .avatar-cell {
+	cursor: pointer;
+}
+
+.users-table td.avatar-cell,
+.users-table td.first-name-cell,
+.users-table td.last-name-cell,
+.users-table td.email-cell,
+.users-table td.role-cell,
+.users-table td.action-cell {
+	white-space: nowrap;
+	text-align: center;
+	vertical-align: middle !important;
 }

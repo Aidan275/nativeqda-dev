@@ -1,7 +1,6 @@
 var mongoose = require('mongoose');
 var crypto = require('crypto');
 var moment = require('moment');
-var cloudconvert = new (require('cloudconvert'))(process.env.CLOUD_CONVERT_API_KEY);
 var aws = require('aws-sdk');
 var s3 = new aws.S3();
 var Dataset = mongoose.model('Dataset');

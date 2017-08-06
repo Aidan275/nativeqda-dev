@@ -10,6 +10,7 @@
 	function usersService ($http, authentication, exception) {
 		return {
 			getUserInfo		: getUserInfo,
+			getAllUsersInfo : getAllUsersInfo,
 			updateProfile 	: updateProfile
 		};
 
@@ -25,6 +26,18 @@
 
 			function getUserInfoComplete(data) { return data; }
 			function getUserInfoFailed(e) { return exception.catcher('Failed getting the user\'s info.')(e); }
+		};
+
+		function getAllUsersInfo(){
+			return $http.get('/api/users/info', {
+				headers: {
+					Authorization: 'Bearer ' + authentication.getToken()
+				}
+			}).then(getAllUsersInfoComplete)
+			.catch(getAllUsersInfoFailed);
+
+			function getAllUsersInfoComplete(data) { return data; }
+			function getAllUsersInfoFailed(e) { return exception.catcher('Failed getting all user\'s info.')(e); }
 		};
 
 		function updateProfile(userInfo){

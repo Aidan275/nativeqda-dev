@@ -17,8 +17,8 @@
 						<div class="col-lg-8">
 
 							<!--Container for Avatar with FA icon mouse hover overlay -->
-							<div class="profile-img-container vis-img-thumb img-thumbnail img-circle img-responsive" id="edit-profile-avatar" style="background-image: url('{{vm.userInfo.avatar}}');">
-								<img id="avatar-img" src="{{vm.userInfo.avatar}}" class="" />
+							<div class="vis-img-thumb img-thumbnail img-circle img-responsive lrg-avatar-container" id="upload-avatar-container" style="background-image: url('{{vm.userInfo.avatar}}');">
+								<img src="{{vm.userInfo.avatar}}" class="lrg-avatar" id="upload-avatar"/>
 								<a href="#" type="file"  id="file-upload-input" ngf-select ngf-change="vm.onAvatarSelect($files)"><span class="fa fa-upload fa-5x"></span></a>
 							</div>
 

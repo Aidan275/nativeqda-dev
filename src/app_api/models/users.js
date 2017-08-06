@@ -50,7 +50,10 @@ var userSchema = new mongoose.Schema({
 	},
 	hash: String,
 	salt: String,
-	avatar: String
+	avatar: { /* Url of the user's avatar image */
+		type: String,
+		"default": "/assets/img/settings/default-avatar.png" /* default image */
+	}
 });
 
 userSchema.methods.setPassword = function(password){

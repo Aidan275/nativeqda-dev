@@ -69,10 +69,10 @@
 						var reader = new FileReader();
 
 						reader.onload = function (e) {
-							var avatarImg = document.getElementById("avatar-img");
-							avatarImg.src = e.target.result; 
-							var avatarImgContainer = document.getElementById("edit-profile-avatar");
+							var avatarImgContainer = document.getElementById("upload-avatar-container");
 							avatarImgContainer.style.backgroundImage  = "url('" + e.target.result + "')"; 
+							var avatarImg = document.getElementById("upload-avatar");
+							avatarImg.src = e.target.result; 
 						}
 
 						reader.readAsDataURL(vm.file);

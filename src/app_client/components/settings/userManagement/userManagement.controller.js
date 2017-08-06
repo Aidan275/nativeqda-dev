@@ -7,35 +7,51 @@
 	.controller('userManagementCtrl', userManagementCtrl);
 	
 	/* @ngInject */
-	function userManagementCtrl ($scope, $window, NgTableParams, $sce, $uibModal) {
+	function userManagementCtrl (NgTableParams, bsLoadingOverlayService, $uibModal, usersService) {
 		var vm = this;
 
+		// Bindable Functions
+		vm.confirmDelete = confirmDelete;
+
+		// Bindable Data
+		vm.userList = [];
 		vm.pageHeader = {
 			title: 'User Management',
 			strapline: 'manage users of the system'
 		};
-		
-	var dataset = [
-	{ firstName: 'Anu', lastName: 'Anu', email: 'anu@uow.edu.au', role: 'Researcher', command: 'id1'},
-	{ firstName: 'Michael', lastName: 'Matthias', email: 'matthias@uow.edu.au', role: 'Researcher', command: 'id1'},
-	{ firstName: 'Holly', lastName: 'Tootell', email: 'holly@uow.edu.au', role: 'Researcher', command: 'id1'},
-	{ firstName: 'Aidan', lastName: 'Andrews', email: 'aidan@nativeqda.xyz', role: 'Bubble Admin', command: 'id1'},
-	{ firstName: 'Ben', lastName: 'Rogers', email: 'ben@nativeqda.xyz', role: 'Bubble Admin', command: 'id1'},
-	{ firstName: 'Guy', lastName: 'Corrigan', email: 'guy@nativeqda.xyz', role: 'Bubble Admin', command: 'id1'},
-	{ firstName: 'Reece', lastName: 'Denaro', email: 'reece@nativeqda.xyz', role: 'Bubble Admin', command: 'id1'},
-	{ firstName: 'Lucas', lastName: 'Weneger', email: 'lucas@nativeqda.xyz', role: 'Bubble Admin', command: 'id1'},
-	];
 
-	vm.tableParams = new NgTableParams({}, { dataset: dataset});
+		activate();
 
-	$scope.confirmDelete = function () {
-	$window.confirm("Are ya sure?")
-	};
-	
+		///////////////////////////
+
+		function activate() {
+			bsLoadingOverlayService.start({referenceId: 'user-list'});	// Start animated loading overlay
+			getFileList();
+		}
+
+		// Gets all the files from the MongoDB database
+		function getFileList() {
+			usersService.getAllUsersInfo()
+			.then(function(response) {
+				vm.userList = response.data;
+				listUsers();
+			}, function(err){
+				bsLoadingOverlayService.stop({referenceId: 'user-list'});	// If error, stop animated loading overlay
+			});
+		}
+
+		function listUsers() {
+			vm.tableParams = new NgTableParams({
+				sorting: {lastModified: "desc"}
+			}, {
+				dataset: vm.userList
+			});
+			bsLoadingOverlayService.stop({referenceId: 'user-list'});	// Stop animated loading overlay
+		}
+
+		function confirmDelete() {
+			console.log("Delete me!");
+		}
 	}
 	
-	
-	
-	
-
 })();
