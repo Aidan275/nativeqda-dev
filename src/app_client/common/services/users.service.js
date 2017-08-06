@@ -38,7 +38,6 @@
 			function updateProfileComplete(data) { return data; }
 			function updateProfileFailed(e) { return exception.catcher('Failed updating the user\'s profile.')(e); }
 		};
-
 	}
 
 })();

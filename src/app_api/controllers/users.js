@@ -51,12 +51,12 @@ module.exports.updateProfile = function(req, res) {
 		}
 		if (!response) { //If the user is in some quantum superposition where it both exists and doesn't exist
 			sendJSONresponse(res, 404, response)
-			return
-		}
-		
-		var tmpuser = new User();
-		tmpuser = response;
-		
+		return
+	}
+
+	var tmpuser = new User();
+	tmpuser = response;
+
 		//"Update" fields
 		if (req.body.email)
 			tmpuser.email = req.body.email;
@@ -75,6 +75,8 @@ module.exports.updateProfile = function(req, res) {
 			tmpuser.avatar = req.body.avatar;
 		if (req.body.password)
 			tmpuser.setPassword(req.body.password);
+
+		tmpuser.lastModified = new Date();
 		
 		tmpuser.save(function(err, response) {
 			if (err)
@@ -148,4 +150,25 @@ module.exports.deleteRole = function(req, res) {
 			sendJSONresponse(res, 200, response);
 		}
 	});	
+};
+
+module.exports.userLastModified = function(req, res) {
+	var jwtpayload = extractJWT(req.headers["authorization"]);
+
+	User
+	.findOne({email: jwtpayload.email}, { lastModified: 1 })
+	.exec(
+		function(err, results) {
+			if (!results) {
+				sendJSONresponse(res, 404, {
+					"message": "No user found"
+				});
+				return;
+			} else if (err) {
+				sendJSONresponse(res, 404, err);
+				return;
+			}
+			sendJSONresponse(res, 200, results);
+		});
+	
 };

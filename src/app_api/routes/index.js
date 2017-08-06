@@ -40,7 +40,8 @@ router.put('/settings', auth, checkDatabaseStatus, ctrlSettings.setSettings);
 //Users
 router.get('/user/info', auth, checkDatabaseStatus, ctrlUsers.getUserInfo);
 router.put('/user', auth, checkDatabaseStatus, ctrlUsers.updateProfile); //Update the user's details
-router.get('/user/:email', auth, checkDatabaseStatus, ctrlUsers.getUserProfile); //View a user's profile
+/* router.get('/user/:email', auth, checkDatabaseStatus, ctrlUsers.getUserProfile); //View a user's profile */ /* Not sure if this is still needed? Is interfering with the route below (/user/last-modified) */
+router.get('/user/last-modified', auth, checkDatabaseStatus, ctrlUsers.userLastModified); // Get the date the user's info was last modified
 
 //User Roles
 router.get('/roles/:rolename?', auth, checkDatabaseStatus, ctrlUsers.getRoles); //Get a specific role or a list of all the user role objects (More likely)

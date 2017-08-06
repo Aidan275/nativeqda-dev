@@ -5,16 +5,17 @@
 	.service('authentication', authentication);
 
 	/* @ngInject */
-	function authentication ($http, $window, exception) {
+	function authentication ($http, $window, exception, $location) {
 		return {
-			currentUser	: currentUser,
-			saveToken	: saveToken,
-			getToken	: getToken,
-			isLoggedIn	: isLoggedIn,
-			register	: register,
-			login		: login,
-			logout		: logout,
-			setavatar	: setavatar 
+			currentUser		: currentUser,
+			saveToken		: saveToken,
+			getToken		: getToken,
+			isLoggedIn		: isLoggedIn,
+			lastModified 	: lastModified,
+			register		: register,
+			login			: login,
+			logout			: logout,
+			setavatar		: setavatar 
 		};
 
 		// Saves a JSON Web Token (JWT) to the browser's local storage
@@ -34,10 +35,57 @@
 			var token = getToken();
 			if(token){
 				var payload = JSON.parse($window.atob(token.split('.')[1]));
-				return payload.exp > Date.now() / 1000;	// Date.now() retrieves the epoch timestamp in milliseconds so must divide by 1000 for seconds
+
+				if(payload.exp < Date.now() / 1000) {	/* Checks if the token has expired */
+					swal({
+						title: "You have been logged out",
+						text: "Your security token has expired, please login again to continue",
+						type: "warning",
+						confirmButtonColor: "#d9534f",
+						confirmButtonText: "Okay"
+					},
+					function() {
+						logout();	
+						$location.path('/login');
+						return false;
+					});					
+				} else {
+					lastModified().then(function(response) {		/* Checks if the database for the date/time the user profile was last modified */
+						var date = new Date(response.data.lastModified);
+						var lastModifiedTime = parseInt(date.getTime() / 1000);	/* Checks the date/time the users token was created */
+						if(lastModifiedTime > payload.iat) {		/* If the token was created before the last modified date of the user profile display message and logout */
+							swal({
+								title: "You have been logged out",
+								text: "Your security token is not up to date, please login again to continue",
+								type: "warning",
+								confirmButtonColor: "#d9534f",
+								confirmButtonText: "Okay"
+							},
+							function() {
+								logout();	
+								$location.path('/login');
+								return false;
+							});							
+						}
+					});
+				}
+
+				return true;	// If token has not expired or been modified, return true
 			} else {
 				return false;	// Returns false if no token is found
 			}
+		};
+
+		function lastModified(){
+			return $http.get('/api/user/last-modified', {
+				headers: {
+					Authorization: 'Bearer ' + getToken()
+				}
+			}).then(lastModifiedComplete)
+			.catch(lastModifiedFailed);
+
+			function lastModifiedComplete(data) { return data; }
+			function lastModifiedFailed(e) { return exception.catcher('Failed getting the user\'s last modified date.')(e); }
 		};
 
 		// Checks if logged in then returns the user's firstName and email from the JWT
@@ -49,7 +97,8 @@
 					email		: payload.email,
 					firstName	: payload.firstName,
 					settings 	: payload.settings,
-					avatar 		: payload.avatar
+					avatar 		: payload.avatar,
+					iat			: payload.iat
 				};
 			}
 		};

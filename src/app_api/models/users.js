@@ -40,6 +40,14 @@ var userSchema = new mongoose.Schema({
 		required: true,
 		default: '{}'
 	},
+	dateCreated: { //Datetime user was created in the system
+		type: Date,
+		"default": Date.now
+	},
+	lastModified: { //Datetime the user's information was last edited
+		type: Date,
+		"default": Date.now
+	},
 	hash: String,
 	salt: String,
 	avatar: String

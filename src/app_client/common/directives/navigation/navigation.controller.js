@@ -17,6 +17,7 @@
 		vm.isLoggedIn = authentication.isLoggedIn();
 		vm.currentUser = authentication.currentUser();
 		var userEmail = vm.currentUser.email
+		
 		///////////////////////////
 
 		// Stores the user's email, current page, and time in the database for analytics
