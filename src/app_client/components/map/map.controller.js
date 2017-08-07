@@ -7,7 +7,7 @@
 	.controller('mapCtrl', mapCtrl);
 
 	/* @ngInject */
-	function mapCtrl(filesService, $scope, $filter, $compile, $window, $uibModal, logger, bsLoadingOverlayService) {
+	function mapCtrl(filesService, $scope, $filter, $compile, $window, $uibModal, logger, bsLoadingOverlayService, mapService) {
 		var vm = this;
 
 		// Bindable Functions
@@ -15,6 +15,7 @@
 		vm.viewFile = viewFile;
 		vm.popupFileDetails = popupFileDetails;
 		vm.confirmDelete = confirmDelete;
+		vm.selectDependent = selectDependent;
 
 		// Bindable Data
 		vm.map = null;
@@ -24,6 +25,7 @@
 		vm.lat = -34.4054039;	// Default position is UOW
 		vm.lng = 150.87842999999998;
 		vm.currentMarker = null;
+		vm.addingDependent = false;
 
 		// To move - may move the majority of the mapping functions into it's own directive
 		var LeafIcon = L.Icon.extend({
@@ -40,6 +42,8 @@
 		var defaultIcon = new LeafIcon({iconUrl: 'assets/img/map/markers/marker-icon-2x.png'});
 		var posIcon = new LeafIcon({iconUrl: 'assets/img/map/markers/marker-icon-pos.png'});
 
+		var loadScreenCounter = 0;
+
 		isPageReady();
 
 		///////////////////////////
@@ -48,7 +52,10 @@
 		// display correctly. This function checks if the loading screen is loaded before adding the
 		// map to the DOM.
 		function isPageReady() {
-			if(!initial_loading_screen.loaded) {
+			if(loadScreenCounter > 50){	/* If reload while not on page - Also to prevent infinte loop (this could probably be improved) */
+				activate();
+			} else if(!initial_loading_screen.loaded) {
+				loadScreenCounter++;
 				setTimeout(isPageReady, 100);	// Checks every 100 ms
 			} else {
 				activate();
@@ -305,6 +312,7 @@
 				popupString += '<a ng-click="vm.viewFile(fileKey)" class="btn btn-success" role="button">View</a> ' +
 				'<a ng-click="vm.popupFileDetails(fileKey)" class="btn btn-primary" role="button">Details</a> ' +
 				'<a ng-click="vm.confirmDelete(fileKey, fileName, textFileKey)" class="btn btn-danger" role="button">Delete</a>' +
+				'<a ng-click="vm.selectDependent(precedent)" class="btn btn-primary" role="button">Add Dependent</a>' +
 				'</div>';
 
 				// compiles the HTML so ng-click works
@@ -314,6 +322,11 @@
 				// New scope variables for the compiled string above
 				newScope.fileKey = file.key;
 				newScope.fileName = file.name;
+				newScope.precedent = {
+					fileID: file._id,
+					lat: lat,
+					lng: lng
+				};
 
 				marker.bindPopup(compiledPopupString(newScope)[0]);
 
@@ -409,13 +422,80 @@
 				if(textFileKey && textFileKey != key){
 					filesService.deleteFileS3({key: textFileKey});
 				}
-				removeMapMarker();
+				removeCurrentMarker();
 				logger.success("'" + fileName + "' was deleted successfully", "", "Success");
 			});
 		}
 
-		function removeMapMarker() {	
+		function removeCurrentMarker() {	
 			vm.markers.removeLayer(vm.currentMarker);
+		}
+
+		function removeAllMarkers() {	
+			vm.map.removeLayer(vm.markers);
+			vm.markers = null;
+		}
+
+		function selectDependent(precedent) {
+			vm.addingDependent = true;
+
+			removeAllMarkers();
+
+			vm.markers = L.markerClusterGroup({showCoverageOnHover: false});
+
+			/* For each file returned from the DB, a marker with an info */ 
+			/* window is created. Each marker is then added to the */ 
+			/* markers cluster group to be displayed on the map */
+			vm.fileList.forEach(function(file) {
+				if(file._id != precedent.fileID) {
+					var lat = file.coords.coordinates[1];
+					var lng = file.coords.coordinates[0];
+					var marker = L.marker([lat, lng], { icon: defaultIcon });
+
+					/* Only include tooltips if the browser is not running on a mobile device */
+					/* so mobile devices do not display the tooltip when a pin is pressed. */
+					if (L.Browser.mobile != true) {
+						var toolTipString = '<strong>File Name:</strong> ' + file.name + '<br />' + 
+						'<strong>Created By:</strong> ' + file.createdBy + '<br />' + 
+						'<strong>Last Modified:</strong> ' + $filter('date')(file.lastModified, "dd MMMM, yyyy h:mm a");
+
+						marker.bindTooltip(toolTipString);
+					}
+
+					/* When a marker is clicked and it's popup opens, the currentMaker variable is set */
+					/* so the marker can be removed if the file is deleted. */
+					/* Also hides the tooltip from the marker when the popup window is open */
+					marker.on("click", function() { 
+						var dependent = {
+							fileID: file._id,
+							lat: file.coords.coordinates[1],
+							lng: file.coords.coordinates[0]
+						};
+						addDependent(precedent, dependent);
+					});
+
+					vm.markers.addLayer(marker);
+				}
+			});
+
+			/* Adds the markers cluster group to the map */
+			vm.map.addLayer(vm.markers);
+		}
+
+		function addDependent(precedent, dependent) {
+			var linkInfo = {
+				precedent: precedent,
+				dependent: dependent
+			};
+
+			mapService.putLink(linkInfo)
+			.then(function(){
+				logger.success("The dependecy has been save", "", "Success");
+			});
+		}
+
+		function dependentDetails() {
+
 		}
 	}
 

@@ -6,37 +6,38 @@
 	.module('nativeQDAApp')
 	.service('mapService', mapService);
 
-    /* @ngInject */
-	function mapService (logger) {
+	/* @ngInject */
+	function mapService ($http, authentication, exception) {
 		return {
-			getPosition : getPosition
+			putLink 	: putLink,
+			getLinks	: getLinks
 		};
 
 		///////////////////////////
 
-		// ============== OLD GOOGLE MAPS FUNCTION ============== //
-		// ================== USING LEAFLET NOW ================= //
-		
-		function getPosition(cbSuccess) {
-			if (navigator.geolocation) {
-				navigator.geolocation.getCurrentPosition(cbSuccess, cbError);
-			}
-			else {
-				cbNoGeo();
-			}
+		function putLink(link){
+			return $http.put('/api/map/link/', link, {
+				headers: {
+					Authorization: 'Bearer ' + authentication.getToken()
+				}
+			}).then(putLinkComplete)
+			.catch(putLinkFailed);
 
-			function cbError(error) {
-				if(error.code == 1)
-					logger.warning(error.message, error, 'Warning');
-				else
-					logger.error(error.message, error, 'Error');
-			}
+			function putLinkComplete(data) { return data; }
+			function putLinkFailed(e) { return exception.catcher('Failed saving the marker link.')(e); }
+		};
 
-			function cbNoGeo() {
-				logger.error('Geolocation is not supported by this browser', 'Error', 'Error');
-			}
+		function getLinks(){
+			return $http.get('/api/map/link/', {
+				headers: {
+					Authorization: 'Bearer ' + authentication.getToken()
+				}
+			}).then(getLinksComplete)
+			.catch(getLinksFailed);
+
+			function getLinksComplete(data) { return data; }
+			function getLinksFailed(e) { return exception.catcher('Failed gettings the marker links.')(e); }
 		};
 	}
 
 })();
-

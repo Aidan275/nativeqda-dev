@@ -79,6 +79,7 @@ require('./users');
 require('./events');
 require('./datasets');
 require('./files');
+require('./map');
 require('./analysis');
 require('./surveys');
 require('./settings');

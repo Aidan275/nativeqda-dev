@@ -12,6 +12,7 @@
 
 		// Bindable Functions
 		vm.confirmDelete = confirmDelete;
+		vm.popupNewUser = popupNewUser;
 
 		// Bindable Data
 		vm.userList = [];

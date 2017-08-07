@@ -15,6 +15,7 @@ var ctrlAnalysis = require('../controllers/analysis');
 var ctrlUsers = require('../controllers/users');
 var ctrlSurveys = require('../controllers/surveys');
 var ctrlSettings = require('../controllers/settings');
+var ctrlMap = require('../controllers/map');
 
 // Middleware to check the connection status of the database. For any request that involves 
 // the database, add this function to the request parameters to check the connection status. 
@@ -102,5 +103,9 @@ router.get('/survey/list', auth, checkDatabaseStatus, ctrlSurveys.listSurveys);
 router.delete('/survey/delete', auth, checkDatabaseStatus, ctrlSurveys.deleteSurvey);
 router.post('/survey/response/save', auth, checkDatabaseStatus, ctrlSurveys.saveSurveyResponse);
 router.get('/survey/responses/read', auth, checkDatabaseStatus, ctrlSurveys.readSurveyResponses);
+
+/* Map Marker Link */
+router.put('/map/link', auth, checkDatabaseStatus, ctrlMap.putLink);
+router.get('/map/link', auth, checkDatabaseStatus, ctrlMap.getLinks);
 
 module.exports = router;

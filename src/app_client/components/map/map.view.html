@@ -55,6 +55,17 @@
 	</div>
 </div>
 
+<div ng-if="vm.addingDependent" class="map-dependent-marker-info">
+	<div>
+		<div class="dependent-msg">Please select the dependent marker</div>
+		<a ng-click="vm.cancelDependent()" class="btn btn-danger" role="button">Cancel</a>
+	</div>
+</div>
 
-
+<div ng-if="vm.addingDependentInfo" class="map-dependent-marker-info">
+	<div>
+		<div class="dependent-msg">Please select the dependent marker or press cancel</div>
+		<a ng-click="vm.cancelDependent()" class="btn btn-danger" role="button">Cancel</a>
+	</div>
+</div>
 

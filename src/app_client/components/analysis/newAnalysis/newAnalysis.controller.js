@@ -31,14 +31,14 @@
 		///////////////////////////
 
 		function activate() {
-			vm.data = [];	// Reset data list if navigating folders
-			vm.formData.selectedID = null;	// Reset selected file/dataset if navigating folders
-			bsLoadingOverlayService.start({referenceId: 'data-list'});	// Start animated loading overlay
 			getDatasetList();
 		}
 
 		// Gets all the datasets from the MongoDB database
 		function getDatasetList() {
+			bsLoadingOverlayService.start({referenceId: 'data-list'});	// Start animated loading overlay
+			vm.data = [];	// Reset data list if navigating folders
+			vm.formData.selectedID = null;	// Reset selected file/dataset if navigating folders
 			datasetService.listDatasets()
 			.then(function(response) {
 				response.data.forEach(function(data) {
@@ -157,11 +157,11 @@
 				}
 
 				vm.pathsArray = vm.currentPath.split("/");
-				activate();	// Re-fetch the data with the new path and re-list the data in the table
+				getDatasetList();	// Re-fetch the data with the new path and re-list the data in the table
 			} else if (type === 'parent-dir') {
 				vm.currentPath = vm.currentPath.substr(0, vm.currentPath.lastIndexOf('/'));
 				vm.pathsArray = vm.currentPath.split("/");
-				activate();	// Re-fetch the data with the new path and re-list the data in the table
+				getDatasetList();	// Re-fetch the data with the new path and re-list the data in the table
 			} else if (tick) {
 				vm.formData.selectedID = id;
 			} else {

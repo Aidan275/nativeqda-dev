@@ -32,12 +32,12 @@
 		///////////////////////////
 
 		function activate() {
-			bsLoadingOverlayService.start({referenceId: 'file-list'});	// Start animated loading overlay
 			getFileList();
 		}
 
 		// Gets all the files from the MongoDB database
 		function getFileList() {
+			bsLoadingOverlayService.start({referenceId: 'file-list'});	// Start animated loading overlay
 			filesService.getFileDB(vm.currentPath)
 			.then(function(response) {
 				vm.fileList = response.data;

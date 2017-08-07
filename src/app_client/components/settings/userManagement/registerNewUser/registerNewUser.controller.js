@@ -7,7 +7,7 @@
 	.controller('registerNewUserCtrl', registerNewUserCtrl);
 
 	/* @ngInject */
-	function registerNewUserCtrl($uibModalInstance, $window, NgTableParams, usersService, authentication, logger, bsLoadingOverlayService) {
+	function registerNewUserCtrl($uibModalInstance, $window, NgTableParams, usersService, authentication, logger, bsLoadingOverlayService, $location) {
 		var vm = this;
 
 		// Bindable Functions

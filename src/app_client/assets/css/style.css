@@ -244,6 +244,22 @@ footer{
 	background: rgb(229, 227, 223);
 }
 
+/* Leaflet map */
+.leaflet-container .btn {
+	color: #fff !important;
+}
+
+/* layers.png not in css folder, put into imgs folder for gulp image task */
+.leaflet-control-layers-toggle {
+	background-image: url(/assets/img/map/layers-2x.png) !important;
+	background-size: 60% !important;
+	background-repeat: no-repeat !important;
+}
+
+.leaflet-popup {
+	word-wrap: break-word;
+}
+
 /* ========== TOASTS ========== */
 
 /* To render line breaks - '\n' */
@@ -293,23 +309,6 @@ footer{
 
 #toast-container > .toast-error:before {
 	content: "\f12a";
-}
-
-/* ========== LEAFLET MAPS ========== */
-
-.leaflet-container .btn {
-	color: #fff !important;
-}
-
-/* layers.png not in css folder, put into imgs folder for gulp image task */
-.leaflet-control-layers-toggle {
-	background-image: url(/assets/img/map/layers-2x.png) !important;
-	background-size: 60% !important;
-	background-repeat: no-repeat !important;
-}
-
-.leaflet-popup {
-	word-wrap: break-word;
 }
 
 /* ========== ANGULAR LOADING OVERLAY ========== */
@@ -497,4 +496,66 @@ footer{
 	white-space: nowrap;
 	text-align: center;
 	vertical-align: middle !important;
+}
+
+/* ========== MAP PAGE ========== */
+
+@media only screen and (max-width: 481px) {
+	.map-dependent-marker-info {
+		z-index: 99999;
+		position: fixed;
+		left: 50%;
+		bottom: 10px;
+		-webkit-transform: translate(-50%, 0%);
+		-moz-transform: translate(-50%, 0%);
+		transform: translate(-50%, 0%);
+	}
+}
+
+@media only screen and (min-width: 480px) {
+	.map-dependent-marker-info {
+		z-index: 99999;
+		position: fixed;
+		left: 50%;
+		top: 75px;
+		-webkit-transform: translate(-50%, 0%);
+		-moz-transform: translate(-50%, 0%);
+		transform: translate(-50%, 0%);
+	}
+}
+
+.map-dependent-marker-info > div {
+	position: relative;
+	pointer-events: auto;
+	overflow: hidden;
+	margin: 0 0 6px;
+	padding: 15px;
+	width: 300px;
+	-moz-border-radius: 3px 3px 3px 3px;
+	-webkit-border-radius: 3px 3px 3px 3px;
+	border-radius: 3px 3px 3px 3px;
+	background-position: 15px center;
+	background-repeat: no-repeat;
+	-moz-box-shadow: 0 0 12px #999999;
+	-webkit-box-shadow: 0 0 12px #999999;
+	box-shadow: 0 0 12px #999999;
+	color: #ffffff;
+	opacity: 0.8;
+	-ms-filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=80);
+	filter: alpha(opacity=80);
+	box-sizing: border-box;
+	background-color: #fff;
+}
+
+.dependent-msg{
+	white-space: pre-wrap;
+	color: #000;
+	text-align: center;
+	padding: 0 0 10px 0;
+}
+
+.map-dependent-marker-info a {
+	display: block;
+	width: 100px;
+	margin: 0 auto;
 }
