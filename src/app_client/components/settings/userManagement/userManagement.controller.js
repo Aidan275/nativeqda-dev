@@ -52,6 +52,19 @@
 		function confirmDelete() {
 			console.log("Delete me!");
 		}
+		
+		function popupNewUser() {
+			var modalInstance = $uibModal.open({
+				templateUrl: '/components/settings/userManagement/registerNewUser/registerNewUser.view.html',
+				controller: 'registerNewUserCtrl as vm',
+				size: 'xl'
+			});
+			
+			modalInstance.result.then(function (results) {
+				vm.analyses.push(results);
+				listUsers();
+			});
+		};
 	}
 	
 })();
