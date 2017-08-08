@@ -57,6 +57,7 @@
     "request": "^2.81.0",
     "serve-favicon": "~2.4.2",
     "shortid": "^2.2.8",
+    "sidebar-v2": "^0.3.1",
     "slideout": "^1.0.1",
     "survey-knockout": "^0.12.19",
     "surveyjs-editor": "^0.12.19",

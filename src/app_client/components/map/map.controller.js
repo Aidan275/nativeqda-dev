@@ -213,6 +213,8 @@
 			vm.posMarker = L.marker([vm.lat, vm.lng], { icon: posIcon, zIndexOffset: -500 })
 			.bindTooltip('<strong>Your Position</strong>');
 
+			var sidebar = L.control.sidebar('sidebar').addTo(vm.map);
+
 			geoLocateUser();
 			getFileList();
 		}
@@ -483,7 +485,6 @@
 		}
 
 		function selectDependent(precedent) {
-			console.log(precedent);
 			vm.addingDependent = true;
 
 			removeAllMarkers();

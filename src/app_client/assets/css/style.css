@@ -261,6 +261,109 @@ footer{
 	word-wrap: break-word;
 }
 
+/* Leaflet Sidebar */
+
+/* Fix to prevent the sidebar covering the nav menu (mobile) */
+.sidebar {
+	top: 50px !important;
+}
+
+/* Fix to prevent the sidebar covering the nav menu */
+@media (min-width: 768px) {
+	.sidebar {
+		top: 60px !important;
+	}
+}
+
+/* sidebar header colour */
+.sidebar-header {
+	background-color: #4676fa !important;
+}
+
+.sidebar-tabs > li.active, .sidebar-tabs > ul > li.active {
+	background-color: #2d65ff !important;
+}
+
+
+/******* SIDEBAR - SEARCH *******/
+
+#map-file-search-input {
+	padding: 15px 0;
+}
+
+.sidebar-search-results-container {
+	height: auto;
+	overflow:auto; 
+	min-height: 100px;
+	margin-left: -21px;
+	border-top: 1px solid #e7e7e7;
+	border-bottom: 1px solid #e7e7e7;
+}
+
+.sidebar-search-results-container span{
+	display:block;
+}
+
+.sidebar-search-results-container:hover {
+	background-color: #f5f5f5;
+	cursor: pointer;
+}
+
+.sidebar-search-results-container .left {
+	display: block;
+	float: left;
+	width: 25%;
+	text-align: center;
+	height: auto;
+	min-height: 100px;
+	position: relative;
+}
+
+.sidebar-search-results-container .left i {
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	position: absolute;
+}
+
+.sidebar-search-results-container .right {
+	display: block;
+	float: left;
+	width: 75%;
+	height: auto;
+	min-height: 100px;
+	position: relative;
+	padding: 14px 0 15px 5px;
+}
+
+.sidebar-search-results-container .search-file-heading {
+	font-size: 16px;
+	font-weight: bold;
+	margin-bottom: 10px;
+}
+
+.sidebar-search-results-container .up-by-sm,
+.sidebar-search-results-container .up-date-sm {
+	font-size: 13px;
+	color: #8c8c8c;
+}
+
+/* ========== SCROLLBAR ========== */
+
+::-webkit-scrollbar-track {
+	background-color: #f0f0f0;
+}
+
+::-webkit-scrollbar {
+	width: 6px;
+	height: 6px;
+	background-color: #888;
+}
+
+::-webkit-scrollbar-thumb {
+	background-color: #888;
+}
+
 /* ========== TOASTS ========== */
 
 /* To render line breaks - '\n' */

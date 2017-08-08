@@ -25,6 +25,7 @@
 		"./node_modules/leaflet.markercluster/dist/leaflet.markercluster.js",
 		"./node_modules/leaflet.gridlayer.googlemutant/Leaflet.GoogleMutant.js",
 		"./node_modules/leaflet-polylinedecorator/dist/leaflet.polylineDecorator.js",
+		"./node_modules/sidebar-v2/js/leaflet-sidebar.min.js",
 		"./node_modules/pdfjs-dist/build/pdf.min.js",
 		"./node_modules/pdfjs-dist/build/pdf.worker.min.js",
 		"./src/app_client/assets/js/docxjs-1.0.0.min.js",
@@ -53,6 +54,7 @@
 		"./node_modules/leaflet/dist/leaflet.css",
 		"./node_modules/leaflet.markercluster/dist/MarkerCluster.css",
 		"./node_modules/leaflet.markercluster/dist/MarkerCluster.Default.css",
+		"./node_modules/sidebar-v2/css/leaflet-sidebar.min.css",
 		"./node_modules/sweetalert/dist/sweetalert.css",
 		"./node_modules/intro.js/introjs.css",
 		"./node_modules/angularjs-color-picker/dist/angularjs-color-picker.min.css",
@@ -80,6 +82,7 @@
 		"./node_modules/leaflet.markercluster/dist/leaflet.markercluster-src.js",
 		"./node_modules/leaflet.gridlayer.googlemutant/Leaflet.GoogleMutant.js",
 		"./node_modules/leaflet-polylinedecorator/dist/leaflet.polylineDecorator.js",
+		"./node_modules/sidebar-v2/js/leaflet-sidebar.js",
 		"./node_modules/pdfjs-dist/build/pdf.js",
 		"./node_modules/pdfjs-dist/build/pdf.worker.js",
 		"./src/app_client/assets/js/docxjs-1.0.0.min.js",
@@ -108,6 +111,7 @@
 		"./node_modules/leaflet/dist/leaflet.css",
 		"./node_modules/leaflet.markercluster/dist/MarkerCluster.css",
 		"./node_modules/leaflet.markercluster/dist/MarkerCluster.Default.css",
+		"./node_modules/sidebar-v2/css/leaflet-sidebar.css",
 		"./node_modules/sweetalert/dist/sweetalert.css",
 		"./node_modules/intro.js/introjs.css",
 		"./node_modules/angularjs-color-picker/dist/angularjs-color-picker.css",
@@ -133,6 +137,7 @@
 		"./src/app_client/common/directives/pwCheck.directive.js",
 		"./src/app_client/common/filters/addHtmlLineBreaks.filter.js",
 		"./src/app_client/common/filters/capitalise.filter.js",
+		"./src/app_client/common/filters/fileSearch.filter.js",
 		"./src/app_client/common/filters/formatDistance.filter.js",
 		"./src/app_client/common/filters/formatFileSize.filter.js",
 		"./src/app_client/common/services/analysis.service.js",
@@ -182,28 +187,28 @@
 		"./src/app_client/components/visualisations/visuals/pieChart/pieChart.controller.js",
 		"./src/app_client/components/visualisations/visuals/donutChart/donutChart.controller.js"
 	],
-	"nodeJS": [
-		"./src/app_api/**/*.js"
-	],
-	"fonts": [
-		"./src/app_client/assets/fonts/**/*.*",
-		"./node_modules/font-awesome/fonts/**/*.*"
-	],
-	"images": [
-		"./src/app_client/assets/img/**/*"
-	],
-	"pleaseWaitCSS": [
-		"./node_modules/please-wait/build/please-wait.css"
-	],
-	"pleaseWaitJS": [
-		"./node_modules/please-wait/build/please-wait.min.js"
-	],
-	"pleaseWaitStartJS": [
-		"./src/app_client/assets/js/please-wait-start.js"
-	],
-	"pleaseWaitStopJS": [
-		"./src/app_client/assets/js/please-wait-stop.js"
-	],
-	"report": "./report/",
-	"dist": "./dist/"
+"nodeJS": [
+	"./src/app_api/**/*.js"
+],
+"fonts": [
+	"./src/app_client/assets/fonts/**/*.*",
+	"./node_modules/font-awesome/fonts/**/*.*"
+],
+"images": [
+	"./src/app_client/assets/img/**/*"
+],
+"pleaseWaitCSS": [
+	"./node_modules/please-wait/build/please-wait.css"
+],
+"pleaseWaitJS": [
+	"./node_modules/please-wait/build/please-wait.min.js"
+],
+"pleaseWaitStartJS": [
+	"./src/app_client/assets/js/please-wait-start.js"
+],
+"pleaseWaitStopJS": [
+	"./src/app_client/assets/js/please-wait-stop.js"
+],
+"report": "./report/",
+"dist": "./dist/"
 }
