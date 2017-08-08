@@ -9,6 +9,14 @@ var surveyResponseSchema = new mongoose.Schema({
 		type: Date,
 		"default": Date.now
 	},
+	lastModified: {
+		type: Date,
+		"default": Date.now
+	},
+	completed: { //If the survey is done and submitted or saved, to be completed later
+		type: Boolean,
+		"default": false
+	},
 	fullName: {
 		type: String,
 		required: true
@@ -50,7 +58,8 @@ var surveySchema = new mongoose.Schema({
 		required: true
 	},
 	numResponses: {
-		type: Number
+		type: Number,
+		"default": 0
 	},
 	responses: [surveyResponseSchema]
 });

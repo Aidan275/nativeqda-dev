@@ -11,6 +11,7 @@ var ctrlAuth = require('../controllers/authentication');
 var ctrlDataset = require('../controllers/datasets');
 var ctrlEvent = require('../controllers/events');
 var ctrlFile = require('../controllers/files');
+var ctrlS3 = require('../controllers/s3');
 var ctrlAnalysis = require('../controllers/analysis');
 var ctrlUsers = require('../controllers/users');
 var ctrlSurveys = require('../controllers/surveys');
@@ -42,6 +43,7 @@ router.put('/settings', auth, checkDatabaseStatus, ctrlSettings.setSettings);
 router.get('/user/info', auth, checkDatabaseStatus, ctrlUsers.getUserInfo);
 router.get('/users/info', auth, checkDatabaseStatus, ctrlUsers.getAllUsersInfo);	/* Gets all users info */
 router.put('/user', auth, checkDatabaseStatus, ctrlUsers.updateProfile); //Update the user's details
+//router.delete('/user', auth, checkDatabaseStatus, ctrlUsers.deleteUser); //Delete a User's account
 /* router.get('/user/:email', auth, checkDatabaseStatus, ctrlUsers.getUserProfile); //View a user's profile */ /* Not sure if this is still needed? Is interfering with the route below (/user/last-modified) */
 router.get('/user/last-modified', auth, checkDatabaseStatus, ctrlUsers.userLastModified); // Get the date the user's info was last modified
 
@@ -62,7 +64,7 @@ router.post('/event', checkDatabaseStatus, ctrlEvent.event);
 
 
 //File operations - download link, get info, update/upload, delete
-router.get('/files/:filepath(*)/download', auth, checkDatabaseStatus, ctrlFile.signDownloadS3);
+router.get('/files/:filepath(*)/download', auth, checkDatabaseStatus, ctrlS3.signDownload); //TODO
 router.get('/files/:filepath(*)', auth, checkDatabaseStatus, ctrlFile.getFile);
 router.put('/files/:filepath(*)', auth, checkDatabaseStatus, ctrlFile.putFile);
 router.delete('/files/:filepath(*)', auth, checkDatabaseStatus, ctrlFile.deleteFile);
@@ -72,21 +74,14 @@ router.get('/files/?tags=:tags', auth, checkDatabaseStatus, ctrlUsers.getUserPro
 router.get('/files/?search=:query', auth, checkDatabaseStatus, ctrlUsers.getUserProfile);
 
 //Get (limited) file info for pins on the map based on some criteria. Ie. Limited in spatial or time range
-router.get('/map', auth, checkDatabaseStatus, ctrlFile.map); //Route doesn't like eg. ?q=:query. I think you access that instead directly through Express?
+router.get('/map', auth, checkDatabaseStatus, ctrlFile.map);
 
-
-router.post('/file/signUploadS3', auth, checkDatabaseStatus, ctrlFile.signUploadS3);
-/*router.get('/files/signDownloadS3', auth, checkDatabaseStatus, ctrlFile.signDownloadS3);
-router.get('/files/getFileListS3', auth, ctrlFile.getFileListS3);
-router.post('/files/deleteFileS3', auth, checkDatabaseStatus, ctrlFile.deleteFileS3);
-router.post('/files/addFileDB', auth, checkDatabaseStatus, ctrlFile.addFileDB);
-router.get('/files/getFileListDB', auth, checkDatabaseStatus, ctrlFile.map);
-router.get('/files/fileReadOneDB', auth, checkDatabaseStatus, ctrlFile.fileReadOneDB);
-router.delete('/files/deleteFileDB', auth, checkDatabaseStatus, ctrlFile.deleteFileDB);
-router.post('/files/syncDBwithS3', auth, checkDatabaseStatus, ctrlFile.syncDBwithS3);
-router.post('/files/objectAclS3', auth, checkDatabaseStatus, ctrlFile.objectAclS3);
-router.post('/files/objectAclDB', auth, checkDatabaseStatus, ctrlFile.objectAclDB);
-*/
+//S3 operations
+router.post('/s3/signUpload', auth, checkDatabaseStatus, ctrlS3.signUpload);
+router.get('/s3/list', auth, ctrlS3.getFileList);
+router.delete('/s3/:key/deleteFile', auth, checkDatabaseStatus, ctrlS3.deleteFile);
+router.post('/s3/syncDB', auth, checkDatabaseStatus, ctrlS3.syncDB);
+router.post('/s3/:key/acl', auth, checkDatabaseStatus, ctrlS3.acl);
 
 //Analysis
 router.post('/analysis/aylien/concept', auth, ctrlAnalysis.aylienConceptAnalysis);
