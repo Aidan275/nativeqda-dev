@@ -97,11 +97,11 @@ router.get('/analysis/watson/list', auth, checkDatabaseStatus, ctrlAnalysis.list
 router.delete('/analysis/watson/delete', auth, checkDatabaseStatus, ctrlAnalysis.deleteWatsonAnalysis);
 
 //Surveys
-router.post('/survey/save', auth, checkDatabaseStatus, ctrlSurveys.saveSurvey);
-router.get('/survey/read', auth, checkDatabaseStatus, ctrlSurveys.readSurvey);
+router.post('/survey/save', checkDatabaseStatus, ctrlSurveys.saveSurvey);
+router.get('/survey/read', checkDatabaseStatus, ctrlSurveys.readSurvey);
 router.get('/survey/list', auth, checkDatabaseStatus, ctrlSurveys.listSurveys);
 router.delete('/survey/delete', auth, checkDatabaseStatus, ctrlSurveys.deleteSurvey);
-router.post('/survey/response/save', auth, checkDatabaseStatus, ctrlSurveys.saveSurveyResponse);
+router.post('/survey/response/save', checkDatabaseStatus, ctrlSurveys.saveSurveyResponse);
 router.get('/survey/responses/read', auth, checkDatabaseStatus, ctrlSurveys.readSurveyResponses);
 
 /* Map Marker Link */

@@ -13,6 +13,7 @@
 		var responseData = {};
 		var data = [];
 		vm.cols = [];
+		var sortData = [];
 	
 		//var data;
 		activate();
@@ -33,8 +34,18 @@
 					data.push({relevance: keyword.relevance, text: text});
 				});
 				
+				//If there are too many entities the graph becomes unusable
+				if(data.length > 15) {
+						data.relevance.sort(); //Sort data to get most relevant
+						sortData = data.slice(0, 15);
+						console.log(sortData);
+						drawChart(data);										
+
+				}else {
+					drawChart(data);
+				}
+
 				
-				drawChart(data);
 			}, function(err) {
 				bsLoadingOverlayService.stop({referenceId: 'bubble-chart'});	// If error, stop animated loading overlay
 			}); 

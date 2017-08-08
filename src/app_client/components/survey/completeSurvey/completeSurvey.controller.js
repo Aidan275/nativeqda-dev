@@ -16,6 +16,7 @@
 		// Bindable Data
 		vm.surveyCode = '';
 		vm.surveyFound = false;
+		vm.surveyComplete = false;
 
 		///////////////////////////
 		
@@ -44,6 +45,7 @@
 			var surveyJSONObj = JSON.parse(data.surveyJSON);
 			window.survey = new Survey.Model(surveyJSONObj);
 			survey.onComplete.add(function(result) {
+				vm.surveyComplete = true;
 				var surveyResponse = {
 					accessID: vm.surveyCode,
 					responseJSON: JSON.stringify(result.data)
