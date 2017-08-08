@@ -27,8 +27,10 @@
 			function putLinkFailed(e) { return exception.catcher('Failed saving the marker link.')(e); }
 		};
 
-		function getLinks(){
-			return $http.get('/api/map/link/', {
+		function getLinks(fileCoords){
+			var lat = fileCoords.lat;
+			var lng = fileCoords.lng;
+			return $http.get('/api/map/link?lat=' + lat + '&lng=' + lng, {
 				headers: {
 					Authorization: 'Bearer ' + authentication.getToken()
 				}
@@ -36,7 +38,7 @@
 			.catch(getLinksFailed);
 
 			function getLinksComplete(data) { return data; }
-			function getLinksFailed(e) { return exception.catcher('Failed gettings the marker links.')(e); }
+			function getLinksFailed(e) { return exception.catcher('Failed getting the marker links.')(e); }
 		};
 	}
 

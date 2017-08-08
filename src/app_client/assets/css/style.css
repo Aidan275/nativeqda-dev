@@ -256,7 +256,8 @@ footer{
 	background-repeat: no-repeat !important;
 }
 
-.leaflet-popup {
+.leaflet-popup:hover{
+	opacity: 1 !important;
 	word-wrap: break-word;
 }
 

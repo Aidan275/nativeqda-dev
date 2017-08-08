@@ -16,6 +16,8 @@
 		vm.popupFileDetails = popupFileDetails;
 		vm.confirmDelete = confirmDelete;
 		vm.selectDependent = selectDependent;
+		vm.toggleDependecies = toggleDependecies;
+		vm.hideDependecies = hideDependecies;
 
 		// Bindable Data
 		vm.map = null;
@@ -26,6 +28,9 @@
 		vm.lng = 150.87842999999998;
 		vm.currentMarker = null;
 		vm.addingDependent = false;
+		vm.dependeciesHidden = true;
+		vm.arrows = [];
+		vm.arrowHeads = [];
 
 		// To move - may move the majority of the mapping functions into it's own directive
 		var LeafIcon = L.Icon.extend({
@@ -281,6 +286,41 @@
 			});
 		}
 
+		function addMarkerLinks() {
+			vm.linkList.forEach(function(link) {
+				var arrow = L.polyline([[link.dependent.coords.coordinates[1], link.dependent.coords.coordinates[0]], [link.precedent.coords.coordinates[1], link.precedent.coords.coordinates[0]]], {
+					color: '#4676fa',
+					weight: 8
+				}).addTo(vm.map);
+
+				vm.arrows.push(arrow);
+
+				var toolTipString = '<strong>Name:</strong> ' + link.name + '<br />' + 
+				'<strong>Description:</strong> ' + link.description + '<br />' + 
+				'<strong>Last Modified:</strong> ' + $filter('date')(link.dateCreated, "dd MMMM, yyyy h:mm a");
+
+				arrow.bindTooltip(toolTipString, {sticky: true});
+
+				var arrowHead = L.polylineDecorator(arrow, {
+					patterns: [{
+						offset: '100%', 
+						repeat: 0, 
+						symbol: L.Symbol.arrowHead({
+							pixelSize: 15, 
+							polygon: false, 
+							pathOptions: {
+								stroke: true,
+								weight: 8,
+								color: '#4676fa'
+							}
+						})
+					}]
+				}).addTo(vm.map);
+
+				vm.arrowHeads.push(arrowHead);
+			});
+		}
+
 		// Adds markers for the files retrieved from the MongoDB database
 		function addMapMarkers() {
 			vm.markers = L.markerClusterGroup({showCoverageOnHover: false});
@@ -313,6 +353,7 @@
 				'<a ng-click="vm.popupFileDetails(fileKey)" class="btn btn-primary" role="button">Details</a> ' +
 				'<a ng-click="vm.confirmDelete(fileKey, fileName, textFileKey)" class="btn btn-danger" role="button">Delete</a>' +
 				'<a ng-click="vm.selectDependent(precedent)" class="btn btn-primary" role="button">Add Dependent</a>' +
+				'<a ng-click="vm.toggleDependecies(fileCoords)" class="btn btn-primary" role="button">Toggle Dependecies</a>' +
 				'</div>';
 
 				// compiles the HTML so ng-click works
@@ -322,6 +363,10 @@
 				// New scope variables for the compiled string above
 				newScope.fileKey = file.key;
 				newScope.fileName = file.name;
+				newScope.fileCoords = {
+					lat: lat,
+					lng: lng
+				};
 				newScope.precedent = {
 					fileID: file._id,
 					lat: lat,
@@ -351,14 +396,15 @@
 					}
 				});
 
-				// Sets the current marker to null and unhides the tooltip from the marker 
-				// when the popup window is closed
+				/* Sets the current marker to null and unhides the tooltip from the marker */
+				/* when the popup window is closed */
 				marker.on("popupclose", function() { 
 					vm.currentMarker = null; 
 					var toolTip = marker.getTooltip();
 					if(toolTip) {
 						toolTip.setOpacity(0.9);
-					}
+					}	
+					hideDependecies();	/* Remove any active marker links when the popup is closed */ 
 				});
 
 				vm.markers.addLayer(marker);
@@ -437,6 +483,7 @@
 		}
 
 		function selectDependent(precedent) {
+			console.log(precedent);
 			vm.addingDependent = true;
 
 			removeAllMarkers();
@@ -447,20 +494,16 @@
 			/* window is created. Each marker is then added to the */ 
 			/* markers cluster group to be displayed on the map */
 			vm.fileList.forEach(function(file) {
-				if(file._id != precedent.fileID) {
+				if(file.coords.coordinates[1] != precedent.lat && file.coords.coordinates[0] != precedent.lng) {
 					var lat = file.coords.coordinates[1];
 					var lng = file.coords.coordinates[0];
 					var marker = L.marker([lat, lng], { icon: defaultIcon });
 
-					/* Only include tooltips if the browser is not running on a mobile device */
-					/* so mobile devices do not display the tooltip when a pin is pressed. */
-					if (L.Browser.mobile != true) {
-						var toolTipString = '<strong>File Name:</strong> ' + file.name + '<br />' + 
-						'<strong>Created By:</strong> ' + file.createdBy + '<br />' + 
-						'<strong>Last Modified:</strong> ' + $filter('date')(file.lastModified, "dd MMMM, yyyy h:mm a");
+					var toolTipString = '<strong>File Name:</strong> ' + file.name + '<br />' + 
+					'<strong>Created By:</strong> ' + file.createdBy + '<br />' + 
+					'<strong>Last Modified:</strong> ' + $filter('date')(file.lastModified, "dd MMMM, yyyy h:mm a");
 
-						marker.bindTooltip(toolTipString);
-					}
+					marker.bindTooltip(toolTipString);
 
 					/* When a marker is clicked and it's popup opens, the currentMaker variable is set */
 					/* so the marker can be removed if the file is deleted. */
@@ -496,6 +539,31 @@
 
 		function dependentDetails() {
 
+		}
+
+		function toggleDependecies(fileCoords) {
+			if(vm.dependeciesHidden) {
+				mapService.getLinks(fileCoords)
+				.then(function(response) {
+					document.getElementsByClassName('leaflet-popup')[0].style.opacity = .3;
+					vm.dependeciesHidden = false;
+					vm.linkList = response.data;
+					addMarkerLinks();
+				});
+			} else {
+				hideDependecies();
+			}
+		}
+
+		function hideDependecies() {	
+			vm.dependeciesHidden = true;
+			vm.arrows.forEach(function(arrow) {
+				vm.map.removeLayer(arrow);
+			});
+			vm.arrowHeads.forEach(function(arrowHead) {
+				vm.map.removeLayer(arrowHead);
+			});
+			document.getElementsByClassName('leaflet-popup')[0].style.opacity = 1;
 		}
 	}
 

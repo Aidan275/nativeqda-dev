@@ -41,8 +41,18 @@ module.exports.putLink = function(req, res) {	/* Adds a marker link to the datab
 };
 
 module.exports.getLinks = function(req, res) {	/* Gets all the marker links from the database */
+	var lat = req.query.lat;
+	var lng = req.query.lng;
+	var options = {
+		$or: [{
+			'precedent.coords.coordinates': [lng, lat]
+
+		}, {
+			'dependent.coords.coordinates': [lng, lat]
+		}]
+	};
 	MarkerLinks
-	.find()
+	.find(options)
 	.exec(
 		function(err, results) {
 			if (!results) {
