@@ -39,7 +39,9 @@
 		"./node_modules/knockout/build/output/knockout-latest.js",
 		"./node_modules/survey-knockout/survey.ko.min.js",
 		"./node_modules/surveyjs-editor/surveyeditor.min.js",
-		"./node_modules/nouislider/distribute/nouislider.min.js"
+		"./node_modules/nouislider/distribute/nouislider.min.js",
+		"./src/app_client/assets/js/angular-swipe.min.js",
+		"./src/app_client/assets/js/carousel-3d.min.js"
 	],
 	"minVendorCSS": [
 		"./node_modules/bootstrap/dist/css/bootstrap.min.css",
@@ -57,7 +59,8 @@
 		"./node_modules/angularjs-color-picker/dist/themes/angularjs-color-picker-bootstrap.min.css",
 		"./node_modules/survey-jquery/survey.css",
 		"./node_modules/surveyjs-editor/surveyeditor.css",
-		"./node_modules/nouislider/distribute/nouislider.min.css"
+		"./node_modules/nouislider/distribute/nouislider.min.css",
+		"./src/app_client/assets/css/carousel-3d.min.css"
 	],
 	"devVendorJS": [
 		"./node_modules/angular/angular.js",
@@ -91,7 +94,9 @@
 		"./node_modules/knockout/build/output/knockout-latest.debug.js",
 		"./node_modules/survey-knockout/survey.ko.js",
 		"./node_modules/surveyjs-editor/surveyeditor.js",
-		"./node_modules/nouislider/distribute/nouislider.js"
+		"./node_modules/nouislider/distribute/nouislider.js",
+		"./src/app_client/assets/js/angular-swipe.js",
+		"./src/app_client/assets/js/carousel-3d.js"
 	],
 	"devVendorCSS": [
 		"./node_modules/bootstrap/dist/css/bootstrap.css",
@@ -109,7 +114,8 @@
 		"./node_modules/angularjs-color-picker/dist/themes/angularjs-color-picker-bootstrap.css",
 		"./node_modules/survey-jquery/survey.css",
 		"./node_modules/surveyjs-editor/surveyeditor.css",
-		"./node_modules/nouislider/distribute/nouislider.css"
+		"./node_modules/nouislider/distribute/nouislider.css",
+		"./src/app_client/assets/css/carousel-3d.css"
 	],
 	"CSS": [
 		"./src/app_client/assets/css/style.css"
