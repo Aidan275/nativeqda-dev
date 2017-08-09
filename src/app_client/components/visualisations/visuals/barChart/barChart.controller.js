@@ -4,6 +4,7 @@
 	.module('nativeQDAApp')
 	.controller('barChartCtrl', barChartCtrl);
 
+
 	/* @ngInject */
 	function barChartCtrl ($routeParams, analysisService, NgTableParams, bsLoadingOverlayService) {
 		var vm = this;
@@ -11,31 +12,51 @@
 		var analysisType = $routeParams.type; 
 		var analysisID = $routeParams.id;
 		var responseData = {};
-		//var data = [];
+		var data = [];
+		var sortData = [];
 		vm.cols = [];
-	
-		var data;
+		//var sortBy = require('sort-by'), data = [];
+		//var data;
 		activate();
 		
 
 		///////////////////////////
 
 		function activate() {
-			bsLoadingOverlayService.start({referenceId: 'bubble-chart'});	// Start animated loading overlay
+			bsLoadingOverlayService.start({referenceId: 'bar-chart'});	// Start animated loading overlay
 			analysisService.readWatsonAnalysis(analysisID) //gets id from url
 			.then(function(response) {
 				var analysisData = response.data; //store watson response in analysisData
-				//console.log(analysisData);
-				
-				analysisData.keywords.forEach(function(keyword){
-					var relevance = keyword.relevance*100;
-					//var text = "Hello";
-					var text = keyword.text.charAt(0).toUpperCase() + keyword.text.slice(1);	// Capitalise first letter
-					data.push({relevance: keyword.relevance, text: text});
+
+				if(analysisType === 'concepts') {
+					analysisData.concepts.forEach(function(concept){
+						var relevance = concept.relevance*100;
+						var text = concept.text.charAt(0).toUpperCase() + concept.text.slice(1);	// Capitalise first letter
+						var trimText = text.substring(0, 6); 
+						data.push({relevance: concept.relevance, text: trimText, dbpedia_resource: concept.dbpedia_resource});
+					
+					});
+				}else if (analysisType === 'keywords'){
+					analysisData.keywords.forEach(function(keyword){
+						var relevance = keyword.relevance*100;
+						var text = keyword.text.charAt(0).toUpperCase() + keyword.text.slice(1);	// Capitalise first letter
+						data.push({relevance: keyword.relevance, text: text});
+					});
+				}
+
+				//Sort data by relevance
+				data.sort(function (a, b) {
+					return a.relevance - b.relevance;
 				});
 				
-				
-				drawChart(data);
+				//If there are too many entities the graph becomes unusable
+				if(data.length > 15) {
+					sortData = data.slice(0, 15); //Take first 10 elements
+					drawChart(sortData);										
+
+				}else {
+					drawChart(data);
+				} 
 			}, function(err) {
 				bsLoadingOverlayService.stop({referenceId: 'bubble-chart'});	// If error, stop animated loading overlay
 			}); 
