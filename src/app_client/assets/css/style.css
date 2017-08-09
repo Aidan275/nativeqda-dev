@@ -42,6 +42,12 @@ footer{
 	}
 }
 
+/* ========== VIEWPORT FIXES =========== */
+
+@-ms-viewport{
+  width: device-width;
+}
+
 /* ========== AVATAR IMAGES ========== */
 
 .sml-avatar-container {
