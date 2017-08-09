@@ -14,6 +14,7 @@
 			checkJWT 		: checkJWT,
 			lastModified 	: lastModified,
 			register		: register,
+			createUser		: createUser,
 			login			: login,
 			logout			: logout,
 			setavatar		: setavatar 
@@ -117,6 +118,15 @@
 			function registerComplete(data) { saveToken(data.data.token); }
 			function registerFailed(e) { return exception.catcher('Registration Failed')(e); }
 		};
+
+		function createUser(user) {
+			return $http.post('/api/user', user)
+			.then(createUserComplete)
+			.catch(createUserFailed);
+
+			function createUserComplete(data) { return data; }
+			function createUserFailed(e) { return exception.catcher('Creating new user failed')(e); }
+		};	
 
 		function login(user) {
 			return $http.post('/api/login', user)

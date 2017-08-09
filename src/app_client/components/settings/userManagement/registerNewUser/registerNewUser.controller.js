@@ -7,21 +7,11 @@
 	.controller('registerNewUserCtrl', registerNewUserCtrl);
 
 	/* @ngInject */
-	function registerNewUserCtrl($uibModalInstance, $window, NgTableParams, usersService, authentication, logger, bsLoadingOverlayService, $location) {
+	function registerNewUserCtrl($uibModalInstance, authentication, logger) {
 		var vm = this;
 
 		// Bindable Functions
 		vm.onSubmit = onSubmit;
-		vm.register = register;
-		vm.data = [];
-		vm.currentPath = '';
-		vm.pathsArray = [''];
-		vm.tableParams;
-		vm.formData = {};
-		vm.isSubmittingButton = null;	// variables for button animation - ng-bs-animated-button
-		vm.resultButton = null;
-		vm.registerButtonOptions = { buttonDefaultText: 'Register', animationCompleteTime: 1000, buttonSubmittingText: 'Processing...', buttonSuccessText: 'Done!' };
-		vm.isProcessing = false;
 
 		// Bindable Data
 		vm.credentials = {
@@ -36,8 +26,6 @@
 			title: 'Create a new NativeQDA account'
 		};
 		
-		vm.returnPage = $location.search().page || '/settings/user-management';
-
 		///////////////////////////
 
 		function onSubmit() {
@@ -45,25 +33,22 @@
 				logger.error("Missing fields required, please try again", '', 'Error');
 				return false;
 			} else {
-				register();
+				createUser();
 			}
 		};
 
-		function register() {
+		function createUser() {
 			authentication
-			.register(vm.credentials)
-			.then(function(){
-				while(vm.isProcessing==true)
-				{
-					//Do Nothing
-				}
-				vm.modal.close();			
+			.createUser(vm.credentials)
+			.then(function(response) {
+				logger.success("New user created successfully", '', 'Success');
+				vm.modal.close(response.data);			
 			});
 		};
 		
 		vm.modal = {
-			close : function() {
-				$uibModalInstance.close();
+			close : function(newUser) {
+				$uibModalInstance.close(newUser);
 			}, 
 			cancel : function() {
 				$uibModalInstance.dismiss('cancel');

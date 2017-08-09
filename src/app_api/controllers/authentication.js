@@ -7,6 +7,7 @@ var sendJSONresponse = function(res, status, content) {
 	res.json(content);
 };
 
+/* Will remove this since the system should not allow random people to register */
 module.exports.register = function(req, res) {
 	if(!req.body.password || !req.body.email || !req.body.firstName || !req.body.lastName) {
 		sendJSONresponse(res, 400, {
@@ -33,6 +34,32 @@ module.exports.register = function(req, res) {
 			sendJSONresponse(res, 200, {
 				"token" : token
 			});
+		}
+	});
+};
+
+module.exports.createUser = function(req, res) {
+	if(!req.body.password || !req.body.email || !req.body.firstName || !req.body.lastName) {
+		sendJSONresponse(res, 400, {
+			"message": "All fields required"
+		});
+		return;
+	}
+
+	var user = new User();
+
+	user.email = req.body.email;
+	user.firstName = req.body.firstName;
+	user.lastName = req.body.lastName;
+	user.company = req.body.company;
+
+	user.setPassword(req.body.password);
+
+	user.save(function(err, response) {
+		if (err) {
+			sendJSONresponse(res, 500, err);
+		} else {
+			sendJSONresponse(res, 200, response);
 		}
 	});
 };

@@ -181,7 +181,7 @@ gulp.task('inject-min', ['ng-app', 'vendor-js', 'vendor-css', 'scripts-js', 'sty
 	log('Injecting paths into index.html for production');
 	var dist = paths.dist;
 
-	gulp.src(paths.client + 'index.html')
+	gulp.src(paths.client + 'index-template.html')
 		.pipe(debug({title: 'inject-min:'}))
 		.pipe(inject('assets/css/vendor.min.css', 'inject-vendor'))
 		.pipe(inject('assets/css/styles.min.css', 'inject-styles'))
@@ -192,6 +192,7 @@ gulp.task('inject-min', ['ng-app', 'vendor-js', 'vendor-css', 'scripts-js', 'sty
 		.pipe(inject('assets/js/please-wait.min.js', 'inject-please-wait'))
 		.pipe(inject('assets/js/please-wait-start.js', 'inject-please-wait-start'))
 		.pipe(inject('assets/js/please-wait-stop.js', 'inject-please-wait-stop'))
+		.pipe(plug.concat('index.html'))
 		.pipe(gulp.dest(dist));
 
 		// the inject function is used above to remove 'dist' from the path before inserting into index.html 

@@ -32,6 +32,7 @@ function checkDatabaseStatus(req, res, next) {
 
 // authentication
 router.post('/register', checkDatabaseStatus, ctrlAuth.register);
+router.post('/user', checkDatabaseStatus, ctrlAuth.createUser);
 router.post('/login', checkDatabaseStatus, ctrlAuth.login);
 router.post('/user/setavatar', auth, checkDatabaseStatus, ctrlAuth.setavatar); //Deprecated. Use 'PUT /user/' below instead.
 

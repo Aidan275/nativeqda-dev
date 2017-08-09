@@ -3,7 +3,7 @@
 		<form id="register-new-user" name="register-new-user" role="form" ng-submit="vm.onSubmit()" class="form-horizontal">
 
 			<div class="modal-header">
-				<button type="button" ng-click="vm.modal.cancel()" ng-disabled="vm.isProcessing" class="close">
+				<button type="button" ng-click="vm.modal.cancel()" class="close">
 					<span aria-hidden="true">×</span>
 					<span class="sr-only">Close</span>
 				</button>
@@ -34,8 +34,8 @@
 			</div>
 
 			<div class="modal-footer">
-				<button ng-click="vm.modal.cancel()" ng-disabled="vm.isProcessing" type="button" class="btn btndefault">Cancel</button>
-				<button type="submit" class="btn btn-primary" role="button" jp-ng-bs-animated-button is-submitting="vm.isSubmittingButton" result="vm.resultButton" options="vm.registerButtonOptions">Register</button>
+				<button ng-click="vm.modal.cancel()" type="button" class="btn btn-default">Cancel</button>
+				<button type="submit" class="btn btn-primary" role="button">Register</button>
 			</div>
 
 		</form>

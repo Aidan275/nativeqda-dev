@@ -61,7 +61,7 @@
 				size: 'xl'
 			});
 			
-			modalInstance.result.then(function (results) {
+			modalInstance.result.then(function(results) {
 				vm.userList.push(results);
 				listUsers();
 			});
