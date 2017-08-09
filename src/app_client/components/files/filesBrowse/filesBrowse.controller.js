@@ -121,7 +121,7 @@
 			}
 		}
 
-		function confirmDelete(key, fileName, textFileKey) {
+		function confirmDelete(key, filePath, fileName, textFileKey) {
 			swal({
 				title: "Are you sure?",
 				text: "Confirm to delete the file '" + fileName + "'",
@@ -131,31 +131,24 @@
 				confirmButtonColor: "#d9534f",
 				confirmButtonText: "Yes, delete it!"
 			}, function() {
-				deleteFileDB(key, fileName, textFileKey);
+				filesService.deleteFileDB(filePath, fileName);
+				
+				filesService.deleteFileS3({key: key})
+				.then(function(response) {
+					// If a text file was generated for analysis, delete that file too.
+					// If the original file was a text file, just delete that file
+					// (files that were originally text files have the same key for both 
+					// key and textFileKey)
+					if(textFileKey && textFileKey != key){
+						filesService.deleteFileS3({key: textFileKey});
+					}
+					removeFileFromArray(key);
+					logger.success("'" + fileName + "' was deleted successfully", "", "Success");
+				});
+				
 			});
 		}
 
-		function deleteFileDB(key, fileName, textFileKey) {
-			filesService.deleteFileDB(key)
-			.then(function(response) {
-				deleteFileS3(key, fileName, textFileKey);
-			});
-		}
-
-		function deleteFileS3(key, fileName, textFileKey) {
-			filesService.deleteFileS3({key: key})
-			.then(function(response) {
-				// If a text file was generated for analysis, delete that file too.
-				// If the original file was a text file, just delete that file
-				// (files that were originally text files have the same key for both 
-				// key and textFileKey)
-				if(textFileKey && textFileKey != key){
-					filesService.deleteFileS3({key: textFileKey});
-				}
-				removeFileFromArray(key);
-				logger.success("'" + fileName + "' was deleted successfully", "", "Success");
-			});
-		}
 
 		function removeFileFromArray(key) {	
 			// Find the index for the file, will return -1 if not found 
