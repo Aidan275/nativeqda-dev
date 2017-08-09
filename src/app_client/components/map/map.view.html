@@ -71,18 +71,25 @@
 				<div class="sidebar-pane" id="home">
 					<h1 class="sidebar-header">Search<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
 					<div id="map-file-search-input">
-						<input type="text" class="search-query form-control" placeholder="Search" ng-model="vm.searchText"/>
-					</div>
-					<div class="sidebar-search-results-container" ng-repeat="file in vm.fileList | fileSearch: vm.searchText">
+                            <div class="input-group col-md-12">
+                                <input type="text" class="search-query form-control" placeholder="Search" ng-model="vm.searchText"/>
+                                <span class="input-group-btn">
+                                    <button class="btn" type="button" ng-show="vm.searchText" ng-click="vm.searchText=''">
+                                        <span class="fa fa-times"></span>
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+					<div class="sidebar-search-results-container" ng-repeat="file in vm.fileList | fileSearch: vm.searchText" ng-mouseenter="vm.fileSearchHover('enter', file)" ng-mouseleave="vm.fileSearchHover('leave', file)" ng-click="vm.fileSearchClick(file)">
 						<div class="left">
-							<i class="{{file.icon}} fa-4x hidden-sm hidden-md"></i>
-							<i class="{{file.icon}} fa-3x hidden-xs hidden-lg"></i>
+							<i class="{{file.icon}} fa-3x hidden-sm hidden-md"></i>
+							<i class="{{file.icon}} fa-2x hidden-xs hidden-lg"></i>
 						</div>
 						<div class="right">
-							<span class="search-file-heading">{{file.name}}</span>
-							<span><strong>Uploaded By: </strong>{{file.createdBy}}</span>
-							<span class="hidden-sm hidden-md"><strong>Last Modified: </strong>{{file.lastModified | date : "dd MMMM, yyyy"}}</span>
-							<span class="hidden-xs hidden-lg up-date-sm">{{file.lastModified | date : "dd MMMM, yyyy"}}</span>
+							<span class="search-file-heading"> {{file.name}}</span>
+							<span><strong>Uploaded By: </strong> {{file.createdBy}}</span>
+							<span class="hidden-sm hidden-md"><strong>Last Modified: </strong> {{file.lastModified | date : "dd MMMM, yyyy"}}</span>
+							<span class="hidden-xs hidden-lg up-date-sm"> {{file.lastModified | date : "dd MMMM, yyyy"}}</span>
 						</div>
 					</div>
 				</div>

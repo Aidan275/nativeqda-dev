@@ -18,6 +18,8 @@
 		vm.selectDependent = selectDependent;
 		vm.toggleDependecies = toggleDependecies;
 		vm.hideDependecies = hideDependecies;
+		vm.fileSearchHover = fileSearchHover;
+		vm.fileSearchClick = fileSearchClick;
 
 		// Bindable Data
 		vm.map = null;
@@ -31,6 +33,7 @@
 		vm.dependeciesHidden = true;
 		vm.arrows = [];
 		vm.arrowHeads = [];
+		vm.curFileSearchHov = L.circleMarker([0,0], {radius: 35});
 
 		// To move - may move the majority of the mapping functions into it's own directive
 		var LeafIcon = L.Icon.extend({
@@ -326,11 +329,11 @@
 		// Adds markers for the files retrieved from the MongoDB database
 		function addMapMarkers() {
 			vm.markers = L.markerClusterGroup({showCoverageOnHover: false});
-
+			
 			// For each file returned from the DB, a marker with an info 
 			// window is created. Each marker is then added to the 
 			// markers cluster group to be displayed on the map
-			vm.fileList.forEach(function(file) {
+			vm.fileList.forEach(function(file, index, fileListArray) {
 				var lat = file.coords.coordinates[1];
 				var lng = file.coords.coordinates[0];
 				var marker = L.marker([lat, lng], { icon: defaultIcon });
@@ -410,6 +413,7 @@
 				});
 
 				vm.markers.addLayer(marker);
+				fileListArray[index].marker = marker;	/* Adds the marker objects into the corresponding file object */
 			});
 
 			// Adds the markers cluster group to the map
@@ -565,6 +569,28 @@
 				vm.map.removeLayer(arrowHead);
 			});
 			document.getElementsByClassName('leaflet-popup')[0].style.opacity = 1;
+		}
+
+		/* If the cursor enters the file box in the search results side bar this function  */
+		/* places a circle around the marker until the cursor leaves the file box */
+		function fileSearchHover(event, file) {
+			if(event === 'enter') {
+				var lat = file.coords.coordinates[1];
+				var lng = file.coords.coordinates[0];
+				vm.curFileSearchHov.setLatLng([lat, lng]);
+				vm.curFileSearchHov.addTo(vm.map);
+			} else if (event === 'leave') {
+				vm.curFileSearchHov.remove();
+			}
+		}
+
+		/* If a file in the search results side bar is clicked this function zooms to  */
+		/* the marker, unspiderfying if necessary, and displays the markers popup box */
+		function fileSearchClick(file) {
+			vm.markers.zoomToShowLayer(file.marker, function(){	
+				file.marker.openPopup();
+			});
+			
 		}
 	}
 
