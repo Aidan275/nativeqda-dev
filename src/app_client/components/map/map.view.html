@@ -82,14 +82,13 @@
                         </div>
 					<div class="sidebar-search-results-container" ng-repeat="file in vm.fileList | fileSearch: vm.searchText" ng-mouseenter="vm.fileSearchHover('enter', file)" ng-mouseleave="vm.fileSearchHover('leave', file)" ng-click="vm.fileSearchClick(file)">
 						<div class="left">
-							<i class="{{file.icon}} fa-3x hidden-sm hidden-md"></i>
-							<i class="{{file.icon}} fa-2x hidden-xs hidden-lg"></i>
+							<i class="{{file.icon}} fa-3x"></i>
 						</div>
 						<div class="right">
 							<span class="search-file-heading"> {{file.name}}</span>
 							<span><strong>Uploaded By: </strong> {{file.createdBy}}</span>
-							<span class="hidden-sm hidden-md"><strong>Last Modified: </strong> {{file.lastModified | date : "dd MMMM, yyyy"}}</span>
-							<span class="hidden-xs hidden-lg up-date-sm"> {{file.lastModified | date : "dd MMMM, yyyy"}}</span>
+							<span class="hidden-sm hidden-md"><strong>Last Modified: </strong> {{file.lastModified | date : "dd MMMM, yyyy h:mm a"}}</span>
+							<span class="hidden-xs hidden-lg sm-last-mod" > {{file.lastModified | date : "dd MMMM, yyyy h:mm a"}}</span>
 						</div>
 					</div>
 				</div>
