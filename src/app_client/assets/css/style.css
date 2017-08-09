@@ -42,6 +42,12 @@ footer{
 	}
 }
 
+/* ========== VIEWPORT FIXES =========== */
+
+@-ms-viewport{
+  width: device-width;
+}
+
 /* ========== AVATAR IMAGES ========== */
 
 .sml-avatar-container {
@@ -330,9 +336,41 @@ footer{
 	border-top: 1px solid #e7e7e7;
 }
 
+.sidebar-search-results-container .search-file-heading {
+	font-size: 14px;
+	font-weight: bold;
+	margin-bottom: 5px;
+}
+
 .sidebar-search-results-container span{
 	display:block;
 	font-size: 12px;
+}
+
+@media (min-width: 768px) {
+	.sidebar-search-results-container .search-file-heading {
+		font-size: 13px;
+		font-weight: bold;
+		margin-bottom: 5px;
+	}
+
+	.sidebar-search-results-container span{
+		display:block;
+		font-size: 11px;
+	}
+}
+
+@media (min-width: 1200px) {
+	.sidebar-search-results-container .search-file-heading {
+		font-size: 14px;
+		font-weight: bold;
+		margin-bottom: 5px;
+	}
+
+	.sidebar-search-results-container span{
+		display:block;
+		font-size: 12px;
+	}
 }
 
 .sidebar-search-results-container:hover {
@@ -363,18 +401,6 @@ footer{
 	min-height: 75px;
 	position: relative;
 	padding: 8px 0 8px 5px;
-}
-
-.sidebar-search-results-container .search-file-heading {
-	font-size: 14px;
-	font-weight: bold;
-	margin-bottom: 5px;
-}
-
-.sidebar-search-results-container .up-by-sm,
-.sidebar-search-results-container .up-date-sm {
-	font-size: 13px;
-	color: #8c8c8c;
 }
 
 /* ========== SCROLLBAR ========== */

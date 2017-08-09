@@ -588,7 +588,12 @@
 		/* the marker, unspiderfying if necessary, and displays the markers popup box */
 		function fileSearchClick(file) {
 			vm.markers.zoomToShowLayer(file.marker, function(){	
-				file.marker.openPopup();
+				if(file.marker.isPopupOpen()) {
+					file.marker.closePopup();
+				} else {
+					file.marker.openPopup();
+				}
+				
 			});
 			
 		}

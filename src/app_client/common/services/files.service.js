@@ -26,7 +26,7 @@
 		///////////////////////////
 
 		function signUploadS3(query){
-			return $http.post('/api/file/signUploadS3', query, {
+			return $http.post('/api/s3/signUpload', query, {
 				headers: {
 					Authorization: 'Bearer ' + authentication.getToken()
 				}
@@ -96,7 +96,7 @@
 		};
 
 		function getFileListS3(){
-			return $http.get('/api/files/getFileListS3', {
+			return $http.get('/api/s3/list', {
 				headers: {
 					Authorization: 'Bearer ' + authentication.getToken()
 				}
@@ -136,7 +136,7 @@
 		};
 
 		function deleteFileS3(key){
-			return $http.post('/api/files/deleteFileS3', key, {
+			return $http.delete('/api/s3/' + key, {
 				headers: {
 					Authorization: 'Bearer ' + authentication.getToken()
 				}
@@ -147,10 +147,8 @@
 			function deleteFileS3Failed(e) { return exception.catcher('Failed deleting the file from S3.')(e); }
 		};
 
-		function deleteFileDB(key){
-			/* Encode the key for the API URL incase it includes reserved characters (e.g '+', '&') */
-			var encodedKey = encodeURIComponent(key);
-			return $http.delete('/api/files/deleteFileDB?key=' + encodedKey, {
+		function deleteFileDB(filePath, fileName){
+			return $http.delete('/api/files' + filePath + '/' + fileName, {
 				headers: {
 					Authorization: 'Bearer '+ authentication.getToken()
 				}
@@ -162,7 +160,7 @@
 		};
 
 		function objectAclS3(objectData) {
-			return $http.post('/api/files/objectAclS3', objectData, {
+			return $http.post('/api/s3/acl', objectData, {
 				headers: {
 					Authorization: 'Bearer '+ authentication.getToken()
 				}
@@ -186,7 +184,7 @@
 		}
 
 		function syncDBwithS3(key){
-			return $http.post('/api/files/syncDBwithS3', key, {
+			return $http.post('/api/s3/syncDB', key, {
 				headers: {
 					Authorization: 'Bearer '+ authentication.getToken()
 				}
