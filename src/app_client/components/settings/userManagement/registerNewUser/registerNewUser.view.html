@@ -1,16 +1,3 @@
-<div class="container">
-
-	<div class="row">
-		<div class="col-md-6 col-sm-12">
-			<form ng-submit="vm.onSubmit()">
-
-			</form>
-		</div>
-	</div>
-
-</div>
-
-
 <div class="modal-content bs-loading-container" bs-loading-overlay bs-loading-overlay-active-class="loading-overlay--active" bs-loading-overlay-reference-id="data-list"> 
 	<div class="blur-this">
 		<form id="register-new-user" name="register-new-user" role="form" ng-submit="vm.onSubmit()" class="form-horizontal">
@@ -44,7 +31,6 @@
 					<label for="company">Company</label>
 					<input type="text" class="form-control" id="company" required="required" placeholder="Company" ng-model="vm.credentials.company">
 				</div>
-				<button type="submit" class="btn btn-primary">Register</button>
 			</div>
 
 			<div class="modal-footer">

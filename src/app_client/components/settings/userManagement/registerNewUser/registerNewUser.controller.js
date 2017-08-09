@@ -31,10 +31,12 @@
 			lastName : "",
 			company : ""
 		};
+		
 		vm.pageHeader = {
 			title: 'Create a new NativeQDA account'
 		};
-		vm.returnPage = $location.search().page || '/';
+		
+		vm.returnPage = $location.search().page || '/settings/user-management';
 
 		///////////////////////////
 
@@ -51,9 +53,21 @@
 			authentication
 			.register(vm.credentials)
 			.then(function(){
-				$location.search('page', null); 
-				$location.path(vm.returnPage);
+				while(vm.isProcessing==true)
+				{
+					//Do Nothing
+				}
+				vm.modal.close();			
 			});
+		};
+		
+		vm.modal = {
+			close : function() {
+				$uibModalInstance.close();
+			}, 
+			cancel : function() {
+				$uibModalInstance.dismiss('cancel');
+			}
 		};
 
 	}

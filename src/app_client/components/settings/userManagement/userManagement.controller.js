@@ -62,7 +62,7 @@
 			});
 			
 			modalInstance.result.then(function (results) {
-				vm.analyses.push(results);
+				vm.userList.push(results);
 				listUsers();
 			});
 		};
