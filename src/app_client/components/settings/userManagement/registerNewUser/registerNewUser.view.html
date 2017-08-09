@@ -7,30 +7,42 @@
 					<span aria-hidden="true">×</span>
 					<span class="sr-only">Close</span>
 				</button>
-				<h4 id="register-new-user-modal-label" class="modal-title">New User</h4>
+				<h4 id="register-new-user-modal-label" class="modal-title">Register New User</h4>
 			</div>
 
-			<div class="modal-body">
+			<div class="modal-body row">
+			<div class="col-lg-12">
 				<div class="form-group">
-					<label for="email">Email address</label>
+					<label class="col-lg-3 control-label" for="email">Email address</label>
+					<div class="col-lg-8">
 					<input type="email" class="form-control" id="email" required="required" placeholder="Email" ng-model="vm.credentials.email">
+					</div>
 				</div>
 				<div class="form-group">
-					<label for="password">Password</label>
+					<label class="col-lg-3 control-label" for="password">Password</label>
+					<div class="col-lg-8">
 					<input type="password" class="form-control" id="password" required="required" placeholder="Password" ng-model="vm.credentials.password">
+					</div>
 				</div>
 				<div class="form-group">
-					<label for="first-name">First Name</label>
+					<label class="col-lg-3 control-label" for="first-name">First Name</label>
+					<div class="col-lg-8">
 					<input type="text" class="form-control" id="first-name" required="required" placeholder="First Name" ng-model="vm.credentials.firstName">
+					</div>
 				</div>
 				<div class="form-group">
-					<label for="last-name">Last Name</label>
+					<label class="col-lg-3 control-label" for="last-name">Last Name</label>
+					<div class="col-lg-8">
 					<input type="text" class="form-control" id="last-name" required="required" placeholder="Last Name" ng-model="vm.credentials.lastName">
+					</div>
 				</div>
 				<div class="form-group">
-					<label for="company">Company</label>
+					<label class="col-lg-3 control-label" for="company">Company</label>
+					<div class="col-lg-8">
 					<input type="text" class="form-control" id="company" required="required" placeholder="Company" ng-model="vm.credentials.company">
+					</div>
 				</div>
+			</div>
 			</div>
 
 			<div class="modal-footer">
