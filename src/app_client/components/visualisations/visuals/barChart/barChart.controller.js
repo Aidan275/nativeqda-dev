@@ -32,14 +32,15 @@
 					analysisData.concepts.forEach(function(concept){
 						var relevance = concept.relevance*100;
 						var text = concept.text.charAt(0).toUpperCase() + concept.text.slice(1);	// Capitalise first letter
-						var trimText = text.substring(0, 6); 
-						data.push({relevance: concept.relevance, text: trimText, dbpedia_resource: concept.dbpedia_resource});
+						//var trimText = text.substring(0, 6); 
+						data.push({relevance: concept.relevance, text: text, dbpedia_resource: concept.dbpedia_resource});
 					
 					});
 				}else if (analysisType === 'keywords'){
 					analysisData.keywords.forEach(function(keyword){
 						var relevance = keyword.relevance*100;
 						var text = keyword.text.charAt(0).toUpperCase() + keyword.text.slice(1);	// Capitalise first letter
+						//var trimText = text.substring(0, 10); 
 						data.push({relevance: keyword.relevance, text: text});
 					});
 				}
@@ -65,7 +66,7 @@
 		function drawChart(data) {
 			
 			var svg = d3.select("svg"),
-				margin = {top: 20, right: 20, bottom: 30, left: 40},
+				margin = {top: 20, right: 20, bottom: 70, left: 40},
     			width = +svg.attr("width") - margin.left - margin.right,
     			height = +svg.attr("height") - margin.top - margin.bottom; 
 			
@@ -82,7 +83,13 @@
     		g.append("g")
       			.attr("class", "axis axis--x")
       			.attr("transform", "translate(0," + height + ")")
-      			.call(d3.axisBottom(x));
+      			.call(d3.axisBottom(x).ticks(10))
+      			.selectAll("text")
+      				.style("text-anchor", "end")
+      				.attr("dx", "-.8em")
+      				.attr("dy", ".15em")
+      				.attr("transform", "rotate(-65)");
+
 
 
       		 g.append("g")
@@ -103,6 +110,9 @@
       			.attr("y", function(d) { return y(d.relevance); })
       			.attr("width", x.bandwidth())
       			.attr("height", function(d) { return height - y(d.relevance);});
+
+
+
 
 		}
 	}

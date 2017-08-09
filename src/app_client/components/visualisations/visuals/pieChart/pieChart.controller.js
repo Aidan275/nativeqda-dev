@@ -13,37 +13,45 @@
 		var responseData = {};
 		var data = [];
 		vm.cols = [];
-		var sortData = [];
+
 	
-		//var data;
+
 		activate();
 		
 
 		///////////////////////////
 
 		function activate() {
-			bsLoadingOverlayService.start({referenceId: 'bubble-chart'});	// Start animated loading overlay
+			bsLoadingOverlayService.start({referenceId: 'pie-chart'});	// Start animated loading overlay
 			analysisService.readWatsonAnalysis(analysisID) //gets id from url
 			.then(function(response) {
 				var analysisData = response.data; //store watson response in analysisData
-				//console.log(analysisData);
 				
-				analysisData.keywords.forEach(function(keyword){
-					var relevance = keyword.relevance*100;
-					var text = keyword.text.charAt(0).toUpperCase() + keyword.text.slice(1);	// Capitalise first letter
-					data.push({relevance: keyword.relevance, text: text});
+
+				if(analysisType === 'concepts') {
+					analysisData.concepts.forEach(function(concept){
+					var relevance = concept.relevance*100;
+					var text = concept.text.charAt(0).toUpperCase() + concept.text.slice(1);	// Capitalise first letter
+					var trimText = text.substring(0, 6); 
+					data.push({relevance: concept.relevance, text: trimText, dbpedia_resource: concept.dbpedia_resource});
+					});
+
+				}else if(analysisType ==='keywords') {
+					analysisData.keywords.forEach(function(keyword){
+						var relevance = keyword.relevance*100;
+						var text = keyword.text.charAt(0).toUpperCase() + keyword.text.slice(1);	// Capitalise first letter
+						var trimText = text.substring(0, 6); 
+						data.push({relevance: keyword.relevance, text: trimText});
+					});	
+				}
+				
+				//Sort data by relevance
+				data.sort(function (a, b) {
+					return a.relevance - b.relevance;
 				});
 				
-				//If there are too many entities the graph becomes unusable
-				if(data.length > 15) {
-						data.relevance.sort(); //Sort data to get most relevant
-						sortData = data.slice(0, 15);
-						console.log(sortData);
-						drawChart(data);										
-
-				}else {
-					drawChart(data);
-				}
+				drawChart(data);
+	
 
 				
 			}, function(err) {
