@@ -65,21 +65,30 @@
 
 		function drawChart(data) {
 			
+			//Set the drawing space for the graph
 			var svg = d3.select("svg"),
 				margin = {top: 20, right: 20, bottom: 70, left: 40},
     			width = +svg.attr("width") - margin.left - margin.right,
     			height = +svg.attr("height") - margin.top - margin.bottom; 
 			
+    		//Set the x and y ranges
     		var x = d3.scaleBand().rangeRound([0, width]).padding(0.1),
     			y = d3.scaleLinear().rangeRound([height, 0]);
 
+    		//var formatTime = d3.timeFormat("%e ")
+
+    		var div = d3.select("body").append("div")
+    			.attr("class", "tooltip");
+
+    		//Set margins
 			var g = svg.append("g")
     			.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-    		
+    		//Sets the domain, x is text and y is relevance
     		x.domain(data.map(function(d) { return d.text; }));
     		y.domain([0, d3.max(data, function(d) { return d.relevance; })]);
 
+    		//Appends graph to body of the page
     		g.append("g")
       			.attr("class", "axis axis--x")
       			.attr("transform", "translate(0," + height + ")")
@@ -91,8 +100,8 @@
       				.attr("transform", "rotate(-65)");
 
 
-
-      		 g.append("g")
+      		//Add the x axis
+      		g.append("g")
       			.attr("class", "axis axis--y")
       			.call(d3.axisLeft(y).ticks(10, "%"))
     			.append("text")
@@ -102,14 +111,30 @@
       			.attr("text-anchor", "end")
       			.text("Relevance");
 
-      		  g.selectAll(".bar")
+      		//Append rectangles for the bar chart
+      		 g.selectAll(".bar")
     			.data(data)
     			.enter().append("rect")
       			.attr("class", "bar")
       			.attr("x", function(d) { return x(d.text); })
       			.attr("y", function(d) { return y(d.relevance); })
       			.attr("width", x.bandwidth())
-      			.attr("height", function(d) { return height - y(d.relevance);});
+      			.attr("height", function(d) { return height - y(d.relevance);})
+      			.on("mouseover", function(d) {
+      				div.transition()
+      					.duration(200)
+      					.style("opacity", .9);
+      				div.html(d.text + "<br/>" + d.relevance)
+      					.style("left", (d3.event.pageX) + "px")
+      					.style("top", (d3.event.pageY - 28) + "px");
+      				})
+      			.on("mouseout", function(d) {
+      				div.transition()
+      					.duration(500)
+      					.style("opacity", 0);
+      			});
+      			
+      			
 
 
 
