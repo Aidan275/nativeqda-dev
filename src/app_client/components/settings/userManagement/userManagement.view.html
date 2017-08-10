@@ -12,7 +12,7 @@
 		</div>
 	</div>
 
-	<button type="button" class="btn btn-md btn-success" ng-click="vm.popupNewUser()">New User</button>
+	<button  data-step="1" data-intro="Click here to create a new user!" type="button" class="btn btn-md btn-success" ng-click="vm.popupNewUser()">New User</button><br />
 	<a style="float:right;" href="javascript:void(0);" onclick="javascript:introJs().start();"><i class="fa fa-question-circle" aria-hidden="true"></i></a>
 
 	<table ng-table="vm.tableParams" class="table table-condensed table-bordered table-striped users-table">
