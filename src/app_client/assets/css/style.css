@@ -297,6 +297,10 @@ footer{
 	background-repeat: no-repeat !important;
 }
 
+.leaflet-popup {
+	word-wrap: break-word;
+}
+
 .leaflet-popup:hover{
 	opacity: 1 !important;
 	word-wrap: break-word;
@@ -326,6 +330,9 @@ footer{
 	background-color: #2d65ff !important;
 }
 
+.sidebar-content {
+	overflow: hidden !important;
+}
 
 /******* SIDEBAR - SEARCH *******/
 
@@ -366,10 +373,11 @@ footer{
 
 .sidebar-search-results-container {
 	height: auto;
-	overflow:auto; 
 	min-height: 75px;
 	margin-left: -21px;
 	border-top: 1px solid #e7e7e7;
+	overflow: hidden;
+	word-wrap: break-word;
 }
 
 .sidebar-search-results-container .search-file-heading {
@@ -437,6 +445,22 @@ footer{
 	min-height: 75px;
 	position: relative;
 	padding: 8px 0 8px 5px;
+}
+
+#sidebar-search-body {
+	overflow-y: auto;
+	margin-left: -20px;
+	padding-left: 20px;
+	position: absolute;
+	top: 104px;
+	bottom: 0;
+	width: 100%;
+}
+
+/******* SIDEBAR - FILTERS *******/
+
+#sidebar-filters-body {
+	padding: 20px 0;
 }
 
 /* ========== SCROLLBAR ========== */

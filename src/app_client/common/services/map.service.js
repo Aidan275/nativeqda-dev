@@ -16,7 +16,7 @@
 		///////////////////////////
 
 		function putLink(link){
-			return $http.put('/api/map/link/', link, {
+			return $http.put('/api/map/link', link, {
 				headers: {
 					Authorization: 'Bearer ' + authentication.getToken()
 				}
@@ -27,10 +27,8 @@
 			function putLinkFailed(e) { return exception.catcher('Failed saving the marker link.')(e); }
 		};
 
-		function getLinks(fileCoords){
-			var lat = fileCoords.lat;
-			var lng = fileCoords.lng;
-			return $http.get('/api/map/link?lat=' + lat + '&lng=' + lng, {
+		function getLinks(){
+			return $http.get('/api/map/link', {
 				headers: {
 					Authorization: 'Bearer ' + authentication.getToken()
 				}
