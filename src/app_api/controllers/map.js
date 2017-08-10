@@ -10,11 +10,8 @@ var sendJSONresponse = function(res, status, content) {
 module.exports.putLink = function(req, res) {	/* Adds a marker link to the database */
 	var link = new MarkerLinks();
 
-	console.log(req.body);
-
 	link.name = req.body.name;
 	link.description = req.body.description;
-	link.dateCreated = req.body.dateCreated;
 	link.createdBy = req.body.createdBy;
 	link.userID = req.body.userID;
 
@@ -27,8 +24,6 @@ module.exports.putLink = function(req, res) {	/* Adds a marker link to the datab
 	link.dependent.coords = { 
 		coordinates: [parseFloat(req.body.dependent.lng), parseFloat(req.body.dependent.lat)]
 	};
-
-	console.log(link);
 
 	link.save(function(err, response) {
 		if (err) {
@@ -54,15 +49,15 @@ module.exports.getLinks = function(req, res) {	/* Gets all the marker links from
 				sendJSONresponse(res, 500, err);
 				return;
 			}
-			var markerList = buildMarkerList(req, res, results);
-			sendJSONresponse(res, 200, markerList);
+			var LinkList = buildLinkList(req, res, results);
+			sendJSONresponse(res, 200, LinkList);
 		});
 };
 
-var buildMarkerList = function(req, res, results) {
-	var markerList = [];
+var buildLinkList = function(req, res, results) {
+	var LinkList = [];
 	results.forEach(function(doc) {
-		markerList.push({
+		LinkList.push({
 			name: doc.name,
 			description: doc.description,
 			dateCreated: doc.dateCreated,
@@ -89,5 +84,25 @@ var buildMarkerList = function(req, res, results) {
 			_id: doc._id
 		});
 	});
-	return markerList;
+	return LinkList;
+};
+
+module.exports.deleteLink = function(req, res) { /* Remove link */
+	var id = req.params["id"];
+	if(id) {
+		MarkerLinks
+		.findByIdAndRemove(id)
+		.exec(
+			function(err, results) {
+				if (err) {
+					sendJSONresponse(res, 404, err);
+					return;
+				}
+				sendJSONresponse(res, 204, null);
+			});
+	} else {
+		sendJSONresponse(res, 404, {
+			"message": "No id parameter in request"
+		});
+	}
 };

@@ -103,5 +103,6 @@ router.get('/survey/responses/read', auth, checkDatabaseStatus, ctrlSurveys.read
 /* Map Marker Link */
 router.put('/map/link', auth, checkDatabaseStatus, ctrlMap.putLink);
 router.get('/map/link', auth, checkDatabaseStatus, ctrlMap.getLinks);
+router.delete('/map/link/:id', auth, checkDatabaseStatus, ctrlMap.deleteLink);
 
 module.exports = router;

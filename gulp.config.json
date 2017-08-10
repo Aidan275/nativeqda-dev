@@ -166,6 +166,7 @@
 		"./src/app_client/components/heatmapExample/heatmapExample.controller.js",
 		"./src/app_client/components/home/home.controller.js",
 		"./src/app_client/components/map/map.controller.js",
+		"./src/app_client/components/map/markerDependency/markerDependency.controller.js",
 		"./src/app_client/components/settings/editProfile/editProfile.controller.js",
 		"./src/app_client/components/settings/systemSettings/systemSettings.controller.js",
 		"./src/app_client/components/settings/userManagement/userManagement.controller.js",

@@ -10,7 +10,8 @@
 	function mapService ($http, authentication, exception) {
 		return {
 			putLink 	: putLink,
-			getLinks	: getLinks
+			getLinks	: getLinks,
+			deleteLink 	: deleteLink
 		};
 
 		///////////////////////////
@@ -37,6 +38,18 @@
 
 			function getLinksComplete(data) { return data; }
 			function getLinksFailed(e) { return exception.catcher('Failed getting the marker links.')(e); }
+		};
+
+		function deleteLink(id){
+			return $http.delete('/api/map/link/' + id, {
+				headers: {
+					Authorization: 'Bearer ' + authentication.getToken()
+				}
+			}).then(deleteLinkComplete)
+			.catch(deleteLinkFailed);
+
+			function deleteLinkComplete(data) { return data; }
+			function deleteLinkFailed(e) { return exception.catcher('Failed deleting the marker link.')(e); }
 		};
 	}
 

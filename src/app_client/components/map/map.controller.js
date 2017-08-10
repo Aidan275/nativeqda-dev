@@ -14,10 +14,11 @@
 		vm.getFileList = getFileList;
 		vm.viewFile = viewFile;
 		vm.popupFileDetails = popupFileDetails;
-		vm.confirmDelete = confirmDelete;
+		vm.confirmFileDelete = confirmFileDelete;
+		vm.confirmLinkDelete = confirmLinkDelete;
 		vm.selectDependent = selectDependent;
 		vm.toggleMarkerLinks = toggleMarkerLinks;
-		vm.hideMarkerLinks = hideMarkerLinks;
+		vm.removeMarkerLinks = removeMarkerLinks;
 		vm.fileSearchHover = fileSearchHover;
 		vm.fileSearchClick = fileSearchClick;
 
@@ -29,6 +30,7 @@
 		vm.lat = -34.4054039;	// Default position is UOW
 		vm.lng = 150.87842999999998;
 		vm.currentMarker = null;
+		vm.currentLink = null;
 		vm.addingDependent = false;
 		vm.markerLinksHidden = true;
 		vm.arrows = [];
@@ -62,6 +64,9 @@
 			initMap();
 		}
 
+		/* Initialises the map setting up the initial settings such as default location, zoom level, map tiles */
+		/* position marker, and sidebar. Next the functions to get the users location and the file markers and */
+		/* marker links from the database are called */
 		function initMap() {
 			var mapOptions = {
 				center: [-34.4054039, 150.87842999999998],	// Default position is UOW
@@ -205,15 +210,15 @@
 
 			vm.sidebar = L.control.sidebar('sidebar').addTo(vm.map);
 
-			geoLocateUser();
-			getFileList();
-			getMarkerLinks();
+			geoLocateUser();	/* Gets the users position */
+			getFileList();		/* Gets the files from the DB */
+			getMarkerLinks();	/* Gets the marker links from the DB */
 		}
 
 		// If getPosition returns successfully, update the user's posistion on the map
 		function geoLocateUser(position) {
-			vm.map.on('locationfound', onLocationFound);
-			vm.map.on('locationerror', onLocationError);
+			vm.map.on('locationfound', onLocationFound);	/* If location found, call onLocationFound function */
+			vm.map.on('locationerror', onLocationError);	/* If error, call onLocationError function */
 			vm.map.locate({setView: true, maxZoom: 15});
 		}
 
@@ -268,7 +273,11 @@
 			logger.error(error.message, error, 'Error');
 		}
 
-		// Gets all the files from the MongoDB database to be displayed on the map
+		/************************************************************************/
+		/*************************** MARKER FUNCTIONS ***************************/
+		/************************************************************************/
+
+		/* Gets all the files from the database to be displayed on the map */
 		function getFileList() {
 			filesService.getFileListDB()
 			.then(function(response) {
@@ -279,7 +288,7 @@
 			});
 		}
 
-		// Adds markers for the files retrieved from the MongoDB database
+		/* Adds markers to the map for the files retrieved from the database */
 		function addMapMarkers() {
 			vm.markers = L.markerClusterGroup({showCoverageOnHover: false});
 			
@@ -291,6 +300,7 @@
 				var lng = file.coords.coordinates[0];
 				var marker = L.marker([lat, lng], { icon: defaultIcon });
 
+				/* HTML for the popup boxes displayed when the file marker is pressed */
 				var popupString = '<div class="info-window">' +
 				'<h3>' + file.name + '</h3>' +
 				'<p><strong>Created By:</strong> ' + file.createdBy + '<br />' +
@@ -309,7 +319,7 @@
 
 				popupString += '<a ng-click="vm.viewFile(fileKey)" class="btn btn-success" role="button">View</a> ' +
 				'<a ng-click="vm.popupFileDetails(fileKey)" class="btn btn-primary" role="button">Details</a> ' +
-				'<a ng-click="vm.confirmDelete(fileKey, fileName, textFileKey)" class="btn btn-danger" role="button">Delete</a>' +
+				'<a ng-click="vm.confirmFileDelete(fileKey, fileName, textFileKey)" class="btn btn-danger" role="button">Delete</a>' +
 				'<a ng-click="vm.selectDependent(precedent)" class="btn btn-primary" role="button">Add Dependent</a>' +
 				'</div>';
 
@@ -367,52 +377,8 @@
 				fileListArray[index].marker = marker;	/* Adds the marker objects into the corresponding file object */
 			});
 
-			// Adds the markers cluster group to the map
-			vm.map.addLayer(vm.markers);
+			vm.map.addLayer(vm.markers);	// Adds the markers cluster group to the map
 			bsLoadingOverlayService.stop({referenceId: 'map'});	// Stop animated loading overlay
-		}
-
-		function getMarkerLinks() {
-			mapService.getLinks()
-			.then(function(response) {
-				vm.linkList = response.data;
-			});
-		}
-
-		function addMarkerLinks() {
-			vm.markerLinksHidden = false;
-			vm.linkList.forEach(function(link) {
-				var arrow = L.polyline([[link.dependent.coords.coordinates[1], link.dependent.coords.coordinates[0]], [link.precedent.coords.coordinates[1], link.precedent.coords.coordinates[0]]], {
-					color: '#4676fa',
-					weight: 8
-				}).addTo(vm.map);
-
-				var toolTipString = '<strong>Name:</strong> ' + link.name + '<br />' + 
-				'<strong>Description:</strong> ' + link.description + '<br />' + 
-				'<strong>Last Modified:</strong> ' + $filter('date')(link.dateCreated, "dd MMMM, yyyy h:mm a");
-
-				arrow.bindTooltip(toolTipString, {sticky: true});
-
-				vm.arrows.push(arrow);
-
-				var arrowHead = L.polylineDecorator(arrow, {
-					patterns: [{
-						offset: '100%', 
-						repeat: 0, 
-						symbol: L.Symbol.arrowHead({
-							pixelSize: 18, 
-							polygon: false, 
-							pathOptions: {
-								stroke: true,
-								weight: 5,
-								color: '#4676fa'
-							}
-						})
-					}]
-				}).addTo(vm.map);
-
-				vm.arrowHeads.push(arrowHead);
-			});
 		}
 
 		// Get a signed URL to download the requested file from S3 
@@ -435,11 +401,9 @@
 					}
 				}
 			});
-
-			modalInstance.result.then(function() {});
 		}
 
-		function confirmDelete(key, fileName, textFileKey) {
+		function confirmFileDelete(key, fileName, textFileKey) {
 			swal({
 				title: "Are you sure?",
 				text: "Confirm to delete the file '" + fileName + "'",
@@ -468,19 +432,117 @@
 				if(textFileKey && textFileKey != key){
 					filesService.deleteFileS3({key: textFileKey});
 				}
-				removeCurrentMarker();
+				vm.markers.removeLayer(vm.currentMarker);
 				logger.success("'" + fileName + "' was deleted successfully", "", "Success");
 			});
-		}
-
-		function removeCurrentMarker() {	
-			vm.markers.removeLayer(vm.currentMarker);
 		}
 
 		function removeAllMarkers() {	
 			vm.map.removeLayer(vm.markers);
 			vm.markers = null;
 		}
+
+		/*****************************************************************************/
+		/*************************** MARKER LINK FUNCTIONS ***************************/
+		/*****************************************************************************/
+
+		/* Gets all the marker links from the database to be displayed on the map */
+		function getMarkerLinks() {
+			mapService.getLinks()
+			.then(function(response) {
+				vm.linkList = response.data;
+			});
+		}
+
+		/* Adds all marker links to the map when the show dependecies button is pressed */
+		function addMarkerLinks() {
+			vm.markerLinksHidden = false;	/* Sets false so the show dependecies button displays hide dependecies */
+
+			vm.linkList.forEach(function(link) {
+				/* Creates the polyline for each link from the database */
+				var arrow = L.polyline([[link.dependent.coords.coordinates[1], link.dependent.coords.coordinates[0]], [link.precedent.coords.coordinates[1], link.precedent.coords.coordinates[0]]], {
+					color: '#4676fa',
+					weight: 8
+				}).addTo(vm.map);
+
+				/* Creates the arrow head for each line */
+				var arrowHead = L.polylineDecorator(arrow, {
+					patterns: [{
+						offset: '100%', 
+						repeat: 0, 
+						symbol: L.Symbol.arrowHead({
+							pixelSize: 18, 
+							polygon: false, 
+							pathOptions: {
+								stroke: true,
+								weight: 5,
+								color: '#4676fa'
+							}
+						})
+					}]
+				}).addTo(vm.map);
+
+				/* HTML for the popup boxes displayed when the link is pressed */
+				var popupString = '<div class="info-window">' +
+				'<h3>' + link.name + '</h3>' +
+				'<p><strong>Description:</strong> ' + link.description + '<br />' +
+				'<strong>Created By:</strong> ' + link.createdBy + '<br />' +
+				'<strong>Date Created:</strong> ' + $filter('date')(link.dateCreated, "dd MMMM, yyyy h:mm a") + '</p>' +	// uses date filter to format the date
+				'<a ng-click="vm.confirmLinkDelete(linkID, linkName)" class="btn btn-danger" role="button">Delete</a>' +
+				'</div>';
+
+				/* Compiles the HTML so ng-click works */
+				var compiledPopupString = $compile(angular.element(popupString));
+				var newScope = $scope.$new();
+
+				/* New scope variables for the compiled string above */
+				newScope.linkID = link._id;
+				newScope.linkName = link.name;
+
+				arrow.bindPopup(compiledPopupString(newScope)[0]);
+
+				// Only include tooltips if the browser is not running on a mobile device
+				// so mobile devices do not display the tooltip when a link is pressed.
+				if (L.Browser.mobile != true) {
+					var toolTipString = '<strong>Name:</strong> ' + link.name + '<br />';
+					if(link.description.length < 75) {	/* If the description is more than 75 characters it is not added to the tooltip to prevent it being too wide */
+						toolTipString += '<strong>Description:</strong> ' + link.description + '<br />';
+					}
+					toolTipString += '<strong>Date Created:</strong> ' + $filter('date')(link.dateCreated, "dd MMMM, yyyy h:mm a");
+
+					arrow.bindTooltip(toolTipString, {sticky: true});
+				}
+
+				// When a link is clicked and it's popup opens, the currentLink variable is set
+				// so the link can be removed if it is deleted.
+				// Also hides the tooltip from the link when the popup window is open
+				arrow.on("popupopen", function() { 
+					vm.currentLink = {
+						line: this,
+						head: arrowHead
+					}; 
+					var toolTip = arrow.getTooltip();
+					if(toolTip) {
+						toolTip.setOpacity(0);
+					}
+				});
+
+				/* Sets the current link to null and unhides the tooltip from the link */
+				/* when the popup window is closed */
+				arrow.on("popupclose", function() { 
+					vm.currentLink = null; 
+					var toolTip = arrow.getTooltip();
+					if(toolTip) {
+						toolTip.setOpacity(0.9);
+					}	
+				});
+
+				/* Adds the arrows and arrowHeads to arrays */
+				vm.arrows.push(arrow);
+				vm.arrowHeads.push(arrowHead);
+			});
+		}
+
 
 		function selectDependent(precedent) {
 			vm.addingDependent = true;
@@ -513,7 +575,11 @@
 							lat: file.coords.coordinates[1],
 							lng: file.coords.coordinates[0]
 						};
-						addDependent(precedent, dependent);
+						vm.addingDependent = false;
+						popupDependecyInfo({
+							precedent: precedent, 
+							dependent: dependent
+						});
 					});
 
 					vm.markers.addLayer(marker);
@@ -524,31 +590,41 @@
 			vm.map.addLayer(vm.markers);
 		}
 
-		function addDependent(precedent, dependent) {
-			var linkInfo = {
-				precedent: precedent,
-				dependent: dependent
-			};
-
-			mapService.putLink(linkInfo)
-			.then(function(){
-				logger.success("The dependecy has been save", "", "Success");
+		function popupDependecyInfo(markers) {
+			var modalInstance = $uibModal.open({
+				templateUrl: '/components/map/markerDependency/markerDependency.view.html',
+				controller: 'markerDependencyCtrl as vm',
+				size: 'lg',
+				resolve: {
+					markers: function () {
+						return markers;
+					}
+				}
 			});
-		}
-
-		function dependentDetails() {
-
-		}
+			
+			modalInstance.result.then(function (results) {
+				vm.linkList.push(results);
+				if(!vm.markerLinksHidden) {
+					removeMarkerLinks();
+					addMarkerLinks();
+				}
+				removeAllMarkers();
+				addMapMarkers();
+			}, function () {
+				removeAllMarkers();
+				addMapMarkers();
+			});
+		};
 
 		function toggleMarkerLinks() {
 			if(vm.markerLinksHidden) {
 				addMarkerLinks();
 			} else {
-				hideMarkerLinks();
+				removeMarkerLinks();
 			}
 		}
 
-		function hideMarkerLinks() {	
+		function removeMarkerLinks() {	
 			vm.markerLinksHidden = true;
 			vm.arrows.forEach(function(arrow) {
 				vm.map.removeLayer(arrow);
@@ -556,6 +632,47 @@
 			vm.arrowHeads.forEach(function(arrowHead) {
 				vm.map.removeLayer(arrowHead);
 			});
+		}
+
+		function confirmLinkDelete(id, name) {
+			swal({
+				title: "Are you sure?",
+				text: "Confirm to delete the link '" + name + "'",
+				type: "warning",
+				showCancelButton: true,
+				allowOutsideClick: true,
+				confirmButtonColor: "#d9534f",
+				confirmButtonText: "Yes, delete it!"
+			}, function() {
+				deleteLink(id, name);
+			});
+		}
+
+		function deleteLink(id, name) {
+			mapService.deleteLink(id)
+			.then(function() {
+				removeCurrentLink(id);
+				logger.success("'" + name + "' was deleted successfully", "", "Success");
+			});
+		}
+
+		function removeCurrentLink(id) {	
+			var link = vm.currentLink;
+			vm.map.removeLayer(link.line);
+			vm.map.removeLayer(link.head);
+			removeLink(id);
+		}
+
+		function removeLink(id) {	
+			// Find the links index for the link id in the linkList array, will return -1 if not found 
+			var linkIndex = vm.linkList.findIndex(function(obj){return obj._id == id});
+
+			// Remove the link from the linkList array
+			if (linkIndex > -1) {
+				vm.linkList.splice(linkIndex, 1);
+			}
+
+			console.log(vm.linkList);
 		}
 
 		/* If the cursor enters the file box in the search results side bar this function  */
@@ -590,214 +707,3 @@
 	}
 
 })();
-
-/* ====== OLD CODE USING GOOGLE MAPS API ======
-
-// Tried using leaflet instead due to the vector tiles, smoother transitions, and clustering features.
-// Can load a variety of tiles to be used including Google Maps and MapBox tiles. 
-
-		function initMap(coords) {
-			var position = new google.maps.LatLng(-34.4054039, 150.87842999999998);	// Default position is UOW
-			var mapCanvas = document.getElementById('map');
-			var mapOptions = {
-				center: position,
-				zoom: 4,
-				panControl: false,
-				mapTypeId: google.maps.MapTypeId.ROADMAP,
-				mapTypeControl: true,
-				mapTypeControlOptions: {
-					style: google.maps.MapTypeControlStyle.DEFAULT,
-					position: google.maps.ControlPosition.TOP_RIGHT
-				}
-			}
-
-			map = new google.maps.Map(mapCanvas, mapOptions);
-
-			mapService.getPosition(getGeoData);
-			getFileList();
-		}
-
-		// If getPosition returns successfully update the user's posistion on the map
-		function getGeoData(position) {
-			updateUserPos(position.coords.latitude, position.coords.longitude);
-		}
-
-		function updateUserPos(lat, lng) {
-			var userPos = new google.maps.LatLng(lat, lng);
-			var marker = new google.maps.Marker({
-				position: userPos,
-				map: map,
-				title: 'Your Position'
-			});
-			map.setZoom(13);
-			map.panTo(userPos);
-		}
-
-		// Gets all the files from the MongoDB database to be displayed on the map
-		function getFileList() {
-			filesService.getFileListDB()
-			.then(function(response) {
-				var fileList = response.data;
-				clearMarkers();
-				addMapMarkers(fileList);
-			});
-		}
-
-		function clearMarkers() {
-			for (var i = 0; i < markers.length; i++) {
-				markers[i].setMap(null);
-			}
-			markers = [];
-
-			if(markerCluster)
-				markerCluster.clearMarkers();
-		}
-
-		// Adds markers for the files retrieved from the MongoDB database
-		function addMapMarkers(fileList) {
-			var icons = {
-				australia: {
-					icon: '/images/map/icons/kangaroo-markers/kangaroo-marker.png'
-				},
-				newZealand: {
-					icon: '/images/map/icons/kiwi-markers/kiwi-marker.png'
-				},
-				newCaledonia: {
-					icon: '/images/map/icons/kagu-markers/kagu-marker.png'
-				}
-			};
-
-			var icon = {
-				url: "icons/method-draw-image (3).svg",
-				fillColor: '#eb4139',
-				fillOpacity: 1,
-				anchor: new google.maps.Point(0,0),
-				scaledSize: new google.maps.Size(50,50)
-			}
-
-			var infowindow = new google.maps.InfoWindow();
-
-			var markerId = 0;
-			// For each file returned from the DB, a marker with an info 
-			// window is created. Each marker is then added to its 
-			// corresponding marker array to be displayed on the map
-			fileList.forEach(function(file) {
-				var marker = new google.maps.Marker({
-					id: ++markerId,
-					position: new google.maps.LatLng(file.coords.lat, file.coords.lng),
-					//icon: icon,
-					title: file.name
-				});
-
-				var contentString = '<div class="info-window">' +
-				'<h3>' + file.name + '</h3>' +
-				'<p>Created By: ' + file.createdBy + '</p>' +
-				'<p>Size: ' + $filter('formatFileSize')(file.size, 2) + '</p>' +	// uses formatFileSize filter to format the file size
-				'<p>Last Modified: ' + $filter('date')(file.lastModified, "dd MMMM, yyyy h:mm a") + '</p>';	// uses date filter to format the date
-
-				// If the file has tags add an unsorted list, listing each tag
-				// otherwise skip and exclude the 'tags' label
-				if(file.tags.length != 0) { 
-					contentString += '<p>Tags: </p>' +
-					'<ul>';
-					// lists each tag for current file
-					file.tags.forEach(function(tag){
-						contentString += '<li>' + tag + '</li>';
-					});
-					contentString += '</ul>';
-				}
-
-				contentString += '<a ng-click="vm.viewFile(\'' + file.key + '\')" class="btn btn-success" role="button">View</a> ' +
-				'<a ng-click="vm.popupFileDetails(\'' + file.key + '\')" class="btn btn-primary" role="button">Details</a> ' +
-				'<a ng-click="vm.confirmDelete(\'' + file.key + '\', \'' + file.name + '\', \'' + markerId + '\')" class="btn btn-danger" role="button">Delete</a>' +
-				'</div>';
-
-				// compiles the HTML so ng-click works
-				var compiledContentString = $compile(contentString)($scope)
-
-				marker.addListener('click', function () {
-					infowindow.setContent(compiledContentString[0]);
-					infowindow.open(map, marker);
-				});
-
-				google.maps.event.addListener(map, 'click', function(){
-					infowindow.close(map, marker);
-				});
-
-				markers.push(marker);
-
-			});
-			markerCluster = new MarkerClusterer(map, markers, {imagePath: '/images/map/icons/kangaroo-markers/m'});
-			markerCluster.setMaxZoom(20);
-		}
-
-		function removeMapMarker(markerId) {	
-			// Find the marker index for markerId, will return -1 if not found 
-			var markerIndex = markers.findIndex(function(obj){return obj.id == markerId});
-
-			// Remove the marker from map then remove from markers array
-			if (markerIndex > -1) {
-				markers[markerIndex].setMap(null);
-				markers.splice(markerIndex, 1);
-			}
-
-			// Probably don't need to search the markerclusters for the marker index since it should 
-			// be identical to the index found earlier for the markers array
-			markerIndex = markerCluster.markers_.findIndex(function(obj){return obj.id == markerId});
-
-			// Remove the marker from the markers array in the markerCluster object
-			if (markerIndex > -1) {
-				markerCluster.markers_.splice(markerIndex, 1);
-			}
-		}
-
-		// Get a signed URL to download the requested file from S3 
-		// and if successful, open the signed URL in a new tab
-		function viewFile(key) {
-			filesService.signDownloadS3(key)
-			.then(function(response) {
-				$window.open(response.data, '_blank');
-			});
-		}
-
-		function popupFileDetails(key) {
-			var modalInstance = $uibModal.open({
-				templateUrl: '/components/files/fileDetails/fileDetails.view.html',
-				controller: 'fileDetails as vm',
-				size: 'lg',
-				resolve: {
-					key: function () {
-						return key;
-					}
-				}
-			});
-
-			modalInstance.result.then(function() {
-
-			});
-		}
-
-		function confirmDelete(key, fileName, markerId) {
-			var deleteFile = $window.confirm("Are you sure you want to delete " + fileName + "?");
-			if(deleteFile){
-				removeMapMarker(markerId);
-				oms.unspiderfy();
-				//deleteFileDB(key, fileName, markerId);
-			}
-		}
-
-		function deleteFileDB(key, fileName, markerId) {
-			filesService.deleteFileDB(key)
-			.then(function(response) {
-				//deleteFileS3(key, fileName, markerId);
-			});
-		}
-
-		function deleteFileS3(key, fileName, markerId) {
-			filesService.deleteFileS3({key: key})
-			.then(function(response) {
-				logger.success('File ' + fileName + ' deleted successfully', '', 'Success');
-
-			});
-		}
-*/
