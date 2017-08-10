@@ -17,6 +17,11 @@ body.pg-loaded > .inner {
 	visibility: visible;
 }
 
+.inner {
+	width: 100%; 
+	height: 100%;
+}
+
 body, html {
 	width: 100%; 
 	height: 100%;
@@ -46,6 +51,36 @@ footer{
 
 @-ms-viewport{
 	width: device-width;
+}
+
+/* ========== LOGIN PAGE =========== */
+
+.login-page {
+	background-color: #4676fa;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    opacity: 1;
+    padding-top: 50px;
+}
+.login-page.ng-enter,
+.login-page.ng-leave {
+    -webkit-transition: all 1s ease;
+    transition: all 1s ease;
+}
+.login-page.ng-enter {
+    opacity: 0;
+}
+.login-page.ng-enter-active {
+    opacity: 1;
+}
+.login-page.ng-leave {
+    opacity: 1;
+}
+.login-page.ng-leave-active {
+    opacity: 0;
 }
 
 /* ========== AVATAR IMAGES ========== */
@@ -134,7 +169,7 @@ footer{
 /* ========== NAVIGATION ========== */
 
 #navigation-main{
-	position: absolute;
+	position: fixed;
 	top: 0; 
 	left: 0; 
 	right: 0; 

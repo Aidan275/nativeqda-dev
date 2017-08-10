@@ -7,7 +7,9 @@
 	loginCtrl.$inject = ['$location', 'authentication', 'events', 'logger'];
 	function loginCtrl($location, authentication, events, logger) {
 		var vm = this;
-		
+
+		vm.pageClass = 'login-page';	/* Class added to the inner div in the index page (for styling) */
+
 		// Bindable Functions
 		vm.onSubmit = onSubmit;
 		vm.login = login;
