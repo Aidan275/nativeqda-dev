@@ -57,30 +57,30 @@ footer{
 
 .login-page {
 	background-color: #4676fa;
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 100%;
-    opacity: 1;
-    padding-top: 50px;
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: 100%;
+	opacity: 1;
+	padding-top: 50px;
 }
 .login-page.ng-enter,
 .login-page.ng-leave {
-    -webkit-transition: all 1s ease;
-    transition: all 1s ease;
+	-webkit-transition: all 1s ease;
+	transition: all 1s ease;
 }
 .login-page.ng-enter {
-    opacity: 0;
+	opacity: 0;
 }
 .login-page.ng-enter-active {
-    opacity: 1;
+	opacity: 1;
 }
 .login-page.ng-leave {
-    opacity: 1;
+	opacity: 1;
 }
 .login-page.ng-leave-active {
-    opacity: 0;
+	opacity: 0;
 }
 
 /* ========== AVATAR IMAGES ========== */
@@ -307,6 +307,7 @@ footer{
 /* Fix to prevent the sidebar covering the nav menu (mobile) */
 .sidebar {
 	top: 50px !important;
+	z-index: 1020 !important; 
 }
 
 /* Fix to prevent the sidebar covering the nav menu */
