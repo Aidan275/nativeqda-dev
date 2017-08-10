@@ -163,6 +163,58 @@ module.exports.deleteUser = function(req, res) {
 	}
 };
 
+module.exports.getUserRoles = function(req, res) {
+	User.findOne({"email": req.params["email"]}, function(err, results) {
+		if (err) {
+			sendJSONresponse(res, 500, err);
+			return;
+		}
+		else if (!results) {
+			sendJSONresponse(res, 404, {"message": "No user found"});
+			return;
+		}
+		else { //Found user
+			console.log(results)
+			sendJSONresponse(res, 200, results.roles);
+			return;
+		}
+	});
+};
+
+module.exports.putUserRole = function(req, res) { //TODO: Make sure role actually exists. Check user is a superadmin
+	User.findOneAndUpdate({"email": req.params["email"]}, {$addToSet: {roles: req.params["role"]}}, {new: true}, function(err, results) {
+		if (err) {
+			sendJSONresponse(res, 500, err);
+			return;
+		}
+		else if (!results) {
+			sendJSONresponse(res, 404, {"message": "No user found"});
+			return;
+		}
+		else {
+			sendJSONresponse(res, 200, results.roles);
+			return;
+		}
+	});
+};
+
+module.exports.deleteUserRole = function(req, res) { //TODO: Check user is a superadmin
+	User.findOneAndUpdate({"email": req.params["email"]}, {$pullAll: {roles: [req.params["role"]]}}, {new: true}, function(err, results) {
+		if (err) {
+			sendJSONresponse(res, 500, err);
+			return;
+		}
+		else if (!results) {
+			sendJSONresponse(res, 404, {"message": "No user found"});
+			return;
+		}
+		else {
+			sendJSONresponse(res, 200, results.roles);
+			return;
+		}
+	});
+};
+
 module.exports.getRoles = function(req, res) {
 	if (!req.params["rolename"]) { //Retrieve all the roles
 		UserRoles.find({}).exec( function(err, results) {

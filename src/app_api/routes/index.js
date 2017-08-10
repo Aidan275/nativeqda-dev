@@ -49,6 +49,10 @@ router.delete('/user/:email?', auth, checkDatabaseStatus, ctrlUsers.deleteUser);
 router.get('/user/last-modified', auth, checkDatabaseStatus, ctrlUsers.userLastModified); // Get the date the user's info was last modified
 
 //User Roles
+router.get('/user/:email/roles', auth, checkDatabaseStatus, ctrlUsers.getUserRoles); //Get all the roles a user has
+router.put('/user/:email/roles/:role', auth, checkDatabaseStatus, ctrlUsers.putUserRole); //Assign a role to a user
+router.delete('/user/:email/roles/:role', auth, checkDatabaseStatus, ctrlUsers.deleteUserRole); //Un-assign a role to a user
+
 router.get('/roles/:rolename?', auth, checkDatabaseStatus, ctrlUsers.getRoles); //Get a specific role or a list of all the user role objects (More likely)
 router.put('/roles/:rolename', auth, checkDatabaseStatus, ctrlUsers.putRole); //Create or update a user role
 router.delete('/roles/:rolename', auth, checkDatabaseStatus, ctrlUsers.deleteRole); //Remove a user role from the system
