@@ -10,11 +10,11 @@
 /* ========== GLOBAL ========== */
 
 body > .inner {
-	display: none;
+	visibility: hidden;
 }
 
 body.pg-loaded > .inner {
-	display: block;
+	visibility: visible;
 }
 
 body, html {
@@ -45,7 +45,7 @@ footer{
 /* ========== VIEWPORT FIXES =========== */
 
 @-ms-viewport{
-  width: device-width;
+	width: device-width;
 }
 
 /* ========== AVATAR IMAGES ========== */
