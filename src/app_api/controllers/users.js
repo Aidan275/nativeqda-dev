@@ -108,6 +108,61 @@ module.exports.updateProfile = function(req, res) {
 
 module.exports.getUserProfile = function(req, res) { res.sendStatus(418) };
 
+module.exports.deleteUser = function(req, res) {
+	var jwtpayload = extractJWT(req.headers["authorization"]);
+	if (req.params["email"] == null || req.params["email"] == jwtpayload.email) { //Deleting own account
+		User.remove({"email": jwtpayload.email}, function(err, results) {
+			if (err) {
+				sendJSONresponse(res, 500, err);
+				return;
+			}
+			else if (results.toJSON().n < 1) {
+				sendJSONresponse(res, 404, {"message": "User not found"});
+				return;
+			}
+			else {
+				sendJSONresponse(res, 200, results);
+				return;
+			}
+		});
+	}
+	else { //Deleting another account
+		//Determine if they are a superadmin
+		User.findOne({"email": jwtpayload.email}, function(err, results) { //Find the requesting user's account
+			if (err) {
+				sendJSONresponse(res, 500, err)
+				return
+			}
+			else if (!results) {
+				sendJSONresponse(res, 404, {"message": "User not found"})
+				return
+			}
+			else {
+				if (results.roles.indexOf("Superadmin") > -1) { //The user is a superadmin
+					User.remove({"email": req.params["email"]}, function(err, results) {
+						if (err) {
+							sendJSONresponse(res, 500, err);
+							return;
+						}
+						else if (results.toJSON().n < 1) {
+							sendJSONresponse(res, 404, {"message": "User not found"});
+							return;
+						}
+						else {
+							sendJSONresponse(res, 200, results);
+							return;
+						}
+					});
+				}
+				else { //The user is not a superadmin and so is not authorised to delete a user.
+						sendJSONresponse(res, 403, {"message": "Not superadmin"});
+						return;
+				}
+			}
+		});
+	}
+};
+
 module.exports.getRoles = function(req, res) {
 	if (!req.params["rolename"]) { //Retrieve all the roles
 		UserRoles.find({}).exec( function(err, results) {

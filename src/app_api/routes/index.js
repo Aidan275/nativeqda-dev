@@ -44,7 +44,7 @@ router.put('/settings', auth, checkDatabaseStatus, ctrlSettings.setSettings);
 router.get('/user/info', auth, checkDatabaseStatus, ctrlUsers.getUserInfo);
 router.get('/users/info', auth, checkDatabaseStatus, ctrlUsers.getAllUsersInfo);	/* Gets all users info */
 router.put('/user', auth, checkDatabaseStatus, ctrlUsers.updateProfile); //Update the user's details
-//router.delete('/user', auth, checkDatabaseStatus, ctrlUsers.deleteUser); //Delete a User's account
+router.delete('/user/:email?', auth, checkDatabaseStatus, ctrlUsers.deleteUser); //Delete a User's account
 /* router.get('/user/:email', auth, checkDatabaseStatus, ctrlUsers.getUserProfile); //View a user's profile */ /* Not sure if this is still needed? Is interfering with the route below (/user/last-modified) */
 router.get('/user/last-modified', auth, checkDatabaseStatus, ctrlUsers.userLastModified); // Get the date the user's info was last modified
 
