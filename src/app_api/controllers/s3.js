@@ -1,4 +1,6 @@
 var aws = require('aws-sdk');
+var crypto = require('crypto');
+var moment = require('moment');
 var mongoose = require('mongoose');
 var File = mongoose.model('File');
 var s3 = new aws.S3();
