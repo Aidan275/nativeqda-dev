@@ -1,11 +1,13 @@
 (function () {
 
+	'use strict';
+
 	angular
 	.module('nativeQDAApp')
 	.controller('loginCtrl', loginCtrl);
 
-	loginCtrl.$inject = ['$location', 'authentication', 'events', 'logger'];
-	function loginCtrl($location, authentication, events, logger) {
+	/* @ngInject */
+	function loginCtrl($location, authentication, events, logger, usersService) {
 		var vm = this;
 
 		//vm.pageClass = 'login-page';	/* Class added to the inner div in the index page (for styling) */
@@ -13,6 +15,7 @@
 		// Bindable Functions
 		vm.onSubmit = onSubmit;
 		vm.login = login;
+		vm.getAvatar = getAvatar;
 
 		// Bindable Data
 		vm.credentials = {
@@ -23,6 +26,7 @@
 			title: 'Sign in to nativeQDA'
 		};
 		vm.returnPage = $location.search().page || '/';
+		vm.avatarUrl = 'assets/img/settings/default-avatar.png';
 
 		///////////////////////////
 
@@ -44,6 +48,21 @@
 				$location.path(vm.returnPage);
 			});
 		};
+
+		function getAvatar() {
+			if(vm.credentials.email) {
+				usersService.getAvatar(vm.credentials.email)
+				.then(function(response) {
+					if(response.data) {
+						vm.avatarUrl = response.data.avatar;
+					} else {
+						vm.avatarUrl = 'assets/img/settings/default-avatar.png';
+					}
+				});
+			} else {
+				vm.avatarUrl = 'assets/img/settings/default-avatar.png';
+			}
+		}
 
 	}
 

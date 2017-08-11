@@ -155,8 +155,8 @@ module.exports.deleteUser = function(req, res) {
 					});
 				}
 				else { //The user is not a superadmin and so is not authorised to delete a user.
-						sendJSONresponse(res, 403, {"message": "Not superadmin"});
-						return;
+					sendJSONresponse(res, 403, {"message": "Not superadmin"});
+					return;
 				}
 			}
 		});
@@ -296,6 +296,20 @@ module.exports.userLastModified = function(req, res) {
 			}
 			sendJSONresponse(res, 200, results);
 		});
+	
+};
+
+module.exports.getAvatar = function(req, res) {
+	var email = req.params["email"];
+
+	User
+	.findOne({email: email}, 'avatar -_id', function(err, results) {
+		if (err) {
+			sendJSONresponse(res, 404, null);
+			return;
+		}
+		sendJSONresponse(res, 200, results);
+	});
 	
 };
 

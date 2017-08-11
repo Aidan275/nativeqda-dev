@@ -414,11 +414,16 @@ footer a:focus {
 		</svg>
 	</i><br />
 
-<div class="profileImage"><img src="assets/img/settings/default-avatar.png" class="img-circle" style="" width="40%" height="40%"></div><br /><br class="invisibleClass invisibleClassHeight" />
+	<div class="profileImage">
+		<img class="img-circle" width="200px" height="200px" src="{{ vm.avatarUrl }}" style="object-fit: cover">
+	</div>
+
+	<br />
+	<br class="invisibleClass invisibleClassHeight" />
 	<p align="center"><span>Sign in with your NativeQDA Account</span></p>
 	<form ng-submit="vm.onSubmit()" id="login-form">
 		<div id="u" class="form-group-qda">
-			<input id="email" spellcheck=false class="form-control-qda" name="username" type="email" size="18" alt="login" required="required" ng-model="vm.credentials.email">
+			<input id="email" spellcheck=false class="form-control-qda" name="username" type="email" size="18" alt="login" required="required" ng-model="vm.credentials.email" ng-blur="vm.getAvatar()">
 			<span class="form-highlight"></span>
 			<span class="form-bar"></span>
 			<label for="email" class="float-label">Email</label>
@@ -432,6 +437,7 @@ footer a:focus {
 				</i>
 			</erroru>
 		</div>
+		
 		
 	<div id="p" class="form-group-qda">
 	  <input id="password" class="form-control-qda" spellcheck=false name="password" type="password" size="18" alt="login" required="required" ng-model="vm.credentials.password">

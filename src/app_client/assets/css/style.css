@@ -116,9 +116,21 @@ footer{
 	overflow: hidden;
 }
 
+.login-avatar-container {
+	position: relative;
+	display: inline-block;
+	width: 40%;
+	height: 40%;
+	background-position: center center;
+	background-repeat: no-repeat;
+	background-size: cover;
+	overflow: hidden;
+}
+
 .sml-avatar,
 .med-avatar,
-.lrg-avatar {
+.lrg-avatar,
+.login-avatar {
 	height: 100%;
 	width: 100%;
 	/* IE 8 */

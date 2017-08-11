@@ -47,6 +47,7 @@ router.put('/user', auth, checkDatabaseStatus, ctrlUsers.updateProfile); //Updat
 router.delete('/user/:email?', auth, checkDatabaseStatus, ctrlUsers.deleteUser); //Delete a User's account
 /* router.get('/user/:email', auth, checkDatabaseStatus, ctrlUsers.getUserProfile); //View a user's profile */ /* Not sure if this is still needed? Is interfering with the route below (/user/last-modified) */
 router.get('/user/last-modified', auth, checkDatabaseStatus, ctrlUsers.userLastModified); // Get the date the user's info was last modified
+router.get('/user/avatar/:email', checkDatabaseStatus, ctrlUsers.getAvatar); /* Get the avatar for the email address for the login page */
 
 //User Roles
 router.get('/user/:email/roles', auth, checkDatabaseStatus, ctrlUsers.getUserRoles); //Get all the roles a user has

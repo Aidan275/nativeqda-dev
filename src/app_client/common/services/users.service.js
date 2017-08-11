@@ -11,7 +11,8 @@
 		return {
 			getUserInfo		: getUserInfo,
 			getAllUsersInfo : getAllUsersInfo,
-			updateProfile 	: updateProfile
+			updateProfile 	: updateProfile,
+			getAvatar 		: getAvatar
 		};
 
 		///////////////////////////
@@ -50,6 +51,16 @@
 
 			function updateProfileComplete(data) { return data; }
 			function updateProfileFailed(e) { return exception.catcher('Failed updating the user\'s profile.')(e); }
+		};
+
+		function getAvatar(email){
+			return $http.get('/api/user/avatar/' + email, {
+				headers: {
+					Authorization: 'Bearer ' + authentication.getToken()
+				}
+			}).then(getAvatarComplete);
+
+			function getAvatarComplete(data) { return data; }
 		};
 	}
 
