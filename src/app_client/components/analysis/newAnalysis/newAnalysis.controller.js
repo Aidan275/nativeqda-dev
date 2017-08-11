@@ -53,7 +53,7 @@
 
 		// Gets all the files from the MongoDB database
 		function getFileList() {
-			filesService.getFileDB(vm.currentPath, 'true')
+			filesService.getFileDB(vm.currentPath, '', 'true')
 			.then(function(response) {
 				response.data.forEach(function(data) {
 					vm.data.push(data);
@@ -102,7 +102,7 @@
 			var path = vm.data[dataIndex].path;
 			vm.formData.sourceDataKey = vm.data[dataIndex].textFileKey;
 
-			filesService.signDownloadS3(name, path, 'true')	// true flag to return the associated text file, not the actual file
+			filesService.signDownloadS3(path, name, 'true')	// true flag to return the associated text file, not the actual file
 			.then(function(response) {
 				analysisService.watsonAnalysis({url: response.data.url})
 				.then(function(response) {
@@ -179,7 +179,7 @@
 				newTab.document.write(loaderHTML);
 
 				// Make a request to the server for a signed URL to download/view the requested file
-				filesService.signDownloadS3(name, path, 'true')	// true flag to return the associated text file, not the actual file
+				filesService.signDownloadS3(path, name, 'true')	// true flag to return the associated text file, not the actual file
 				.then(function(response) {
 					// Remove the animation 1s after the signed URL is retrieved
 					setTimeout(function(){

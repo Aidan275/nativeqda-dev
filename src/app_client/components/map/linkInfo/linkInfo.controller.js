@@ -4,10 +4,10 @@
 
 	angular
 	.module('nativeQDAApp')
-	.controller('markerDependencyCtrl', markerDependencyCtrl);
+	.controller('linkInfoCtrl', linkInfoCtrl);
 
 	/* @ngInject */
-	function markerDependencyCtrl($uibModalInstance, markers, logger, mapService, authentication) {
+	function linkInfoCtrl($uibModalInstance, markers, logger, mapService, authentication) {
 		var vm = this;
 
 		// Bindable Functions

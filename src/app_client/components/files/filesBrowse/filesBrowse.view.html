@@ -17,7 +17,7 @@
 			<div class="blur-this file-browser-table-container">
 				<table ng-table="vm.tableParams" class="table table-condensed table-bordered table-striped file-browser-table">
 					<tr class="table-row" ng-repeat="row in $data">
-						<td data-title="'File Name'" filter="{name: 'text'}" sortable="'name'" class="file-name-cell" ng-click="vm.viewFile(row.name, row.path, row.type)">
+						<td data-title="'File Name'" filter="{name: 'text'}" sortable="'name'" class="file-name-cell" ng-click="vm.viewFile(row.path, row.name, row.type)">
 							<span>
 								<i class="{{row.icon}} fa-lg" title="{{row.type | capitalise}}"></i> {{row.name}}
 							</span>
@@ -26,7 +26,7 @@
 						<td data-title="'Uploaded By'" filter="{createdBy: 'text'}" sortable="'createdBy'" class="uploaded-by-cell hidden-xs hidden-sm" header-class="'hidden-xs hidden-sm'">{{row.createdBy}}</td>
 						<td data-title="'Size'" filter="{size: 'text'}" sortable="'size'" class="size-cell hidden-xs hidden-sm hidden-md" header-class="'hidden-xs hidden-sm hidden-md'">{{row.size | formatFileSize:2}}</td>
 						<td data-title="'Command'" class="command-cell">
-							<a ng-if="row.type!='parent-dir'" ng-click="vm.viewFile(row.name, row.path, row.type)" class="btn btn-success btn-xs" role="button">
+							<a ng-if="row.type!='parent-dir'" ng-click="vm.viewFile(row.path, row.name, row.type)" class="btn btn-success btn-xs" role="button">
 								<span ng-if="row.type!='folder'">View</span>
 								<span ng-if="row.type=='folder'">Open</span>
 							</a>

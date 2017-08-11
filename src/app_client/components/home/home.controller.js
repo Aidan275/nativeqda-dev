@@ -304,7 +304,7 @@
 					popupString += '</p>';
 				}
 
-				popupString += '<a ng-click="vm.viewFile(fileName, filePath)" class="btn btn-success" role="button">View</a> ' +
+				popupString += '<a ng-click="vm.viewFile(filePath, fileName)" class="btn btn-success" role="button">View</a> ' +
 				'<a ng-click="vm.popupFileDetails(fileKey)" class="btn btn-primary" role="button">Details</a> ' +
 				'<a ng-click="vm.confirmDelete(fileKey, fileName, textFileKey)" class="btn btn-danger" role="button">Delete</a>' +
 				'</div>';
@@ -315,8 +315,8 @@
 
 				// New scope variables for the compiled string above
 				newScope.fileKey = file.key;
-				newScope.fileName = file.name;
 				newScope.filePath = file.path;
+				newScope.fileName = file.name;
 
 				marker.bindPopup(compiledPopupString(newScope)[0]);
 
@@ -361,7 +361,7 @@
 
 		// Gets signed URL to download the requested file from S3 
 		// if successful, opens the signed URL in a new tab
-		function viewFile(name, path) {
+		function viewFile(filePath, fileName) {
 			// Open a blank new tab while still in a trusted context to prevent a popup blocker warning
 			var newTab = $window.open("about:blank", '_blank')
 
@@ -376,7 +376,7 @@
 			newTab.document.write(loaderHTML);
 
 			// Make a request to the server for a signed URL to download/view the requested file
-			filesService.signDownloadS3(name, path)
+			filesService.signDownloadS3(filePath, fileName)
 			.then(function(response) {
 				// Remove the animation 1s after the signed URL is retrieved
 				setTimeout(function(){

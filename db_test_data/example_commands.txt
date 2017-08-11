@@ -1,0 +1,22 @@
+########################### LOCAL COMMANDS ###########################
+
+# Dumps the data from the files collection to dev_dump_folder
+mongodump -d nativeqda-dev -c files -o ./dev_dump_folder
+
+# Restores data from the files collection from dev_dump_folder
+mongorestore -d nativeqda-dev ./dev_dump_folder/nativeqda-dev/files.bson
+
+# Imports 1000 mock files as JSON data to the files collection dropping any existing documents 
+mongoimport --db nativeqda-dev --collection files --drop --file 1000_FILES_MOCK_DATA.json
+
+
+########################### LIVE DEV COMMANDS ###########################
+
+# Dumps the data from the files collection to live_dev_dump_folder
+mongodump -h ds159591.mlab.com:59591 -d heroku_2l7kbmm1 -c files -u heroku_2l7kbmm1 -p 1e33nv46qhshlv80n4rfog3tel -o ./live_dev_dump_folder
+
+# Restores data from the files collection from live_dev_dump_folder
+mongorestore -h ds159591.mlab.com:59591 -d heroku_2l7kbmm1 -c files -u heroku_2l7kbmm1 -p 1e33nv46qhshlv80n4rfog3tel ./live_dev_dump_folder/heroku_2l7kbmm1/files.bson
+
+# Imports 1000 mock files as JSON data to the files collection dropping any existing documents 
+mongoimport -h ds159591.mlab.com:59591 -d heroku_2l7kbmm1 -c files --drop -u heroku_2l7kbmm1 -p 1e33nv46qhshlv80n4rfog3tel --file 1000_FILES_MOCK_DATA.json

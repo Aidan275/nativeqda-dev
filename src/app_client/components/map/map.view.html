@@ -1,54 +1,5 @@
 <navigation></navigation>
 
-<!--
-<div id="map-controls" class="col-xs-3 col-sm-3">
-
-	<ul class="nav nav-tabs">
-		<li class="active"><a data-target="#home" data-toggle="tab" >Search</a></li>
-		<li><a data-target="#menu1" data-toggle="tab" >Filter</a></li>
-		<li><a data-target="#menu2" data-toggle="tab" >Category</a></li>
-		<li><a data-target="#menu3" data-toggle="tab" >Analysis</a></li>
-	</ul>
-
-	
-	<div class="tab-content">
-		<div id="home" class="tab-pane fade in active">
-			<h3>Search</h3>
-			<div class="form-group">
-				<input type="text" class="form-control" placeholder="Search">
-			</div>
-		</div>
-		<div id="menu1" class="tab-pane fade">
-			<h3>Filter</h3>
-			<div class="form-group">
-				<input type="text" class="form-control" placeholder="Search">
-			</div>
-			<div class="list-group" data-toggle="items">
-				<a data-target="#" class="list-group-item active">Filter 1</a>
-				<a data-target="#" class="list-group-item">Filter 2</a>
-				<a data-target="#" class="list-group-item active">Filter 3</a>
-				<a data-target="#" class="list-group-item">Filter 4</a>
-				<a data-target="#" class="list-group-item">Filter 5</a>
-			</div>
-		</div>
-		<div id="menu2" class="tab-pane fade">
-			<h3>Category</h3>
-			<div class="list-group">
-				<a data-target="#" class="list-group-item active">Category 1</a>
-				<a data-target="#" class="list-group-item">Category 2</a>
-				<a data-target="#" class="list-group-item">Category 3</a>
-				<a data-target="#" class="list-group-item">Category 4 </a>
-				<a data-target="#" class="list-group-item">Category 5</a>
-			</div>
-		</div>
-		<div id="menu3" class="tab-pane fade">
-			<h3>Analysis</h3>
-			<p>Analysis stuff</p>
-		</div>
-	</div>
-</div>
--->
-
 <div class="bs-loading-container" bs-loading-overlay bs-loading-overlay-active-class="loading-overlay--active" bs-loading-overlay-reference-id="map"> 
 	<div class="blur-this">
 
@@ -100,8 +51,8 @@
 				<div class="sidebar-pane" id="filters">
 					<h1 class="sidebar-header">Filters<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
 					<div id="sidebar-filters-body">
-						<a ng-if="vm.markerLinksHidden" ng-click="vm.toggleMarkerLinks()" class="btn btn-primary" role="button">Show Dependecies</a>
-						<a ng-if="!vm.markerLinksHidden" ng-click="vm.toggleMarkerLinks()" class="btn btn-primary" role="button">Hide Dependecies</a>
+						<a ng-if="vm.linksHidden" ng-click="vm.toggleLinks()" class="btn btn-primary" role="button">Show Dependecies</a>
+						<a ng-if="!vm.linksHidden" ng-click="vm.toggleLinks()" class="btn btn-primary" role="button">Hide Dependecies</a>
 					</div>
 				</div>
 
@@ -119,9 +70,9 @@
 	</div>
 </div>
 
-<div ng-if="vm.addingDependent" class="map-dependent-marker-info">
+<div ng-if="vm.addingLink" class="map-dependent-marker-info">
 	<div>
 		<div class="dependent-msg">Please select the dependent marker</div>
-		<a ng-click="vm.cancelDependent()" class="btn btn-danger" role="button">Cancel</a>
+		<a ng-click="vm.cancelAddingLink()" class="btn btn-danger" role="button">Cancel</a>
 	</div>
 </div>

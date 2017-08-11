@@ -38,7 +38,7 @@
 		// Gets all the files from the MongoDB database
 		function getFileList() {
 			bsLoadingOverlayService.start({referenceId: 'file-list'});	// Start animated loading overlay
-			filesService.getFileDB(vm.currentPath)
+			filesService.getFileDB(vm.currentPath, '')
 			.then(function(response) {
 				vm.fileList = response.data;
 				if(vm.currentPath != '') {
@@ -67,18 +67,18 @@
 
 		// Gets signed URL to download the requested file from S3 
 		// if successful, opens the signed URL in a new tab
-		function viewFile(name, path, type) {
-			if(type === 'folder') {
+		function viewFile(filePath, fileName, fileType) {
+			if(fileType === 'folder') {
 
-				if(path === '/') {
-					vm.currentPath = name;
+				if(filePath === '/') {
+					vm.currentPath = fileName;
 				} else {
-					vm.currentPath = path + '/' + name;
+					vm.currentPath = filePath + '/' + fileName;
 				}
 
 				vm.pathsArray = vm.currentPath.split("/");
 				getFileList();
-			} else if (type === 'parent-dir') {
+			} else if (fileType === 'parent-dir') {
 				vm.currentPath = vm.currentPath.substr(0, vm.currentPath.lastIndexOf('/'));
 				vm.pathsArray = vm.currentPath.split("/");
 				getFileList();
@@ -97,7 +97,7 @@
 				newTab.document.write(loaderHTML);
 
 				// Make a request to the server for a signed URL to download/view the requested file
-				filesService.signDownloadS3(name, path)
+				filesService.signDownloadS3(filePath, fileName)
 				.then(function(response) {
 					// Remove the animation 1s after the signed URL is retrieved
 					setTimeout(function(){

@@ -58,17 +58,17 @@
 			function addFileDBFailed(e) { return exception.catcher('Failed adding the file to the DB.')(e); }
 		};
 
-		function signDownloadS3(name, path, getTextFile){
+		function signDownloadS3(filePath, fileName, getTextFile){
 			/* Encode the key for the API URL incase it includes reserved characters (e.g '+', '&') */
 			/* var encodedKey = encodeURIComponent(key); */
 			if(!getTextFile){
-				getTextFile = false;
+				getTextFile = 'false';
 			}
 
-			if (path == '/') {
-				var url = '/api/files/' + name + '/download?getTextFile=' + getTextFile; /* If getTextFile=true, returns the associated text file for analysis */
+			if (filePath == '/') {
+				var url = '/api/files/' + fileName + '/download?getTextFile=' + getTextFile; /* If getTextFile=true, returns the associated text file for analysis */
 			} else {
-				var url = '/api/files/' + path + '/' + name + '/download?getTextFile=' + getTextFile; /* If getTextFile=true, returns the associated text file for analysis */ 
+				var url = '/api/files/' + filePath + '/' + fileName + '/download?getTextFile=' + getTextFile; /* If getTextFile=true, returns the associated text file for analysis */ 
 			}
 
 			return $http.get(url, {
@@ -119,12 +119,20 @@
 			function getFileListDBFailed(e) { return exception.catcher('Failed listing the files from the DB.')(e); }
 		};
 
-		function getFileDB(filePath, getTextFile){
+		function getFileDB(filePath, fileName, getTextFile){
 			if(!getTextFile){
-				getTextFile = false;
+				getTextFile = 'false';
 			}
 
-			return $http.get('/api/files/' + filePath + '?getTextFile=' + getTextFile, { /* If getTextFile=true, returns the associated text file for analysis */
+			if (filePath === '/' && fileName === '') {
+				var url = '/api/files/?getTextFile=' + getTextFile; /* If getTextFile=true, returns the associated text file for analysis */
+			} else if (fileName === '') {
+				var url = '/api/files/' + filePath + '?getTextFile=' + getTextFile; /* If getTextFile=true, returns the associated text file for analysis */ 
+			} else {
+				var url = '/api/files/' + filePath + '/' + fileName + '?getTextFile=' + getTextFile; /* If getTextFile=true, returns the associated text file for analysis */ 
+			}
+
+			return $http.get(url, {
 				headers: {
 					Authorization: 'Bearer ' + authentication.getToken()
 				}
