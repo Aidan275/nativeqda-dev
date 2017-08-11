@@ -15,6 +15,29 @@
 		margin: -3px 70px;
 	}
 }
+@media screen and (max-height: 580px) {
+    .profileImage > img {
+        
+    }
+	.mainLogo > img {
+        
+    }
+	.invisibleClassHeight {
+		display:none;
+	}
+	.invisibleClassHeight > span {
+		display:none;
+	}
+	.buttonPlacementFix > button[type="submit"] {
+		
+	}
+}
+@media screen and (max-width: 1200px) {
+    
+}
+@media screen and (min-width: 1440px) {
+    
+}
 */
 *,
 *:after,
@@ -64,6 +87,9 @@ position: relative;
     background: white;
     box-shadow: 0 1px 5px 0 rgba(0,0,0,0.26);
     overflow: hidden;
+}
+.profileImage{
+	text-align:center;
 }
 .login > i {
 	position: relative;
@@ -376,19 +402,19 @@ footer a:focus {
 </style>    
  
 <div class="mainLogo" style="text-align:center;">
-<img src="assets/img/Logo.png" height="25%" width="25%" style="min-width:185px;">
+<img src="assets/img/Logo.png" height="25%" width="25%" style="min-width:185px;max-width:500px;">
 </div>
 
 
-<div class="login" style="max-width:99%;max-height:77%;width:400px;height:530px;">
+<div class="login" style="max-width:99%;max-height:77%;min-width:320px;min-height:385px;width:400px;height:530px;">
 	<i ripple>
 		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
 		<path fill="#C7C7C7" d="m12,2c-5.52,0-10,4.48-10,10s4.48,10,10,10,10-4.48,10-10-4.48-10-10-10zm1,17h-2v-2h2zm2.07-7.75-0.9,0.92c-0.411277,0.329613-0.918558,0.542566-1.20218,1.03749-0.08045,0.14038-0.189078,0.293598-0.187645,0.470854,0.02236,2.76567,0.03004-0.166108,0.07573,1.85002l-1.80787,0.04803-0.04803-1.0764c-0.02822-0.632307-0.377947-1.42259,1.17-2.83l1.24-1.26c0.37-0.36,0.59-0.86,0.59-1.41,0-1.1-0.9-2-2-2s-2,0.9-2,2h-2c0-2.21,1.79-4,4-4s4,1.79,4,4c0,0.88-0.36,1.68-0.930005,2.25z"/>
 		</svg>
 	</i><br />
 
-<div class="profileImage" style="text-align:center;"><img src="assets/img/settings/default-avatar.png" class="img-circle" style="" width="200px" height="200px"></div><br /><br class="invisibleClass" />
-	<span>Sign in with your NativeQDA Account</span>
+<div class="profileImage"><img src="assets/img/settings/default-avatar.png" class="img-circle" style="" width="40%" height="40%"></div><br class="invisibleClassHeight"/><br class="invisibleClass invisibleClassHeight" />
+	<p class="invisibleClassHeight" align="center"><span>Sign in with your NativeQDA Account</span></p>
 	<form ng-submit="vm.onSubmit()" id="login-form">
 		<div id="u" class="form-group-qda">
 			<input id="email" spellcheck=false class="form-control-qda" name="username" type="email" size="18" alt="login" required="required" ng-model="vm.credentials.email">
@@ -431,7 +457,7 @@ footer a:focus {
 	<footer><a href="/complete-survey">COMPLETE A SURVEY</a></footer>
 </div>
 
-<p class="copyright">
+<p class="copyright invisibleClassHeight">
 	<span style="color:white;">NativeQDA developed by <a style="color:lightblue;" href="http://dev.nativeqda.xyz/">The Bubble Bunch</a> for CSIT321</span>
 </p> 
 
