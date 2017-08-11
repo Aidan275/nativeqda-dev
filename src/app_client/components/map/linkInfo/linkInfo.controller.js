@@ -29,14 +29,12 @@
 
 		function saveDependecy() {
 			var link = {
+				_creator: vm.currentUser._id,
 				name: vm.formData.name,
 				description: vm.formData.description,
-				createdBy: vm.currentUser.firstName,
-				userID: vm.currentUser._id,
 				precedent: markers.precedent,
 				dependent: markers.dependent
 			};
-			console.log(link);
 			mapService.putLink(link)
 			.then(function(response){
 				logger.success("The dependecy has been save", "", "Success");

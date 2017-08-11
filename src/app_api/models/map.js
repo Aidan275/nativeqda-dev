@@ -1,6 +1,11 @@
 var mongoose = require( 'mongoose' );
+var Schema = mongoose.Schema;
 
-var markerLinksSchema = new mongoose.Schema({
+var markerLinkSchema = new mongoose.Schema({
+	_creator: {	/* Reference to the user who created the link */
+		type: Schema.Types.ObjectId, 
+		ref: 'User' 
+	}, 
 	name: {	/* Name of the link as it appears to the user */
 		type: String,
 		"default": "Name"
@@ -13,46 +18,14 @@ var markerLinksSchema = new mongoose.Schema({
 		type: Date,
 		"default": Date.now
 	},
-	createdBy: {	/* Users first name who created the link */
-		type: String,
-		"default": "createdBy"
+	precedent: {	/* Reference to the precedent file */
+		type: Schema.Types.ObjectId,
+		ref: 'File' 
 	},
-	userID: {
-		type: String,
-		"default": "userID"	/* Users ID who created the link */
-	},
-	precedent: {	/* Marker/file that precedes the dependent marker/file */
-		fileID: {
-			type: String,	/* ID of the file in the database */
-			required: true
-		},
-		coords: {
-			type: {
-				type: String,
-				default:'Point' 
-			},
-			coordinates: {	/* Standard GPS/Map coords */
-				type: [Number],
-				"default": [0,0]
-			}
-		}	
-	},
-	dependent: {	/* Dependent marker/file */
-		fileID: {
-			type: String,	/* ID of the file in the database */
-			required: true
-		},
-		coords: {
-			type: {
-				type: String,
-				default:'Point' 
-			},
-			coordinates: {	/* Standard GPS/Map coords */
-				type: [Number],
-				"default": [0,0]
-			}
-		}	
+	dependent: {	/* Reference to the dependent file */
+		type: Schema.Types.ObjectId,
+		ref: 'File' 
 	}
 });
 
-mongoose.model('markerLinks', markerLinksSchema);
+mongoose.model('MarkerLink', markerLinkSchema);

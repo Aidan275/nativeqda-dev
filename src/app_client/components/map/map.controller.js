@@ -343,7 +343,7 @@
 					textFileKey: file.textFileKey
 				};
 				newScope.precedent = {
-					fileID: file._id,
+					_id: file._id,
 					lat: lat,
 					lng: lng
 				};
@@ -554,7 +554,7 @@
 				var popupString = '<div class="info-window">' +
 				'<h3>' + link.name + '</h3>' +
 				'<p><strong>Description:</strong> ' + link.description + '<br />' +
-				'<strong>Created By:</strong> ' + link.createdBy + '<br />' +
+				'<strong>Created By:</strong> ' + link._creator.firstName + '<br />' +
 				'<strong>Date Created:</strong> ' + $filter('date')(link.dateCreated, "dd MMMM, yyyy h:mm a") + '</p>' +	/* uses date filter to format the date */
 				'<a ng-click="vm.confirmLinkDelete(linkID, linkName)" class="btn btn-danger" role="button">Delete</a>' +
 				'</div>';
@@ -657,16 +657,11 @@
 
 					marker.bindTooltip(toolTipString);
 
-					/* When a marker is clicked its id and coordinates are passed to the popup modal */
-					/* where information about the link is added */
+					/* When a marker is clicked its ids are passed to the popup modal */
+					/* where information about the link is entered */
 					marker.on("click", function() { 
-						var dependent = {
-							fileID: file._id,
-							lat: file.coords.coordinates[1],
-							lng: file.coords.coordinates[0]
-						};
 						vm.addingLink = false; /* To remove the cancel window */
-						popupLinkInfo({ precedent:precedent, dependent:dependent});	/* Passes the precedent and dependent marker ids and coordinates to the Link info popup modal */
+						popupLinkInfo({ precedent:precedent._id, dependent:file._id});	/* Passes the precedent and dependent marker ids to the Link info popup modal */
 					});
 
 					vm.markers.addLayer(marker);

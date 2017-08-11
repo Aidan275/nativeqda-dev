@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var File = mongoose.model('File');
+var MarkerLink = mongoose.model('MarkerLink');
 
 var sendJSONresponse = function(res, status, content) {
 	res.status(status);
@@ -103,18 +104,36 @@ module.exports.putFile = function(req, res) { //Update or add a file
 	});
 };
 
-module.exports.deleteFile = function(req, res) { //Remove file
-	var path = extractpath(req.params["filepath"]);
-	File.remove({name: path[0], path: path[1]}).exec(function(err, results) {
-		if (err) {
+module.exports.deleteFile = function(req, res) { /* Remove file and any marker links associated with the file */
+	var path = extractpath(req.params["filepath"]);	/* Extract the path and the file name */
+
+	File.findOneAndRemove({name: path[0], path: path[1]})	/* Finds and removes the file with the provided path and name */
+	.exec(function(err, results) {
+
+		if (err) {	/* If error, return error message */
 			sendJSONresponse(res, 500, err);
 			return;
 		}
-		if (!results) {
+
+		if (!results) {	/* If no results, return message (do we need this or will there be an err if no results?) */
 			sendJSONresponse(res, 404, "Nothing found");
 			return;
 		}
-		sendJSONresponse(res, 204, null);			
+
+		if(results.markerLinks) {	/* If the file has marker links associated with it, remove each link */
+			results.markerLinks.forEach(function(markerLink) {
+				MarkerLink.findByIdAndRemove(markerLink)
+				.exec(
+					function(err, results) {
+						if (err) {	/* If error, return error message */
+							sendJSONresponse(res, 404, err);
+							return;
+						}
+					});
+			})
+		}
+
+		sendJSONresponse(res, 204, null);	/* If successful, return null */	
 	});
 };
 

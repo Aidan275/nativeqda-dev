@@ -1,4 +1,5 @@
 var mongoose = require( 'mongoose' );
+var Schema = mongoose.Schema;
 var crypto = require('crypto');
 var jwt = require('jsonwebtoken');
 
@@ -32,8 +33,8 @@ var fileSchema = new mongoose.Schema({
 		type: String
 	},
 	textFileKey: { //Amazon S3 for the file converted to text (pdf/docx), otherwise the same as 'key'
-		type: String
-	},
+	type: String
+},
 	dateCreated: { //Datetime file was uploaded to system
 		type: Date,
 		"default": Date.now
@@ -86,7 +87,11 @@ var fileSchema = new mongoose.Schema({
 			"default": [0,0]
 		}
 	},
-	tags: [String] //Array of keywords the file is related to
+	tags: [String], //Array of keywords the file is related to
+	markerLinks: [{	/* Reference to marker links */
+		type: Schema.Types.ObjectId,
+		ref: 'MarkerLinks' 
+	}]
 });
 
 mongoose.model('File', fileSchema);

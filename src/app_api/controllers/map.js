@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
-var MarkerLinks = mongoose.model('markerLinks');
+var MarkerLink = mongoose.model('MarkerLink');
+var File = mongoose.model('File');
 
 var sendJSONresponse = function(res, status, content) {
 	res.status(status);
@@ -8,44 +9,65 @@ var sendJSONresponse = function(res, status, content) {
 
 
 module.exports.putLink = function(req, res) {	/* Adds a marker link to the database */
-	var link = new MarkerLinks();
+	var link = new MarkerLink();
 
+	link._creator = req.body._creator;
 	link.name = req.body.name;
 	link.description = req.body.description;
-	link.createdBy = req.body.createdBy;
-	link.userID = req.body.userID;
 
-	link.precedent.fileID = req.body.precedent.fileID;
-	link.precedent.coords = { 
-		coordinates: [parseFloat(req.body.precedent.lng), parseFloat(req.body.precedent.lat)]
-	};
-
-	link.dependent.fileID = req.body.dependent.fileID;
-	link.dependent.coords = { 
-		coordinates: [parseFloat(req.body.dependent.lng), parseFloat(req.body.dependent.lat)]
-	};
+	link.precedent = req.body.precedent;
+	link.dependent = req.body.dependent;
 
 	link.save(function(err, response) {
-		if (err) {
+		if(err) {
 			sendJSONresponse(res, 500, err);
-		} else {
-			sendJSONresponse(res, 200, response);
+			return;
 		}
+
+		File.update(
+			{ _id: { $in: [link.precedent, link.dependent] } } ,
+			{ $push: { markerLinks: response._id } },
+			{ multi: true }, function (err) {
+				if (err) {
+					sendJSONresponse(res, 500, err);
+				}
+			});
+
+		var options = [
+		{path: '_creator', select: 'firstName lastName'}, 
+		{path: 'precedent', select: 'coords'}, 
+		{path: 'dependent', select: 'coords'}
+		];
+
+		MarkerLink.populate(response, options, function(err, doc) { 
+			if (err) {
+				sendJSONresponse(res, 500, err);
+			} else {
+				sendJSONresponse(res, 200, doc);
+			}
+		});
 	});
 
 };
 
 module.exports.getLinks = function(req, res) {	/* Gets all the marker links from the database */
-	MarkerLinks
+	var options = [
+	{path: '_creator', select: 'firstName lastName'}, 
+	{path: 'precedent', select: '_id coords'}, 
+	{path: 'dependent', select: '_id coords'}
+	];
+
+	MarkerLink
 	.find()
+	.populate(options)
 	.exec(
 		function(err, results) {
-			if (!results) {
+			if(!results) {
 				sendJSONresponse(res, 404, {
 					"message": "No marker links found"
 				});
 				return;
-			} else if (err) {
+			} else if(err) {
 				sendJSONresponse(res, 500, err);
 				return;
 			}
@@ -58,29 +80,12 @@ var buildLinkList = function(req, res, results) {
 	var LinkList = [];
 	results.forEach(function(doc) {
 		LinkList.push({
+			_creator: doc._creator,
 			name: doc.name,
 			description: doc.description,
 			dateCreated: doc.dateCreated,
-			createdBy: doc.createdBy,
-			userID: doc.userID,
-			precedent: {
-				fileID: doc.precedent.coords.fileID,
-				coords: {
-					coordinates: {
-						0: doc.precedent.coords.coordinates[0],
-						1: doc.precedent.coords.coordinates[1]
-					}
-				},
-			},
-			dependent: {
-				fileID: doc.dependent.coords.fileID,
-				coords: {
-					coordinates: {
-						0: doc.dependent.coords.coordinates[0],
-						1: doc.dependent.coords.coordinates[1]
-					}
-				},
-			},
+			precedent:  doc.precedent,
+			dependent: doc.dependent,
 			_id: doc._id
 		});
 	});
@@ -90,11 +95,11 @@ var buildLinkList = function(req, res, results) {
 module.exports.deleteLink = function(req, res) { /* Remove link */
 	var id = req.params["id"];
 	if(id) {
-		MarkerLinks
+		MarkerLink
 		.findByIdAndRemove(id)
 		.exec(
 			function(err, results) {
-				if (err) {
+				if(err) {
 					sendJSONresponse(res, 404, err);
 					return;
 				}

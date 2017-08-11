@@ -156,7 +156,7 @@
 		};
 
 		function deleteFileDB(filePath, fileName){
-			return $http.delete('/api/files' + filePath + '/' + fileName, {
+			return $http.delete('/api/files/' + filePath + '/' + fileName, {
 				headers: {
 					Authorization: 'Bearer '+ authentication.getToken()
 				}
