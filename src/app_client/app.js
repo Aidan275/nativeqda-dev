@@ -2,7 +2,7 @@
 	
 	'use strict';
 
-	angular.module('nativeQDAApp', ['ngRoute', 'ngSanitize', 'ngTable', 'ngAnimate', 'ui.bootstrap', 'ui.bootstrap.datepicker', 'ngFileUpload', 'ngTagsInput', 'jp.ng-bs-animated-button', 'bsLoadingOverlay', 'color.picker', 'swipe', 'angular-carousel-3d']);
+	angular.module('nativeQDAApp', ['ngRoute', 'ngSanitize', 'ngTable', 'ngAnimate', 'ui.bootstrap', 'ui.bootstrap.datepicker', 'ngFileUpload', 'ngTagsInput', 'jp.ng-bs-animated-button', 'bsLoadingOverlay', 'color.picker']);
 
 	/* @ngInject */
 	function config ($routeProvider, $locationProvider) {
