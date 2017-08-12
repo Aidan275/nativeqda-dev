@@ -67,18 +67,19 @@
 			
 			//Set the drawing space for the graph
 			var svg = d3.select("svg"),
-				margin = {top: 20, right: 20, bottom: 70, left: 40},
+				margin = {top: 20, right: 20, bottom: 200, left: 40},
     			width = +svg.attr("width") - margin.left - margin.right,
-    			height = +svg.attr("height") - margin.top - margin.bottom; 
+    			height = +svg.attr("height") - margin.top - margin.bottom+30; 
 			
+    		
+    		var tooltip = d3.select("body").append("div").attr("class", "toolTip");
+
     		//Set the x and y ranges
     		var x = d3.scaleBand().rangeRound([0, width]).padding(0.1),
     			y = d3.scaleLinear().rangeRound([height, 0]);
 
-    		//var formatTime = d3.timeFormat("%e ")
-
-    		var div = d3.select("body").append("div")
-    			.attr("class", "tooltip");
+    		var colours = d3.scaleOrdinal()
+    			.range(["#6F257F", "CA0D59"]);
 
     		//Set margins
 			var g = svg.append("g")
@@ -89,6 +90,7 @@
     		y.domain([0, d3.max(data, function(d) { return d.relevance; })]);
 
     		//Appends graph to body of the page
+    		//Append x axis
     		g.append("g")
       			.attr("class", "axis axis--x")
       			.attr("transform", "translate(0," + height + ")")
@@ -100,7 +102,7 @@
       				.attr("transform", "rotate(-65)");
 
 
-      		//Add the x axis
+      		//Add the y axis
       		g.append("g")
       			.attr("class", "axis axis--y")
       			.call(d3.axisLeft(y).ticks(10, "%"))
@@ -120,19 +122,15 @@
       			.attr("y", function(d) { return y(d.relevance); })
       			.attr("width", x.bandwidth())
       			.attr("height", function(d) { return height - y(d.relevance);})
-      			.on("mouseover", function(d) {
-      				div.transition()
-      					.duration(200)
-      					.style("opacity", .9);
-      				div.html(d.text + "<br/>" + d.relevance)
-      					.style("left", (d3.event.pageX) + "px")
-      					.style("top", (d3.event.pageY - 28) + "px");
-      				})
-      			.on("mouseout", function(d) {
-      				div.transition()
-      					.duration(500)
-      					.style("opacity", 0);
-      			});
+        		.attr("fill", function(d) { return colours(d.area); })
+        		.on("mousemove", function(d){
+            		tooltip
+              			.style("left", d3.event.pageX - 50 + "px")
+              			.style("top", d3.event.pageY - 70 + "px")
+              			.style("display", "inline-block")
+              			.html((d.text) + "<br>" + (d.relevance) + "%");
+        })
+    		.on("mouseout", function(d){ tooltip.style("display", "none");});
       			
       			
 

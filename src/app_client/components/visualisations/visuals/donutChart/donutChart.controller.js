@@ -21,7 +21,7 @@
 		///////////////////////////
 
 		function activate() {
-			bsLoadingOverlayService.start({referenceId: 'bubble-chart'});	// Start animated loading overlay
+			bsLoadingOverlayService.start({referenceId: 'donut-chart'});	// Start animated loading overlay
 			analysisService.readWatsonAnalysis(analysisID) //gets id from url
 			.then(function(response) {
 				var analysisData = response.data; //store watson response in analysisData
@@ -36,38 +36,52 @@
 				
 				drawChart(data);
 			}, function(err) {
-				bsLoadingOverlayService.stop({referenceId: 'bubble-chart'});	// If error, stop animated loading overlay
+				bsLoadingOverlayService.stop({referenceId: 'donut-chart'});	// If error, stop animated loading overlay
 			}); 
 		}
 
 		function drawChart(data) {
 			
-			var width = 960,
-    			height = 500,
-    			radius = Math.min(width, height) / 2;
+		var width = 960,
+    		height = 500,
+    		radius = Math.min(width, height) / 2;
 
-			var color = d3.scaleOrdinal()
-    						.range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
+    	var tooltip = d3.select("body").append("div").attr("class", "toolTip");
 
-			var arc = d3.arc()
-    					.outerRadius(radius - 10)
-    					.innerRadius(radius - 70);
+
+		var color = d3.scaleOrdinal()
+    		.range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
+
+		var outerRadius = radius - 10;
+		var innerRadius = radius - 70;
+		var arc = d3.arc()
+    			.outerRadius(outerRadius)
+    			.innerRadius(innerRadius);
 
 		var pie = d3.pie()
-    				.sort(null)
-    				.value(function(d) { return d.relevance; });
+    		.sort(null)
+    		.value(function(d) { return d.relevance; });
 
 		var svg = d3.select("body").append("svg")
-    				.attr("width", width)
-    				.attr("height", height)
-  					.append("g")
-    				.attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+    		.attr("width", width)
+    		.attr("height", height)
+  			.append("g")
+    		.attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 
 
   		var g = svg.selectAll(".arc")
-      				.data(pie(data))
-    				.enter().append("g")
-      				.attr("class", "arc");
+      		.data(pie(data))
+    		.enter().append("g")
+      		.attr("class", "arc")
+      		.attr("transform", "translate(" + outerRadius + "," + innerRadius + ")")
+        .on("mousemove", function(d){
+            tooltip
+              .style("left", d3.event.pageX - 50 + "px")
+              .style("top", d3.event.pageY - 70 + "px")
+              .style("display", "inline-block")
+              .html((d.text) + "<br>" + (d.relevance));
+        })
+        .on("mouseout", function(d){ tooltip.style("display", "none");});
 
   		g.append("path")
       		.attr("d", arc)

@@ -68,15 +68,22 @@
     		radius = Math.min(width, height) / 2,
     		g = svg.append("g").attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 
+			
+  			var tooltip = d3.select("body").append("div").attr("class", "toolTip");
+
 			var color = d3.scaleOrdinal(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
 
 			var pie = d3.pie()
     				.sort(null)
     				.value(function(d) { return d.relevance; });
 
+
+    		var outerRadius = radius - 10;
+			var innerRadius = 0;
 			var path = d3.arc()
-    				.outerRadius(radius - 10)
-    				.innerRadius(0);
+    			.outerRadius(outerRadius)
+    			.innerRadius(innerRadius);	
+
 
 			var label = d3.arc()
     				.outerRadius(radius - 40)
@@ -85,7 +92,16 @@
   			var arc = g.selectAll(".arc")
     				.data(pie(data))
     				.enter().append("g")
-      				.attr("class", "arc");
+      				.attr("class", "arc")
+      		    	.attr("transform", "translate(" + outerRadius + "," + innerRadius + ")")
+        				.on("mousemove", function(d){
+            				tooltip
+              				.style("left", d3.event.pageX - 50 + "px")
+              				.style("top", d3.event.pageY - 70 + "px")
+              				.style("display", "inline-block")
+              				.html((d.relevance) + "<br>" + (d.text));
+        	})
+        	.on("mouseout", function(d){ tooltip.style("display", "none");});
 
   			arc.append("path")
       				.attr("d", path)
