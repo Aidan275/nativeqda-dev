@@ -16,6 +16,7 @@
     "angular-loading-overlay": "^1.1.1",
     "angular-route": "^1.6.4",
     "angular-sanitize": "^1.6.4",
+    "angular-touch": "^1.6.5",
     "angular-ui-bootstrap": "^2.5.0",
     "angularjs-color-picker": "^3.3.0",
     "aws-sdk": "^2.67.0",

@@ -1,4 +1,59 @@
+<style>
+.center {
+    text-align: center;
+}
+.bgimage {
+    text-align:right;
+    color:white;
+    background-size:cover;
+    height: 100%;
+    background-position: center center;
+}
 
+ul[rn-carousel] {
+    width:400px;
+    height:200px;
+    margin: 0 auto;
+}
+
+.carousel5 li {
+    width:100%;
+    height:100%;
+    font-size:30px;
+    background-color: #ccc;
+}
+
+.carousel-demo {
+    margin-top:20px;
+    display:inline-block;
+    text-align: center;
+}
+.carousel-demo-fullscreen {
+  width:100%;
+  height:100%;
+}
+.carousel-demo-fullscreen ul[rn-carousel] {
+  width:100%;
+  height:100%;
+}
+
+input.tiny {
+    width:50px;
+    text-align:center;
+}
+
+
+.carousel-demo ul[rn-carousel-transition="hexagon"] {
+  margin-left:100px;
+}
+
+.custom-indicator span {
+  transition: all 0.3s ease-in;
+}
+.custom-indicator span.active {
+  color:yellow !important;
+}
+</style>
 <navigation></navigation>
 
 <div class="container">
@@ -22,8 +77,21 @@
 
 	<div class="col-md-12" style="min-height:320px;margin:5px;">
 		<div class="col-md-9" style="min-height:320px;">
-			<h6>Some sort of all-encompassing graph of the system</h6>
-
+			<div > 
+                <div class="details"><h6>Carousel showing the latest visualisations</h6>
+                </div>
+                <div class="carousel-demo">
+                    <ul rn-carousel rn-carousel-index="carouselIndex3" rn-carousel-transition="hexagon" rn-carousel-buffered class="carousel3">
+                        <li ng-repeat="slide in slides3 track by slide.id">
+                            <div ng-style="{'background-image': 'url(' + slide.img + ')'}"  class="bgimage">
+                              #{{ slide.id }}
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+			
+			<!--
 			<div class="charts">
 				<div class="charts__chart chart--p50"></div>
 				<div class="charts__chart chart--p60"></div>
@@ -31,7 +99,7 @@
 				<div class="charts__chart chart--p80"></div>
 				<div class="charts__chart chart--p90"></div>
 			</div>
-
+			-->
 		</div>
 		<div class="col-md-3" style="min-height:320px;">
 			<h6>Commonly found themes</h6>
