@@ -1,10 +1,12 @@
 (function () {
+	
+	'use strict';
 
 	angular
 	.module('nativeQDAApp')
 	.controller('forgotPassCtrl', forgotPassCtrl);
 
-	forgotPassCtrl.$inject = ['authentication', 'logger'];
+	/* @ngInject */
 	function forgotPassCtrl(authentication, logger) {
 		var vm = this;
 
@@ -28,6 +30,7 @@
 				logger.info('TODO: verify user\'s email and send link to reset password', '', 'TODO')
 			}
 		};
+		
 	}
 
 })();

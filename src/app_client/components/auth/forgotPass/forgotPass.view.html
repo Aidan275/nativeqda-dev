@@ -1,36 +1,613 @@
-<div class="container">    
+<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=RobotoDraft:300,500">
+<style>
+@media screen and (max-width: 339px) {
+.mainLogo > img {
+        max-width:200px;
+    }
+	.profileImage > img {
+        max-width:150px;
+		max-height:150px;
+    }
+	.invisibleClass {
+		display:none;
+	}
+	.buttonPlacementFix > button[type="submit"] {
+		text-align:center;
+		margin: 10px -120px;
+	}
+	.login {
+		min-height:420px;
+		height:420px;
+	}
+}
+@media screen and (min-width:340px) and (max-width: 360px) {
+	.mainLogo > img {
+        max-width:200px;
+    }
+	.invisibleClass {
+		display:none;
+	}
+	.buttonPlacementFix > button[type="submit"] {
+		text-align:center;
+		margin: 10px -105px;
+	}
+	.login {
+		min-height:460px;
+		height:460px;
+	}
 
-	<div class="container">    
-		<div id="forgot-password-box" style="margin-top:25%;" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">                    
-			<div class="panel panel-primary" >
+}
+@media screen and (min-width:361px) and (max-width: 375px) {
+	.mainLogo > img {
+        max-width:200px;
+    }
+	.invisibleClass {
+		display:none;
+	}
+	.buttonPlacementFix > button[type="submit"] {
+		text-align:center;
+		margin: 10px -100px;
+	}
+	.login {
+		min-height:460px;
+		height:460px;
+	}
 
-				<div class="panel-heading">
-					<div class="panel-title">Forgot Password</div>
-				</div>     
+}
+@media screen and (min-width:376px) and (max-width: 767px) {
+	.mainLogo > img {
+        max-width:200px;
+    }
+	.invisibleClass {
+		display:none;
+	}
+	.buttonPlacementFix > button[type="submit"] {
+		text-align:center;
+		margin: 10px -82px;
+	}
+	.login {
+		min-height:460px;
+		height:460px;
+	}
+}
+@media screen and (max-height: 580px) {
+	.invisibleClassHeight {
+		display:none;
+	}
+	.invisibleClassHeight > span {
+		display:none;
+	}
+}
+@media screen and (min-width: 768px) {
+	.login {
+		min-height:500px;
+	}
+	.buttonPlacementFix > button[type="submit"] {
+		text-align:center;
+		margin: 10px -67px;
+	}
+}
+@media screen and (height:1024px) and (width: 768px) {
+	.mainLogo > img {
+		min-width:300px;
+        max-width:300px;
+    }
+	.invisibleClass {
+		display:none;
+	}
+	.buttonPlacementFix > button[type="submit"] {
+		text-align:center;
+		margin: 10px -67px;
+	}
+	.login {
+		min-height:470px;
+		height:470px;
+	}
+}
+@media screen and (height:1366px) and (width: 1024px) {
+	.mainLogo > img {
+        max-width:200px;
+    }
+	.invisibleClass {
+		display:none;
+	}
+	.buttonPlacementFix > button[type="submit"] {
+		margin: 10px -67px;
+	}
+	.login {
+		min-height:480px;
+		height:480px;
+	}
+}
+*/
+*,
+*:after,
+*:before 
+{
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    -o-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+html, body 
+{
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	background: #4676fa;
+	color: rgba(0,0,0,0.6);
+	font-family: RobotoDraft,Roboto;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+}
+body header {
+	position: relative;
+	width: 100%;
+	height: 80px;
+	box-shadow: 0 2px 5px 0 rgba(0,0,0,0.26);
+	background: #4676fa;
+	font-size: 30px;
+	font-weight: 300;
+	color: rgb(242, 251, 253);
+	text-align: center;
+	line-height: 75px;
+}
+.login {
+	position: relative;
+    padding: 10px;
+    margin: 40px auto 80px auto;
+    border-radius: 3px;
+    background: white;
+    box-shadow: 0 1px 5px 0 rgba(0,0,0,0.26);
+    overflow: hidden;
+}
+.profileImage{
+	text-align:center;
+}
+.login > i {
+	position: relative;
+	width: 20px;
+	height: 20px;
+	border-radius: 50%;
+	float: right;
+	cursor: pointer;
+}
+.login .photo {
+	position: relative;
+	width: 100px;
+	height: 100px;
+	margin: 30px 135px;
+	border-radius: 50%;
+	background: rgb(223, 223, 223);
+	border: 13px solid rgb(223, 223, 223);
+	overflow: hidden !important;
+	transform: rotate(-1deg);
+}
+.login .photo:before {
+	position: absolute;
+	content: '';
+	width: 35px;
+	height: 35px;
+	top: 0px;
+	right: 20px;
+	border-radius: 50%;
+	background: #aaa;
+	border: 2px solid #fff;
+	transform: scale(0);
+	transition: 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+	-webkit-animation: user-head 0.5s 0s forwards;
+	-moz-animation: user-head 0.5s 0s forwards;
+	animation: user-head 0.5s 0s forwards;
+}
+.login .photo:after {
+	position: absolute;
+	content: '';
+	width: 140px;
+	height: 220px;
+	top: 38px;
+	right: -32px;
+	border-radius: 50%;
+	background: #aaa;
+	border: 2px solid #fff;
+	transform: translateY(36px);
+	transition: 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+	-webkit-animation: user-body 0.5s 0.3s forwards;
+	-moz-animation: user-body 0.5s 0.3s forwards;
+	animation: user-body 0.5s 0.3s forwards;
+}
+.login > span {
+	display: block;
+	text-align: center;
+	margin: -15px 0;
+	font-size: 15px;
+}
+form {
+	position: relative;
+	width: 350px;
+	margin: 50px 15px;
+}
+.form-group-qda {
+  position: relative;
+  margin-top: 35px;
+  margin-bottom: 20px;
+}
+.form-control-qda {
+  display: block;
+  height: 36px;
+  width: 100%;
+  border: none;
+  border-radius: 0 !important;
+  font-size: 15px;
+  font-family: inherit;
+  font-weight: 300;
+  padding: 0;
+  background-color: transparent;
+  box-shadow: none;
+  border-bottom: 1px solid rgba(117, 117, 117, 0.15);
+}
+.form-control-qda:focus {
+  border-bottom: 2px solid rgb(3, 169, 245);
+  outline: none;
+  box-shadow: none;
+}
+.form-highlight {
+  position: absolute;
+  height: 60%;
+  width: 60px;
+  top: 25%;
+  left: 0;
+  pointer-events: none;
+  opacity: 0.4;
+}
+.form-control-qda:focus ~ .form-highlight {
+  -webkit-animation: inputHighlighter 0.3s ease;
+  -moz-animation: inputHighlighter 0.3s ease;
+  animation: inputHighlighter 0.3s ease;
+}
+.float-label {
+  position: absolute;
+  left: 0;
+  top: 10px;
+  font-size: 16px;
+  color: #999;
+  font-weight: 300;
+  transition: 0.2s ease all;
+  -moz-transition: 0.2s ease all;
+  -webkit-transition: 0.2s ease all;
+}
+.form-control-qda:focus ~ .float-label, .form-control-qda:valid ~ .float-label {
+  top: -15px;
+  font-size: 12px;
+}
+.form-group-qda erroru, .form-group-qda errorp {
+	position: absolute;
+	width: 100%;
+	left: 0;
+	top: 38px;
+	font-size: 11px;
+	color: #d34336;
+	font-weight: 300;
+	transition: 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55) all;
+	-moz-transition: 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55) all;
+	-webkit-transition: 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55) all;
+	opacity: 0;
+}
+.form-group-qda erroru i,.form-group-qda errorp i {
+	position: absolute;
+	right: 0;
+	width: 15px;
+	height: 15px;
+	border-radius: 50%;
+	float: right;
+}
+.form-group-qda erroru i svg, .form-group-qda errorp i svg {
+	fill:#d34336;
+}
+.form-group-qda[errr] .float-label {
+	color: #d34336 !important;
+}
+.form-group-qda[errr] .form-control-qda {
+	border-bottom: 1px solid #d34336 !important;	
+}
+.form-group-qda[errr] .form-control-qda:focus {
+	border-bottom: 2px solid #d34336 !important;	
+}
+.form-group-qda[errr] erroru, .form-group-qda[errr] errorp  {
+	opacity: 1;
+}
+input[type=checkbox]
+{
+    display: none;
+    visibility: hidden;
+}
+input[type="checkbox"] + label
+{
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 500;
+    transition: border-color 0.3s ease-in-out, background-color 0.3s ease-in-out;
+}
+input[type="checkbox"] + label:before
+{
+    display: inline-block;
+    content: "";
+    margin: 0 15px 3px 0px;
+    width: 18px;
+    height: 18px;
+    background-color: #fff;
+    border: 2px solid #5a5a5a;
+    border-radius: 2px;
+    vertical-align: middle;
+}
+input[type=checkbox]:checked + label:before
+{
+    background-image: url('data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjIwcHgiIGhlaWdodD0iMTVweCIgdmlld0JveD0iMCAwIDIwIDE1Ij4NCjxwb2x5Z29uIGZpbGw9IiNGRkZGRkYiIHBvaW50cz0iNy4xNDMsMTQuOTM4IDAsNy43OTYgMi4wMjEsNS43NzYgNy4xNDMsMTAuODk4IDE3Ljk3OSwwLjA2MiAyMCwyLjA4MiAiLz4NCjwvc3ZnPg0K');
+    background-color: rgb(3, 169, 245);
+    border-color: rgb(3, 169, 245);
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    -webkit-background-size: 11px auto;
+    -moz-background-size: 11px auto;
+    -o-background-size: 11px auto;
+    background-size: 11px auto;
+}
+button[type="submit"] {
+	position: absolute;
+	font-family: inherit;
+	font-weight: 100;
+	font-size: 15px;
+	border: 0;
+	margin: -3px 0px;
+	padding: 5px 15px;
+	border-radius: 3px;
+	cursor: pointer;
+	background: #4676fa;
+	color: #fff;
+	box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.37);
+}
+button[type="submit"]:focus {
+	outline: none;
+}
+footer {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	height: 30px;
+	margin-left: -10px;
+	line-height: 29px;
+	text-align: center;
+	cursor: pointer;
+	border-top: 1px solid rgba(117, 117, 117, 0.15);
+}
+footer a {
+	display: block;
+	text-decoration: none;
+	font-size: 12px;
+	color: inherit;
+}
+footer a:hover {
+	color: rgba(0,0,0,0.9);
+	text-decoration: underline;
+}
+footer a:focus {
+	outline: none;
+}
+.copyright {
+	position: fixed;
+	width: 100%;
+	bottom: 5px;
+	text-align: center;
+	font-size: 12px;
+}
+.copyright a {
+  text-decoration: none;
+  color: rgb(3, 169, 245);
+}
+.copyright a:hover {
+  transition: none;
+  border-bottom: 1px solid rgb(3, 169, 245);
+}
+/* -- highlighter animation --------------------------- */
+@-webkit-keyframes inputHighlighter {
+  from { background:#5264AE; }
+  to { width:0; background:transparent; }
+}
+@-moz-keyframes inputHighlighter {
+  from { background:#5264AE; }
+  to { width:0; background:transparent; }
+}
+@keyframes inputHighlighter {
+  from { background:#5264AE; }
+  to { width:0; background:transparent; }
+}
+@-webkit-keyframes user-head {
+100% {
+	-webkit-transform:scale(1);
+	transform:scale(1);
+	-moz-transform:scale(1);
+} }
+@-moz-keyframes user-head {
+100% {
+	-webkit-transform:scale(1);
+	transform:scale(1);
+	-moz-transform:scale(1);
+} }
+@keyframes user-head {
+100% {
+	-webkit-transform:scale(1);
+	transform:scale(1);
+	-moz-transform:scale(1);
+} }
+@-webkit-keyframes user-body {
+100% {
+	-webkit-transform:translateY(2px);
+	transform:translateY(2px);
+	-moz-transform:translateY(2px);
+} }
+@-moz-keyframes user-body {
+100% {
+	-webkit-transform:translateY(2px);
+	transform:translateY(2px);
+	-moz-transform:translateY(2px);
+} }
+@keyframes user-body {
+100% {
+	-webkit-transform:translateY(2px);
+	transform:translateY(2px);
+	-moz-transform:translateY(2px);
+} }
+[ripple] {
+  position: relative;
+  overflow: hidden;
+  -webkit-transition: box-shadow .4s;
+  -moz-transition: box-shadow .4s;
+  -ms-transition: box-shadow .4s;
+  -o-transition: box-shadow .4s;
+  transition: box-shadow .4s;
+  cursor: inherit;
+}
+[ripple] .touch {
+  background: rgba(255, 255, 255, 0.3);
+  pointer-events: none;
+  border-radius: 100%;
+}
+</style>    
+ 
+<div class="mainLogo" style="text-align:center;">
+<img src="assets/img/Logo.png" height="25%" width="25%" style="min-width:185px;max-width:500px;">
+</div>
 
-				<div style="padding-top:30px" class="panel-body" >
 
-					<form ng-submit="vm.onSubmit()" class="form-horizontal">
-						<div style="margin-bottom: 25px" class="input-group">
-							<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-							<input type="email" class="form-control" id="email" required="required" placeholder="Enter email" ng-model="vm.email">                                        
-						</div>
+<div class="login" style="max-width:90%;min-width:300px;width:400px;">
 
-						<div style="margin-top:10px" class="form-group">
-							<!-- Button -->
-							<div class="col-sm-12 controls">
-								<button type="submit" class="btn btn-default" value="reset-password"/>Reset Password</button>
-							</div>
-						</div>   
-
-					</form>  
-
-				</div> 
-
-			</div>  
-		</div>
+	<p align="center"><span><font size="5">Having trouble signing in?</font></span></p><br />
+	
+	<div class="profileImage">
+		<img class="img-circle" width="200px" height="200px" src="assets/img/settings/default-avatar.png" style="object-fit: cover">
 	</div>
+	
+	<form ng-submit="vm.onSubmit()" id="login-form">
+		<div id="u" class="form-group-qda">
+			<input type="email" class="form-control-qda" id="email" required="required" placeholder="Enter email" ng-model="vm.email"> 
+			<span class="form-highlight"></span>
+			<span class="form-bar"></span>
+			<label for="email" class="float-label"></label>
+			<erroru>
+				Email is required
+				<i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+			</erroru>
+		</div>
 
-	<footer-generic></footer-generic>
+	<div class="form-group-qda buttonPlacementFix" style="text-align:center;">
+		<button id="submit" type="submit" ripple>Reset password</button>
+	</div>
+	</form>
 
 </div>
+
+<footer-generic></footer-generic>
+
+<script>
+// button ripple effect from @ShawnSauce 's pen https://codepen.io/ShawnSauce/full/huLEH
+$(document).ready(function() {
+$(function(){
+  var animationLibrary = 'animate';
+  $.easing.easeOutQuart = function (x, t, b, c, d) {
+    return -c * ((t=t/d-1)*t*t*t - 1) + b;
+  };
+  $('[ripple]:not([disabled],.disabled)')
+  .on('mousedown', function( e ){
+    var button = $(this);
+    var touch = $('<touch><touch/>');
+    var size = button.outerWidth() * 1.8;
+    var complete = false;
+    $(document)
+    .on('mouseup',function(){
+      var a = {
+        'opacity': '0'
+      };
+      if( complete === true ){
+        size = size * 1.33;
+        $.extend(a, {
+          'height': size + 'px',
+          'width': size + 'px',
+          'margin-top': -(size)/2 + 'px',
+          'margin-left': -(size)/2 + 'px'
+        });
+      }
+      touch
+      [animationLibrary](a, {
+        duration: 500,
+        complete: function(){touch.remove();},
+        easing: 'swing'
+      });
+    });
+    touch
+    .addClass( 'touch' )
+    .css({
+      'position': 'absolute',
+      'top': e.pageY-button.offset().top + 'px',
+      'left': e.pageX-button.offset().left + 'px',
+      'width': '0',
+      'height': '0'
+    });
+    /* IE8 will not appendChild */
+    button.get(0).appendChild(touch.get(0));
+    touch
+    [animationLibrary]({
+      'height': size + 'px',
+      'width': size + 'px',
+      'margin-top': -(size)/2 + 'px',
+      'margin-left': -(size)/2 + 'px'
+    }, {
+      queue: false,
+      duration: 500,
+      'easing': 'easeOutQuart',
+      'complete': function(){
+        complete = true
+      }
+    });
+  });
+});
+var username = $('#username'), 
+    password = $('#password'), 
+    erroru = $('erroru'), 
+    errorp = $('errorp'), 
+    submit = $('#submit'),
+    udiv = $('#u'),
+    pdiv = $('#p');
+username.blur(function() {
+  if (username.val() == '') {
+    udiv.attr('errr','');
+  } else {
+    udiv.removeAttr('errr');
+  }
+});
+password.blur(function() {
+if(password.val() == '') {
+    pdiv.attr('errr','');
+  } else {
+    pdiv.removeAttr('errr');
+  }
+});
+submit.on('click', function(event) {
+  event.preventDefault();
+  if (username.val() == '') {
+    udiv.attr('errr','');
+  } else {
+    udiv.removeAttr('errr');
+  } 
+  if(password.val() == '') {
+    pdiv.attr('errr','');
+  } else {
+    pdiv.removeAttr('errr');
+  }
+});
+});
+</script>
