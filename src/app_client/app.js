@@ -133,6 +133,13 @@
 			controllerAs: 'vm',
 			loginRequired: true
 		})
+		.when('/settings/knowledgebase', {
+			title: 'NativeQDA | Knowledgebase',
+			templateUrl: '/components/settings/knowledgebase/knowledgebase.view.html',
+			controller: 'knowledgebaseCtrl',
+			controllerAs: 'vm',
+			loginRequired: true
+		})
 		.when('/settings/user-management', {
 			title: 'NativeQDA | User Management',
 			templateUrl: '/components/settings/userManagement/userManagement.view.html',
