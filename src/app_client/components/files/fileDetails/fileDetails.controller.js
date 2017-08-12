@@ -1,11 +1,13 @@
 (function () {
 
+	'use strict';
+
 	angular
 	.module('nativeQDAApp')
-	.controller('fileDetails', fileDetails);
+	.controller('fileDetailsCtrl', fileDetailsCtrl);
 
 	/* @ngInject */
-	function fileDetails (file, $uibModalInstance, $window, filesService, bsLoadingOverlayService) {
+	function fileDetailsCtrl (file, $uibModalInstance, $window, filesService, bsLoadingOverlayService) {
 		var vm = this;
 
 		// Bindable Functions
@@ -22,7 +24,6 @@
 		///////////////////////////
 
 		function activate() {
-			console.log(file);
 			bsLoadingOverlayService.start({referenceId: 'file-details'});
 			filesService.getFileDB(file.path, file.name)
 			.then(function(response) {

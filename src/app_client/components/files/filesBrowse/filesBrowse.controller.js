@@ -16,6 +16,7 @@
 		vm.confirmDelete = confirmDelete;
 		vm.popupFileDetails = popupFileDetails;
 		vm.getFileListS3 = getFileListS3;
+		vm.popupUploadFile = popupUploadFile;
 		vm.newFolder = newFolder;
 		vm.openFolder = openFolder;
 
@@ -67,18 +68,18 @@
 
 		// Gets signed URL to download the requested file from S3 
 		// if successful, opens the signed URL in a new tab
-		function viewFile(filePath, fileName, fileType) {
-			if(fileType === 'folder') {
+		function viewFile(file) {
+			if(file.type === 'folder') {
 
-				if(filePath === '/') {
-					vm.currentPath = fileName;
+				if(file.path === '/') {
+					vm.currentPath = file.name;
 				} else {
-					vm.currentPath = filePath + '/' + fileName;
+					vm.currentPath = file.path + '/' + file.name;
 				}
 
 				vm.pathsArray = vm.currentPath.split("/");
 				getFileList();
-			} else if (fileType === 'parent-dir') {
+			} else if (file.type === 'parent-dir') {
 				vm.currentPath = vm.currentPath.substr(0, vm.currentPath.lastIndexOf('/'));
 				vm.pathsArray = vm.currentPath.split("/");
 				getFileList();
@@ -97,7 +98,7 @@
 				newTab.document.write(loaderHTML);
 
 				// Make a request to the server for a signed URL to download/view the requested file
-				filesService.signDownloadS3(filePath, fileName)
+				filesService.signDownloadS3(file.path, file.name)
 				.then(function(response) {
 					// Remove the animation 1s after the signed URL is retrieved
 					setTimeout(function(){
@@ -121,34 +122,33 @@
 			}
 		}
 
-		function confirmDelete(key, filePath, fileName, textFileKey) {
+		function confirmDelete(file) {
 			swal({
 				title: "Are you sure?",
-				text: "Confirm to delete the file '" + fileName + "'",
+				text: "Confirm to delete the file '" + file.name + "'",
 				type: "warning",
 				showCancelButton: true,
 				allowOutsideClick: true,
 				confirmButtonColor: "#d9534f",
 				confirmButtonText: "Yes, delete it!"
 			}, function() {
-				filesService.deleteFileDB(filePath, fileName);
+				filesService.deleteFileDB(file.path, file.name);
 				
-				filesService.deleteFileS3({key: key})
+				filesService.deleteFileS3({key: file.key})
 				.then(function(response) {
 					// If a text file was generated for analysis, delete that file too.
 					// If the original file was a text file, just delete that file
 					// (files that were originally text files have the same key for both 
 					// key and textFileKey)
-					if(textFileKey && textFileKey != key){
-						filesService.deleteFileS3({key: textFileKey});
+					if(file.textFileKey && file.textFileKey != file.key){
+						filesService.deleteFileS3({key: file.textFileKey});
 					}
-					removeFileFromArray(key);
-					logger.success("'" + fileName + "' was deleted successfully", "", "Success");
+					removeFileFromArray(file.key);
+					logger.success("'" + file.name + "' was deleted successfully", "", "Success");
 				});
 				
 			});
 		}
-
 
 		function removeFileFromArray(key) {	
 			// Find the index for the file, will return -1 if not found 
@@ -163,14 +163,14 @@
 			listFiles();
 		}
 
-		function popupFileDetails(filename) {
+		function popupFileDetails(file) {
 			var modalInstance = $uibModal.open({
 				templateUrl: '/components/files/fileDetails/fileDetails.view.html',
-				controller: 'fileDetails as vm',
+				controller: 'fileDetailsCtrl as vm',
 				size: 'lg',
 				resolve: {
-					key: function () {
-						return filename;
+					file: function () {
+						return file;
 					}
 				}
 			});
@@ -212,6 +212,31 @@
 			});
 		}
 
+		function popupUploadFile() {
+			var modalInstance = $uibModal.open({
+				templateUrl: '/components/files/filesUpload/filesUpload.view.html',
+				controller: 'filesUploadCtrl as vm',
+				size: 'xl',
+				resolve: {
+					currentPath: function () {
+						return vm.currentPath;
+					},
+					fileList: function () {
+						return vm.fileList;
+					}
+				}
+			});
+
+			modalInstance.rendered.then(function() {
+
+			});
+
+			modalInstance.result.then(function(newFile) {
+				vm.fileList.push(newFile);
+				listFiles();
+			});
+		}
+
 		function newFolder() {
 			swal({
 				title: "New Folder",
@@ -241,7 +266,7 @@
 					createdBy : authentication.currentUser().firstName,
 					icon : "fa fa-folder-o"
 				}
-				
+
 				filesService.addFileDB(folderDetails)
 				.then(function(response) {
 					swal.close();
@@ -251,7 +276,7 @@
 					listFiles();
 				});
 
-				
+
 			});
 		}
 

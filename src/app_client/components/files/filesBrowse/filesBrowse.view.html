@@ -11,13 +11,14 @@
 		</span>
 
 		<a ng-click="vm.newFolder()" class="btn btn-default btn-sm" role="button" style="float:right; margin-bottom:10px">New Folder</a>
+		<a ng-click="vm.popupUploadFile()" class="btn btn-default btn-sm" role="button" style="float:right; margin:0 5px 10px">Upload File</a>
 
 		<!-- displays file list for MongoDB database -->
 		<div class="bs-loading-container" bs-loading-overlay bs-loading-overlay-active-class="loading-overlay--active" bs-loading-overlay-reference-id="file-list"> 
 			<div class="blur-this file-browser-table-container">
 				<table ng-table="vm.tableParams" class="table table-condensed table-bordered table-striped file-browser-table">
 					<tr class="table-row" ng-repeat="row in $data">
-						<td data-title="'File Name'" filter="{name: 'text'}" sortable="'name'" class="file-name-cell" ng-click="vm.viewFile(row.path, row.name, row.type)">
+						<td data-title="'File Name'" filter="{name: 'text'}" sortable="'name'" class="file-name-cell" ng-click="vm.viewFile(row)">
 							<span>
 								<i class="{{row.icon}} fa-lg" title="{{row.type | capitalise}}"></i> {{row.name}}
 							</span>
@@ -26,12 +27,12 @@
 						<td data-title="'Uploaded By'" filter="{createdBy: 'text'}" sortable="'createdBy'" class="uploaded-by-cell hidden-xs hidden-sm" header-class="'hidden-xs hidden-sm'">{{row.createdBy}}</td>
 						<td data-title="'Size'" filter="{size: 'text'}" sortable="'size'" class="size-cell hidden-xs hidden-sm hidden-md" header-class="'hidden-xs hidden-sm hidden-md'">{{row.size | formatFileSize:2}}</td>
 						<td data-title="'Command'" class="command-cell">
-							<a ng-if="row.type!='parent-dir'" ng-click="vm.viewFile(row.path, row.name, row.type)" class="btn btn-success btn-xs" role="button">
+							<a ng-if="row.type!='parent-dir'" ng-click="vm.viewFile(row)" class="btn btn-success btn-xs" role="button">
 								<span ng-if="row.type!='folder'">View</span>
 								<span ng-if="row.type=='folder'">Open</span>
 							</a>
-							<a ng-if="row.type!='parent-dir'" ng-click="vm.popupFileDetails(row.name)" class="btn btn-primary btn-xs" role="button">Details</a>
-							<a ng-if="row.type!='parent-dir'" ng-click="vm.confirmDelete(row.key, row.path, row.name, row.textFileKey)" class="btn btn-danger btn-xs" role="button">Delete</a>
+							<a ng-if="row.type!='parent-dir'" ng-click="vm.popupFileDetails(row)" class="btn btn-primary btn-xs" role="button">Details</a>
+							<a ng-if="row.type!='parent-dir'" ng-click="vm.confirmDelete(row)" class="btn btn-danger btn-xs" role="button">Delete</a>
 						</td>
 					</tr>
 				</table>
