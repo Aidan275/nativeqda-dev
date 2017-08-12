@@ -494,10 +494,10 @@ footer a:focus {
 	
 	<form ng-submit="vm.onSubmit()" id="login-form">
 		<div id="u" class="form-group-qda">
-			<input type="survey-code" class="form-control-qda" id="survey-code" required="required" ng-model="vm.surveyCode" placeholder="Enter Survey Code"> 
+			<input type="survey-code" class="form-control-qda" name="username" id="survey-code" required="required" ng-model="vm.surveyCode"> 
 			<span class="form-highlight"></span>
 			<span class="form-bar"></span>
-			<label for="email" class="float-label"></label>
+			<label for="survey-code" class="float-label">Survey code</label>
 			<erroru>
 				Survey code is required
 				<i class="fa fa-exclamation-triangle" aria-hidden="true"></i>

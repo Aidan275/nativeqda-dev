@@ -494,10 +494,10 @@ footer a:focus {
 	
 	<form ng-submit="vm.onSubmit()" id="login-form">
 		<div id="u" class="form-group-qda">
-			<input type="email" class="form-control-qda" id="email" required="required" placeholder="Enter email" ng-model="vm.email"> 
+			<input type="email" class="form-control-qda" id="email" name="username" required="required" ng-model="vm.email"> 
 			<span class="form-highlight"></span>
 			<span class="form-bar"></span>
-			<label for="email" class="float-label"></label>
+			<label for="email" class="float-label">Email</label>
 			<erroru>
 				Email is required
 				<i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
