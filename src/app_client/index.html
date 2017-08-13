@@ -39,7 +39,7 @@
 </head>
 <body>
 
-	<div class="inner {{vm.pageClass}}" ng-view>
+	<div class="inner {{vm.pageClass}}" id="{{vm.pageId}}" ng-view>
 	</div>
 
 	<!-- inject-please-wait:js -->
@@ -101,6 +101,7 @@
 	<script src="/src/app_client/common/directives/navigation/navigation.controller.js"></script>
 	<script src="/src/app_client/common/directives/navigation/navigation.directive.js"></script>
 	<script src="/src/app_client/common/directives/pageHeader/pageHeader.directive.js"></script>
+	<script src="/src/app_client/common/directives/dragAndDrop.directive.js"></script>
 	<script src="/src/app_client/common/directives/pwCheck.directive.js"></script>
 	<script src="/src/app_client/common/filters/addHtmlLineBreaks.filter.js"></script>
 	<script src="/src/app_client/common/filters/capitalise.filter.js"></script>

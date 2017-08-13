@@ -231,6 +231,7 @@
 				controller: 'filesUploadCtrl as vm',
 				size: 'xl',
 				backdrop: 'static',	/* disables modal closing by click on the backdrop */
+				openedClass: 'upload-modal',	/* Class added to the body element when the modal is opened */
 				resolve: {
 					currentPath: function () {
 						return vm.currentPath;
