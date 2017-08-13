@@ -41,7 +41,7 @@ module.exports.signUpload = function(req, res) {
 	} else {
 		var datePrefix = moment().format('YYYY[/]MM');
 		var key = crypto.randomBytes(10).toString('hex');
-		var hashFilename = key + '-' + req.body.name;
+		var hashFilename = key + '-' + req.body.name + '.' + req.body.extension;
 		path = datePrefix + '/' + hashFilename;
 	}
 

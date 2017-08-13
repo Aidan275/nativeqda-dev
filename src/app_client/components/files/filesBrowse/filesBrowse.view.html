@@ -6,12 +6,14 @@
 
 	<div class="col-md-12">
 
-		<span>	
+		<div class="col-md-8">
 			<a ng-repeat="path in vm.pathsArray" ng-click="vm.openFolder($index)" style="cursor: pointer;">/{{path}}</a>
-		</span>
+		</div>
 
-		<a ng-click="vm.newFolder()" class="btn btn-default btn-sm" role="button" style="float:right; margin-bottom:10px">New Folder</a>
-		<a ng-click="vm.popupUploadFile()" class="btn btn-default btn-sm" role="button" style="float:right; margin:0 5px 10px">Upload File</a>
+		<div class="col-md-4">
+			<a ng-click="vm.newFolder()" class="btn btn-default btn-sm" role="button" style="float:right; margin-bottom:10px">New Folder</a>
+			<a ng-click="vm.popupUploadFile()" id="upload-btn-file-browser" class="btn btn-default btn-sm" role="button" style="float:right; margin:0 5px 10px">Upload File</a>
+		</div>
 
 		<!-- displays file list for MongoDB database -->
 		<div class="bs-loading-container" bs-loading-overlay bs-loading-overlay-active-class="loading-overlay--active" bs-loading-overlay-reference-id="file-list"> 

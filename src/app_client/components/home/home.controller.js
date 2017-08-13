@@ -203,35 +203,12 @@
 
 		function onLocationFound(response) {
 			var radius = response.accuracy / 2;
-			// Set the zoom level depending on the radius of the accuracy circle. Maybe a bit much
-			var zoom = (
-				radius < 9 ? 22 : 
-				radius > 8 && radius < 17 ? 21 : 
-				radius > 16 && radius < 32 ? 20 : 
-				radius > 31 && radius < 63 ? 19 : 
-				radius > 62 && radius < 126 ? 18 : 
-				radius > 125 && radius < 251 ? 17 : 
-				radius > 250 && radius < 551 ? 16 : 
-				radius > 550 && radius < 1101 ? 15 :
-				radius > 1100 && radius < 2201 ? 14 : 
-				radius > 2200 && radius < 4401 ? 13 : 
-				radius > 4400 && radius < 8801 ? 12 : 
-				radius > 8800 && radius < 17601 ? 11 : 
-				radius > 17600 && radius < 35201 ? 10 :
-				radius > 35200 && radius < 70401 ? 9 : 
-				radius > 70400 && radius < 140801 ? 8 : 
-				radius > 140800 && radius < 281601 ? 7 : 
-				radius > 281600 && radius < 563201 ? 6 : 
-				radius > 563200 && radius < 1126401 ? 5 :  		
-				radius > 1126400 && radius < 2252801 ? 4 :  		
-				radius > 2252800 && radius < 4505601 ? 3 :  		
-				radius > 4505600 && radius < 9011201 ? 2 :  		
-				radius > 9011200 && radius < 18022401 ? 1 : 1
-				);
 			var userPos = response.latlng;
+
 			var posMarker = L.marker(userPos, { icon: posIcon, zIndexOffset: -500 }).addTo(vm.map)
 			.bindPopup("You are within " + $filter('formatDistance')(radius) + " from this point")
 			.bindTooltip('<strong>Your Position</strong>');
+
 			var posCicle = L.circle(userPos, {
 				radius: radius,
 				color: '#cb2529'
@@ -240,11 +217,10 @@
 			// Adds/removes the circle from the marker when focused/unfocused
 			posMarker.on("popupopen", function() { 
 				posCicle.addTo(vm.map); 
-				vm.map.setView(userPos, zoom);
+				vm.map.fitBounds(posCicle.getBounds());
 			});
+			
 			posMarker.on("popupclose", function() { vm.map.removeLayer(posCicle); });
-
-			logger.success('User\'s location found', response, 'Success');
 		}
 
 		function onLocationError(error) {
@@ -384,8 +360,8 @@
 				},1000);
 
 				// Redirect the new tab to the signed URL
-				// If the file is a document, open in google docs viewer to view in the browser
-				if(response.data.type === "document") {
+				// If the file is a document or text file, open in google docs viewer to view in the browser
+				if(response.data.type === "document" || response.data.type === "text") {
 					var encodedUrl = 'https://docs.google.com/viewer?url=' + encodeURIComponent(response.data.url) + '&embedded=true';
 					newTab.location = encodedUrl;
 				} else {
@@ -461,32 +437,32 @@
 		
 		$scope.colors = ["#fc0003", "#f70008", "#f2000d", "#ed0012", "#e80017", "#e3001c", "#de0021", "#d90026", "#d4002b", "#cf0030", "#c90036", "#c4003b", "#bf0040", "#ba0045", "#b5004a", "#b0004f", "#ab0054", "#a60059", "#a1005e", "#9c0063", "#960069", "#91006e", "#8c0073", "#870078", "#82007d", "#7d0082", "#780087", "#73008c", "#6e0091", "#690096", "#63009c", "#5e00a1", "#5900a6", "#5400ab", "#4f00b0", "#4a00b5", "#4500ba", "#4000bf", "#3b00c4", "#3600c9", "#3000cf", "#2b00d4", "#2600d9", "#2100de", "#1c00e3", "#1700e8", "#1200ed", "#0d00f2", "#0800f7", "#0300fc"];
 
-            function getSlide(target, style) {
-                var i = target.length;
-                return {
-                    id: (i + 1),
-                    label: 'slide #' + (i + 1),
-                    img: 'http://lorempixel.com/450/300/' + style + '/' + ((i + 1) % 10) ,
-                    color: $scope.colors[ (i*10) % $scope.colors.length],
-                    odd: (i % 2 === 0)
-                };
-            }
+		function getSlide(target, style) {
+			var i = target.length;
+			return {
+				id: (i + 1),
+				label: 'slide #' + (i + 1),
+				img: 'http://lorempixel.com/450/300/' + style + '/' + ((i + 1) % 10) ,
+				color: $scope.colors[ (i*10) % $scope.colors.length],
+				odd: (i % 2 === 0)
+			};
+		}
 
-            function addSlide(target, style) {
-                target.push(getSlide(target, style));
-            };
+		function addSlide(target, style) {
+			target.push(getSlide(target, style));
+		};
 
-            $scope.carouselIndex = 3;
-            $scope.carouselIndex2 = 0;
-            $scope.carouselIndex2 = 1;
-            $scope.carouselIndex3 = 5;
-            $scope.carouselIndex4 = 5;
+		$scope.carouselIndex = 3;
+		$scope.carouselIndex2 = 0;
+		$scope.carouselIndex2 = 1;
+		$scope.carouselIndex3 = 5;
+		$scope.carouselIndex4 = 5;
 
-            function addSlides(target, style, qty) {
-                for (var i=0; i < qty; i++) {
-                    addSlide(target, style);
-                }
-            }
+		function addSlides(target, style, qty) {
+			for (var i=0; i < qty; i++) {
+				addSlide(target, style);
+			}
+		}
 
             // 1st ngRepeat demo
             $scope.slides = [];
@@ -510,11 +486,11 @@
             $scope.carouselIndex6 = 0;
             addSlides($scope.slides6, 'sports', 10);
             $scope.addSlide = function(at) {
-                if(at==='head') {
-                    $scope.slides6.unshift(getSlide($scope.slides6, 'people'));
-                } else {
-                    $scope.slides6.push(getSlide($scope.slides6, 'people'));
-                }
+            	if(at==='head') {
+            		$scope.slides6.unshift(getSlide($scope.slides6, 'people'));
+            	} else {
+            		$scope.slides6.push(getSlide($scope.slides6, 'people'));
+            	}
             }
             
             // End to End swiping
@@ -538,21 +514,21 @@
             console.log($scope.galleryNumber);
             
             function getImage(target) {
-                var i = target.length
-                    , p = (($scope.galleryNumber-1)*$scope.setOfImagesToShow)+i;
-                console.log("i=" + i + "--" + p);
-                
-                return slideImages[p];
+            	var i = target.length
+            	, p = (($scope.galleryNumber-1)*$scope.setOfImagesToShow)+i;
+            	console.log("i=" + i + "--" + p);
+
+            	return slideImages[p];
             }
             function addImages(target, qty) {
-                                
-                for (var i=0; i < qty; i++) {
-                    addImage(target);
-                }
+
+            	for (var i=0; i < qty; i++) {
+            		addImage(target);
+            	}
             }
             
             function addImage(target) {
-                target.push(getImage(target));
+            	target.push(getImage(target));
             }
             
             $scope.slides7 = [];
@@ -560,8 +536,8 @@
             $scope.setOfImagesToShow = 3;
             addImages($scope.slides7, $scope.setOfImagesToShow);
             $scope.loadNextImages = function() {
-                console.log("loading Next images");
-                if (slideImages[slideImages.length-1].id !== $scope.slides7[$scope.slides7.length-1].id) {
+            	console.log("loading Next images");
+            	if (slideImages[slideImages.length-1].id !== $scope.slides7[$scope.slides7.length-1].id) {
                     // Go to next set of images if exist
                     $scope.slides7 = [];
                     $scope.carouselIndex7 = 0;
@@ -576,7 +552,7 @@
                 }
             }
             $scope.loadPreviousImages = function() {
-                if (slideImages[0].id !== $scope.slides7[0].id) {
+            	if (slideImages[0].id !== $scope.slides7[0].id) {
                     // Go to previous set of images if exist
                     $scope.slides7 = [];
                     $scope.carouselIndex7 = 0;
@@ -595,6 +571,6 @@
                 
             }
 
-	}
+        }
 
-})();
+    })();

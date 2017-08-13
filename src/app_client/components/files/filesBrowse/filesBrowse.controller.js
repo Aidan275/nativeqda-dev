@@ -25,7 +25,7 @@
 		vm.currentPath = '';
 		vm.pathsArray = [''];
 		vm.pageHeader = {
-			title: 'Browse Files'
+			title: 'Files'
 		};
 
 		activate();
@@ -41,17 +41,30 @@
 			bsLoadingOverlayService.start({referenceId: 'file-list'});	// Start animated loading overlay
 			filesService.getFileDB(vm.currentPath, '')
 			.then(function(response) {
-				vm.fileList = response.data;
-				if(vm.currentPath != '') {
+
+				vm.fileList = [];	/* reset fileList array on folder navigation */
+
+				if(vm.currentPath != '') {	/* If not in the root folder, add a parent directory link */
 					vm.fileList.push({
 						name: '..',
 						lastModified: '',
 						createdBy: '',
 						size: '',
-						type: 'parent-dir'
+						type: 'parent-dir',
+						typeOrder: 0	/* For sorting by parent directory, folder, file */
 					});
 				}
-				listFiles();
+
+				response.data.forEach(function(file) {	/* Add each file to the fileList array */
+					if(file.type === 'folder') {
+						file.typeOrder = 1;	/* For sorting by parent directory, folder, file */
+					} else {
+						file.typeOrder = 2;	/* For sorting by parent directory, folder, file */
+					}
+					vm.fileList.push(file);
+				});
+
+				listFiles();	/* List files in the view using ng-table */
 			}, function(err){
 				bsLoadingOverlayService.stop({referenceId: 'file-list'});	// If error, stop animated loading overlay
 			});
@@ -59,7 +72,7 @@
 
 		function listFiles() {
 			vm.tableParams = new NgTableParams({
-				sorting: {lastModified: "desc"}
+				sorting: {typeOrder: "asc"}	/* For sorting by parent directory, folder, file */
 			}, {
 				dataset: vm.fileList
 			});
@@ -106,8 +119,8 @@
 					},1000);
 
 					// Redirect the new tab to the signed URL
-					// If the file is a document, open in google docs viewer to view in the browser
-					if(response.data.type === "document") {
+					// If the file is a document or text file, open in google docs viewer to view in the browser
+					if(response.data.type === "document" || response.data.type === "text") {
 						var encodedUrl = 'https://docs.google.com/viewer?url=' + encodeURIComponent(response.data.url) + '&embedded=true';
 						newTab.location = encodedUrl;
 					} else {
@@ -217,12 +230,10 @@
 				templateUrl: '/components/files/filesUpload/filesUpload.view.html',
 				controller: 'filesUploadCtrl as vm',
 				size: 'xl',
+				backdrop: 'static',	/* disables modal closing by click on the backdrop */
 				resolve: {
 					currentPath: function () {
 						return vm.currentPath;
-					},
-					fileList: function () {
-						return vm.fileList;
 					}
 				}
 			});
@@ -234,6 +245,8 @@
 			modalInstance.result.then(function(newFile) {
 				vm.fileList.push(newFile);
 				listFiles();
+			}, function(e){
+
 			});
 		}
 

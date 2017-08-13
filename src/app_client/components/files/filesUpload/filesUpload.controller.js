@@ -7,7 +7,7 @@
 	.controller('filesUploadCtrl', filesUploadCtrl);
 	
 	/* @ngInject */
-	function filesUploadCtrl(currentPath, fileList, mapService, $http, $window, $scope, $uibModalInstance, Upload, NgTableParams, filesService, authentication, logger, $filter, $compile) {
+	function filesUploadCtrl(currentPath, mapService, $http, $window, $scope, $uibModalInstance, Upload, NgTableParams, filesService, authentication, logger, $filter, $compile) {
 		var vm = this;
 
 		/* Temporary fix */
@@ -18,45 +18,30 @@
 		/* Bindable Functions */
 		vm.onFileSelect = onFileSelect;
 		vm.uploadFile = uploadFile;
-		vm.changePage = changePage;
-
-		function changePage(page) {
-			vm.currentModalPage = page;
-			if(page === 2) {
-				setTimeout(function() {
-					vm.map.invalidateSize();
-					vm.map.setView(vm.posMarker.getLatLng(), vm.map.getZoom());
-				}, 100);
-			}
-		}
+		vm.changeModalPage = changeModalPage;
 
 		/* Bindable Data */
+		vm.currentPath = currentPath;
 		vm.map = null;
 		vm.marker = null;
 		vm.markers = L.markerClusterGroup({showCoverageOnHover: false});
 		vm.posMarker = null;
-		vm.posMarkerMoved = false;	/* After moving the marker, the accuracy circle will be removed, i.e. the posMarkerMoved bool will be true */
+		vm.posMarkerMoved = false;	/* After moving the marker, the accuracy circle will be removed, i.e. posMarkerMoved = true */
 		vm.lat = -34.4054039;	/* Default position is UOW */
 		vm.lng = 150.87842999999998;
 		vm.tags = [];
-		vm.address = '';
-		vm.formattedAddress = '';
+		vm.fileList = [];
 		vm.currentPercentage = '0';
 		vm.file = null;
 		vm.fileInfo = {};
 		vm.textFile = null;
 		vm.textFileInfo = {};
-		vm.pageHeader = {
-			title: 'Upload Files'
-		};
 		vm.isSubmittingButton = null;	/* variables for button animation - ng-bs-animated-button */
 		vm.resultButton = null;
 		vm.uploadButtonOptions = { buttonDefaultText: 'Upload', animationCompleteTime: 1000, buttonSubmittingText: 'Uploading...', buttonSuccessText: 'Done!' };
 		vm.isProcessing = false;
-		vm.isConverting = false;
 		vm.currentModalPage = 1;
 
-		/* To move - may move the majority of the mapping functions into it's own directive */
 		var LeafIcon = L.Icon.extend({
 			options: {
 				shadowUrl: 'assets/img/map/markers/marker-shadow.png',
@@ -67,10 +52,10 @@
 				popupAnchor:  [0, -50]
 			}
 		});
-
 		var defaultIcon = new LeafIcon({iconUrl: 'assets/img/map/markers/marker-icon-2x.png'});
 		var posIcon = new LeafIcon({iconUrl: 'assets/img/map/markers/marker-icon-pos.png'});
 
+		/* Fix for rendering the map in a modal, not the most clever solution */
 		isMapRendered();	/* Check if the map div has been rendered before adding the map to the DOM */
 
 		function isMapRendered() {
@@ -84,29 +69,7 @@
 		///////////////////////////
 
 		function activate() {
-			setupUploadForm();
 			initMap();
-		}
-
-		function setupUploadForm() {
-			var fileInput = $("#file-input");
-			fileInput.on('dragenter', function (e) {
-				$(".file-area .file-dummy").css({
-					"background": "#edf5ff",
-					"border-color": "#4676fa"
-				});
-				$(".file-area .file-dummy .default").css({
-					"color": "#4676fa"
-				});
-			}).on('dragleave dragend drop', function (e) {
-				$(".file-area .file-dummy").css({
-					"background": "none",
-					"border-color": "#333"
-				});
-				$(".file-area .file-dummy .default").css({
-					"color": "#333"
-				});
-			});
 		}
 
 		function initMap() {
@@ -265,7 +228,7 @@
 			});
 
 			geoLocateUser();	/* Find the position of the user */
-			addMapMarkers();	/* Adds the markers to the map */
+			getFileList();	/* Gets all the files from the database */
 		}
 
 		function updatePosMarker(event) {
@@ -292,33 +255,6 @@
 
 			vm.lat = userPos.lat;
 			vm.lng = userPos.lng;
-			$scope.$apply();		/* Use $scope.$apply() to update the lat and lng on the page */
-
-			/* Set the zoom level depending on the radius of the accuracy circle. Maybe a bit much */
-			var zoom = (
-				radius < 9 ? 22 : 
-				radius > 8 && radius < 17 ? 21 : 
-				radius > 16 && radius < 32 ? 20 : 
-				radius > 31 && radius < 63 ? 19 : 
-				radius > 62 && radius < 126 ? 18 : 
-				radius > 125 && radius < 251 ? 17 : 
-				radius > 250 && radius < 551 ? 16 : 
-				radius > 550 && radius < 1101 ? 15 :
-				radius > 1100 && radius < 2201 ? 14 : 
-				radius > 2200 && radius < 4401 ? 13 : 
-				radius > 4400 && radius < 8801 ? 12 : 
-				radius > 8800 && radius < 17601 ? 11 : 
-				radius > 17600 && radius < 35201 ? 10 :
-				radius > 35200 && radius < 70401 ? 9 : 
-				radius > 70400 && radius < 140801 ? 8 : 
-				radius > 140800 && radius < 281601 ? 7 : 
-				radius > 281600 && radius < 563201 ? 6 : 
-				radius > 563200 && radius < 1126401 ? 5 :  		
-				radius > 1126400 && radius < 2252801 ? 4 :  		
-				radius > 2252800 && radius < 4505601 ? 3 :  		
-				radius > 4505600 && radius < 9011201 ? 2 :  		
-				radius > 9011200 && radius < 18022401 ? 1 : 1
-				);
 
 			/* Move the marker and update the popup content of the marker  */
 			vm.posMarker.setLatLng(userPos);
@@ -335,7 +271,7 @@
 			vm.posMarker.on("popupopen", function() {
 				if(!vm.posMarkerMoved) { 
 					posCicle.addTo(vm.map); 
-					vm.map.setView(userPos, zoom);
+					vm.map.fitBounds(posCicle.getBounds());
 				}
 			});
 
@@ -344,19 +280,26 @@
 					vm.map.removeLayer(posCicle); 
 				}
 			});
-
-			logger.success('User\'s location found', response, 'Success');
 		}
 
 		function onLocationError(error) {
 			logger.error(error.message, error, 'Error');
 		}
 
-		/* Adds markers for the files passed from the file browser page */
+		/* Gets all the files from the database to be displayed on the map */
+		function getFileList() {
+			filesService.getFileListDB()
+			.then(function(response) {
+				vm.fileList = response.data;
+				addMapMarkers();
+			});
+		}
+
+		/* Adds markers for the files retrieved from the database */
 		function addMapMarkers() {
 			/* For each file, a marker is added to the marker Cluster Group to be displayed on the map. */
 			/* If the marker is clicked, it sets the upload marker to the file's location. */
-			fileList.forEach(function(file) {
+			vm.fileList.forEach(function(file) {
 				var lat = file.coords.coordinates[1];
 				var lng = file.coords.coordinates[0];
 				var marker = L.marker([lat, lng], { icon: defaultIcon })
@@ -374,268 +317,279 @@
 			vm.map.addLayer(vm.markers);
 		}
 
-		/* Gets a signed URL for uploading a file then uploads the file to S3 with this signed URL */
-		/* If successful, the file info is then posted to the DB */
-		/* need to make neater */
+
 		function onFileSelect(uploadFiles) {
 			if (uploadFiles.length > 0 ) {
-				if(uploadFiles[0].size < 10485760) {	/* Checks if file's size is less than 10 MB */
+				/* Checks if file's size is less than 10 MB */
+				if(uploadFiles[0].size < 10485760) {
 					vm.file = uploadFiles[0];
-				vm.fileInfo = {
-					name: vm.file.name,
-					type: vm.file.type
-				};
-				/* If uploading a text/plain file, change the type to include charset=utf-8 so special characters are encoded properly */
-				if (vm.fileInfo.type === "text/plain"){
-					vm.fileInfo.type = "text/plain; charset=utf-8";
+					vm.fileInfo = {
+						name: vm.file.name.replace(/\.[^/.]+$/, ""),	/* Extracts everything before the file extension */
+						extension: (vm.file.name.split('.').pop()).toLowerCase(),	/* Extracts the file extension */
+						type: vm.file.type
+					};
+					/* If uploading a text/plain file, change the type to include charset=utf-8 so special characters are encoded properly */
+					if (vm.fileInfo.type === "text/plain"){
+						vm.fileInfo.type = "text/plain; charset=utf-8";
+					}
+
+					processFile();
+
+					vm.currentModalPage = 2;
+					setTimeout(function() {
+						vm.map.invalidateSize();
+						vm.map.setView(vm.posMarker.getLatLng(), 15);
+					}, 100);
+				} else {
+					logger.error("Maximum file size is 10 MB. \nPlease select a smaller file.", "", "Error");	/* If larger, display message and reinitialise the file variables */
+					vm.file = null;
+					vm.fileInfo = {};
+					document.getElementById("file-input").value = "";
 				}
+			}
+		}
 
-				processFile();
+		function processFile() {
+			if(vm.file) {
+				switch (vm.fileInfo.extension) {
+					case 'pdf':
+					vm.fileInfo.typeDB = "document";	/* File type - stored in the DB */
+					vm.fileInfo.icon = "fa fa-file-pdf-o";	/* PDF icon type */
+					convertPDFToText()
+					break;
+					case 'docx':
+					vm.fileInfo.typeDB = "document";	/* File type - stored in the DB */
+					vm.fileInfo.icon = "fa fa-file-word-o";	/* Word icon type */	
+					convertDocxToText();
+					break;
+					case 'doc':
+					vm.fileInfo.typeDB = "document";	/* File type - stored in the DB */
+					vm.fileInfo.icon = "fa fa-file-word-o";	/* Word icon type */
+					break;
+					case 'txt':
+					vm.fileInfo.typeDB = "text";	/* File type - stored in the DB */
+					vm.fileInfo.icon = "fa fa-file-text-o";	/* Text icon type */
+					vm.fileInfo.isTxtFile = true;
+					break;
+					case 'gif':
+					case 'jpg':
+					case 'jpeg':
+					case 'png':
+					case 'bmp':
+					case 'tif':
+					vm.fileInfo.typeDB = "image";	/* File type - stored in the DB */
+					vm.fileInfo.icon = "fa fa-file-image-o";	/* Image icon type */
+					break;
+					default: 
+					vm.fileInfo.typeDB = "file";	/* File type - stored in the DB */
+					vm.fileInfo.icon = "fa fa-file-o";	/* Generic File icon type */
+				}
+			} else {
+				logger.error("Please select a file to upload.", "", "Error");
+			}
+		}
 
-				vm.currentModalPage = 2;
+		function convertPDFToText() {
+			vm.isProcessing = true;
+			var fileReader = new FileReader();
+
+			fileReader.onload = function() { 
+				var arrayBuffer = this.result;	
+
+				getPDFText(arrayBuffer).then(function (text) {
+					createTextFile(text);
+				}, function (error) {
+					logger.error(error.message, error, 'Error');
+					vm.modal.close();
+				});	
+			}
+
+			fileReader.readAsArrayBuffer(vm.file);
+
+			function getPDFText(pdfFile){
+				var pdf = PDFJS.getDocument({data: pdfFile});
+
+				return pdf.then(function(pdf) {
+					var maxPages = pdf.pdfInfo.numPages;
+					var countPromises = [];
+
+					for (var j = 1; j <= maxPages; j++) {
+						var page = pdf.getPage(j);
+
+						var txt = "";
+						countPromises.push(page.then(function(page) {
+							var textContent = page.getTextContent();
+							return textContent.then(function(text){
+								return text.items.map(function (s) { return s.str; }).join('');
+							});
+						}));
+					}
+
+					return Promise.all(countPromises).then(function (texts) {
+						return texts.join('');
+					});
+				});
+			}
+		}
+
+		/* Testing DocxJS for converting docx files to text... looks good */
+		function convertDocxToText() {
+			vm.isProcessing = true;
+			var docxJS = new DocxJS();
+
+			docxJS.parse(vm.file, function() {
+				docxJS.getPlainText(function(text){
+					createTextFile(text);
+				});
+			}, function (error) {
+				logger.error(error.msg, error, 'Error');
+				vm.modal.close();
+			});
+		}
+
+		function createTextFile(text) {
+			vm.textFile = new File([text], vm.fileInfo.name, {type: "text/plain; charset=utf-8"});
+
+			vm.textFileInfo = {
+				name: vm.textFile.name,
+				extension: "txt",
+				type: vm.textFile.type
+			};
+
+			vm.isProcessing = false;
+			$scope.$apply();
+		}
+
+		function uploadFile() {
+			if(vm.fileInfo.name){
+				processingEvent(true, null);
+				if(vm.textFile) {
+					uploadTextFile();
+				} else {
+					uploadActualFile();
+				}
+			} else {
+				logger.error('Please enter a file name' ,'', 'Error');
+			}
+
+		}
+
+		function uploadTextFile() {
+			filesService.signUploadS3(vm.textFileInfo)
+			.then(function(result) {
+				Upload.upload({
+					method: 'POST',
+					url: result.data.url,
+					fields: result.data.fields,
+					file: vm.textFile
+				})
+				.then(function(response) {
+					console.log(vm.textFileInfo.name + ' successfully uploaded to S3');
+					vm.textFileInfo.key = result.data.fields.key;
+					/* Use the same key but with the original file extension (e.g. use .pdf not .txt) */
+					vm.fileInfo.key = vm.textFileInfo.key.substring(0, vm.textFileInfo.key.indexOf('-'));
+					vm.fileInfo.key += "-" + vm.fileInfo.name + '.' + vm.fileInfo.extension;
+					uploadActualFile();
+				}, function(error) {
+					var xml = $.parseXML(error.data);
+					processingEvent(false, 'error');	/* ng-bs-animated-button status & result */
+					logger.error($(xml).find("Message").text(), '', 'Error');
+					vm.modal.close();
+				});
+			}, function(err) {
+				processingEvent(false, 'error');	/* ng-bs-animated-button status & result */
+			});
+		}
+
+		function uploadActualFile() {
+			filesService.signUploadS3(vm.fileInfo)
+			.then(function(result) {
+				Upload.upload({
+					method: 'POST',
+					url: result.data.url, 
+					fields: result.data.fields, 
+					file: vm.file
+				})
+				.progress(function(evt) {
+					vm.currentPercentage = parseInt(100.0 * evt.loaded / evt.total);
+				})
+				.then(function(response) {
+					console.log(vm.fileInfo.name + ' successfully uploaded to S3');
+					/* parses XML data response to jQuery object to be stored in the database */
+					var xml = $.parseXML(response.data);
+					/* maps the tag obects to an array of strings to be stored in the database */
+					var tagStrings = vm.tags.map(function(item) {
+						return item['text'];
+					});
+					var key = result.data.fields.key;
+					var url = result.data.url + '/' + encodeURIComponent(key);	/* Encode the key for the API URL incase it includes reserved characters (e.g '+', '&') */
+					var fileDetails = {
+						name : vm.fileInfo.name + '.' + vm.fileInfo.extension,
+						path : currentPath,
+						type : vm.fileInfo.typeDB,
+						key : key,
+						size : vm.file.size,
+						url : url,
+						createdBy : authentication.currentUser().firstName,
+						coords : { 
+							lat : vm.lat,
+							lng : vm.lng
+						},
+						tags : tagStrings,
+						icon : vm.fileInfo.icon
+					}
+					if(vm.textFileInfo.key) {
+						fileDetails.textFileKey = vm.textFileInfo.key;
+					}
+					if(vm.fileInfo.isTxtFile){
+						fileDetails.textFileKey = key;
+					}
+					filesService.addFileDB(fileDetails)
+					.then(function(response) {
+						processingEvent(false, 'success');	/* ng-bs-animated-button status & result */
+						console.log(vm.fileInfo.name + ' successfully added to DB');
+						logger.success(vm.fileInfo.name + ' successfully uploaded', '', 'Success');
+						setTimeout(function() {
+							vm.modal.close(response.data);	/* Close modal if the file was uploaded successfully and return the new file */
+						}, 1000);	/* Timeout function so the user can see the file uploaded successfully before closing modal */
+					});
+				}, function(error) {
+					processingEvent(false, 'error');	/* ng-bs-animated-button status & result */
+					var xml = $.parseXML(error.data);
+					logger.error($(xml).find("Message").text(), '', 'Error');
+					vm.modal.close();
+				});
+			}, function(err) {
+				processingEvent(false, 'error');	/* ng-bs-animated-button status & result */
+			});
+		}
+
+		/* For the animated submit button and other elements that should be disabled during event processing */
+		function processingEvent(status, result) {
+			vm.isSubmittingButton = status;	/* ng-bs-animated-button status */
+			vm.resultButton = result;	/* ng-bs-animated-button result (error/success) */
+
+			vm.isProcessing = status;	/* Processing flag for other view elements to check */
+		}
+
+		function changeModalPage(page) {
+			vm.currentModalPage = page;
+			if(page === 2) {
 				setTimeout(function() {
 					vm.map.invalidateSize();
-					vm.map.setView(vm.posMarker.getLatLng(), 15);
+					vm.map.setView(vm.posMarker.getLatLng(), vm.map.getZoom());
 				}, 100);
-			} else {
-				logger.error("Maximum file size is 10 MB. \nPlease select a smaller file.", "", "Error");	/* If larger, display message and reinitialise the file variables */
-				vm.file = null;
-				vm.fileInfo = {};
-				document.getElementById("file-input").value = "";
 			}
 		}
-	}
 
-	function processFile() {
-		if(vm.file) {
-			var fileExtension = (vm.fileInfo.name.split('.').pop()).toLowerCase();
-			switch (fileExtension) {
-				case 'pdf':
-				vm.fileInfo.typeDB = "document";	/* File type - stored in the DB */
-				vm.fileInfo.icon = "fa fa-file-pdf-o";	/* PDF icon type */
-				convertPDFToText()
-				break;
-				case 'docx':
-				vm.fileInfo.typeDB = "document";	/* File type - stored in the DB */
-				vm.fileInfo.icon = "fa fa-file-word-o";	/* Word icon type */	
-				convertDocxToText();
-				break;
-				case 'doc':
-				vm.fileInfo.typeDB = "document";	/* File type - stored in the DB */
-				vm.fileInfo.icon = "fa fa-file-word-o";	/* Word icon type */
-				break;
-				case 'txt':
-				vm.fileInfo.typeDB = "text";	/* File type - stored in the DB */
-				vm.fileInfo.icon = "fa fa-file-text-o";	/* Text icon type */
-				vm.fileInfo.isTxtFile = true;
-				break;
-				case 'gif':
-				case 'jpg':
-				case 'jpeg':
-				case 'png':
-				case 'bmp':
-				case 'tif':
-				vm.fileInfo.typeDB = "image";	/* File type - stored in the DB */
-				vm.fileInfo.icon = "fa fa-file-image-o";	/* Image icon type */
-				break;
-				default: 
-				vm.fileInfo.typeDB = "file";	/* File type - stored in the DB */
-				vm.fileInfo.icon = "fa fa-file-o";	/* Generic File icon type */
+		vm.modal = {
+			close : function(newFile) {
+				$uibModalInstance.close(newFile);
+			}, 
+			cancel : function() {
+				$uibModalInstance.dismiss('cancel');
 			}
-		} else {
-			logger.error("Please select a file to upload.", "", "Error");
-		}
-	}
-
-	function convertPDFToText() {
-		vm.isConverting = true;
-		var fileReader = new FileReader();
-
-		fileReader.onload = function() { 
-			var arrayBuffer = this.result;	
-
-			getPDFText(arrayBuffer).then(function (text) {
-				createTextFile(text);
-			}, function (error) {
-				logger.error(error.message, error, 'Error');
-				vm.modal.close();
-			});	
-		}
-
-		fileReader.readAsArrayBuffer(vm.file);
-
-		function getPDFText(pdfFile){
-			var pdf = PDFJS.getDocument({data: pdfFile});
-
-			return pdf.then(function(pdf) {
-				var maxPages = pdf.pdfInfo.numPages;
-				var countPromises = [];
-
-				for (var j = 1; j <= maxPages; j++) {
-					var page = pdf.getPage(j);
-
-					var txt = "";
-					countPromises.push(page.then(function(page) {
-						var textContent = page.getTextContent();
-						return textContent.then(function(text){
-							return text.items.map(function (s) { return s.str; }).join('');
-						});
-					}));
-				}
-
-				return Promise.all(countPromises).then(function (texts) {
-					return texts.join('');
-				});
-			});
-		}
-	}
-
-	/* Testing DocxJS for converting docx files to text... looks good */
-	function convertDocxToText() {
-		vm.isConverting = true;
-		var docxJS = new DocxJS();
-
-		docxJS.parse(vm.file, function() {
-			docxJS.getPlainText(function(text){
-				createTextFile(text);
-			});
-		}, function (error) {
-			logger.error(error.msg, error, 'Error');
-			vm.modal.close();
-		});
-	}
-
-	function createTextFile(text) {
-		/* Replaces the file name extension with .txt */
-		var textFileName = vm.fileInfo.name.replace(/\.[^/.]+$/, "");
-		textFileName += ".txt";
-
-		vm.textFile = new File([text], textFileName, {type: "text/plain; charset=utf-8"});
-
-		vm.textFileInfo = {
-			name: vm.textFile.name,
-			type: vm.textFile.type
 		};
-
-		vm.isConverting = false;
-		$scope.$apply();
 	}
-
-	function uploadFile() {
-		processingEvent(true, null);
-		if(vm.textFile) {
-			uploadTextFile();
-		} else {
-			uploadActualFile();
-		}
-	}
-
-	function uploadTextFile() {
-		filesService.signUploadS3(vm.textFileInfo)
-		.then(function(result) {
-			Upload.upload({
-				method: 'POST',
-				url: result.data.url, 
-				fields: result.data.fields, 
-				file: vm.textFile
-			})
-			.then(function(response) {
-				console.log(vm.textFileInfo.name + ' successfully uploaded to S3');
-				vm.textFileInfo.key = result.data.fields.key;
-				/* Use the same key but with the original file extension (e.g. use .pdf not .txt) */
-				vm.fileInfo.key = vm.textFileInfo.key.substring(0, vm.textFileInfo.key.indexOf('-'));
-				vm.fileInfo.key += "-" + vm.fileInfo.name;
-				uploadActualFile();
-			}, function(error) {
-				var xml = $.parseXML(error.data);
-				processingEvent(false, 'error');	/* ng-bs-animated-button status & result */
-				logger.error($(xml).find("Message").text(), '', 'Error');
-				vm.modal.close();
-			});
-		}, function(err) {
-			processingEvent(false, 'error');	/* ng-bs-animated-button status & result */
-		});
-	}
-
-	function uploadActualFile() {
-		filesService.signUploadS3(vm.fileInfo)
-		.then(function(result) {
-			Upload.upload({
-				method: 'POST',
-				url: result.data.url, 
-				fields: result.data.fields, 
-				file: vm.file
-			})
-			.progress(function(evt) {
-				vm.currentPercentage = parseInt(100.0 * evt.loaded / evt.total);
-			})
-			.then(function(response) {
-				console.log(vm.fileInfo.name + ' successfully uploaded to S3');
-				/* parses XML data response to jQuery object to be stored in the database */
-				var xml = $.parseXML(response.data);
-				/* maps the tag obects to an array of strings to be stored in the database */
-				var tagStrings = vm.tags.map(function(item) {
-					return item['text'];
-				});
-				var key = result.data.fields.key;
-				var url = result.data.url + '/' + encodeURIComponent(key);	/* Encode the key for the API URL incase it includes reserved characters (e.g '+', '&') */
-				var fileDetails = {
-					name : vm.fileInfo.name,
-					path : currentPath,
-					type : vm.fileInfo.typeDB,
-					key : key,
-					size : vm.file.size,
-					url : url,
-					createdBy : authentication.currentUser().firstName,
-					coords : { 
-						lat : vm.lat,
-						lng : vm.lng
-					},
-					tags : tagStrings,
-					icon : vm.fileInfo.icon
-				}
-				if(vm.textFileInfo.key) {
-					fileDetails.textFileKey = vm.textFileInfo.key;
-				}
-				if(vm.fileInfo.isTxtFile){
-					fileDetails.textFileKey = key;
-				}
-				filesService.addFileDB(fileDetails)
-				.then(function(response) {
-					processingEvent(false, 'success');	/* ng-bs-animated-button status & result */
-					console.log(vm.fileInfo.name + ' successfully added to DB');
-					logger.success(vm.fileInfo.name + ' successfully uploaded', '', 'Success');
-					setTimeout(function() {
-						vm.modal.close(response.data);	/* Close modal if the analysis was completed successfully and return the new analysis data */
-					}, 1000);	/* Timeout function so the user can see the analysis has completed before closing modal */
-				});
-			}, function(error) {
-				processingEvent(false, 'error');	/* ng-bs-animated-button status & result */
-				var xml = $.parseXML(error.data);
-				logger.error($(xml).find("Message").text(), '', 'Error');
-				vm.modal.close();
-			});
-		}, function(err) {
-			processingEvent(false, 'error');	/* ng-bs-animated-button status & result */
-		});
-	}
-
-	/* For the animated submit button and other elements that should be disabled during event processing */
-	function processingEvent(status, result) {
-		vm.isSubmittingButton = status;	/* ng-bs-animated-button status */
-		vm.resultButton = result;	/* ng-bs-animated-button result (error/success) */
-
-		vm.isProcessing = status;	/* Processing flag for other view elements to check */
-	}
-
-	vm.modal = {
-		close : function(newFile) {
-			$uibModalInstance.close(newFile);
-		}, 
-		cancel : function() {
-			$uibModalInstance.dismiss('cancel');
-		}
-	};
-}
 
 })();

@@ -23,15 +23,16 @@
 		text-align: center;
 		border: #333 dashed 2px;
 		border-radius: 10px;
-		transition: border-color 0.3s ease-in-out;
-		transition: background 0.3s ease-in-out;
+		transition: background 0.3s, border-color 0.3s;
+		-webkit-transition: background 0.3s, border-color 0.3s;
 	}
 	.file-area .file-dummy .default {
 		font-size: 14px;
 		position: relative;
 		top: 50%;
 		transform: perspective(1px) translateY(-50%);
-		transition: color 0.3s ease-in-out;
+		transition: color 0.3s;
+		-webkit-transition: color 0.3s;
 	}
 	.file-area .file-dummy .default i {
 		font-size: 150px;
@@ -43,99 +44,13 @@
 	#file-input:hover + .file-dummy .default {
 		color: #4676fa;
 	}
-
-	.zone {
-		margin: auto;
-		position: absolute;
-		top: 0;
-		left: 0;
-		bottom: 0;
-		right: 0;
-		background: -webkit-radial-gradient(center ellipse, #EB6A5A 0, #c9402f 100%);
-		background: radial-gradient(ellipse at center, #EB6A5A 0, #c9402f 100%);
-		width: 80%;
-		height: 50%;
-		border: 5px dashed white;
-		text-align: center;
-		color: white;
-		z-index: 20;
-		-webkit-transition: all 0.3s ease-out;
-		transition: all 0.3s ease-out;
-		box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.05), inset 0 0 0.25em 0 rgba(0, 0, 0, 0.25);
+	tags-input .tags {
+		border: 1px solid #ccc;
+		border-radius: 4px;
+		-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+		box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+		-webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+		-o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+		transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
 	}
-	.zone .btnCompression .active {
-		background: #EB6A5A;
-		color: white;
-	}
-	.zone i {
-		text-align: center;
-		font-size: 10em;
-		color: #fff;
-		margin-top: 50px;
-	}
-	.zone .selectFile {
-		height: 50px;
-		margin: 20px auto;
-		position: relative;
-		width: 200px;
-	}
-	.zone label,
-	.zone input {
-		cursor: pointer;
-		display: block;
-		height: 50px;
-		left: 0;
-		position: absolute;
-		top: 0;
-		width: 100%;
-		border-radius: 5px;
-	}
-	.zone label {
-		background: #fff;
-		color: #EB6A5A;
-		display: inline-block;
-		font-size: 1.2em;
-		line-height: 50px;
-		padding: 0;
-		text-align: center;
-		white-space: nowrap;
-		text-transform: uppercase;
-		font-weight: 400;
-		box-shadow: 0 1px 1px gray;
-	}
-	.zone input[type=file] {
-		opacity: 0;
-	}
-	.zone.in {
-		color: white;
-		border-color: white;
-		background: -webkit-radial-gradient(center ellipse, #EB6A5A 0, #c9402f 100%);
-		background: radial-gradient(ellipse at center, #EB6A5A 0, #c9402f 100%);
-	}
-	.zone.in i {
-		color: #fff;
-	}
-	.zone.in label {
-		background: #fff;
-		color: #EB6A5A;
-	}
-	.zone.hover {
-		color: gray;
-		border-color: white;
-		background: #fff;
-		border: 5px dashed gray;
-	}
-	.zone.hover i {
-		color: #EB6A5A;
-	}
-	.zone.hover label {
-		background: #fff;
-		color: #EB6A5A;
-	}
-	.zone.fade {
-		-webkit-transition: all 0.3s ease-out;
-		transition: all 0.3s ease-out;
-		opacity: 1;
-	}
-
-</style><div class=modal-content><form id=upload-file-form role=form class=form-horizontal><div class=modal-header><button type=button ng-click=vm.modal.cancel() class=close><span aria-hidden=true>×</span> <span class=sr-only>Close</span></button><h4 id=upload-file-modal-label class=modal-title>Upload File</h4></div><div ng-show="vm.currentModalPage == 1" class="modal-body row"><div class=col-lg-12><div class=file-area><input type=file name=file id=file-input ngf-select ngf-change=vm.onFileSelect($files) required><div class=file-dummy><div class=default><i class="fa fa-cloud-upload"></i><br>Drag and drop your file here<br>or<br><label for=file>Click to select</label></div></div></div></div></div><div ng-show="vm.currentModalPage == 2" class="modal-body row"><div class=col-lg-12 style="height:500px; margin:15px 0"><div ng-init="vm.rendered=true" id=map-files-page></div></div></div><div ng-show="vm.currentModalPage == 3" class="modal-body row"><div class=col-lg-12><p>Please enter Tags</p><tags-input ng-model=vm.tags></tags-input></div><div class=col-lg-12><div ng-show="vm.currentPercentage > 0" class=progress style=margin-bottom:0;><div class="progress-bar progress-bar-success progress-bar-striped active" role=progressbar aria-valuenow={{vm.currentPercentage}} aria-valuemin=0 aria-valuemax=100 style="min-width: 2em; width: {{vm.currentPercentage}}%;">{{vm.currentPercentage}}%</div></div></div></div><div class=modal-footer><button ng-click=vm.modal.cancel() type=button class="btn btn-default pull-left">Cancel</button> <button ng-show="vm.currentModalPage == 2" class="btn btn-primary" role=button ng-click=vm.changePage(3)>Next</button> <button ng-show="vm.currentModalPage == 3" class="btn btn-primary" role=button ng-click=vm.changePage(2)>Back</button> <button ng-if="vm.currentModalPage == 3 && vm.isConverting" class="btn btn-primary" role=button disabled>Processing...</button> <button ng-if="vm.currentModalPage == 3 && !vm.isConverting" class="btn btn-primary" role=button jp-ng-bs-animated-button is-submitting=vm.isSubmittingButton result=vm.resultButton options=vm.uploadButtonOptions ng-click=vm.uploadFile()>Upload</button></div></form></div>
+</style><div class=modal-content><form id=upload-file-form role=form class=form-horizontal><div class=modal-header><button type=button ng-click=vm.modal.cancel() class=close><span aria-hidden=true>×</span> <span class=sr-only>Close</span></button><h4 id=upload-file-modal-label class=modal-title>Upload File</h4></div><div ng-show="vm.currentModalPage == 1" class="modal-body row"><div class=col-lg-12><div class=file-area><input type=file name=file id=file-input ngf-select ngf-change=vm.onFileSelect($files) required><div class=file-dummy><div class=default><i class="fa fa-cloud-upload"></i><br>Drag and drop your file here<br>or<br><label for=file>Click to select</label></div></div></div></div></div><div ng-show="vm.currentModalPage == 2" class="modal-body row"><div class=col-lg-12 style=height:70vh;><div ng-init="vm.rendered=true" id=map-files-page></div></div></div><div ng-show="vm.currentModalPage == 3" class="modal-body row"><div class=col-lg-12><div class=form-group><label for=file-name class="col-sm-2 control-label">File Name:</label><div class=col-sm-4><input id=file-name name=file-name ng-model=vm.fileInfo.name class=form-control ng-change="vm.textFileInfo.name = vm.fileInfo.name" type=text placeholder="File Name"></div></div><div class=form-group><label for=file-path class="col-sm-2 control-label">File Path:</label><div class=col-sm-4><input id=file-path name=file-path ng-model=vm.currentPath class=form-control type=text disabled></div></div><div class=form-group><label for=tags class="col-sm-2 control-label">File Tags:</label><div class=col-sm-4><tags-input id=tags name=tags ng-model=vm.tags></tags-input></div></div></div><div class=col-lg-12><div ng-show="vm.currentPercentage > 0" class=progress style=margin-bottom:0;><div class="progress-bar progress-bar-success progress-bar-striped active" role=progressbar aria-valuenow={{vm.currentPercentage}} aria-valuemin=0 aria-valuemax=100 style="min-width: 2em; width: {{vm.currentPercentage}}%;">{{vm.currentPercentage}}%</div></div></div></div><div class=modal-footer><button ng-click=vm.modal.cancel() type=button class="btn btn-default pull-left">Cancel</button> <button ng-show="vm.currentModalPage == 2" class="btn btn-primary" role=button ng-click=vm.changeModalPage(3)>Next</button> <button ng-show="vm.currentModalPage == 3" class="btn btn-primary" role=button ng-click=vm.changeModalPage(2)>Back</button> <button ng-if="vm.currentModalPage == 3 && vm.isProcessing" class="btn btn-primary" role=button disabled>Processing...</button> <button ng-if="vm.currentModalPage == 3 && !vm.isProcessing" class="btn btn-primary" role=button jp-ng-bs-animated-button is-submitting=vm.isSubmittingButton result=vm.resultButton options=vm.uploadButtonOptions ng-click=vm.uploadFile()>Upload</button></div></form></div>
