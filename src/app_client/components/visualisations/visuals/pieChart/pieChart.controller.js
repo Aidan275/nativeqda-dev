@@ -32,25 +32,32 @@
 					analysisData.concepts.forEach(function(concept){
 					var relevance = concept.relevance*100;
 					var text = concept.text.charAt(0).toUpperCase() + concept.text.slice(1);	// Capitalise first letter
-					var trimText = text.substring(0, 6); 
-					data.push({relevance: concept.relevance, text: trimText, dbpedia_resource: concept.dbpedia_resource});
+					//var trimText = text.substring(0, 6); 
+					data.push({relevance: concept.relevance, text: text});
 					});
 
 				}else if(analysisType ==='keywords') {
 					analysisData.keywords.forEach(function(keyword){
 						var relevance = keyword.relevance*100;
 						var text = keyword.text.charAt(0).toUpperCase() + keyword.text.slice(1);	// Capitalise first letter
-						var trimText = text.substring(0, 6); 
-						data.push({relevance: keyword.relevance, text: trimText});
+						//var trimText = text.substring(0, 6); 
+						data.push({relevance: keyword.relevance, text: text});
 					});	
 				}
 				
 				//Sort data by relevance
 				data.sort(function (a, b) {
-					return a.relevance - b.relevance;
+					return  b.relevance - a.relevance;
 				});
 				
-				drawChart(data);
+				//If there are too many entities the graph becomes unusable
+				if(data.length > 10) {
+					sortData = data.slice(0, 10); //Take first 10 elements
+					drawChart(sortData);										
+
+				}else {
+					drawChart(data);
+				} 
 	
 
 				
@@ -63,8 +70,9 @@
 			
 
 			var svg = d3.select("svg"),
-    		width = +svg.attr("width"),
-    		height = +svg.attr("height"),
+			margin = {top: 20, right: 20, bottom: 200, left: 40},
+			width = +svg.attr("width") - margin.left - margin.right,
+    		height = +svg.attr("height") - margin.top - margin.bottom+30, 
     		radius = Math.min(width, height) / 2,
     		g = svg.append("g").attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 
@@ -96,10 +104,10 @@
       		    	.attr("transform", "translate(" + outerRadius + "," + innerRadius + ")")
         				.on("mousemove", function(d){
             				tooltip
-              				.style("left", d3.event.pageX - 50 + "px")
-              				.style("top", d3.event.pageY - 70 + "px")
+              				.style("left", d3.event.pageX - 20 + "px")
+              				.style("top", d3.event.pageY - 40 + "px")
               				.style("display", "inline-block")
-              				.html((d.relevance) + "<br>" + (d.text));
+              				.html((d.text) + "<br>" + (d.relevance) + "%");
         	})
         	.on("mouseout", function(d){ tooltip.style("display", "none");});
 

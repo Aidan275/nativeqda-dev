@@ -28,7 +28,7 @@
 				//console.log(analysisData);
 				
 				analysisData.keywords.forEach(function(keyword){
-					var relevance = keyword.relevance*100;
+					var relevance = keyword.relevance*10;
 					var text = keyword.text.charAt(0).toUpperCase() + keyword.text.slice(1);	// Capitalise first letter
 					data.push({relevance: relevance, text: text});
 				});
@@ -42,9 +42,9 @@
 
 		function drawChart(data) {
 			
-		var width = 960,
-    		height = 500,
-    		radius = Math.min(width, height) / 2;
+		var margin = {top: 20, right: 20, bottom: 200, left: 40},
+    	width = +svg.attr("width") - margin.left - margin.right,
+    	height = +svg.attr("height") - margin.top - margin.bottom+30; 
 
     	var tooltip = d3.select("body").append("div").attr("class", "toolTip");
 
