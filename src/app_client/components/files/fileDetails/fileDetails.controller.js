@@ -28,8 +28,11 @@
 			filesService.getFileDB(file.path, file.name)
 			.then(function(response) {
 				bsLoadingOverlayService.stop({referenceId: 'file-details'});
+				console.log(response.data);
 				vm.file = response.data;
-				vm.tags = vm.file.tags.join(", ");
+				if(vm.file.tags) {
+					vm.tags = vm.file.tags.join(", ");
+				}
 			});
 		}
 
