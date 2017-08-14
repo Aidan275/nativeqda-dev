@@ -26,14 +26,15 @@
 
 			<!-- displays file list for MongoDB database -->
 			<div class="form-group">
-				<div class="col-sm-8">
+				<div class="col-xs-12">
+					<p>At the moment, only certain file types can be analysed (txt, pdf, docx). Below are the available files that are compatible.</p>
 					<div class="bs-loading-container" bs-loading-overlay bs-loading-overlay-active-class="loading-overlay--active" bs-loading-overlay-reference-id="new-dataset"> 
 						<div class="blur-this new-dataset-table-container">
-							<p>At the moment, only certain file types can be analysed (txt, pdf, docx). Below are the available files that are compatible.</p>
+
 							<table ng-table="vm.tableParams" class="table table-condensed table-bordered table-striped new-dataset-table">
 								<tr class="table-row" ng-repeat="row in $data">
 									<td style="text-align: center;">
-										<input type="checkbox" ng-if="row.type != 'folder' && row.type != 'parent-dir'" ng-model="vm.selectedFiles[row.textFileKey]" ng-change="vm.checkChange()"/>
+										<input type="checkbox" ng-if="row.type != 'folder' && row.type != 'parent-dir'" ng-model="vm.selectedFiles[row.textFileKey]" ng-change="vm.updateSelected()"/>
 									</td>
 									<td data-title="'File Name'" filter="{name: 'text'}" sortable="'name'" class="name-cell" ng-click="vm.viewFile(row, true)">
 										<span>
@@ -53,10 +54,15 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-sm-4">
-				<p ng-repeat="key in vm.selectedKeys" >
-						{{key}}
-					</p>
+
+				<div class="col-xs-12" ng-show="vm.selectedPathName.length > 0">
+					<p><strong>Selected Files</strong></p>
+					<div id="selected-files">
+						<span ng-repeat="file in vm.selectedPathName">
+							<span ng-if="file.path == '/'">/{{file.name}}<br /></span>
+							<span ng-if="file.path != '/'">/{{file.path}}/{{file.name}}<br /></span>
+						</span>
+					</div>
 				</div>
 			</div>
 		</div>

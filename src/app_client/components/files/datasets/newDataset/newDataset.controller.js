@@ -13,7 +13,7 @@
 		/* Bindable Functions */
 		vm.onSubmit = onSubmit;
 		vm.viewFile = viewFile;
-		vm.checkChange = checkChange;
+		vm.updateSelected = updateSelected;
 
 		/* Bindable Data */
 		vm.formData;
@@ -21,6 +21,7 @@
 		vm.fileList = [];
 		vm.allFilesSoFar = [];
 		vm.selectedFiles = [];
+		vm.selectedPathName = [];
 		vm.selectedKeys = [];
 		vm.isSubmittingButton = null;	/* variables for button animation - ng-bs-animated-button */
 		vm.resultButton = null;
@@ -45,10 +46,17 @@
 			}
 		};
 
-		function checkChange() {
+		function updateSelected() {
+			vm.selectedPathName = [];
+
 			vm.selectedKeys = Object.keys(vm.selectedFiles)	/* Extracts the keys from the associative array */ 
 			.filter(function(key) {					/* Filters the true values only. Left with the file keys */
 				return vm.selectedFiles[key]
+			});
+
+			vm.selectedKeys.forEach(function(key) {
+				var index = vm.allFilesSoFar.findIndex(function(file){return file.textFileKey == key});
+				vm.selectedPathName.push(vm.allFilesSoFar[index]);
 			});
 		}
 
@@ -110,8 +118,8 @@
 		/* Gets signed URL to download the requested file from S3. If successful, opens the signed URL in a new tab. */
 		/* If folder or parent directory type, navigate to directory. */
 		/* If check is true, select the file, otherwise load the file's raw text to view */
-		function viewFile(file, check) {	
-			if(file.type === 'folder') {	
+		function viewFile(file, check) {
+			if(file.type === 'folder') {
 
 				if(file.path === '/') {
 					vm.currentPath = file.name;
@@ -127,7 +135,7 @@
 				getFileList();	/* Re-fetch the files with the new path and re-list the files in the table */
 			} else if (check) {
 				vm.selectedFiles[file.textFileKey] = !vm.selectedFiles[file.textFileKey];	/* Toggle the true/false values in the selected keys array  */ 
-				checkChange()
+				updateSelected();
 			} else {
 				/* Open a blank new tab while still in a trusted context to prevent a popup blocker warning */
 				var newTab = $window.open("about:blank", '_blank')

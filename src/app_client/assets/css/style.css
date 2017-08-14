@@ -853,3 +853,43 @@ footer{
 	width: 100px;
 	margin: 0 auto;
 }
+
+/* ========== NEW DATASET MODAL ========== */
+
+#selected-files {
+	background: rgba(238, 238, 238, 0.8);
+	padding: 10px;
+	border-radius: 5px;
+	color: #333;
+	border: 1px solid #cecece;
+	word-wrap: break-word;
+}
+
+#selected-files span {
+	margin-bottom: 5px;
+	display: block;
+}
+
+.new-dataset-table .name-cell {
+	cursor: pointer;
+}
+
+.new-dataset-table .table-row:hover {
+	background: rgba(70,118,250,0.15) !important;
+}
+
+.new-dataset-table .name-cell i{
+	padding-right: 5px;
+}
+
+.new-dataset-table td.name-cell {
+	vertical-align: middle !important;
+}
+
+.new-dataset-table td.last-modified-cell,
+.new-dataset-table td.created-by-cell,
+.new-dataset-table td.command-cell {
+	white-space: nowrap;
+	text-align: center;
+	vertical-align: middle !important;
+}
