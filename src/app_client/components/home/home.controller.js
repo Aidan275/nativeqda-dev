@@ -457,6 +457,14 @@
 		$scope.carouselIndex2 = 1;
 		$scope.carouselIndex3 = 5;
 		$scope.carouselIndex4 = 5;
+		
+		vm.testImages = [
+			{title: 'Visualisation #1', url: 'assets/img/visualisations/bar-chart-thumb.png'},
+			{title: 'Visualisation #2', url: 'assets/img/visualisations/chord-diagram-thumb.png'},
+			{title: 'Visualisation #3', url: 'assets/img/visualisations/concept-map-thumb.png'},
+			{title: 'Visualisation #4', url: 'assets/img/visualisations/word-cloud-thumb.png'},
+			{title: 'Visualisation #5', url: 'assets/img/visualisations/word-tree-thumb.png'},
+			];
 
 		function addSlides(target, style, qty) {
 			for (var i=0; i < qty; i++) {
@@ -570,6 +578,8 @@
                 }
                 
             }
+			
+			
 
         }
 
