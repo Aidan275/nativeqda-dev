@@ -149,6 +149,7 @@
 		"./src/app_client/common/services/files.service.js",
 		"./src/app_client/common/services/logger.service.js",
 		"./src/app_client/common/services/map.service.js",
+		"./src/app_client/common/services/s3.service.js",
 		"./src/app_client/common/services/survey.service.js",
 		"./src/app_client/common/services/users.service.js",
 		"./src/app_client/components/analysis/analysis.controller.js",

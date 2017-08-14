@@ -63,7 +63,6 @@
 					}
 					vm.fileList.push(file);
 				});
-
 				listFiles();	/* List files in the view using ng-table */
 			}, function(err){
 				bsLoadingOverlayService.stop({referenceId: 'file-list'});	// If error, stop animated loading overlay
@@ -72,7 +71,7 @@
 
 		function listFiles() {
 			vm.tableParams = new NgTableParams({
-				sorting: {typeOrder: "asc"}	/* For sorting by parent directory, folder, file */
+				sorting: {typeOrder: "asc", lastModified: "desc"}	/* For sorting by parent directory, folder, file then by last modified date */
 			}, {
 				dataset: vm.fileList
 			});
@@ -145,27 +144,34 @@
 				confirmButtonColor: "#d9534f",
 				confirmButtonText: "Yes, delete it!"
 			}, function() {
-				filesService.deleteFileDB(file.path, file.name);
-				
-				filesService.deleteFileS3({key: file.key})
-				.then(function(response) {
-					// If a text file was generated for analysis, delete that file too.
-					// If the original file was a text file, just delete that file
-					// (files that were originally text files have the same key for both 
-					// key and textFileKey)
-					if(file.textFileKey && file.textFileKey != file.key){
-						filesService.deleteFileS3({key: file.textFileKey});
-					}
-					removeFileFromArray(file.key);
-					logger.success("'" + file.name + "' was deleted successfully", "", "Success");
-				});
-				
+				deleteFile(file);
 			});
 		}
 
-		function removeFileFromArray(key) {	
+		function deleteFile(file) {
+			filesService.deleteFileDB(file.path, file.name)
+			.then(function(response) {
+				if(file.type != 'folder') {	/* If the file is not a folder, delete from S3 too */
+					filesService.deleteFileS3(file.key)
+					.then(function(response) {
+						/* If a text file was generated for analysis, delete that file too. If the original file was a text file, just */
+						/* delete that file (files that were originally text files have the same key for both key and textFileKey) */
+						if(file.textFileKey && file.textFileKey != file.key){
+							filesService.deleteFileS3(file.textFileKey);
+						}
+						removeFileFromArray(file._id);
+						logger.success("'" + file.name + "' was deleted successfully", "", "Success");
+					});
+				} else {	/* Else if the file is a folder, only need to remove from the database */
+					removeFileFromArray(file._id);
+					logger.success("'" + file.name + "' was deleted successfully", "", "Success");
+				}					
+			});
+		}
+
+		function removeFileFromArray(id) {	
 			// Find the index for the file, will return -1 if not found 
-			var fileIndex = vm.fileList.findIndex(function(obj){return obj.key === key});
+			var fileIndex = vm.fileList.findIndex(function(obj){return obj._id === id});
 
 			// Remove the file from the file list array if found
 			if (fileIndex > -1) {
@@ -244,6 +250,7 @@
 			});
 
 			modalInstance.result.then(function(newFile) {
+				newFile.typeOrder = 2;	/* For sorting by parent directory, folder, file */
 				vm.fileList.push(newFile);
 				listFiles();
 			}, function(e){
@@ -284,8 +291,8 @@
 				filesService.addFileDB(folderDetails)
 				.then(function(response) {
 					swal.close();
-					console.log(folderDetails.name + ' folder successfully added to DB');
 					logger.success(folderDetails.name + ' folder successfully created', '', 'Success');
+					response.data.typeOrder = 1;
 					vm.fileList.push(response.data);
 					listFiles();
 				});

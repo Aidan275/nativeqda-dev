@@ -3,30 +3,38 @@
     text-align: center;
 }
 .bgimage {
-    text-align:right;
+    text-align:middle;
     color:white;
+	-webkit-text-stroke-width: 1px;
+	-webkit-text-stroke-color: #4676fa;
+	font-size: 125%;
     background-size:cover;
     height: 100%;
     background-position: center center;
 }
 
 ul[rn-carousel] {
-    width:400px;
-    height:200px;
+    width:99%;
+    min-height:300px;
     margin: 0 auto;
 }
 
-.carousel5 li {
+.carouselDemo li {
     width:100%;
     height:100%;
     font-size:30px;
     background-color: #ccc;
 }
 
+.carouselDemo a:hover, a:visited, a:link, a:active {
+	text-decoration: none;
+}
+
 .carousel-demo {
-    margin-top:20px;
+    margin-top:7px;
     display:inline-block;
     text-align: center;
+	margin-left:-14px;
 }
 .carousel-demo-fullscreen {
   width:100%;
@@ -53,4 +61,4 @@ input.tiny {
 .custom-indicator span.active {
   color:yellow !important;
 }
-</style><navigation></navigation><div class=container><page-header content=vm.pageHeader></page-header><div class=col-md-12 style=min-height:50px;margin:5px;><div class=col-md-12 style=min-height:50px;padding-top:5px;padding-bottom:5px;text-align:center;><a href=/test-analysis/aylien class="btn btn-primary btn-lg" role=button>AYLIEN Analysis</a> <a href=/test-analysis/watson class="btn btn-primary btn-lg" role=button>Watson Analysis</a> <a href=/bar-chart/keywords/{{vm.URL_ID}} class="btn btn-primary btn-lg" role=button>Bar Chart</a><br><br><a href=/heatmap-example class="btn btn-primary btn-lg" role=button>Heatmap Example</a> <a href=/pie-chart/keywords/{{vm.URL_ID}} class="btn btn-primary btn-lg" role=button>Pie Chart</a> <a href=/donut-chart/keywords/{{vm.URL_ID}} class="btn btn-primary btn-lg" role=button>Donut Chart</a> <a href=/visualisations/{{vm.URL_ID}} class="btn btn-primary btn-lg" role=button>Random Visualisations Page</a> <a href=/bubble-chart/keywords/{{vm.URL_ID}} class="btn btn-primary btn-lg" role=button>Random Bubble Chart</a></div></div><div class=col-md-12 style=min-height:320px;margin:5px;><div class=col-md-9 style=min-height:320px;><div><div class=details><h6>Carousel showing the latest visualisations</h6></div><div class=carousel-demo><ul rn-carousel rn-carousel-index=carouselIndex3 rn-carousel-transition=hexagon rn-carousel-buffered class=carousel3><li ng-repeat="slide in slides3 track by slide.id"><div ng-style="{'background-image': 'url(' + slide.img + ')'}" class=bgimage>#{{ slide.id }}</div></li></ul></div></div></div><div class=col-md-3 style=min-height:320px;><h6>Commonly found themes</h6><ul class="nav nav-pills nav-stacked"><li><a href=#>Anger<span style=float:right;>(433)</span></a></li><li><a href=#>Sadness<span style=float:right;>(396)</span></a></li><li><a href=#>Parent<span style=float:right;>(378)</span></a></li><li><a href=#>Happiness<span style=float:right;>(293)</span></a></li><li><a href=#>Sibling<span style=float:right;>(289)</span></a></li><li><a href=#>Tradition<span style=float:right;>(255)</span></a></li></ul></div></div><div class=col-md-12 style=min-height:350px;margin:5px;><div class=col-md-8 style=min-height:350px;><div class=bs-loading-container bs-loading-overlay bs-loading-overlay-active-class=loading-overlay--active bs-loading-overlay-reference-id=home-map><div class=blur-this><div id=map-homepage></div></div></div></div><div class=col-md-4 style=min-height:350px;><div class=bs-loading-container bs-loading-overlay bs-loading-overlay-active-class=loading-overlay--active bs-loading-overlay-reference-id=file-list><div class="blur-this home-recent-files-table-container"><table ng-table=vm.tableParams class="table table-condensed table-bordered table-striped home-recent-files-table"><tr class=table-row ng-repeat="row in $data"><td data-title="'Recent Files'" class=file-name-cell ng-click="vm.viewFile(row.name, row.path)"><span><i class="{{row.icon}} fa-lg"></i> {{row.name}}</span></td></tr></table></div></div></div></div><footer-generic></footer-generic></div>
+</style><navigation></navigation><div class=container><page-header content=vm.pageHeader></page-header><div class=col-md-12 style=min-height:50px;margin:5px;><div class=col-md-12 style=min-height:50px;padding-top:5px;padding-bottom:5px;text-align:center;><a href=/test-analysis/aylien class="btn btn-primary btn-lg" role=button>AYLIEN Analysis</a> <a href=/test-analysis/watson class="btn btn-primary btn-lg" role=button>Watson Analysis</a> <a href=/bar-chart/keywords/{{vm.URL_ID}} class="btn btn-primary btn-lg" role=button>Bar Chart</a><br><br><a href=/heatmap-example class="btn btn-primary btn-lg" role=button>Heatmap Example</a> <a href=/pie-chart/keywords/{{vm.URL_ID}} class="btn btn-primary btn-lg" role=button>Pie Chart</a> <a href=/donut-chart/keywords/{{vm.URL_ID}} class="btn btn-primary btn-lg" role=button>Donut Chart</a> <a href=/visualisations/{{vm.URL_ID}} class="btn btn-primary btn-lg" role=button>Random Visualisations Page</a> <a href=/bubble-chart/keywords/{{vm.URL_ID}} class="btn btn-primary btn-lg" role=button>Random Bubble Chart</a></div></div><div class=col-md-12 style=min-height:320px;><div class=col-md-9 style=min-height:320px;><div><div class=carousel-demo style=width:100%;height:100%;><ul rn-carousel rn-carousel-index=carouselIndex1 rn-carousel-buffered class=carouselDemo><li ng-repeat="slide in slides track by slide.id"><div ng-style="{'background-image': 'url(' + slide.img + ')'}" class=bgimage><a style href=#>Visualisation #{{ slide.id }}</a></div></li></ul></div></div></div><div class=col-md-3 style=min-height:320px;><h6>Commonly found themes</h6><ul class="nav nav-pills nav-stacked"><li><a href=#>Anger<span style=float:right;>(433)</span></a></li><li><a href=#>Sadness<span style=float:right;>(396)</span></a></li><li><a href=#>Parent<span style=float:right;>(378)</span></a></li><li><a href=#>Happiness<span style=float:right;>(293)</span></a></li><li><a href=#>Sibling<span style=float:right;>(289)</span></a></li><li><a href=#>Tradition<span style=float:right;>(255)</span></a></li></ul></div></div><div class=col-md-12 style=min-height:350px;margin:5px;><div class=col-md-8 style=min-height:350px;><div class=bs-loading-container bs-loading-overlay bs-loading-overlay-active-class=loading-overlay--active bs-loading-overlay-reference-id=home-map><div class=blur-this><div id=map-homepage></div></div></div></div><div class=col-md-4 style=min-height:350px;><div class=bs-loading-container bs-loading-overlay bs-loading-overlay-active-class=loading-overlay--active bs-loading-overlay-reference-id=file-list><div class="blur-this home-recent-files-table-container"><table ng-table=vm.tableParams class="table table-condensed table-bordered table-striped home-recent-files-table"><tr class=table-row ng-repeat="row in $data"><td data-title="'Recent Files'" class=file-name-cell ng-click="vm.viewFile(row.name, row.path)"><span><i class="{{row.icon}} fa-lg"></i> {{row.name}}</span></td></tr></table></div></div></div></div><footer-generic></footer-generic></div>

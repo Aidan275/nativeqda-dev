@@ -20,7 +20,8 @@
 			fileReadOneDB	: fileReadOneDB,
 			objectAclS3		: objectAclS3,
 			objectAclDB		: objectAclDB,
-			syncDBwithS3	: syncDBwithS3
+			syncDBwithS3	: syncDBwithS3,
+			downloadFile 	: downloadFile
 		};
 
 		///////////////////////////
@@ -201,6 +202,15 @@
 
 			function syncDBwithS3Complete(data) { return data; }
 			function syncDBwithS3Failed(e) { return exception.catcher('Failed syncDBwithS3.')(e); }
+		};
+
+		function downloadFile(url){
+			return $http.get(url)
+			.then(downloadFileComplete)
+			.catch(downloadFileFailed);
+
+			function downloadFileComplete(data) { return data; }
+			function downloadFileFailed(e) { return exception.catcher('Failed downloading file.')(e); }
 		};
 	}
 

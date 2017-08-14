@@ -28,34 +28,46 @@ var extractpath = function(filepathparam) {
 }
 
 
-// Creates a signed URL for the user to upload a file directly to S3 from their browser/device, bypassing the server.
+/* Creates a signed URL for the user to upload a file directly to S3 from their browser/device, bypassing the server. */
 module.exports.signUpload = function(req, res) {
 	var s3Url = 'https://' + process.env.S3_BUCKET_NAME + '.s3-ap-southeast-2.amazonaws.com';
-	var path = null;
+	var baseKey = '';	/* Returned as the un-modified base key to be used for the actual file when uploading a documents extracted text */
+	var path = '';	/* Will be used as the actual key of uploaded file. Also returned and saved in the DB */
 
-	// If a key is supplied in the request, use, otherwise generate a unique date based key
-	// This is for uploading a text file converted from a PDF/Docx. 
-	// e.g. same key but different file extension (.txt)
+	/* If a key is supplied in the request, use, otherwise generate a unique date based key */
+	/* This is for uploading a text file converted from a PDF/Docx. e.g. same key but different file extension (.txt) */
 	if(req.body.key) {
 		path = req.body.key;
+		baseKey = path;
 	} else {
-		var datePrefix = moment().format('YYYY[/]MM');
-		var key = crypto.randomBytes(10).toString('hex');
-		var hashFilename = key + '-' + req.body.name + '.' + req.body.extension;
-		path = datePrefix + '/' + hashFilename;
+		var datePrefix = moment().format('YYYY[/]MM[/]DD');		/* e.g. 2017/06/23 */
+		var key = crypto.randomBytes(10).toString('hex');		/* e.g. 93a75b7c5effdf945b6a */
+		var hashFilename = key + '.' + req.body.extension;		/* e.g. 93a75b7c5effdf945b6a.pdf */
+		path = datePrefix + '/' + hashFilename;					/* e.g. 2017/06/23/93a75b7c5effdf945b6a.pdf */
+		baseKey = datePrefix + '/' + key;						/* e.g. 2017/06/23/93a75b7c5effdf945b6a */
 	}
 
+	/* Sorts the data uploaded on S3 into different root folders based on the group name given */
+	switch(req.body.group) {
+		case 'text-data':
+		path = 'text-data/' + path ;
+		break;
+		case 'dataset':
+		path = 'datasets/' + path;
+		break;
+		case 'avatar':
+		path = 'avatars/' + path ;
+		break;
+		case 'file':
+		default:
+		path = 'files/' + path ;
+	}
+	
 	// If the file being uploaded is a dataset (a concatenated text file), edit the path to include 
 	// the parent datasets folder and the .txt file extension.
-	if(req.body.dataset) {
-		path = 'datasets/' + path + '.txt';
-	}
-
+	
 	// If the file being uploaded is an avatar, edit the path to include 
 	// the parent avatar folder.
-	if(req.body.avatar) {
-		path = 'avatars/' + path ;
-	}
 
 	var type = req.body.type
 	var readType = 'private';
@@ -95,7 +107,8 @@ module.exports.signUpload = function(req, res) {
     		signature: signature,
     		'Content-Type': type,
     		success_action_status: 201
-    	}
+    	},
+    	baseKey: baseKey
     };
     sendJSONresponse(res, 200, credentials);
 };
@@ -141,6 +154,24 @@ module.exports.signDownload = function(req, res) {
 				});
 			}         
 		});
+	});
+};
+
+module.exports.signDownloadKey = function(req, res) {
+	var key = req.params["key"];
+	console.log(key);
+
+	var params = {
+		Bucket: process.env.S3_BUCKET_NAME, 
+		Key: key
+	};
+	var url = s3.getSignedUrl('getObject', params, function(err, url) {
+		if (err){
+			sendJSONresponse(res, 404, err);
+		}
+		else {
+			sendJSONresponse(res, 200, url);
+		}         
 	});
 };
 

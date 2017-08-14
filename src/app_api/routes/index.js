@@ -84,8 +84,9 @@ router.get('/map', auth, checkDatabaseStatus, ctrlFile.map);
 
 //S3 operations
 router.post('/s3/signUpload', auth, checkDatabaseStatus, ctrlS3.signUpload);
+router.get('/s3/signDownload/:key(*)', auth, checkDatabaseStatus, ctrlS3.signDownloadKey);
 router.get('/s3/list', auth, ctrlS3.getFileList);
-router.delete('/s3/:key', auth, checkDatabaseStatus, ctrlS3.deleteFile);
+router.delete('/s3/:key(*)', auth, checkDatabaseStatus, ctrlS3.deleteFile);
 router.post('/s3/syncDB', auth, checkDatabaseStatus, ctrlS3.syncDB);
 router.post('/s3/:key/acl', auth, checkDatabaseStatus, ctrlS3.acl);
 
