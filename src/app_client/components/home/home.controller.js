@@ -459,11 +459,11 @@
 		$scope.carouselIndex4 = 5;
 		
 		vm.testImages = [
-			{title: 'Visualisation #1', url: 'assets/img/visualisations/bar-chart-thumb.png'},
-			{title: 'Visualisation #2', url: 'assets/img/visualisations/chord-diagram-thumb.png'},
-			{title: 'Visualisation #3', url: 'assets/img/visualisations/concept-map-thumb.png'},
-			{title: 'Visualisation #4', url: 'assets/img/visualisations/word-cloud-thumb.png'},
-			{title: 'Visualisation #5', url: 'assets/img/visualisations/word-tree-thumb.png'},
+			{title: 'Visualisation #1', url: 'assets/img/carousels/recent/bar-chart-preview.png'},
+			{title: 'Visualisation #2', url: 'assets/img/carousels/recent/chord-diagram-preview.png'},
+			{title: 'Visualisation #3', url: 'assets/img/carousels/recent/concept-map-preview.png'},
+			{title: 'Visualisation #4', url: 'assets/img/carousels/recent/word-cloud-preview.png'},
+			{title: 'Visualisation #5', url: 'assets/img/carousels/recent/word-tree-preview.png'},
 			];
 
 		function addSlides(target, style, qty) {
@@ -471,35 +471,6 @@
 				addSlide(target, style);
 			}
 		}
-
-            // 1st ngRepeat demo
-            $scope.slides = [];
-            addSlides($scope.slides, 'sports', 50);
-
-            // 2nd ngRepeat demo
-            $scope.slides2 = [];
-            addSlides($scope.slides2, 'sports', 10);
-
-            // 3rd ngRepeat demo
-            $scope.slides3 = [];
-            addSlides($scope.slides3, 'people', 50);
-
-            // 4th ngRepeat demo
-            $scope.slides4 = [];
-            addSlides($scope.slides4, 'city', 50);
-
-
-            // 5th ngRepeat demo
-            $scope.slides6 = [];
-            $scope.carouselIndex6 = 0;
-            addSlides($scope.slides6, 'sports', 10);
-            $scope.addSlide = function(at) {
-            	if(at==='head') {
-            		$scope.slides6.unshift(getSlide($scope.slides6, 'people'));
-            	} else {
-            		$scope.slides6.push(getSlide($scope.slides6, 'people'));
-            	}
-            }
             
             // End to End swiping
             // load 130 images in main javascript container
