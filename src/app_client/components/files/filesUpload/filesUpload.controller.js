@@ -7,10 +7,10 @@
 	.controller('filesUploadCtrl', filesUploadCtrl);
 	
 	/* @ngInject */
-	function filesUploadCtrl(currentPath, mapService, $http, $window, $scope, $uibModalInstance, Upload, NgTableParams, filesService, authentication, logger, $filter, $compile) {
+	function filesUploadCtrl(currentPath, $scope, $uibModalInstance, Upload, filesService, authentication, logger, $filter) {
 		var vm = this;
 
-		vm.currentModalPage = 1;	/* prevent the modal content from suddenly appearing once the modal is ready */
+		vm.currentModalPage = 1;	/* Outside the rendered event to prevent the modal content from suddenly appearing once the modal is ready */
 
 		/* Is resolved when the modal gets opened after downloading content's template and resolving all variables  */
 		/* For problem with map being added to the DOM before it was ready */
@@ -224,7 +224,7 @@
 				});
 
 				geoLocateUser();	/* Find the position of the user */
-				getFileList();	/* Gets all the files from the database */
+				getFileList();	/* Gets all the files from the database for the map*/
 			}
 
 			function updatePosMarker(event) {
@@ -313,32 +313,34 @@
 				vm.map.addLayer(vm.markers);
 			}
 
-
+			/* Triggered when a file is selected */
 			function onFileSelect(uploadFiles) {
 				if (uploadFiles.length > 0 ) {
 					/* Checks if file's size is less than 10 MB */
 					if(uploadFiles[0].size < 10485760) {
-						vm.file = uploadFiles[0];
-						vm.fileInfo = {
+						vm.file = uploadFiles[0];	/* Selects first file only if multiple files are dragged into the drop zone */
+						vm.fileInfo = {	/* Info used for generating the S3 signed upload URL */
 							name: vm.file.name.replace(/\.[^/.]+$/, ""),	/* Extracts everything before the file extension */
 							extension: (vm.file.name.split('.').pop()).toLowerCase(),	/* Extracts the file extension */
-							type: vm.file.type
+							type: vm.file.type,
+							group: 'file'	/* Root folder the file is stored in on S3 - limited number of choices, check back-end */ 
 						};
-						/* If uploading a text/plain file, change the type to include charset=utf-8 so special characters are encoded properly */
-						if (vm.fileInfo.type === "text/plain"){
+						
+						if (vm.fileInfo.type === "text/plain"){	/* If uploading a text/plain file, change the type to include charset=utf-8 so special characters are encoded properly */
 							vm.fileInfo.type = "text/plain; charset=utf-8";
 						}
 
-						processFile();
+						processFile();	/* Process file and if pdf or docx file, extract text */
 
+						/* Go to the next modal screen (Map for selecting location) */
 						vm.currentModalPage = 2;
 						setTimeout(function() {
-							vm.map.invalidateSize();
+							vm.map.invalidateSize();	/* Reinitialise the map container so it fits correctly */
 							vm.map.setView(vm.posMarker.getLatLng(), 15);
 						}, 100);
 					} else {
-						logger.error("Maximum file size is 10 MB. \nPlease select a smaller file.", "", "Error");	/* If larger, display message and reinitialise the file variables */
-						vm.file = null;
+						logger.error("Maximum file size is 10 MB. \nPlease select a smaller file.", "", "Error");	/* If larger than 10 MB, display message and reinitialise the file variables */
+						vm.file = null;	/* Reinitialise file, file info, and the file input */
 						vm.fileInfo = {};
 						document.getElementById("file-input").value = "";
 					}
@@ -350,21 +352,21 @@
 					switch (vm.fileInfo.extension) {
 						case 'pdf':
 						vm.fileInfo.typeDB = "document";	/* File type - stored in the DB */
-						vm.fileInfo.icon = "fa fa-file-pdf-o";	/* PDF icon type */
-						convertPDFToText()
+						vm.fileInfo.icon = "fa fa-file-pdf-o";	/* PDF font awesome icon */
+						convertPDFToText()	/* Extract text in the background before user presses upload */
 						break;
 						case 'docx':
 						vm.fileInfo.typeDB = "document";	/* File type - stored in the DB */
-						vm.fileInfo.icon = "fa fa-file-word-o";	/* Word icon type */	
-						convertDocxToText();
+						vm.fileInfo.icon = "fa fa-file-word-o";	/* Word font awesome icon */	
+						convertDocxToText();	/* Extract text in the background before user presses upload */
 						break;
 						case 'doc':
 						vm.fileInfo.typeDB = "document";	/* File type - stored in the DB */
-						vm.fileInfo.icon = "fa fa-file-word-o";	/* Word icon type */
+						vm.fileInfo.icon = "fa fa-file-word-o";	/* Word font awesome icon */
 						break;
 						case 'txt':
 						vm.fileInfo.typeDB = "text";	/* File type - stored in the DB */
-						vm.fileInfo.icon = "fa fa-file-text-o";	/* Text icon type */
+						vm.fileInfo.icon = "fa fa-file-text-o";	/* Text font awesome icon */
 						vm.fileInfo.isTxtFile = true;
 						break;
 						case 'gif':
@@ -374,34 +376,36 @@
 						case 'bmp':
 						case 'tif':
 						vm.fileInfo.typeDB = "image";	/* File type - stored in the DB */
-						vm.fileInfo.icon = "fa fa-file-image-o";	/* Image icon type */
+						vm.fileInfo.icon = "fa fa-file-image-o";	/* Image font awesome icon */
 						break;
 						default: 
 						vm.fileInfo.typeDB = "file";	/* File type - stored in the DB */
-						vm.fileInfo.icon = "fa fa-file-o";	/* Generic File icon type */
+						vm.fileInfo.icon = "fa fa-file-o";	/* Generic File font awesome icon */
 					}
 				} else {
 					logger.error("Please select a file to upload.", "", "Error");
 				}
 			}
 
+			/* Using the PDFJS library for extracting the text from a PDF file */
 			function convertPDFToText() {
-				vm.isProcessing = true;
+				vm.isProcessing = true;	/* In case the text is still being extracted when the user is ready to upload (shows a disables processing button instead) */
 				var fileReader = new FileReader();
 
-				fileReader.onload = function() { 
+				fileReader.onload = function() { 	/* Once PDF file loaded */
 					var arrayBuffer = this.result;	
 
 					getPDFText(arrayBuffer).then(function (text) {
-						createTextFile(text);
+						createTextFile(text);	/* If text extracted successfully, create text file */
 					}, function (error) {
-						logger.error(error.message, error, 'Error');
-						vm.modal.close();
+						logger.error(error.message, error, 'Error');	/* If error extracting the text display error message */
+						vm.modal.close();								/* and close the modal */
 					});	
 				}
 
-				fileReader.readAsArrayBuffer(vm.file);
+				fileReader.readAsArrayBuffer(vm.file);	/* Initialise reading the PDF file */
 
+				/* Function for extracting the text */
 				function getPDFText(pdfFile){
 					var pdf = PDFJS.getDocument({data: pdfFile});
 
@@ -428,98 +432,93 @@
 				}
 			}
 
-			/* Testing DocxJS for converting docx files to text... looks good */
+			/* Using the docxJS library for extracting the text from a docx file (does not work with .doc files) */
 			function convertDocxToText() {
-				vm.isProcessing = true;
+				vm.isProcessing = true;	/* In case the text is still being extracted when the user is ready to upload (shows a disables processing button instead) */
 				var docxJS = new DocxJS();
 
 				docxJS.parse(vm.file, function() {
 					docxJS.getPlainText(function(text){
-						createTextFile(text);
+						createTextFile(text);	/* If text extracted successfully, create text file */
 					});
 				}, function (error) {
-					logger.error(error.msg, error, 'Error');
-					vm.modal.close();
+					logger.error(error.msg, error, 'Error');	/* If error extracting the text display error message */
+					vm.modal.close();							/* and close the modal */
 				});
 			}
 
+			/* Creates text file using the extracted text */
 			function createTextFile(text) {
 				vm.textFile = new File([text], vm.fileInfo.name, {type: "text/plain; charset=utf-8"});
 
-				vm.textFileInfo = {
-					name: vm.textFile.name,
+				vm.textFileInfo = {	/* Info used for generating the S3 signed upload URL */
 					extension: "txt",
-					type: vm.textFile.type
+					type: vm.textFile.type,
+					group: 'text-data'	/* Root folder the file is stored in on S3 - limited number of choices, check back-end */ 
 				};
 
-				vm.isProcessing = false;
-				$scope.$apply();
+				vm.isProcessing = false;	/* Files ready to be uploaded - show upload button. Note: extracting text typically takes less than 1s*/
+				$scope.$apply();			/* Asynchronous process therefor must use $scope.$apply() to update the view */
 			}
 
 			function uploadFile() {
-				if(vm.fileInfo.name){
-					processingEvent(true, null);
-					if(vm.textFile) {
-						uploadTextFile();
+				if(vm.fileInfo.name){	/* File must be named before uploading */
+					processingEvent(true, null);	/* Shows 'Uploading...' button while uploading */
+					if(vm.textFile) {		/* If pdf/docx file */
+						uploadTextFile();	/* Upload the extracted text file first */
 					} else {
-						uploadActualFile();
+						uploadActualFile();	/* Otherwise just upload the original file */
 					}
 				} else {
 					logger.error('Please enter a file name' ,'', 'Error');
 				}
-
 			}
 
 			function uploadTextFile() {
-				filesService.signUploadS3(vm.textFileInfo)
+				filesService.signUploadS3(vm.textFileInfo)	/* Get S3 signed upload URL */
 				.then(function(result) {
-					Upload.upload({
+					Upload.upload({	/* Upload the file using the signed URL */
 						method: 'POST',
 						url: result.data.url,
 						fields: result.data.fields,
-						file: vm.textFile
+						file: vm.textFile 	/* Text file extracted from pdf/docx document */
 					})
-					.then(function(response) {
-						console.log(vm.textFileInfo.name + ' successfully uploaded to S3');
-						vm.textFileInfo.key = result.data.fields.key;
-						/* Use the same key but with the original file extension (e.g. use .pdf not .txt) */
-						vm.fileInfo.key = vm.textFileInfo.key.substring(0, vm.textFileInfo.key.indexOf('-'));
-						vm.fileInfo.key += "-" + vm.fileInfo.name + '.' + vm.fileInfo.extension;
-						uploadActualFile();
-					}, function(error) {
-						var xml = $.parseXML(error.data);
+					.then(function(response) {	/* If successful */
+						/* use the same key but with the original file extension (e.g. use 2017/08/13/93a75b7c5effdf945b6a.pdf not 2017/08/13/93a75b7c5effdf945b6a.txt) */
+						vm.fileInfo.key = result.data.baseKey + '.' + vm.fileInfo.extension;
+						vm.textFileInfo.key = result.data.fields.key; /* Saves the text data file key to be saved in the DB */
+						uploadActualFile();	/* Upload the original file */
+					}, function(error) {	/* If error */
+						var xml = $.parseXML(error.data);	/* Parse error text to XML */ 
 						processingEvent(false, 'error');	/* ng-bs-animated-button status & result */
-						logger.error($(xml).find("Message").text(), '', 'Error');
-						vm.modal.close();
+						logger.error($(xml).find("Message").text(), '', 'Error');	/* Find and log the error message */
+						vm.modal.close();	/* Close the modal */
 					});
 				}, function(err) {
 					processingEvent(false, 'error');	/* ng-bs-animated-button status & result */
+					vm.modal.close();	/* Close the modal */
 				});
 			}
 
+			/* Upload the original file */
 			function uploadActualFile() {
-				filesService.signUploadS3(vm.fileInfo)
+				filesService.signUploadS3(vm.fileInfo)	/* Get S3 signed upload URL */
 				.then(function(result) {
-					Upload.upload({
+					Upload.upload({	/* Upload the file using the signed URL */
 						method: 'POST',
 						url: result.data.url, 
 						fields: result.data.fields, 
-						file: vm.file
+						file: vm.file	/* Original file */
 					})
-					.progress(function(evt) {
-						vm.currentPercentage = parseInt(100.0 * evt.loaded / evt.total);
+					.progress(function(evt) {	/* Get Upload progress */
+						vm.currentPercentage = parseInt(100.0 * evt.loaded / evt.total); /* Update progress bar with upload progress */ 
 					})
 					.then(function(response) {
-						console.log(vm.fileInfo.name + ' successfully uploaded to S3');
-						/* parses XML data response to jQuery object to be stored in the database */
-						var xml = $.parseXML(response.data);
-						/* maps the tag obects to an array of strings to be stored in the database */
-						var tagStrings = vm.tags.map(function(item) {
-							return item['text'];
-						});
-						var key = result.data.fields.key;
-						var url = result.data.url + '/' + encodeURIComponent(key);	/* Encode the key for the API URL incase it includes reserved characters (e.g '+', '&') */
-						var fileDetails = {
+						var xml = $.parseXML(response.data);	/* parses XML data response to jQuery object to be stored in the database */
+						var tagStrings = vm.tags.map(function(item) { return item['text']; });	/* maps the tag obects to an array of strings to be stored in the database */
+						var key = result.data.fields.key;	/* File key to be stored in the DB */
+						var url = result.data.url + '/' + key;	/* Access URL for if the file ACL is public-read */
+						var fileDetails = {	/* Information to be stored in the database */
 							name : vm.fileInfo.name + '.' + vm.fileInfo.extension,
 							path : currentPath,
 							type : vm.fileInfo.typeDB,
@@ -534,17 +533,17 @@
 							tags : tagStrings,
 							icon : vm.fileInfo.icon
 						}
-						if(vm.textFileInfo.key) {
+						if(vm.textFileInfo.key) {	/* If the file was a pdf/docx file, store the text file key (used for analysis) */
 							fileDetails.textFileKey = vm.textFileInfo.key;
 						}
-						if(vm.fileInfo.isTxtFile){
+						if(vm.fileInfo.isTxtFile){	/* If the file was a txt file, set text file key identical to the actual file key (also used for analysis) */
 							fileDetails.textFileKey = key;
 						}
-						filesService.addFileDB(fileDetails)
+
+						filesService.addFileDB(fileDetails)	/* Save the file information to the database */
 						.then(function(response) {
 							processingEvent(false, 'success');	/* ng-bs-animated-button status & result */
-							console.log(vm.fileInfo.name + ' successfully added to DB');
-							logger.success(vm.fileInfo.name + ' successfully uploaded', '', 'Success');
+							logger.success(response.data.name + ' successfully uploaded', '', 'Success');
 							setTimeout(function() {
 								vm.modal.close(response.data);	/* Close modal if the file was uploaded successfully and return the new file */
 							}, 1000);	/* Timeout function so the user can see the file uploaded successfully before closing modal */
@@ -557,6 +556,7 @@
 					});
 				}, function(err) {
 					processingEvent(false, 'error');	/* ng-bs-animated-button status & result */
+					vm.modal.close();
 				});
 			}
 
@@ -568,21 +568,23 @@
 				vm.isProcessing = status;	/* Processing flag for other view elements to check */
 			}
 
+			/* For changing the modal pages */
 			function changeModalPage(page) {
 				vm.currentModalPage = page;
-				if(page === 2) {
+				if(page === 2) {	/* Only fired when going back to the map page from the final page  */	
 					setTimeout(function() {
-						vm.map.invalidateSize();
-						vm.map.setView(vm.posMarker.getLatLng(), vm.map.getZoom());
+						vm.map.invalidateSize();	/* Reinitialise the map container so it fits correctly */
+						vm.map.setView(vm.posMarker.getLatLng(), vm.map.getZoom());	/* Goes to upload file position pin with the previous zoom level */
 					}, 100);
 				}
 			}
 
+			/* modal close and cancel functions */
 			vm.modal = {
-				close : function(newFile) {
+				close : function(newFile) {	/* Sends the new file information back when vm.modal.close(newFile) is called after upload success */
 					$uibModalInstance.close(newFile);
 				}, 
-				cancel : function() {
+				cancel : function() {	/* Sends 'cancel' back when vm.modal.cancel() is called */
 					$uibModalInstance.dismiss('cancel');
 				}
 			};

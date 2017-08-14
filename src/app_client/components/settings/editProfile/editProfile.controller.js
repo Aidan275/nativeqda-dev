@@ -59,10 +59,10 @@
 						case 'bmp':
 						vm.file = uploadFiles[0];
 						vm.fileInfo = {
-							name: vm.userInfo.firstName + '-avatar.' + fileExtension,
+							extension: fileExtension,
 							type: vm.file.type,
 							readType: 'public-read',	/* Sets the ACL option in S3 to public-read so a signed URL doesn't need to be generated each time the avatar is requested. */
-							avatar: true
+							group: 'avatar'	/* Root folder the file is stored in on S3 - limited number of choices, check back-end */ 
 						};
 
 						/* File reader to display the image before confirming upload. */
@@ -127,7 +127,7 @@
 					file: vm.file
 				})
 				.then(function(response) {
-					console.log(vm.fileInfo.name + ' successfully uploaded to S3');
+					console.log('Avatar successfully uploaded to S3');
 					/* parses XML data response to jQuery object to be stored in the database */
 					var xml = $.parseXML(response.data);
 					var key = result.data.fields.key;
