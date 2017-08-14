@@ -5,7 +5,7 @@
 	.controller('editProfileCtrl', editProfileCtrl);
 	
 	/* @ngInject */
-	function editProfileCtrl($scope, $uibModalInstance, userEmail, usersService, bsLoadingOverlayService, logger, authentication, filesService, Upload, $animate) {
+	function editProfileCtrl($scope, $uibModalInstance, userEmail, usersService, bsLoadingOverlayService, logger, authentication, Upload, $animate, s3Service) {
 		var vm = this;
 
 		/* Bindable Functions */
@@ -118,7 +118,7 @@
 		}
 
 		function uploadAvatar() {
-			filesService.signUploadS3(vm.fileInfo)
+			s3Service.signUpload(vm.fileInfo)
 			.then(function(result) {
 				Upload.upload({
 					method: 'POST',

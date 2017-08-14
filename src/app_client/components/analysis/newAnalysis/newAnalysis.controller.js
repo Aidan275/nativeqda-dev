@@ -7,7 +7,7 @@
 	.controller('newAnalysisCtrl', newAnalysisCtrl);
 
 	/* @ngInject */
-	function newAnalysisCtrl($uibModalInstance, $window, NgTableParams, datasetService, filesService, analysisService, authentication, logger, bsLoadingOverlayService) {
+	function newAnalysisCtrl($uibModalInstance, $window, NgTableParams, datasetService, filesService, analysisService, authentication, logger, bsLoadingOverlayService, s3Service) {
 		var vm = this;
 
 		// Bindable Functions
@@ -43,6 +43,7 @@
 			.then(function(response) {
 				response.data.forEach(function(data) {
 					data.type = 'Dataset';
+					data.typeOrder = 3;
 					vm.data.push(data);
 				});
 				getFileList();
@@ -51,23 +52,31 @@
 			});
 		}
 
-		// Gets all the files from the MongoDB database
+		// Gets all the files from the database
 		function getFileList() {
 			filesService.getFileDB(vm.currentPath, '', 'true')
 			.then(function(response) {
-				response.data.forEach(function(data) {
-					vm.data.push(data);
-				});
-				if(vm.currentPath != '') {
+
+				if(vm.currentPath != '') {	/* If not in the root folder, add a parent directory link */
 					vm.data.push({
 						name: '..',
 						lastModified: '',
 						createdBy: '',
 						size: '',
-						type: 'parent-dir'
+						type: 'parent-dir',
+						typeOrder: 0	/* For sorting by parent directory, folder, file */
 					});
 				}
-				listData();
+
+				response.data.forEach(function(file) {	/* Add each file to the data array */
+					if(file.type === 'folder') {
+						file.typeOrder = 1;	/* For sorting by parent directory, folder, file */
+					} else {
+						file.typeOrder = 2;	/* For sorting by parent directory, folder, file */
+					}
+					vm.data.push(file);
+				});
+				listData();	/* List data in the view using ng-table */
 			}, function(err){
 				bsLoadingOverlayService.stop({referenceId: 'data-list'});	// If error, stop animated loading overlay
 			});
@@ -75,7 +84,7 @@
 
 		function listData() {
 			vm.tableParams = new NgTableParams({
-				sorting: {type: "desc"}
+				sorting: {typeOrder: "asc", lastModified: "desc"}	/* For sorting by parent directory, folder, file then by last modified date */
 			}, {
 				dataset: vm.data
 			});
@@ -102,7 +111,7 @@
 			var path = vm.data[dataIndex].path;
 			vm.formData.sourceDataKey = vm.data[dataIndex].textFileKey;
 
-			filesService.signDownloadS3(path, name, 'true')	// true flag to return the associated text file, not the actual file
+			s3Service.signDownload(path, name, 'true')	// true flag to return the associated text file, not the actual file
 			.then(function(response) {
 				analysisService.watsonAnalysis({url: response.data.url})
 				.then(function(response) {
@@ -179,7 +188,7 @@
 				newTab.document.write(loaderHTML);
 
 				// Make a request to the server for a signed URL to download/view the requested file
-				filesService.signDownloadS3(path, name, 'true')	// true flag to return the associated text file, not the actual file
+				s3Service.signDownload(path, name, 'true')	// true flag to return the associated text file, not the actual file
 				.then(function(response) {
 					// Remove the animation 1s after the signed URL is retrieved
 					setTimeout(function(){

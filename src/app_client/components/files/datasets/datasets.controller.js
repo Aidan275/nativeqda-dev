@@ -5,7 +5,7 @@
 	.controller('datasetsCtrl', datasetsCtrl);
 
 	/* @ngInject */
-	function datasetsCtrl($window, $sce, $uibModal, NgTableParams, datasetService, logger, filesService, bsLoadingOverlayService) {
+	function datasetsCtrl($window, $sce, $uibModal, NgTableParams, datasetService, logger, filesService, bsLoadingOverlayService, s3Service) {
 		var vm = this;
 		
 		// Bindable Functions
@@ -72,9 +72,8 @@
 		}
 
 		function deleteDatasetS3(key, datasetName) {
-			filesService.deleteFileS3({key: key})
+			s3Service.deleteFile(key)
 			.then(function(response) {
-
 				removeFromList(key);	// if deleting the dataset was successful, the deleted dataset is removed from the local array
 				logger.success('Dataset "' + datasetName + '" was successfully deleted' ,'', 'Success');
 			});

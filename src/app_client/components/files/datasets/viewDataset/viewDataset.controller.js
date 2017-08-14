@@ -5,7 +5,7 @@
 	.controller('viewDatasetCtrl', viewDatasetCtrl);
 
 	/* @ngInject */
-	function viewDatasetCtrl ($uibModalInstance, datasetService, datasetId, filesService, $window) {
+	function viewDatasetCtrl ($uibModalInstance, datasetService, datasetId, s3Service, $window) {
 		var vm = this;
 
 		// Bindable Functions
@@ -38,7 +38,7 @@
 		}
 
 		function viewFile(key) {
-			filesService.signDownloadS3(key)
+			s3Service.signDownloadKey(key)
 			.then(function(response) {
 				$window.open(response.data, '_blank');
 			});

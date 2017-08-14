@@ -7,7 +7,7 @@
 	.controller('fileDetailsCtrl', fileDetailsCtrl);
 
 	/* @ngInject */
-	function fileDetailsCtrl (file, $uibModalInstance, $window, filesService, bsLoadingOverlayService) {
+	function fileDetailsCtrl (file, $uibModalInstance, $window, filesService, bsLoadingOverlayService, s3Service) {
 		var vm = this;
 
 		// Bindable Functions
@@ -41,7 +41,7 @@
 		// S3 ACL Update - if successful, update database ACL
 		function updateAclS3(key, acl) {
 			vm.isSubmittingButton = true;
-			filesService.objectAclS3({key: key, acl: acl})
+			s3Service.updateACL({key: key, acl: acl})
 			.then(function(response) {
 				updateAclDB(key, acl);
 			}, function(err) {
@@ -51,7 +51,7 @@
 
 		// Database ACL Update
 		function updateAclDB(key, acl) {
-			filesService.objectAclDB({key: key, acl: acl})
+			filesService.updateACL({key: key, acl: acl})
 			.then(function(response) {
 				vm.resultButton = 'success';
 				vm.file.acl = acl

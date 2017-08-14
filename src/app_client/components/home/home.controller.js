@@ -7,7 +7,7 @@
 	.controller('homeCtrl', homeCtrl);
 	
 	/* @ngInject */
-	function homeCtrl (filesService, $scope, $filter, $compile, $window, $uibModal, logger, bsLoadingOverlayService, NgTableParams, analysisService) {
+	function homeCtrl (filesService, $scope, $filter, $compile, $window, $uibModal, logger, bsLoadingOverlayService, NgTableParams, analysisService, s3Service) {
 		var vm = this;
 
 		// Bindable Functions
@@ -280,9 +280,9 @@
 					popupString += '</p>';
 				}
 
-				popupString += '<a ng-click="vm.viewFile(filePath, fileName)" class="btn btn-success" role="button">View</a> ' +
-				'<a ng-click="vm.popupFileDetails(fileKey)" class="btn btn-primary" role="button">Details</a> ' +
-				'<a ng-click="vm.confirmDelete(fileKey, fileName, textFileKey)" class="btn btn-danger" role="button">Delete</a>' +
+				popupString += '<a ng-click="vm.viewFile(file)" class="btn btn-success" role="button">View</a> ' +
+				'<a ng-click="vm.popupFileDetails(file)" class="btn btn-primary" role="button">Details</a> ' +
+				'<a ng-click="vm.confirmDelete(file)" class="btn btn-danger" role="button">Delete</a>' +
 				'</div>';
 
 				// compiles the HTML so ng-click works
@@ -290,9 +290,12 @@
 				var newScope = $scope.$new();
 
 				// New scope variables for the compiled string above
-				newScope.fileKey = file.key;
-				newScope.filePath = file.path;
-				newScope.fileName = file.name;
+				newScope.file = {
+					name: file.name,
+					path: file.path,
+					key: file.key, 
+					textFileKey: file.textFileKey
+				};
 
 				marker.bindPopup(compiledPopupString(newScope)[0]);
 
@@ -337,7 +340,7 @@
 
 		// Gets signed URL to download the requested file from S3 
 		// if successful, opens the signed URL in a new tab
-		function viewFile(filePath, fileName) {
+		function viewFile(file) {
 			// Open a blank new tab while still in a trusted context to prevent a popup blocker warning
 			var newTab = $window.open("about:blank", '_blank')
 
@@ -352,7 +355,7 @@
 			newTab.document.write(loaderHTML);
 
 			// Make a request to the server for a signed URL to download/view the requested file
-			filesService.signDownloadS3(filePath, fileName)
+			s3Service.signDownload(file.path, file.name)
 			.then(function(response) {
 				// Remove the animation 1s after the signed URL is retrieved
 				setTimeout(function(){
@@ -375,14 +378,14 @@
 			});
 		}
 
-		function popupFileDetails(key) {
+		function popupFileDetails(file) {
 			var modalInstance = $uibModal.open({
 				templateUrl: '/components/files/fileDetails/fileDetails.view.html',
-				controller: 'fileDetails as vm',
+				controller: 'fileDetailsCtrl as vm',
 				size: 'lg',
 				resolve: {
-					key: function () {
-						return key;
+					file: function () {
+						return file;
 					}
 				}
 			});
@@ -390,37 +393,37 @@
 			modalInstance.result.then(function() {});
 		}
 
-		function confirmDelete(key, fileName, textFileKey) {
+		function confirmDelete(file) {
 			swal({
 				title: "Are you sure?",
-				text: "Confirm to delete the file '" + fileName + "'",
+				text: "Confirm to delete the file '" + file.name + "'",
 				type: "warning",
 				showCancelButton: true,
 				allowOutsideClick: true,
 				confirmButtonColor: "#d9534f",
 				confirmButtonText: "Yes, delete it!"
 			}, function() {
-				deleteFileDB(key, fileName, textFileKey);
+				deleteFileDB(file);
 			});
 		}
 
-		function deleteFileDB(key, fileName, textFileKey) {
-			filesService.deleteFileDB(key)
+		function deleteFileDB(file) {
+			filesService.deleteFileDB(file.path, file.name)
 			.then(function(response) {
-				deleteFileS3(key, fileName, textFileKey);
+				deleteFileS3(file);
 			});
 		}
 
-		function deleteFileS3(key, fileName, textFileKey) {
-			filesService.deleteFileS3({key: key})
+		function deleteFileS3(file) {
+			s3Service.deleteFile(file.key)
 			.then(function(response) {
 				// If a text file was generated for analysis, delete that file too.
 				// If the original file was a text file, just delete the original file
-				if(textFileKey && textFileKey != key){
-					filesService.deleteFileS3({key: textFileKey});
+				if(file.textFileKey && file.textFileKey != file.key){
+					s3Service.deleteFile(file.textFileKey);
 				}
 				removeMapMarker();
-				logger.success("'" + fileName + "' was deleted successfully", "", "Success");
+				logger.success("'" + file.name + "' was deleted successfully", "", "Success");
 			});
 		}
 
@@ -459,19 +462,19 @@
 		$scope.carouselIndex4 = 5;
 		
 		vm.testImages = [
-			{title: 'Visualisation #1', url: 'assets/img/carousels/recent/bar-chart-preview.png'},
-			{title: 'Visualisation #2', url: 'assets/img/carousels/recent/chord-diagram-preview.png'},
-			{title: 'Visualisation #3', url: 'assets/img/carousels/recent/concept-map-preview.png'},
-			{title: 'Visualisation #4', url: 'assets/img/carousels/recent/word-cloud-preview.png'},
-			{title: 'Visualisation #5', url: 'assets/img/carousels/recent/word-tree-preview.png'},
-			];
+		{title: 'Visualisation #1', url: 'assets/img/carousels/recent/bar-chart-preview.png'},
+		{title: 'Visualisation #2', url: 'assets/img/carousels/recent/chord-diagram-preview.png'},
+		{title: 'Visualisation #3', url: 'assets/img/carousels/recent/concept-map-preview.png'},
+		{title: 'Visualisation #4', url: 'assets/img/carousels/recent/word-cloud-preview.png'},
+		{title: 'Visualisation #5', url: 'assets/img/carousels/recent/word-tree-preview.png'},
+		];
 
 		function addSlides(target, style, qty) {
 			for (var i=0; i < qty; i++) {
 				addSlide(target, style);
 			}
 		}
-            
+		
             // End to End swiping
             // load 130 images in main javascript container
             var slideImages = [];
@@ -549,8 +552,8 @@
                 }
                 
             }
-			
-			
+            
+            
 
         }
 

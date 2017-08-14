@@ -7,7 +7,7 @@
 	.controller('filesUploadCtrl', filesUploadCtrl);
 	
 	/* @ngInject */
-	function filesUploadCtrl(currentPath, $scope, $uibModalInstance, Upload, filesService, authentication, logger, $filter) {
+	function filesUploadCtrl(currentPath, $scope, $uibModalInstance, Upload, filesService, authentication, logger, $filter, s3Service) {
 		var vm = this;
 
 		vm.currentModalPage = 1;	/* Outside the rendered event to prevent the modal content from suddenly appearing once the modal is ready */
@@ -475,7 +475,7 @@
 			}
 
 			function uploadTextFile() {
-				filesService.signUploadS3(vm.textFileInfo)	/* Get S3 signed upload URL */
+				s3Service.signUpload(vm.textFileInfo)	/* Get S3 signed upload URL */
 				.then(function(result) {
 					Upload.upload({	/* Upload the file using the signed URL */
 						method: 'POST',
@@ -502,7 +502,7 @@
 
 			/* Upload the original file */
 			function uploadActualFile() {
-				filesService.signUploadS3(vm.fileInfo)	/* Get S3 signed upload URL */
+				s3Service.signUpload(vm.fileInfo)	/* Get S3 signed upload URL */
 				.then(function(result) {
 					Upload.upload({	/* Upload the file using the signed URL */
 						method: 'POST',

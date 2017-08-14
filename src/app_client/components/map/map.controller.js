@@ -7,7 +7,7 @@
 	.controller('mapCtrl', mapCtrl);
 
 	/* @ngInject */
-	function mapCtrl(filesService, $scope, $filter, $compile, $window, $uibModal, logger, bsLoadingOverlayService, mapService) {
+	function mapCtrl(filesService, $scope, $filter, $compile, $window, $uibModal, logger, bsLoadingOverlayService, mapService, s3Service) {
 		var vm = this;
 
 		/* Bindable Functions */
@@ -382,7 +382,7 @@
 			newTab.document.write(loaderHTML);
 
 			/* Make a request to the server for a signed URL to download/view the requested file */
-			filesService.signDownloadS3(file.path, file.name)
+			s3Service.signDownload(file.path, file.name)
 			.then(function(response) {
 				/* Remove the animation 1s after the signed URL is retrieved */
 				setTimeout(function(){
@@ -408,7 +408,7 @@
 		function popupFileDetails(file) {
 			var modalInstance = $uibModal.open({
 				templateUrl: '/components/files/fileDetails/fileDetails.view.html',
-				controller: 'fileDetails as vm',
+				controller: 'fileDetailsCtrl as vm',
 				size: 'lg',
 				resolve: {
 					file: function () {
@@ -440,12 +440,12 @@
 		}
 
 		function deleteFileS3(file) {
-			filesService.deleteFileS3({key: file.key})
+			s3Service.deleteFile(file.key)
 			.then(function(response) {
 				/* If a text file was generated for analysis, delete that file too. */
 				/* If the original file was a text file, just delete the original file */
 				if(file.textFileKey && file.textFileKey != file.key){
-					filesService.deleteFileS3({key: file.textFileKey});
+					s3Service.deleteFile(file.textFileKey);
 				}
 				vm.markers.removeLayer(vm.currentMarker);
 				logger.success("'" + file.name + "' was deleted successfully", "", "Success");

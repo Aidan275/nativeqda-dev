@@ -8,7 +8,7 @@
 	
 
 	/* @ngInject */
-	function filesBrowseCtrl (mapService, $http, $window, $scope, $uibModal, Upload, NgTableParams, filesService, authentication, logger, $filter, $compile, bsLoadingOverlayService) {
+	function filesBrowseCtrl (mapService, $http, $window, $scope, $uibModal, Upload, NgTableParams, filesService, authentication, logger, $filter, $compile, bsLoadingOverlayService, s3Service) {
 		var vm = this;
 
 		// Bindable Functions
@@ -110,7 +110,7 @@
 				newTab.document.write(loaderHTML);
 
 				// Make a request to the server for a signed URL to download/view the requested file
-				filesService.signDownloadS3(file.path, file.name)
+				s3Service.signDownload(file.path, file.name)
 				.then(function(response) {
 					// Remove the animation 1s after the signed URL is retrieved
 					setTimeout(function(){
@@ -152,12 +152,12 @@
 			filesService.deleteFileDB(file.path, file.name)
 			.then(function(response) {
 				if(file.type != 'folder') {	/* If the file is not a folder, delete from S3 too */
-					filesService.deleteFileS3(file.key)
+					s3Service.deleteFile(file.key)
 					.then(function(response) {
 						/* If a text file was generated for analysis, delete that file too. If the original file was a text file, just */
 						/* delete that file (files that were originally text files have the same key for both key and textFileKey) */
 						if(file.textFileKey && file.textFileKey != file.key){
-							filesService.deleteFileS3(file.textFileKey);
+							s3Service.deleteFile(file.textFileKey);
 						}
 						removeFileFromArray(file._id);
 						logger.success("'" + file.name + "' was deleted successfully", "", "Success");
@@ -224,7 +224,7 @@
 		// not using at the moment, getting file details from DB 
 		// Amazon S3 free tier only provides 2000 put requests and 20000 get requests a month
 		function getFileListS3() {
-			filesService.getFileListS3()
+			s3Service.getFileList()
 			.then(function(response) {
 				//syncDB(response.data);
 				doListFilesS3(response.data.Contents);

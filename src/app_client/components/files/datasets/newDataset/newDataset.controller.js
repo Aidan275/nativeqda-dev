@@ -151,7 +151,7 @@
 				newTab.document.write(loaderHTML);
 
 				/* Make a request to the server for a signed URL to download/view the requested file */
-				filesService.signDownloadS3(file.path, file.name, 'true')	/* true flag to return the associated text file, not the actual file */
+				s3Service.signDownload(file.path, file.name, 'true')	/* true flag to return the associated text file, not the actual file */
 				.then(function(response) {
 					/* Remove the animation 1s after the signed URL is retrieved */
 					setTimeout(function(){
@@ -207,7 +207,7 @@
 		}
 
 		function uploadConcatFile(newFile) {	/* newFile is the file containing the concatenated text */
-			filesService.signUploadS3({	/* Get S3 upload URL */
+			s3Service.signUpload({	/* Get S3 upload URL */
 				name: newFile.name,
 				extension: 'txt',
 				type: 'text/plain; charset=utf-8',

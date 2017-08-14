@@ -5,7 +5,7 @@
 	.controller('visualisationsCtrl', visualisationsCtrl);
 
 	/* @ngInject */
-	function visualisationsCtrl ($routeParams, $window, analysisService, filesService, bsLoadingOverlayService) {
+	function visualisationsCtrl ($routeParams, $window, analysisService, s3Service, bsLoadingOverlayService) {
 		var vm = this;
 
 		// Bindable Functions
@@ -38,7 +38,7 @@
 		// Gets signed URL to download the requested file from S3 
 		// if successful, opens the signed URL in a new tab
 		function viewFile(key) {
-			filesService.signDownloadS3(key)
+			s3Service.signDownloadKey(key)
 			.then(function(response) {
 				$window.open(response.data, '_blank');
 			});

@@ -48,7 +48,7 @@
 			bsLoadingOverlayService.stop({referenceId: 'analysis-list'});	// Stop animated loading overlay
 		}
 
-		function confirmDelete(analysisName, analysisId) {
+		function confirmDelete(name, id) {
 			swal({
 				title: "Are you sure?",
 				text: "Confirm to delete the analysis '" + name + "'",
@@ -58,21 +58,21 @@
 				confirmButtonColor: "#d9534f",
 				confirmButtonText: "Yes, delete it!"
 			}, function() {
-				deleteAnalysis(analysisName, analysisId);
+				deleteAnalysis(name, id);
 			});
 		};
 
-		function deleteAnalysis(analysisName, analysisId) {
-			analysisService.deleteWatsonAnalysis(analysisId)
+		function deleteAnalysis(name, id) {
+			analysisService.deleteWatsonAnalysis(id)
 			.then(function() {
-				removeFromList(analysisId);	// If deleting the analysis was successful, the deleted analysis is removed from the local array
-				logger.success("'" + analysisName + "' was deleted successfully", "", "Success");
+				removeFromList(id);	// If deleting the analysis was successful, the deleted analysis is removed from the local array
+				logger.success("'" + name + "' was deleted successfully", "", "Success");
 			});
 		}
 		
-		function removeFromList(analysisId) {
-			// Find the analysis index for analysisId, will return -1 if not found 
-			var analysisIndex = vm.analyses.findIndex(function(obj){return obj._id == analysisId});
+		function removeFromList(id) {
+			// Find the analysis index for id, will return -1 if not found 
+			var analysisIndex = vm.analyses.findIndex(function(obj){return obj._id == id});
 
 			// Remove the analysis from the vm.analyses array
 			if (analysisIndex > -1) {
