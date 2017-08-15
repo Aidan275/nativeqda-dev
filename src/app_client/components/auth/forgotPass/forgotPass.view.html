@@ -473,12 +473,19 @@ footer a:focus {
   pointer-events: none;
   border-radius: 100%;
 }
+
+button:disabled {
+	background: #eee;
+    color: #333;
+    box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0.37);
+    cursor: not-allowed;
+}
+
 </style>    
  
 <div class="mainLogo" style="text-align:center;">
-<img src="assets/img/Logo.png" height="25%" width="25%" style="min-width:185px;max-width:500px;">
+	<img src="assets/img/Logo.png" height="25%" width="25%" style="min-width:185px;max-width:500px;">
 </div>
-
 
 <div class="login" style="max-width:90%;min-width:300px;width:400px;">
 
@@ -497,7 +504,7 @@ footer a:focus {
 		</div>
 
 	<div class="form-group-qda buttonPlacementFix" style="text-align:center;">
-		<button id="submit" type="submit" ripple>Reset password</button>
+		<button id="submit" type="submit" ripple ng-disabled="vm.reset">Reset password</button>
 	</div>
 	</form>
 

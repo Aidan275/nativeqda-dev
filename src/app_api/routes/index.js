@@ -35,6 +35,8 @@ router.post('/register', checkDatabaseStatus, ctrlAuth.register);
 router.post('/user', checkDatabaseStatus, ctrlAuth.createUser);
 router.post('/login', checkDatabaseStatus, ctrlAuth.login);
 router.post('/user/setavatar', auth, checkDatabaseStatus, ctrlAuth.setavatar); //Deprecated. Use 'PUT /user/' below instead.
+router.post('/forgot/password', checkDatabaseStatus, ctrlAuth.forgotPassword);
+router.post('/reset/password', checkDatabaseStatus, ctrlAuth.resetPassword);
 
 //System Settings [User Settings are part of Users data/controller]
 router.get('/settings', auth, checkDatabaseStatus, ctrlSettings.getSettings);
@@ -110,5 +112,7 @@ router.get('/survey/responses/read', auth, checkDatabaseStatus, ctrlSurveys.read
 router.put('/map/link', auth, checkDatabaseStatus, ctrlMap.putLink);
 router.get('/map/link', auth, checkDatabaseStatus, ctrlMap.getLinks);
 router.delete('/map/link/:id', auth, checkDatabaseStatus, ctrlMap.deleteLink);
+
+
 
 module.exports = router;

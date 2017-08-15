@@ -3,12 +3,12 @@ var crypto = require('crypto');
 var jwt = require('jsonwebtoken');
 
 var userRolesSchema = new mongoose.Schema({
-	name: { //Name of the user role
+	name: { /*Name of the user role */
 		type: String,
 		unique: true,
 		required: true
 	},
-	color: { //Colour associated with the user role, in HTML notation.
+	color: { /*Colour associated with the user role, in HTML notation. */
 		type: String,
 		required: true
 	}
@@ -31,29 +31,31 @@ var userSchema = new mongoose.Schema({
 	company: {
 		type: String
 	},
-	roles: { //User roles the member has been assigned
+	roles: { /*User roles the member has been assigned */
 		type: [String],
 		default: 'Researcher'
 	},
-	settings: { //Object of user settings
+	settings: { /*Object of user settings */
 		type: Object,
 		required: true,
 		default: '{}'
 	},
-	dateCreated: { //Datetime user was created in the system
+	dateCreated: { /*Datetime user was created in the system */
 		type: Date,
 		"default": Date.now
 	},
-	lastModified: { //Datetime the user's information was last edited
+	lastModified: {	/*Datetime the user's information was last edited */
 		type: Date,
 		"default": Date.now
 	},
 	hash: String,
 	salt: String,
-	avatar: { /* Url of the user's avatar image */
+	avatar: {	/* Url of the user's avatar image */
 		type: String,
-		"default": "/assets/img/settings/default-avatar.png" /* default image */
-	}
+		"default": "/assets/img/settings/default-avatar.png"	/* default image */
+	},
+	resetPasswordToken: String,
+  	resetPasswordExpires: Date
 });
 
 userSchema.methods.setPassword = function(password){
@@ -68,14 +70,14 @@ userSchema.methods.validPassword = function(password) {
 
 userSchema.methods.generateJwt = function() {
 	var expiry = new Date();
-	expiry.setDate(expiry.getDate() + 7);	// Sets the expiry date to 7 days in the future
+	expiry.setDate(expiry.getDate() + 7);	/* Sets the expiry date to 7 days in the future */
 	return jwt.sign({
 		_id: this._id,
 		email: this.email,
 		firstName: this.firstName,
 		settings: this.settings,
 		avatar: this.avatar,
-		exp: parseInt(expiry.getTime() / 1000),	// Sets the expiry date in seconds in the jwt
+		exp: parseInt(expiry.getTime() / 1000),	/* Sets the expiry date in seconds in the jwt */
 	}, process.env.JWT_SECRET);
 };
 

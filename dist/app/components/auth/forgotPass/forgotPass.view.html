@@ -3,10 +3,6 @@
 .mainLogo > img {
         max-width:200px;
     }
-	.profileImage > img {
-        max-width:150px;
-		max-height:150px;
-    }
 	.invisibleClass {
 		display:none;
 	}
@@ -15,8 +11,8 @@
 		margin: 10px -120px;
 	}
 	.login {
-		min-height:420px;
-		height:420px;
+		min-height:275px;
+		height:275px;
 	}
 }
 @media screen and (min-width:340px) and (max-width: 360px) {
@@ -31,8 +27,8 @@
 		margin: 10px -105px;
 	}
 	.login {
-		min-height:460px;
-		height:460px;
+		min-height:275px;
+		height:275px;
 	}
 
 }
@@ -48,8 +44,8 @@
 		margin: 10px -100px;
 	}
 	.login {
-		min-height:460px;
-		height:460px;
+		min-height:275px;
+		height:275px;
 	}
 
 }
@@ -65,8 +61,8 @@
 		margin: 10px -82px;
 	}
 	.login {
-		min-height:460px;
-		height:460px;
+		min-height:275px;
+		height:275px;
 	}
 }
 @media screen and (max-height: 580px) {
@@ -79,7 +75,7 @@
 }
 @media screen and (min-width: 768px) {
 	.login {
-		min-height:500px;
+		min-height:275px;
 	}
 	.buttonPlacementFix > button[type="submit"] {
 		text-align:center;
@@ -99,8 +95,8 @@
 		margin: 10px -67px;
 	}
 	.login {
-		min-height:470px;
-		height:470px;
+		min-height:275px;
+		height:275px;
 	}
 }
 @media screen and (height:1366px) and (width: 1024px) {
@@ -114,8 +110,8 @@
 		margin: 10px -67px;
 	}
 	.login {
-		min-height:480px;
-		height:480px;
+		min-height:275px;
+		height:275px;
 	}
 }
 */
@@ -476,7 +472,15 @@ footer a:focus {
   pointer-events: none;
   border-radius: 100%;
 }
-</style><div class=mainLogo style=text-align:center;><img src=assets/img/Logo.png height=25% width=25% style=min-width:185px;max-width:500px;></div><div class=login style=max-width:90%;min-width:300px;width:400px;><p align=center><span><font size=5>Having trouble signing in?</font></span></p><br><div class=profileImage><img class=img-circle width=200px height=200px src=assets/img/settings/default-avatar.png style="object-fit: cover"></div><form ng-submit=vm.onSubmit() id=login-form><div id=u class=form-group-qda><input type=email class=form-control-qda id=email name=username required ng-model=vm.email> <span class=form-highlight></span> <span class=form-bar></span> <label for=email class=float-label>Email</label><erroru>Email is required <i class="fa fa-exclamation-triangle" aria-hidden=true></i></erroru></div><div class="form-group-qda buttonPlacementFix" style=text-align:center;><button id=submit type=submit ripple>Reset password</button></div></form></div><footer-generic></footer-generic><script>
+
+button:disabled {
+	background: #eee;
+    color: #333;
+    box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0.37);
+    cursor: not-allowed;
+}
+
+</style><div class=mainLogo style=text-align:center;><img src=assets/img/Logo.png height=25% width=25% style=min-width:185px;max-width:500px;></div><div class=login style=max-width:90%;min-width:300px;width:400px;><p align=center><span><font size=5>Having trouble signing in?</font></span></p><br><form ng-submit=vm.onSubmit() id=login-form><div id=u class=form-group-qda><input type=email class=form-control-qda id=email name=username required ng-model=vm.email> <span class=form-highlight></span> <span class=form-bar></span> <label for=email class=float-label>Email</label><erroru>Email is required <i class="fa fa-exclamation-triangle" aria-hidden=true></i></erroru></div><div class="form-group-qda buttonPlacementFix" style=text-align:center;><button id=submit type=submit ripple ng-disabled=vm.reset>Reset password</button></div></form></div><footer-generic></footer-generic><script>
 // button ripple effect from @ShawnSauce 's pen https://codepen.io/ShawnSauce/full/huLEH
 $(document).ready(function() {
 $(function(){

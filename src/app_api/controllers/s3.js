@@ -62,12 +62,6 @@ module.exports.signUpload = function(req, res) {
 		default:
 		path = 'files/' + path ;
 	}
-	
-	// If the file being uploaded is a dataset (a concatenated text file), edit the path to include 
-	// the parent datasets folder and the .txt file extension.
-	
-	// If the file being uploaded is an avatar, edit the path to include 
-	// the parent avatar folder.
 
 	var type = req.body.type
 	var readType = 'private';

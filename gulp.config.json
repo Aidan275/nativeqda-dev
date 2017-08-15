@@ -157,6 +157,7 @@
 		"./src/app_client/components/auth/login/login.controller.js",
 		"./src/app_client/components/auth/register/register.controller.js",
 		"./src/app_client/components/auth/forgotPass/forgotPass.controller.js",
+		"./src/app_client/components/auth/resetPassword/resetPassword.controller.js",
 		"./src/app_client/components/files/datasets/datasets.controller.js",
 		"./src/app_client/components/settings/knowledgebase/knowledgebase.controller.js",
 		"./src/app_client/components/files/datasets/newDataset/newDataset.controller.js",

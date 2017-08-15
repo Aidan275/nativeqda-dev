@@ -17,7 +17,9 @@
 			createUser		: createUser,
 			login			: login,
 			logout			: logout,
-			setavatar		: setavatar 
+			setavatar		: setavatar,
+			forgotPassword 	: forgotPassword,
+			resetPassword 	: resetPassword
 		};
 
 		// Saves a JSON Web Token (JWT) to the browser's local storage
@@ -145,6 +147,24 @@
 		
 		function setavatar(newavatarurl) {
 			return $http.post('/api/user/setavatar');
+		};
+
+		function forgotPassword(email) {
+			return $http.post('/api/forgot/password/', email)
+			.then(forgotPasswordComplete)
+			.catch(forgotPasswordFailed);
+
+			function forgotPasswordComplete(data) { return data; }
+			function forgotPasswordFailed(e) { return exception.catcher('Forgot Password Failed')(e); }
+		};
+
+		function resetPassword(credentials) {
+			return $http.post('/api/reset/password/', credentials)
+			.then(resetPasswordComplete)
+			.catch(resetPasswordFailed);
+
+			function resetPasswordComplete(data) { return data; }
+			function resetPasswordFailed(e) { return exception.catcher('Reset Password Failed')(e); }
 		};
 	}
 

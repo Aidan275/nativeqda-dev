@@ -218,6 +218,13 @@
 			controllerAs: 'vm',
 			loginRequired: true
 		})
+		.when('/reset-password/:token', {
+			title: 'NativeQDA | Reset Password',
+			templateUrl: '/components/auth/resetPassword/resetPassword.view.html',
+			controller: 'resetPasswordCtrl',
+			controllerAs: 'vm',
+			loginRequired: false
+		})
 		.otherwise({redirectTo: '/'});
 
 	    // use the HTML5 History API

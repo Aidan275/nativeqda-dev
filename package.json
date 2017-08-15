@@ -50,6 +50,7 @@
     "ng-file-upload": "^12.2.13",
     "ng-table": "^3.0.1",
     "ng-tags-input": "^3.2.0",
+    "nodemailer": "^4.0.1",
     "nouislider": "^10.0.0",
     "passport": "^0.3.2",
     "passport-local": "^1.0.0",

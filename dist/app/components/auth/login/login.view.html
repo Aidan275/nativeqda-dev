@@ -21,10 +21,12 @@
 	}
 	.buttonPlacementFix > button[type="submit"] {
 		margin: -3px 70px;
+		top:-25px;
+		right:-67px;
 	}
 	.login {
-		min-height:420px;
-		height:420px;
+		min-height:475px;
+		height:475px;
 	}
 }
 @media screen and (max-height: 580px) {
@@ -399,7 +401,7 @@ footer a:focus {
   pointer-events: none;
   border-radius: 100%;
 }
-</style><div class=mainLogo style=text-align:center;><img src=assets/img/Logo.png height=25% width=25% style=min-width:185px;max-width:500px;></div><div class=login style=max-width:90%;min-width:300px;width:400px;><a href=/forgot-password><i class="fa fa-question-circle" style=float:right; aria-hidden=true ripple></i></a><br><br><div class=profileImage><img class=img-circle width=200px height=200px src="{{ vm.avatarUrl }}" style="object-fit: cover"></div><br><br class="invisibleClass invisibleClassHeight"><p align=center><span>Sign in with your NativeQDA Account</span></p><form ng-submit=vm.onSubmit() id=login-form><div id=u class=form-group-qda><input id=email spellcheck=false class=form-control-qda name=username type=email size=18 alt=login required ng-model=vm.credentials.email ng-blur=vm.getAvatar()> <span class=form-highlight></span> <span class=form-bar></span> <label for=email class=float-label>Email</label><erroru>Email is required <i class="fa fa-exclamation-triangle" aria-hidden=true></i></erroru></div><div id=p class=form-group-qda><input id=password class=form-control-qda spellcheck=false name=password type=password size=18 alt=login required ng-model=vm.credentials.password> <span class=form-highlight></span> <span class=form-bar></span> <label for=password class=float-label>Password</label><errorp>Password is required <i class="fa fa-exclamation-triangle" aria-hidden=true></i></errorp></div><div class="form-group-qda buttonPlacementFix"><input type=checkbox id=rem> <label for=rem>Stay Signed in</label> <button id=submit type=submit ripple>Sign in</button></div></form><footer><a href=/complete-survey>COMPLETE A SURVEY</a></footer></div><footer-generic></footer-generic><script>
+</style><div class=mainLogo style=text-align:center;><img src=assets/img/Logo.png height=25% width=25% style=min-width:185px;max-width:500px;></div><div class=login style=max-width:90%;min-width:300px;width:400px;><a href=/forgot-password style=float:right;color:rgba(0,0,0,0.6);><i class="fa fa-question-circle" style=float:right; aria-hidden=true ripple></i></a><br><br><div class=profileImage><img class=img-circle width=200px height=200px src="{{ vm.avatarUrl }}" style="object-fit: cover"></div><br><br class="invisibleClass invisibleClassHeight"><p align=center><span>Sign in with your NativeQDA Account</span></p><form ng-submit=vm.onSubmit() id=login-form><div id=u class=form-group-qda><input id=email spellcheck=false class=form-control-qda name=username type=email size=18 alt=login required ng-model=vm.credentials.email ng-blur=vm.getAvatar()> <span class=form-highlight></span> <span class=form-bar></span> <label for=email class=float-label>Email</label><erroru>Email is required <i class="fa fa-exclamation-triangle" aria-hidden=true></i></erroru></div><div id=p class=form-group-qda><input id=password class=form-control-qda spellcheck=false name=password type=password size=18 alt=login required ng-model=vm.credentials.password> <span class=form-highlight></span> <span class=form-bar></span> <label for=password class=float-label>Password</label><errorp>Password is required <i class="fa fa-exclamation-triangle" aria-hidden=true></i></errorp></div><div class="form-group-qda buttonPlacementFix"><a href=/forgot-password style=color:rgba(0,0,0,0.6);>Forgot your Password?</a> <button id=submit type=submit ripple>Sign in</button></div></form><footer><a href=/complete-survey>COMPLETE A SURVEY</a></footer></div><footer-generic></footer-generic><script>
 // button ripple effect from @ShawnSauce 's pen https://codepen.io/ShawnSauce/full/huLEH
 $(document).ready(function() {
 $(function(){
