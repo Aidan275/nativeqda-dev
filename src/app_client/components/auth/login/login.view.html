@@ -22,10 +22,12 @@
 	}
 	.buttonPlacementFix > button[type="submit"] {
 		margin: -3px 70px;
+		top:-25px;
+		right:-67px;
 	}
 	.login {
-		min-height:420px;
-		height:420px;
+		min-height:475px;
+		height:475px;
 	}
 }
 @media screen and (max-height: 580px) {
@@ -408,7 +410,7 @@ footer a:focus {
 
 
 <div class="login" style="max-width:90%;min-width:300px;width:400px;">
-	<a href="/forgot-password"><i class="fa fa-question-circle" style="float:right;" aria-hidden="true" ripple></a></i><br /><br />
+	<a href="/forgot-password" style="float:right;color:rgba(0,0,0,0.6);"><i class="fa fa-question-circle" style="float:right;" aria-hidden="true" ripple></a></i><br /><br />
 
 	<div class="profileImage">
 		<img class="img-circle" width="200px" height="200px" src="{{ vm.avatarUrl }}" style="object-fit: cover">
@@ -441,8 +443,7 @@ footer a:focus {
 	  </errorp>
 	</div>
 	<div class="form-group-qda buttonPlacementFix">
-		<input type="checkbox" id="rem">
-		<label for="rem">Stay Signed in</label>
+		<a href="/forgot-password" style="color:rgba(0,0,0,0.6);">Forgot your Password?</a>
 		<button id="submit" type="submit" ripple>Sign in</button>
 	</div>
 	</form>
