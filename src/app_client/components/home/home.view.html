@@ -13,7 +13,7 @@
 }
 
 ul[rn-carousel] {
-    width:103%;
+    width:100%;
     min-height:300px;
     margin: 0 auto;
 }
@@ -86,7 +86,7 @@ input.tiny {
 	<div class="col-md-12" style="min-height:320px;">
 		<div class="col-md-9" style="min-height:320px;">
 			<div > 
-                <div class="carousel-demo" style="width:100%;height:100%;" >
+                <div class="carousel-demo" style="width:100%;height:100%;border: 1px solid #ddd;" >
                     <ul rn-carousel class="image">
 						<li ng-repeat="image in vm.testImages">
 							<div ng-style="{'background-image': 'url(' + image.url + ')'}"  class="bgimage">
