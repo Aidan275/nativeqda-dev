@@ -197,6 +197,13 @@
 			controllerAs: 'vm',
 			loginRequired: true
 		})
+		.when('/word-cloud/:type/:id', {
+			title: 'NativeQDA | Word Cloud',
+			templateUrl: '/components/visualisations/visuals/wordCloud/wordCloud.view.html',
+			controller: 'wordCloudCtrl',
+			controllerAs: 'vm',
+			loginRequired: true
+		})
 		.when('/heatmap-example', {
 			title: 'NativeQDA | Heatmap Example',
 			templateUrl: '/components/heatmapExample/heatmapExample.view.html',
