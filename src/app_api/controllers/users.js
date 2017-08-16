@@ -13,6 +13,32 @@ function extractJWT(authheader) { //Extract the JWT from the Authorization heade
 	return jwt.verify(jwtheader[1], process.env.JWT_SECRET);
 };
 
+module.exports.createUser = function(req, res) {
+	if(!req.body.password || !req.body.email || !req.body.firstName || !req.body.lastName) {
+		sendJSONresponse(res, 400, {
+			"message": "All fields required"
+		});
+		return;
+	}
+
+	var user = new User();
+
+	user.email = req.body.email;
+	user.firstName = req.body.firstName;
+	user.lastName = req.body.lastName;
+	user.company = req.body.company;
+
+	user.setPassword(req.body.password);
+
+	user.save(function(err, response) {
+		if (err) {
+			sendJSONresponse(res, 500, err);
+		} else {
+			sendJSONresponse(res, 200, response);
+		}
+	});
+};
+
 module.exports.getUserInfo = function(req, res) {
 	var email = req.query.email;
 	if(email) {
@@ -56,6 +82,40 @@ module.exports.getAllUsersInfo = function(req, res) {
 		});
 };
 
+module.exports.userLastModified = function(req, res) {
+	var jwtpayload = extractJWT(req.headers["authorization"]);
+
+	User
+	.findOne({email: jwtpayload.email}, { lastModified: 1 })
+	.exec(
+		function(err, results) {
+			if (!results) {
+				sendJSONresponse(res, 404, {
+					"message": "No user found"
+				});
+				return;
+			} else if (err) {
+				sendJSONresponse(res, 404, err);
+				return;
+			}
+			sendJSONresponse(res, 200, results);
+		});
+	
+};
+
+module.exports.getAvatar = function(req, res) {
+	var email = req.params["email"];
+
+	User
+	.findOne({email: email}, 'avatar -_id', function(err, results) {
+		if (err) {
+			sendJSONresponse(res, 404, null);
+			return;
+		}
+		sendJSONresponse(res, 200, results);
+	});
+};
+
 //Note: This should be able to be done better but I've spent too long trying to get it to work elegantly...
 module.exports.updateProfile = function(req, res) {
 	var jwtpayload = extractJWT(req.headers["authorization"]);
@@ -81,7 +141,7 @@ module.exports.updateProfile = function(req, res) {
 		if (req.body.lastName)
 			tmpuser.lastName = req.body.lastName;
 		if (req.body.company)
-			tmpuser.company = req.body.company;	/* If the company field is an empty string this won't be reached */
+			tmpuser.company = req.body.company;	/* If the company field is an empty string the company won't be changed */
 		else {
 			tmpuser.company = "";
 		}							
@@ -106,8 +166,6 @@ module.exports.updateProfile = function(req, res) {
 	});
 };
 
-module.exports.getUserProfile = function(req, res) { res.sendStatus(418) };
-
 module.exports.deleteUser = function(req, res) {
 	var jwtpayload = extractJWT(req.headers["authorization"]);
 	if (req.params["email"] == null || req.params["email"] == jwtpayload.email) { //Deleting own account
@@ -127,7 +185,7 @@ module.exports.deleteUser = function(req, res) {
 		});
 	}
 	else { //Deleting another account
-		//Determine if they are a superadmin
+		//Determine if they are a sysadmin
 		User.findOne({"email": jwtpayload.email}, function(err, results) { //Find the requesting user's account
 			if (err) {
 				sendJSONresponse(res, 500, err)
@@ -138,7 +196,7 @@ module.exports.deleteUser = function(req, res) {
 				return
 			}
 			else {
-				if (results.roles.indexOf("Superadmin") > -1) { //The user is a superadmin
+				if (results.roles.indexOf("sysadmin") > -1) { //The user is a sysadmin
 					User.remove({"email": req.params["email"]}, function(err, results) {
 						if (err) {
 							sendJSONresponse(res, 500, err);
@@ -154,14 +212,16 @@ module.exports.deleteUser = function(req, res) {
 						}
 					});
 				}
-				else { //The user is not a superadmin and so is not authorised to delete a user.
-					sendJSONresponse(res, 403, {"message": "Not superadmin"});
+				else { //The user is not a sysadmin and so is not authorised to delete a user.
+					sendJSONresponse(res, 403, {"message": "Not System Administrator"});
 					return;
 				}
 			}
 		});
 	}
 };
+
+module.exports.getUserProfile = function(req, res) { res.sendStatus(418) };
 
 module.exports.getUserRoles = function(req, res) {
 	User.findOne({"email": req.params["email"]}, function(err, results) {
@@ -182,7 +242,7 @@ module.exports.getUserRoles = function(req, res) {
 };
 
 module.exports.putUserRole = function(req, res) { //TODO: Make sure role actually exists. Check user is a superadmin
-	User.findOneAndUpdate({"email": req.params["email"]}, {$addToSet: {roles: req.params["role"]}}, {new: true}, function(err, results) {
+	User.findOneAndUpdate({"email": req.params["email"]}, {$addToSet: {roles: req.body.role}}, {new: true}, function(err, results) {
 		if (err) {
 			sendJSONresponse(res, 500, err);
 			return;
@@ -278,38 +338,5 @@ module.exports.deleteRole = function(req, res) {
 	});	
 };
 
-module.exports.userLastModified = function(req, res) {
-	var jwtpayload = extractJWT(req.headers["authorization"]);
 
-	User
-	.findOne({email: jwtpayload.email}, { lastModified: 1 })
-	.exec(
-		function(err, results) {
-			if (!results) {
-				sendJSONresponse(res, 404, {
-					"message": "No user found"
-				});
-				return;
-			} else if (err) {
-				sendJSONresponse(res, 404, err);
-				return;
-			}
-			sendJSONresponse(res, 200, results);
-		});
-	
-};
-
-module.exports.getAvatar = function(req, res) {
-	var email = req.params["email"];
-
-	User
-	.findOne({email: email}, 'avatar -_id', function(err, results) {
-		if (err) {
-			sendJSONresponse(res, 404, null);
-			return;
-		}
-		sendJSONresponse(res, 200, results);
-	});
-	
-};
 

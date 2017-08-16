@@ -188,7 +188,7 @@
 				controller: 'fileDetailsCtrl as vm',
 				size: 'lg',
 				resolve: {
-					file: function () {
+					file: function() {
 						return file;
 					}
 				}

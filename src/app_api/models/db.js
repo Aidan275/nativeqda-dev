@@ -76,7 +76,6 @@ process.on('SIGTERM', function() {
 
 // BRING IN YOUR SCHEMAS & MODELS
 require('./users');
-require('./events');
 require('./datasets');
 require('./files');
 require('./map');

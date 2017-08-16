@@ -7,7 +7,7 @@
 	.controller('loginCtrl', loginCtrl);
 
 	/* @ngInject */
-	function loginCtrl($location, authentication, events, logger, usersService) {
+	function loginCtrl($location, authentication, logger, usersService) {
 		var vm = this;
 
 		//vm.pageClass = 'login-page';	/* Class added to the inner div in the index page (for styling) */
@@ -40,7 +40,6 @@
 		};
 
 		function login() {
-			events.event({email : vm.credentials.email, desc : "Login"});
 			authentication
 			.login(vm.credentials)
 			.then(function(response) {

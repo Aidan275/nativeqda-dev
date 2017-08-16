@@ -34,15 +34,19 @@
 					var data = {
 						responseJSON: JSON.parse(response.responseJSON),
 						dateCreated: response.dateCreated,
-						fullName: response.fullName,
+						//fullName: response.fullName,	/* For testing */
+						fullName: 'Jane Doe',
 						email: response.email,
-						age: response.age,
-						gender: response.gender,
+						//age: response.age,
+						age: 26,
+						//gender: response.gender,
+						gender: 'Female',
 						id: response._id
 					};
 
 					vm.surveyResponsesList.push(data);
 				});
+				console.log(vm.surveyResponsesList);
 				listSurveyResponses();
 			}, function(err){
 				bsLoadingOverlayService.stop({referenceId: 'survey-responses'});	// If error, stop animated loading overlay

@@ -5,7 +5,7 @@
 	.controller('navigationCtrl', navigationCtrl);
 
 	/* @ngInject */
-	function navigationCtrl($location, authentication, events, $uibModal, $scope) {
+	function navigationCtrl($location, authentication, $uibModal, $scope) {
 		var vm = this;
 
 		// Bindable Functions
@@ -19,9 +19,6 @@
 		var userEmail = vm.currentUser.email
 		
 		///////////////////////////
-
-		// Stores the user's email, current page, and time in the database for analytics
-		events.event({email : userEmail});
 
 		function popupEditProfile(userEmail) {
 			var modalInstance = $uibModal.open({

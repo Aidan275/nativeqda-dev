@@ -7,7 +7,7 @@
 	.controller('registerNewUserCtrl', registerNewUserCtrl);
 
 	/* @ngInject */
-	function registerNewUserCtrl($uibModalInstance, authentication, logger) {
+	function registerNewUserCtrl($uibModalInstance, usersService, logger) {
 		var vm = this;
 
 		// Bindable Functions
@@ -38,7 +38,7 @@
 		};
 
 		function createUser() {
-			authentication
+			usersService
 			.createUser(vm.credentials)
 			.then(function(response) {
 				logger.success("New user created successfully", '', 'Success');

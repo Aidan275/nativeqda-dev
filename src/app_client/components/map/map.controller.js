@@ -416,6 +416,8 @@
 					}
 				}
 			});
+
+			modalInstance.result.then(function(results) {}, function() {});
 		}
 
 		function confirmFileDelete(file) {

@@ -4,14 +4,12 @@
 	.module('nativeQDAApp')
 	.controller('heatmapCtrl', heatmapCtrl);
 
-	heatmapCtrl.$inject = ['$scope', 'authentication', 'events'];
-	function heatmapCtrl ($scope, authentication, events) {
+    /* @ngInject */
+	function heatmapCtrl ($scope, authentication) {
 		var vm = this;
 		var lat = -33.848192;
 		var lng = 151.061857;
 		var mapZoom = 10;
-
-		events.event({email : authentication.currentUser().email});
 
 		vm.radiusValue = 100;
 		vm.opacityValue = 0.6;

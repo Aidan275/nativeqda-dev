@@ -33,7 +33,7 @@ var userSchema = new mongoose.Schema({
 	},
 	roles: { /*User roles the member has been assigned */
 		type: [String],
-		default: 'Researcher'
+		default: 'researcher'
 	},
 	settings: { /*Object of user settings */
 		type: Object,
