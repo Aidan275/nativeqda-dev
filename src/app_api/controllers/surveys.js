@@ -45,7 +45,7 @@ module.exports.checkSurvey = function(req, res) {
 					return;
 				}
 
-				var foundResponse = {};
+				var foundResponse;
 
 				var response = survey.responses.filter(function (response) {	/* Checks if the users IP address to see if the user has previously completed the survey */
 					if(response.ipAddress === ipAddress) {
