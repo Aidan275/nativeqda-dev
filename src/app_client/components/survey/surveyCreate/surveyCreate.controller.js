@@ -4,10 +4,10 @@
 
 	angular
 	.module('nativeQDAApp')
-	.controller('newSurveyCtrl', newSurveyCtrl);
+	.controller('surveyCreateCtrl', surveyCreateCtrl);
 
 	/* @ngInject */
-	function newSurveyCtrl (surveyService, authentication, $scope, $location) {
+	function surveyCreateCtrl (surveyService, authentication, $scope, $location) {
 		var vm = this;
 
 		var editorOptions = {
@@ -61,7 +61,7 @@
 				.then(function(response) {
 					swal({
 						title: "Saved!",
-						text: "Survey saved as '" + inputValue + "'\nThis survey's code is " + response.data.accessID,
+						text: "Survey saved as '" + inputValue + "'\nThis survey's code is " + response.data.accessId,
 						type: "success",
 						confirmButtonColor: "#5cb85c",
 						animation: "slide-from-top"

@@ -4,16 +4,17 @@
 
 	angular
 	.module('nativeQDAApp')
-	.controller('viewSurveyCtrl', viewSurveyCtrl);
+	.controller('surveyViewCtrl', surveyViewCtrl);
 
-	function viewSurveyCtrl($routeParams, surveyService) {
+	/* @ngInject */
+	function surveyViewCtrl($routeParams, surveyService) {
 		var vm = this;
-		var accessID = $routeParams.accessID;
+		var accessId = $routeParams.accessId;
 
 		Survey.Survey.cssType = "bootstrap";
 		Survey.defaultBootstrapCss.navigationButton = "btn btn-green";
 
-		surveyService.readSurvey(accessID)
+		surveyService.readSurvey(accessId)
 		.then(function(response) {
 			var surveyJSONObj = JSON.parse(response.data.surveyJSON);
 			window.survey = new Survey.Model(surveyJSONObj);

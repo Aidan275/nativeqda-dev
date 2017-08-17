@@ -54,7 +54,7 @@ router.get('/user/:email/roles', auth, checkDatabaseStatus, ctrlUsers.getUserRol
 router.put('/user/:email/roles', auth, checkDatabaseStatus, ctrlUsers.putUserRole);				/* Assign a role to a user - NOTE: was getting a weird authorization error when sending the request without including a body so changed the request to send the role in the body. */
 router.delete('/user/:email/roles/:role', auth, checkDatabaseStatus, ctrlUsers.deleteUserRole);	/* Un-assign a role to a user */
 
-router.get('/roles/:rolename?', auth, checkDatabaseStatus, ctrlUsers.getRoles);			/* Get a specific role or a list of all the user role objects (More likely) */
+router.get('/roles/:rolename', auth, checkDatabaseStatus, ctrlUsers.getRoles);			/* Get a specific role or a list of all the user role objects (More likely) */
 router.put('/roles/:rolename', auth, checkDatabaseStatus, ctrlUsers.putRole);			/* Create or update a user role */
 router.delete('/roles/:rolename', auth, checkDatabaseStatus, ctrlUsers.deleteRole);		/* Remove a user role from the system */
 
@@ -95,10 +95,12 @@ router.delete('/analysis/watson/delete', auth, checkDatabaseStatus, ctrlAnalysis
 
 /* Surveys */
 router.post('/survey/save', checkDatabaseStatus, ctrlSurveys.saveSurvey);
+router.get('/survey/check', checkDatabaseStatus, ctrlSurveys.checkSurvey);
 router.get('/survey/read', checkDatabaseStatus, ctrlSurveys.readSurvey);
 router.get('/survey/list', auth, checkDatabaseStatus, ctrlSurveys.listSurveys);
 router.delete('/survey/delete', auth, checkDatabaseStatus, ctrlSurveys.deleteSurvey);
 router.post('/survey/response/save', checkDatabaseStatus, ctrlSurveys.saveSurveyResponse);
+router.get('/survey/:accessId/response/:responseId', auth, checkDatabaseStatus, ctrlSurveys.readOneSurveyResponse);
 router.get('/survey/responses/read', auth, checkDatabaseStatus, ctrlSurveys.readSurveyResponses);
 
 /* Map Marker Link */

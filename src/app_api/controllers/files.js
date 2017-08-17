@@ -8,6 +8,7 @@ var sendJSONresponse = function(res, status, content) {
 };
 
 var extractpath = function(filepathparam) {
+	console.log(filepathparam);
 	//Getting file name and path can definitely be done better
 	var fileparam = filepathparam;
 	var filepath = "/" + filepathparam;
@@ -21,6 +22,8 @@ var extractpath = function(filepathparam) {
 	var path = new Array();
 	path[0] = fileparam[fileparam.length-1];
 	path[1] = filepath;
+	console.log(path[0]);
+	console.log(path[1]);
 	return path;
 }
 

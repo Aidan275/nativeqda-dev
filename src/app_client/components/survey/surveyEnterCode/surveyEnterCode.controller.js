@@ -4,10 +4,10 @@
 
 	angular
 	.module('nativeQDAApp')
-	.controller('completeSurveyCtrl', completeSurveyCtrl);
+	.controller('surveyEnterCodeCtrl', surveyEnterCodeCtrl);
 
 	/* @ngInject */
-	function completeSurveyCtrl(logger, bsLoadingOverlayService, surveyService) {
+	function surveyEnterCodeCtrl(logger, surveyService, $location) {
 		var vm = this;
 
 		// Bindable Functions
@@ -26,15 +26,14 @@
 				return false;
 			} else {
 				var surveyCode = vm.surveyCode;
-				getSurvey(surveyCode);
+				checkSurvey(surveyCode);
 			}
 		};
 
-		function getSurvey(surveyCode) {
-			surveyService.readSurvey(surveyCode)
+		function checkSurvey(surveyCode) {
+			surveyService.checkSurvey(surveyCode)
 			.then(function(response) {
-				vm.surveyFound = true;
-				showSurvey(response.data);
+				$location.path('/complete-survey/' + surveyCode);
 			});
 		}
 
@@ -47,7 +46,7 @@
 			survey.onComplete.add(function(result) {
 				vm.surveyComplete = true;
 				var surveyResponse = {
-					accessID: vm.surveyCode,
+					accessId: vm.surveyCode,
 					responseJSON: JSON.stringify(result.data)
 				};
 

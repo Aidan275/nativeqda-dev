@@ -9,12 +9,14 @@
 	/* @ngInject */
 	function surveyService ($http, authentication, exception) {
 		return {
-			saveSurvey			: saveSurvey,
-			readSurvey			: readSurvey,
-			listSurveys 		: listSurveys,
-			deleteSurvey 		: deleteSurvey,
-			saveSurveyResponse 	: saveSurveyResponse,
-			readSurveyResponses : readSurveyResponses
+			saveSurvey				: saveSurvey,
+			checkSurvey 			: checkSurvey,
+			readSurvey				: readSurvey,
+			listSurveys 			: listSurveys,
+			deleteSurvey 			: deleteSurvey,
+			saveSurveyResponse 		: saveSurveyResponse,
+			readOneSurveyResponse 	: readOneSurveyResponse,
+			readSurveyResponses 	: readSurveyResponses
 		};
 
 		function saveSurvey(survey){
@@ -29,10 +31,24 @@
 			function saveSurveyFailed(e) { return exception.catcher('Failed saving survey.')(e); }
 		};
 
-		function readSurvey(accessID){
+		function checkSurvey(accessId){
 			// Encode the id for the API URL incase it includes reserved characters (e.g '+', '&')
-			var encodedID = encodeURIComponent(accessID);
-			return $http.get('/api/survey/read?accessID=' + encodedID, {
+			var encodedID = encodeURIComponent(accessId);
+			return $http.get('/api/survey/check?accessId=' + encodedID, {
+				headers: {
+					Authorization: 'Bearer '+ authentication.getToken()
+				}
+			}).then(checkSurveyComplete)
+			.catch(checkSurveyFailed);
+
+			function checkSurveyComplete(data) { return data; }
+			function checkSurveyFailed(e) { return exception.catcher('Failed checking survey.')(e); }
+		};
+
+		function readSurvey(accessId){
+			// Encode the id for the API URL incase it includes reserved characters (e.g '+', '&')
+			var encodedID = encodeURIComponent(accessId);
+			return $http.get('/api/survey/read?accessId=' + encodedID, {
 				headers: {
 					Authorization: 'Bearer '+ authentication.getToken()
 				}
@@ -81,10 +97,22 @@
 			function saveSurveyResponseFailed(e) { return exception.catcher('Failed saving survey response.')(e); }
 		}; 
 
-		function readSurveyResponses(accessID){
+		function readOneSurveyResponse(accessId, responseId){
+			return $http.get('/api/survey/' + accessId + '/response/' + responseId, {
+				headers: {
+					Authorization: 'Bearer '+ authentication.getToken()
+				}
+			}).then(readOneSurveyResponseComplete)
+			.catch(readOneSurveyResponseFailed);
+
+			function readOneSurveyResponseComplete(data) { return data; }
+			function readOneSurveyResponseFailed(e) { return exception.catcher('Failed reading survey response.')(e); }
+		};
+
+		function readSurveyResponses(accessId){
 			// Encode the id for the API URL incase it includes reserved characters (e.g '+', '&')
-			var encodedID = encodeURIComponent(accessID);
-			return $http.get('/api/survey/responses/read?accessID=' + encodedID, {
+			var encodedID = encodeURIComponent(accessId);
+			return $http.get('/api/survey/responses/read?accessId=' + encodedID, {
 				headers: {
 					Authorization: 'Bearer '+ authentication.getToken()
 				}

@@ -63,38 +63,45 @@
 			controllerAs: 'vm',
 			loginRequired: true
 		})
-		.when('/survey/new', {
+		.when('/survey/create', {
 			title: 'NativeQDA | Create Survey',
-			templateUrl: '/components/survey/newSurvey/newSurvey.view.html',
-			controller: 'newSurveyCtrl',
+			templateUrl: '/components/survey/surveyCreate/surveyCreate.view.html',
+			controller: 'surveyCreateCtrl',
 			controllerAs: 'vm',
 			loginRequired: true
 		})
-		.when('/survey/view/:accessID', {
+		.when('/survey/view/:accessId', {
 			title: 'NativeQDA | View Survey',
-			templateUrl: '/components/survey/viewSurvey/viewSurvey.view.html',
-			controller: 'viewSurveyCtrl',
+			templateUrl: '/components/survey/surveyView/surveyView.view.html',
+			controller: 'surveyViewCtrl',
 			controllerAs: 'vm',
 			loginRequired: true
 		})
 		.when('/complete-survey', {
 			title: 'NativeQDA | Complete Survey',
-			templateUrl: '/components/survey/completeSurvey/completeSurvey.view.html',
-			controller: 'completeSurveyCtrl',
+			templateUrl: '/components/survey/surveyEnterCode/surveyEnterCode.view.html',
+			controller: 'surveyEnterCodeCtrl',
 			controllerAs: 'vm',
 			loginRequired: false
 		})
-		.when('/survey/responses/:accessID', {
+		.when('/complete-survey/:accessId', {
+			title: 'NativeQDA | Complete Survey',
+			templateUrl: '/components/survey/surveyComplete/surveyComplete.view.html',
+			controller: 'surveyCompleteCtrl',
+			controllerAs: 'vm',
+			loginRequired: false
+		})
+		.when('/survey/responses/:accessId', {
 			title: 'NativeQDA | Survey Responses',
-			templateUrl: '/components/survey/surveyResponses/surveyResponses.view.html',
-			controller: 'surveyResponsesCtrl',
+			templateUrl: '/components/survey/surveyResponseList/surveyResponseList.view.html',
+			controller: 'surveyResponseListCtrl',
 			controllerAs: 'vm',
 			loginRequired: true
 		})
-		.when('/survey/responses/:accessID/:responseID', {
+		.when('/survey/responses/:accessId/:responseId', {
 			title: 'NativeQDA | Survey Responses',
-			templateUrl: '/components/survey/viewResponse/viewResponse.view.html',
-			controller: 'viewResponseCtrl',
+			templateUrl: '/components/survey/surveyResponse/surveyResponse.view.html',
+			controller: 'surveyResponseCtrl',
 			controllerAs: 'vm',
 			loginRequired: true
 		})

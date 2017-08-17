@@ -4,12 +4,12 @@
 
 	angular
 	.module('nativeQDAApp')
-	.controller('surveyResponsesCtrl', surveyResponsesCtrl);
+	.controller('surveyResponseListCtrl', surveyResponseListCtrl);
 
 	/* @ngInject */
-	function surveyResponsesCtrl($routeParams, surveyService, bsLoadingOverlayService, NgTableParams) {
+	function surveyResponseListCtrl($routeParams, surveyService, bsLoadingOverlayService, NgTableParams) {
 		var vm = this;
-		vm.accessID = $routeParams.accessID;
+		vm.accessId = $routeParams.accessId;
 
 		// Bindable Functions
 		vm.confirmDelete = confirmDelete;
@@ -28,7 +28,7 @@
 
 		// Gets all the survey responses from the MongoDB database
 		function getSurveyResponsesList() {
-			surveyService.readSurveyResponses(vm.accessID)
+			surveyService.readSurveyResponses(vm.accessId)
 			.then(function(response) {
 				response.data.responses.forEach(function(response) {
 					var data = {

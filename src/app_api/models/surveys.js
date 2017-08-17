@@ -5,6 +5,9 @@ var surveyResponseSchema = new mongoose.Schema({
 		type: String,
 		required: true
 	},
+	ipAddress: {
+		type: String
+	},
 	dateCreated: {
 		type: Date,
 		"default": Date.now
@@ -41,7 +44,7 @@ var surveySchema = new mongoose.Schema({
 		type: String,
 		required: true
 	},
-	accessID: {
+	accessId: {
 		type: String,
 		required: true
 	},
