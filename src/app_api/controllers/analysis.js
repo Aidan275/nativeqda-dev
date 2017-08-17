@@ -7,10 +7,11 @@ var textapi = new AYLIENTextAPI({
 });
 var NaturalLanguageUnderstandingV1 = require('watson-developer-cloud/natural-language-understanding/v1.js');
 var natural_language_understanding = new NaturalLanguageUnderstandingV1({
-	"username": "59b56219-6926-4cf8-93d4-40c3202eba5c",
-	"password": "eAf38DQyEj1g",
+	"username": "ac282974-cb6e-474b-b44f-8a0680ca52c9",
+    "password": "qFuZ38BQwB8z",
 	'version_date': '2017-02-27'
 });
+
 
 var sendJSONresponse = function(res, status, content) {
 	res.status(status);
