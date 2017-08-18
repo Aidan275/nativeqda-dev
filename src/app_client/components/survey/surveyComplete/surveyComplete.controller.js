@@ -17,7 +17,7 @@
 		vm.getLocation = getLocation;
 
 		// Bindable Data
-		vm.surveyData;
+		vm.surveyJSON;
 		vm.userFormComplete = false;
 		vm.surveyComplete = false;
 		vm.form;
@@ -35,9 +35,10 @@
 		}
 
 		function loadSurvey() {
-			surveyService.readSurvey(accessId)
+			surveyService.readSurveyJSON(accessId)
 			.then(function(response) {
-				vm.surveyData = response.data;	/* If loading survey data is successful, store survey to display */
+				console.log(response);
+				vm.surveyJSON = response.data;	/* If loading survey data is successful, store survey to display */
 			}, function() {
 				$location.path('/complete-survey');	/* If an error occurs loading the survey, return to the complete survey page */
 			});
@@ -78,7 +79,7 @@
 			Survey.Survey.cssType = "bootstrap";
 			Survey.defaultBootstrapCss.navigationButton = "btn btn-green";
 
-			var surveyJSONObj = JSON.parse(vm.surveyData.surveyJSON);
+			var surveyJSONObj = JSON.parse(vm.surveyJSON);
 			window.survey = new Survey.Model(surveyJSONObj);
 
 			survey.onComplete.add(function(result) {

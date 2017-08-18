@@ -96,7 +96,8 @@ router.delete('/analysis/watson/delete', auth, checkDatabaseStatus, ctrlAnalysis
 /* Surveys */
 router.post('/survey/save', checkDatabaseStatus, ctrlSurveys.saveSurvey);
 router.get('/survey/check', checkDatabaseStatus, ctrlSurveys.checkSurvey);
-router.get('/survey/read', checkDatabaseStatus, ctrlSurveys.readSurvey);
+router.get('/survey/read', auth, checkDatabaseStatus, ctrlSurveys.readSurvey);
+router.get('/survey/read/json/:accessId', checkDatabaseStatus, ctrlSurveys.readSurveyJSON);
 router.get('/survey/list', auth, checkDatabaseStatus, ctrlSurveys.listSurveys);
 router.delete('/survey/delete', auth, checkDatabaseStatus, ctrlSurveys.deleteSurvey);
 router.post('/survey/response/save', checkDatabaseStatus, ctrlSurveys.saveSurveyResponse);

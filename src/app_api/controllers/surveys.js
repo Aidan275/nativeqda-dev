@@ -80,8 +80,36 @@ module.exports.checkSurvey = function(req, res) {
 	}
 };
 
+/* For viewing a survey when logged in */
 module.exports.readSurvey = function(req, res) {
 	var accessId = req.query.accessId;
+	
+	if (accessId) {
+		Survey
+		.findOne({"accessId": accessId})
+		.exec(
+			function(err, survey) {
+				if (!survey) {
+					sendJSONresponse(res, 404, {
+						"message": "Survey not found"
+					});
+					return;
+				} else if (err) {
+					sendJSONresponse(res, 404, err);
+					return;
+				}
+				sendJSONresponse(res, 200, survey);
+			});
+	} else {
+		sendJSONresponse(res, 400, {
+			"message": "No id in request"
+		});
+	}
+};
+
+/* For reading the survey JSON for the complete survey page */
+module.exports.readSurveyJSON = function(req, res) {
+	var accessId = req.params['accessId'];
 	var ipAddress = (req.headers['x-forwarded-for'] || '').split(',')[0] || req.connection.remoteAddress;
 	
 	if (accessId) {
@@ -121,7 +149,7 @@ module.exports.readSurvey = function(req, res) {
 
 				/* Above could probably be achieved neater without using moment */
 
-				sendJSONresponse(res, 200, survey);
+				sendJSONresponse(res, 200, survey.surveyJSON);
 			});
 	} else {
 		sendJSONresponse(res, 400, {

@@ -12,6 +12,7 @@
 			saveSurvey				: saveSurvey,
 			checkSurvey 			: checkSurvey,
 			readSurvey				: readSurvey,
+			readSurveyJSON 			: readSurveyJSON, 
 			listSurveys 			: listSurveys,
 			deleteSurvey 			: deleteSurvey,
 			saveSurveyResponse 		: saveSurveyResponse,
@@ -57,6 +58,18 @@
 
 			function readSurveyComplete(data) { return data; }
 			function readSurveyFailed(e) { return exception.catcher('Failed reading survey.')(e); }
+		};
+
+		function readSurveyJSON(accessId){
+			return $http.get('/api/survey/read/json/' + accessId, {
+				headers: {
+					Authorization: 'Bearer '+ authentication.getToken()
+				}
+			}).then(readSurveyJSONComplete)
+			.catch(readSurveyJSONFailed);
+
+			function readSurveyJSONComplete(data) { return data; }
+			function readSurveyJSONFailed(e) { return exception.catcher('Failed reading survey.')(e); }
 		};
 
 		function listSurveys(){

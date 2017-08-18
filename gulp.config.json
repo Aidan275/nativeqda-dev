@@ -32,11 +32,12 @@
 		"./node_modules/sweetalert/dist/sweetalert.min.js",
 		"./node_modules/angular-loading-overlay/dist/angular-loading-overlay.js",
 		"./node_modules/d3/build/d3.min.js",
+		"./node_modules/d3-svg-legend/d3-legend.min.js",
+		"./src/app_client/assets/js/d3.layout.cloud.js",
 		"./node_modules/intro.js/intro.js",
 		"./node_modules/tinycolor2/dist/tinycolor-min.js",
 		"./node_modules/angularjs-color-picker/dist/angularjs-color-picker.min.js",
 		"./node_modules/slideout/dist/slideout.min.js",
-		"./node_modules/d3-svg-legend/d3-legend.min.js",
 		"./node_modules/knockout/build/output/knockout-latest.js",
 		"./node_modules/survey-knockout/survey.ko.min.js",
 		"./node_modules/surveyjs-editor/surveyeditor.min.js",
@@ -89,11 +90,12 @@
 		"./node_modules/sweetalert/dist/sweetalert-dev.js",
 		"./node_modules/angular-loading-overlay/dist/angular-loading-overlay.js",
 		"./node_modules/d3/build/d3.js",
+		"./node_modules/d3-svg-legend/d3-legend.js",
+		"./src/app_client/assets/js/d3.layout.cloud.js",
 		"./node_modules/intro.js/intro.js",
 		"./node_modules/tinycolor2/dist/tinycolor-min.js",
 		"./node_modules/angularjs-color-picker/dist/angularjs-color-picker.js",
 		"./node_modules/slideout/dist/slideout.js",
-		"./node_modules/d3-svg-legend/d3-legend.js",
 		"./node_modules/knockout/build/output/knockout-latest.debug.js",
 		"./node_modules/survey-knockout/survey.ko.js",
 		"./node_modules/surveyjs-editor/surveyeditor.js",
@@ -191,7 +193,8 @@
 		"./src/app_client/components/visualisations/visuals/basicTable/basicTable.controller.js",
 		"./src/app_client/components/visualisations/visuals/barChart/barChart.controller.js",
 		"./src/app_client/components/visualisations/visuals/pieChart/pieChart.controller.js",
-		"./src/app_client/components/visualisations/visuals/donutChart/donutChart.controller.js"
+		"./src/app_client/components/visualisations/visuals/donutChart/donutChart.controller.js",
+		"./src/app_client/components/visualisations/visuals/wordCloud/wordCloud.controller.js"
 	],
 "nodeJS": [
 	"./src/app_api/**/*.js"
