@@ -32,7 +32,16 @@ var surveyResponseSchema = new mongoose.Schema({
 	},
 	gender: {
 		type: String
-	}
+	},
+	coords: {	/* Location of survey participant */
+		type: { 
+			type: String,
+			default:'Point' 
+		}, 
+		coordinates: { /* Standard GPS/Map coords */
+			type: [Number]
+		}
+	},
 });
 
 var surveySchema = new mongoose.Schema({

@@ -60,8 +60,9 @@ module.exports.checkSurvey = function(req, res) {
 					});
 					return;
 				} else if(moment().valueOf() < moment(foundResponse.dateCreated).valueOf() + 300000) {	/* If the users IP address does exist and the survey was completed less than 5 minutes before */
-					sendJSONresponse(res, 401, {														/* the last response was saved, respond with an unauthorised error and the error message below */
-						"message": "You have already completed this survey, please wait 5 minutes to access the survey again."
+					var timeRemaining = (moment(foundResponse.dateCreated).valueOf() + 300000) - moment().valueOf();	/* the last response was saved, respond with an unauthorised error and the error message below */
+					sendJSONresponse(res, 503, {
+						"message": "You have already completed this survey, please wait " + (timeRemaining/60000).toFixed(0) + " minute(s) to access the survey again."
 					});
 					return;
 				}
@@ -81,12 +82,14 @@ module.exports.checkSurvey = function(req, res) {
 
 module.exports.readSurvey = function(req, res) {
 	var accessId = req.query.accessId;
+	var ipAddress = (req.headers['x-forwarded-for'] || '').split(',')[0] || req.connection.remoteAddress;
+	
 	if (accessId) {
 		Survey
 		.findOne({"accessId": accessId})
 		.exec(
-			function(err, results) {
-				if (!results) {
+			function(err, survey) {
+				if (!survey) {
 					sendJSONresponse(res, 404, {
 						"message": "Survey not found"
 					});
@@ -95,7 +98,30 @@ module.exports.readSurvey = function(req, res) {
 					sendJSONresponse(res, 404, err);
 					return;
 				}
-				sendJSONresponse(res, 200, results);
+
+				var foundResponse;
+
+				var response = survey.responses.filter(function (response) {	/* Checks if the users IP address to see if the user has previously completed the survey */
+					if(response.ipAddress === ipAddress) {
+						foundResponse = response;
+						return;
+					}
+				});
+
+				if(!foundResponse) {	/* If the users IP address does not exist in the survey responses return the survey */
+					sendJSONresponse(res, 200, survey);
+					return;
+				} else if(moment().valueOf() < moment(foundResponse.dateCreated).valueOf() + 300000) {	/* If the users IP address does exist and the survey was completed less than 5 minutes before */
+					var timeRemaining = (moment(foundResponse.dateCreated).valueOf() + 300000) - moment().valueOf();	/* the last response was saved, respond with an unauthorised error and the error message below */
+					sendJSONresponse(res, 503, {
+						"message": "You have already completed this survey, please wait " + (timeRemaining/60000).toFixed(0) + " minute(s) to access the survey again."
+					});
+					return;
+				}
+
+				/* Above could probably be achieved neater without using moment */
+
+				sendJSONresponse(res, 200, survey);
 			});
 	} else {
 		sendJSONresponse(res, 400, {
@@ -177,6 +203,12 @@ module.exports.saveSurveyResponse = function(req, res) {
 		surveyResponse.email = req.body.email;
 		surveyResponse.age = req.body.age;
 		surveyResponse.gender = req.body.gender;
+
+		if(req.body.coords != undefined){
+			surveyResponse.coords = { 
+				coordinates: [parseFloat(req.body.coords.lng), parseFloat(req.body.coords.lat)]
+			};
+		}
 
 		Survey.findOneAndUpdate(
 			{ "accessId" : accessId },

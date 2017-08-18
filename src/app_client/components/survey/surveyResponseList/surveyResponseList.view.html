@@ -8,9 +8,10 @@
 		<div class="blur-this">
 			<table ng-table="vm.tableParams" class="table table-condensed table-bordered table-striped" style="margin-top:5px">
 				<tr ng-repeat="row in $data">
-					<td data-title="'Name'" filter="{name: 'text'}" sortable="'name'">{{row.fullName}}</td>
-					<td data-title="'Gender'" filter="{Gender: 'text'}" sortable="'Gender'">{{row.gender}}</td>
-					<td data-title="'Age'" filter="{Age: 'number'}" sortable="'Age'">{{row.age}}</td>
+					<td data-title="'Name'" filter="{fullName: 'text'}" sortable="'fullName'">{{row.fullName}}</td>
+					<td data-title="'Gender'" filter="{gender: 'text'}" sortable="'gender'">{{row.gender}}</td>
+					<td data-title="'Age'" filter="{age: 'number'}" sortable="'age'">{{row.age}}</td>
+					<td data-title="'Location Provided'" filter="{location: 'text'}" sortable="'location'">{{row.location}}</td>
 					<td data-title="'Date Created'" filter="{dateCreated: 'text'}" sortable="'dateCreated'">{{row.dateCreated | date : "dd MMMM, yyyy h:mm a"}}</td>
 					<td data-title="'Command'">
 						<a href="/survey/responses/{{vm.accessId}}/{{row.id}}" class="btn btn-success btn-xs" role="button">View Response</a>

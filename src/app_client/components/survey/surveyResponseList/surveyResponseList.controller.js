@@ -7,7 +7,7 @@
 	.controller('surveyResponseListCtrl', surveyResponseListCtrl);
 
 	/* @ngInject */
-	function surveyResponseListCtrl($routeParams, surveyService, bsLoadingOverlayService, NgTableParams) {
+	function surveyResponseListCtrl($routeParams, surveyService, bsLoadingOverlayService, NgTableParams, logger) {
 		var vm = this;
 		vm.accessId = $routeParams.accessId;
 
@@ -34,15 +34,22 @@
 					var data = {
 						responseJSON: JSON.parse(response.responseJSON),
 						dateCreated: response.dateCreated,
-						//fullName: response.fullName,	/* For testing */
-						fullName: 'Jane Doe',
+						fullName: response.fullName,
 						email: response.email,
-						//age: response.age,
-						age: 26,
-						//gender: response.gender,
-						gender: 'Female',
-						id: response._id
+						age: response.age,
+						gender: response.gender,
+						id: response._id,
+						coords: {
+							lat: response.coords.coordinates[1],
+							lng: response.coords.coordinates[0]
+						}
 					};
+
+					if(data.coords.lat && data.coords.lng) {
+						data.location = true;
+					} else {
+						data.location = false;
+					}
 
 					vm.surveyResponsesList.push(data);
 				});

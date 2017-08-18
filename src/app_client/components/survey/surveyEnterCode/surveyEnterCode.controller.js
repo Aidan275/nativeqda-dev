@@ -34,32 +34,8 @@
 			surveyService.checkSurvey(surveyCode)
 			.then(function(response) {
 				$location.path('/complete-survey/' + surveyCode);
-			});
+			}, function(err){});
 		}
-
-		function showSurvey(data) {
-			Survey.Survey.cssType = "bootstrap";
-			Survey.defaultBootstrapCss.navigationButton = "btn btn-green";
-
-			var surveyJSONObj = JSON.parse(data.surveyJSON);
-			window.survey = new Survey.Model(surveyJSONObj);
-			survey.onComplete.add(function(result) {
-				vm.surveyComplete = true;
-				var surveyResponse = {
-					accessId: vm.surveyCode,
-					responseJSON: JSON.stringify(result.data)
-				};
-
-				surveyService.saveSurveyResponse(surveyResponse)
-				.then(function(response) {
-					logger.success('Survey saved successfully.\nThank you for participating.', '', 'Success');
-				});
-			});
-
-			survey.render("surveyElement");
-			
-		}
-
 	}
 
 })();
