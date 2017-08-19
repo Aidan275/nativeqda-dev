@@ -5,7 +5,7 @@
 	.service('authentication', authentication);
 
 	/* @ngInject */
-	function authentication($http, $window, exception, $location) {
+	function authentication($rootScope, $http, $window, exception, $location) {
 		return {
 			register		: register,
 			login			: login,
@@ -129,8 +129,9 @@
 							confirmButtonText: "Okay"
 						},
 						function() {
-							logout();	
-							$location.path('/login');
+							logout();
+							$location.path('/login');	/* Go to the login page */
+							$rootScope.$apply();		/* Perform a digest cycle to reflect page change */	
 							return false;
 						});							
 					}

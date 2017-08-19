@@ -62,6 +62,13 @@
 		/* Marker icons */
 		var defaultIcon = new LeafIcon({iconUrl: 'assets/img/map/markers/marker-icon-2x.png'});
 		var posIcon = new LeafIcon({iconUrl: 'assets/img/map/markers/marker-icon-pos.png'});
+		var fileMarkerIcon = new LeafIcon({iconUrl: 'assets/img/map/markers/File-Marker.png'});
+		var textMarkerIcon = new LeafIcon({iconUrl: 'assets/img/map/markers/Txt-Marker.png'});
+		var docMarkerIcon = new LeafIcon({iconUrl: 'assets/img/map/markers/Docx-Marker.png'});
+		var pdfMarkerIcon = new LeafIcon({iconUrl: 'assets/img/map/markers/PDF-Doc-Marker.png'});
+		var imageMarkerIcon = new LeafIcon({iconUrl: 'assets/img/map/markers/Image-Marker.png'});
+		var videoMarkerIcon = new LeafIcon({iconUrl: 'assets/img/map/markers/Video-Marker.png'});
+		var audioMarkerIcon = new LeafIcon({iconUrl: 'assets/img/map/markers/Audio-Marker.png'});
 
 		activate();
 
@@ -281,7 +288,34 @@
 			vm.fileList.forEach(function(file, index, fileListArray) {
 				var lat = file.coords.coordinates[1];
 				var lng = file.coords.coordinates[0];
-				var marker = L.marker([lat, lng], { icon: defaultIcon });
+
+				var marker;
+
+				switch(file.type) {
+					case 'file':
+					marker = L.marker([lat, lng], { icon: fileMarkerIcon });
+					break;
+					case 'text':
+					marker = L.marker([lat, lng], { icon: textMarkerIcon });
+					break;
+					case 'doc':
+					marker = L.marker([lat, lng], { icon: docMarkerIcon });
+					break;
+					case 'pdf':
+					marker = L.marker([lat, lng], { icon: pdfMarkerIcon });
+					break;
+					case 'image':
+					marker = L.marker([lat, lng], { icon: imageMarkerIcon });
+					break;
+					case 'video':
+					marker = L.marker([lat, lng], { icon: videoMarkerIcon });
+					break;
+					case 'audio':
+					marker = L.marker([lat, lng], { icon: audioMarkerIcon });
+					break;
+					default:
+					marker = L.marker([lat, lng], { icon: defaultIcon });
+				}
 
 				/* HTML for the popup boxes displayed when the file marker is pressed */
 				var popupString = '<div class="info-window">' +

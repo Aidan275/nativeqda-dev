@@ -351,17 +351,17 @@
 				if(vm.file) {
 					switch (vm.fileInfo.extension) {
 						case 'pdf':
-						vm.fileInfo.typeDB = "document";	/* File type - stored in the DB */
+						vm.fileInfo.typeDB = "pdf";	/* File type - stored in the DB */
 						vm.fileInfo.icon = "fa fa-file-pdf-o";	/* PDF font awesome icon */
 						convertPDFToText()	/* Extract text in the background before user presses upload */
 						break;
 						case 'docx':
-						vm.fileInfo.typeDB = "document";	/* File type - stored in the DB */
+						vm.fileInfo.typeDB = "doc";	/* File type - stored in the DB */
 						vm.fileInfo.icon = "fa fa-file-word-o";	/* Word font awesome icon */	
 						convertDocxToText();	/* Extract text in the background before user presses upload */
 						break;
 						case 'doc':
-						vm.fileInfo.typeDB = "document";	/* File type - stored in the DB */
+						vm.fileInfo.typeDB = "doc";	/* File type - stored in the DB */
 						vm.fileInfo.icon = "fa fa-file-word-o";	/* Word font awesome icon */
 						break;
 						case 'txt':
@@ -377,6 +377,24 @@
 						case 'tif':
 						vm.fileInfo.typeDB = "image";	/* File type - stored in the DB */
 						vm.fileInfo.icon = "fa fa-file-image-o";	/* Image font awesome icon */
+						break;
+						case 'mkv':
+						case 'mp4':
+						case 'avi':
+						case 'mov':
+						case 'movie':
+						case 'mpe':
+						case 'mpeg':
+						case 'mpg':
+						case 'dvi':
+						vm.fileInfo.typeDB = "video";	/* File type - stored in the DB */
+						vm.fileInfo.icon = "fa fa-file-video-o";	/* Image font awesome icon */
+						break;
+						case 'mp3':
+						case 'm4a':
+						case 'mpa':
+						vm.fileInfo.typeDB = "audio";	/* File type - stored in the DB */
+						vm.fileInfo.icon = "fa fa-file-audio-o";	/* Image font awesome icon */
 						break;
 						default: 
 						vm.fileInfo.typeDB = "file";	/* File type - stored in the DB */
@@ -585,10 +603,10 @@
 					$uibModalInstance.close(newFile);
 				}, 
 				cancel : function() {	/* Sends 'cancel' back when vm.modal.cancel() is called */
-					$uibModalInstance.dismiss('cancel');
-				}
-			};
-		});
+				$uibModalInstance.dismiss('cancel');
+			}
+		};
+	});
 }
 
 })();
