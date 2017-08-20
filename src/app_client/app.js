@@ -2,7 +2,7 @@
 	
 	'use strict';
 
-	angular.module('nativeQDAApp', ['ngRoute', 'ngSanitize', 'ngTable', 'ngAnimate', 'ui.bootstrap', 'ui.bootstrap.datepicker', 'ngFileUpload', 'ngTagsInput', 'jp.ng-bs-animated-button', 'bsLoadingOverlay', 'color.picker', 'angular-carousel']);
+	angular.module('nativeQDAApp', ['ngRoute', 'ngSanitize', 'ngTable', 'ngAnimate', 'ui.bootstrap', 'ui.bootstrap.datepicker', 'ngFileUpload', 'ngTagsInput', 'jp.ng-bs-animated-button', 'bsLoadingOverlay', 'color.picker', 'angular-carousel', 'angularCSS']);
 
 	/* @ngInject */
 	function config ($routeProvider, $locationProvider) {
@@ -12,7 +12,8 @@
 			templateUrl: '/components/auth/login/login.view.html',
 			controller: 'loginCtrl',
 			controllerAs: 'vm',
-			loginRequired: false
+			loginRequired: false,
+			css: 'assets/css/login.css'
 		})
 		.when('/register', {
 			title: 'NativeQDA | Register',
@@ -26,7 +27,8 @@
 			templateUrl: '/components/auth/forgotPass/forgotPass.view.html',
 			controller: 'forgotPassCtrl',
 			controllerAs: 'vm',
-			loginRequired: false
+			loginRequired: false,
+			css: 'assets/css/forgot-password.css'
 		})
 		.when('/', {
 			title: 'NativeQDA | Home',
@@ -82,7 +84,8 @@
 			templateUrl: '/components/survey/surveyEnterCode/surveyEnterCode.view.html',
 			controller: 'surveyEnterCodeCtrl',
 			controllerAs: 'vm',
-			loginRequired: false
+			loginRequired: false,
+			css: 'assets/css/survey-enter-code.css'
 		})
 		.when('/complete-survey/:accessId', {
 			title: 'NativeQDA | Complete Survey',
