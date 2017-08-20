@@ -778,20 +778,20 @@ footer{
 
 /* ========== USER MANAGEMENT PAGE ========== */
 
-.users-table .table-row:hover {
+#user-management .users-table .table-row:hover {
 	background: rgba(70,118,250,0.15) !important;
 }
 
-.users-table .avatar-cell {
+#user-management .users-table .avatar-cell {
 	cursor: pointer;
 }
 
-.users-table td.avatar-cell,
-.users-table td.first-name-cell,
-.users-table td.last-name-cell,
-.users-table td.email-cell,
-.users-table td.role-cell,
-.users-table td.action-cell {
+#user-management .users-table td.avatar-cell,
+#user-management .users-table td.first-name-cell,
+#user-management .users-table td.last-name-cell,
+#user-management .users-table td.email-cell,
+#user-management .users-table td.role-cell,
+#user-management .users-table td.action-cell {
 	white-space: nowrap;
 	text-align: center;
 	vertical-align: middle !important;

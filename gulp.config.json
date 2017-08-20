@@ -48,8 +48,7 @@
 		"./node_modules/surveyjs-editor/surveyeditor.min.js",
 		"./node_modules/nouislider/distribute/nouislider.min.js",
 		"./node_modules/angular-touch/angular-touch.min.js",
-		"./node_modules/angular-carousel/dist/angular-carousel.min.js",
-		"./node_modules/angular-css/angular-css.min.js"
+		"./node_modules/angular-carousel/dist/angular-carousel.min.js"
 	],
 	"minVendorCSS": [
 		"./node_modules/bootstrap/dist/css/bootstrap.min.css",
@@ -107,8 +106,7 @@
 		"./node_modules/surveyjs-editor/surveyeditor.js",
 		"./node_modules/nouislider/distribute/nouislider.js",
 		"./node_modules/angular-touch/angular-touch.js",
-		"./node_modules/angular-carousel/dist/angular-carousel.js",
-		"./node_modules/angular-css/angular-css.js"
+		"./node_modules/angular-carousel/dist/angular-carousel.js"
 	],
 	"devVendorCSS": [
 		"./node_modules/bootstrap/dist/css/bootstrap.css",

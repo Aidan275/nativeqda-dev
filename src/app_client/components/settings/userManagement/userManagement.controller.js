@@ -10,6 +10,8 @@
 	function userManagementCtrl (NgTableParams, bsLoadingOverlayService, $uibModal, usersService, logger) {
 		var vm = this;
 
+		vm.pageId = 'user-management';
+
 		// Bindable Functions
 		vm.popupNewUser = popupNewUser;
 		vm.popupEditUser = popupEditUser;
