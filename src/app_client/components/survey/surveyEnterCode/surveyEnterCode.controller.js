@@ -9,6 +9,8 @@
 	/* @ngInject */
 	function surveyEnterCodeCtrl(logger, surveyService, $location) {
 		var vm = this;
+		
+		vm.pageId = "enter-code-css";
 
 		// Bindable Functions
 		vm.onSubmit = onSubmit;

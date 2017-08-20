@@ -11,6 +11,7 @@
 		var vm = this;
 
 		//vm.pageClass = 'login-page';	/* Class added to the inner div in the index page (for styling) */
+		vm.pageId = 'login-page-css';
 
 		// Bindable Functions
 		vm.onSubmit = onSubmit;

@@ -9,6 +9,8 @@
 	/* @ngInject */
 	function forgotPassCtrl(authentication, logger) {
 		var vm = this;
+		
+		vm.pageId = "forgot-password-css";
 
 		// Bindable Functions
 		vm.onSubmit = onSubmit;
