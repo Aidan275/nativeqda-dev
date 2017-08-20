@@ -20,6 +20,7 @@ body.pg-loaded > .inner {
 .inner {
 	width: 100%; 
 	height: 100%;
+	padding-top: 50px;
 }
 
 body, html {
@@ -31,7 +32,6 @@ body, html {
 
 body {
 	font-family: 'Roboto', sans-serif;
-	padding-top: 50px;
 }
 
 footer{
@@ -911,13 +911,13 @@ footer{
 
 }
 @media screen and (min-width:360px) and (max-width: 430px) {
-    #login-page-css .profileImage > img {
-        max-width:80px;
+	#login-page-css .profileImage > img {
+		max-width:80px;
 		max-height:80px;
-    }
+	}
 	#login-page-css .mainLogo > img {
-        max-width:200px;
-    }
+		max-width:200px;
+	}
 	#login-page-css .invisibleClass {
 		display:none;
 	}
@@ -931,13 +931,13 @@ footer{
 	}
 }
 @media screen and (min-width:431px) and (max-width: 767px) {
-    #login-page-css .profileImage > img {
-        max-width:80px;
+	#login-page-css .profileImage > img {
+		max-width:80px;
 		max-height:80px;
-    }
+	}
 	#login-page-css .mainLogo > img {
-        max-width:200px;
-    }
+		max-width:200px;
+	}
 	#login-page-css .invisibleClass {
 		display:none;
 	}
@@ -964,40 +964,24 @@ footer{
 		min-height:510px;
 	}
 }
-#login-page-css html, body 
-{
-	position: absolute;
-	height: 100%;
+
+#login-page-css {
 	width: 100%;
+	height: 100%;
 	background: #4676fa;
 	color: rgba(0,0,0,0.6);
-	font-family: RobotoDraft,Roboto;
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	-o-user-select: none;
-	user-select: none;
+	font-family: Roboto;
+	font-weight: 500;
 }
-#login-page-css body header {
-	position: relative;
-	width: 100%;
-	height: 80px;
-	box-shadow: 0 2px 5px 0 rgba(0,0,0,0.26);
-	background: #4676fa;
-	font-size: 30px;
-	font-weight: 300;
-	color: rgb(242, 251, 253);
-	text-align: center;
-	line-height: 75px;
-}
+
 #login-page-css .login {
 	position: relative;
-    padding: 10px;
-    margin: 40px auto 80px auto;
-    border-radius: 3px;
-    background: white;
-    box-shadow: 0 1px 5px 0 rgba(0,0,0,0.26);
-    overflow: hidden;
+	padding: 10px;
+	margin: 40px auto 80px auto;
+	border-radius: 3px;
+	background: white;
+	box-shadow: 0 1px 5px 0 rgba(0,0,0,0.26);
+	overflow: hidden;
 }
 #login-page-css .profileImage{
 	text-align:center;
@@ -1065,57 +1049,57 @@ footer{
 	margin: 50px 15px;
 }
 #login-page-css .form-group-qda {
-  position: relative;
-  margin-top: 35px;
-  margin-bottom: 20px;
+	position: relative;
+	margin-top: 35px;
+	margin-bottom: 20px;
 }
 #login-page-css .form-control-qda {
-  display: block;
-  height: 36px;
-  width: 100%;
-  border: none;
-  border-radius: 0 !important;
-  font-size: 15px;
-  font-family: inherit;
-  font-weight: 300;
-  padding: 0;
-  background-color: transparent;
-  box-shadow: none;
-  border-bottom: 1px solid rgba(117, 117, 117, 0.15);
+	display: block;
+	height: 36px;
+	width: 100%;
+	border: none;
+	border-radius: 0 !important;
+	font-size: 15px;
+	font-family: inherit;
+	font-weight: 300;
+	padding: 0;
+	background-color: transparent;
+	box-shadow: none;
+	border-bottom: 1px solid rgba(117, 117, 117, 0.15);
 }
 #login-page-css .form-control-qda:focus {
-  border-bottom: 2px solid rgb(3, 169, 245);
-  outline: none;
-  box-shadow: none;
+	border-bottom: 2px solid rgb(3, 169, 245);
+	outline: none;
+	box-shadow: none;
 }
 #login-page-css .form-highlight {
-  position: absolute;
-  height: 60%;
-  width: 60px;
-  top: 25%;
-  left: 0;
-  pointer-events: none;
-  opacity: 0.4;
+	position: absolute;
+	height: 60%;
+	width: 60px;
+	top: 25%;
+	left: 0;
+	pointer-events: none;
+	opacity: 0.4;
 }
 #login-page-css .form-control-qda:focus ~ .form-highlight {
-  -webkit-animation: inputHighlighter 0.3s ease;
-  -moz-animation: inputHighlighter 0.3s ease;
-  animation: inputHighlighter 0.3s ease;
+	-webkit-animation: inputHighlighter 0.3s ease;
+	-moz-animation: inputHighlighter 0.3s ease;
+	animation: inputHighlighter 0.3s ease;
 }
 #login-page-css .float-label {
-  position: absolute;
-  left: 0;
-  top: 10px;
-  font-size: 16px;
-  color: #999;
-  font-weight: 300;
-  transition: 0.2s ease all;
-  -moz-transition: 0.2s ease all;
-  -webkit-transition: 0.2s ease all;
+	position: absolute;
+	left: 0;
+	top: 10px;
+	font-size: 16px;
+	color: #999;
+	font-weight: 300;
+	transition: 0.2s ease all;
+	-moz-transition: 0.2s ease all;
+	-webkit-transition: 0.2s ease all;
 }
 #login-page-css .form-control-qda:focus ~ .float-label, #login-page-css .form-control-qda:valid ~ .float-label {
-  top: -15px;
-  font-size: 12px;
+	top: -15px;
+	font-size: 12px;
 }
 #login-page-css .form-group-qda erroru, #login-page-css .form-group-qda errorp {
 	position: absolute;
@@ -1155,39 +1139,39 @@ footer{
 }
 #login-page-css input[type=checkbox]
 {
-    display: none;
-    visibility: hidden;
+	display: none;
+	visibility: hidden;
 }
 #login-page-css input[type="checkbox"] + label
 {
-    cursor: pointer;
-    font-size: 15px;
-    font-weight: 500;
-    transition: border-color 0.3s ease-in-out, background-color 0.3s ease-in-out;
+	cursor: pointer;
+	font-size: 15px;
+	font-weight: 500;
+	transition: border-color 0.3s ease-in-out, background-color 0.3s ease-in-out;
 }
 #login-page-css input[type="checkbox"] + label:before
 {
-    display: inline-block;
-    content: "";
-    margin: 0 15px 3px 0px;
-    width: 18px;
-    height: 18px;
-    background-color: #fff;
-    border: 2px solid #5a5a5a;
-    border-radius: 2px;
-    vertical-align: middle;
+	display: inline-block;
+	content: "";
+	margin: 0 15px 3px 0px;
+	width: 18px;
+	height: 18px;
+	background-color: #fff;
+	border: 2px solid #5a5a5a;
+	border-radius: 2px;
+	vertical-align: middle;
 }
 #login-page-css input[type=checkbox]:checked + label:before
 {
-    background-image: url('data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjIwcHgiIGhlaWdodD0iMTVweCIgdmlld0JveD0iMCAwIDIwIDE1Ij4NCjxwb2x5Z29uIGZpbGw9IiNGRkZGRkYiIHBvaW50cz0iNy4xNDMsMTQuOTM4IDAsNy43OTYgMi4wMjEsNS43NzYgNy4xNDMsMTAuODk4IDE3Ljk3OSwwLjA2MiAyMCwyLjA4MiAiLz4NCjwvc3ZnPg0K');
-    background-color: rgb(3, 169, 245);
-    border-color: rgb(3, 169, 245);
-    background-repeat: no-repeat;
-    background-position: 50% 50%;
-    -webkit-background-size: 11px auto;
-    -moz-background-size: 11px auto;
-    -o-background-size: 11px auto;
-    background-size: 11px auto;
+	background-image: url('data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjIwcHgiIGhlaWdodD0iMTVweCIgdmlld0JveD0iMCAwIDIwIDE1Ij4NCjxwb2x5Z29uIGZpbGw9IiNGRkZGRkYiIHBvaW50cz0iNy4xNDMsMTQuOTM4IDAsNy43OTYgMi4wMjEsNS43NzYgNy4xNDMsMTAuODk4IDE3Ljk3OSwwLjA2MiAyMCwyLjA4MiAiLz4NCjwvc3ZnPg0K');
+	background-color: rgb(3, 169, 245);
+	border-color: rgb(3, 169, 245);
+	background-repeat: no-repeat;
+	background-position: 50% 50%;
+	-webkit-background-size: 11px auto;
+	-moz-background-size: 11px auto;
+	-o-background-size: 11px auto;
+	background-size: 11px auto;
 }
 #login-page-css button[type="submit"] {
 	position: relative;
@@ -1239,20 +1223,20 @@ footer{
 	font-size: 12px;
 }
 #login-page-css .copyright a {
-  text-decoration: none;
-  color: rgb(3, 169, 245);
+	text-decoration: none;
+	color: rgb(3, 169, 245);
 }
 #login-page-css .copyright a:hover {
-  transition: none;
-  border-bottom: 1px solid rgb(3, 169, 245);
+	transition: none;
+	border-bottom: 1px solid rgb(3, 169, 245);
 }
 
 /* ========== NEW FORGOT PASSWORD ========== */
 
 @media screen and (max-width: 339px) {
 	#forgot-password-css .mainLogo > img {
-        max-width:200px;
-    }
+		max-width:200px;
+	}
 	#forgot-password-css .invisibleClass {
 		display:none;
 	}
@@ -1267,8 +1251,8 @@ footer{
 }
 @media screen and (min-width:340px) and (max-width: 367px) {
 	#forgot-password-css .mainLogo > img {
-        max-width:200px;
-    }
+		max-width:200px;
+	}
 	#forgot-password-css .invisibleClass {
 		display:none;
 	}
@@ -1284,8 +1268,8 @@ footer{
 }
 @media screen and (min-width:368px) and (max-width: 439px) {
 	#forgot-password-css .mainLogo > img {
-        max-width:200px;
-    }
+		max-width:200px;
+	}
 	#forgot-password-css .invisibleClass {
 		display:none;
 	}
@@ -1301,8 +1285,8 @@ footer{
 }
 @media screen and (min-width:440px) and (max-width: 767px) {
 	#forgot-password-css .mainLogo > img {
-        max-width:200px;
-    }
+		max-width:200px;
+	}
 	#forgot-password-css .invisibleClass {
 		display:none;
 	}
@@ -1335,8 +1319,8 @@ footer{
 @media screen and (height:1024px) and (width: 768px) {
 	#forgot-password-css .mainLogo > img {
 		min-width:300px;
-        max-width:300px;
-    }
+		max-width:300px;
+	}
 	#forgot-password-css .invisibleClass {
 		display:none;
 	}
@@ -1351,8 +1335,8 @@ footer{
 }
 @media screen and (height:1366px) and (width: 1024px) {
 	#forgot-password-css .mainLogo > img {
-        max-width:200px;
-    }
+		max-width:200px;
+	}
 	#forgot-password-css .invisibleClass {
 		display:none;
 	}
@@ -1364,40 +1348,24 @@ footer{
 		height:275px;
 	}
 }
-#forgot-password-css html, body 
-{
-	position: absolute;
-	height: 100%;
+
+#forgot-password-css {
 	width: 100%;
+	height: 100%;
 	background: #4676fa;
 	color: rgba(0,0,0,0.6);
-	font-family: RobotoDraft,Roboto;
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	-o-user-select: none;
-	user-select: none;
+	font-family: Roboto;
+	font-weight: 500;
 }
-#forgot-password-css body header {
-	position: relative;
-	width: 100%;
-	height: 80px;
-	box-shadow: 0 2px 5px 0 rgba(0,0,0,0.26);
-	background: #4676fa;
-	font-size: 30px;
-	font-weight: 300;
-	color: rgb(242, 251, 253);
-	text-align: center;
-	line-height: 75px;
-}
+
 #forgot-password-css .login {
 	position: relative;
-    padding: 10px;
-    margin: 40px auto 80px auto;
-    border-radius: 3px;
-    background: white;
-    box-shadow: 0 1px 5px 0 rgba(0,0,0,0.26);
-    overflow: hidden;
+	padding: 10px;
+	margin: 40px auto 80px auto;
+	border-radius: 3px;
+	background: white;
+	box-shadow: 0 1px 5px 0 rgba(0,0,0,0.26);
+	overflow: hidden;
 }
 #forgot-password-css .profileImage{
 	text-align:center;
@@ -1465,57 +1433,57 @@ footer{
 	margin: 50px 15px;
 }
 #forgot-password-css .form-group-qda {
-  position: relative;
-  margin-top: 35px;
-  margin-bottom: 20px;
+	position: relative;
+	margin-top: 35px;
+	margin-bottom: 20px;
 }
 #forgot-password-css .form-control-qda {
-  display: block;
-  height: 36px;
-  width: 100%;
-  border: none;
-  border-radius: 0 !important;
-  font-size: 15px;
-  font-family: inherit;
-  font-weight: 300;
-  padding: 0;
-  background-color: transparent;
-  box-shadow: none;
-  border-bottom: 1px solid rgba(117, 117, 117, 0.15);
+	display: block;
+	height: 36px;
+	width: 100%;
+	border: none;
+	border-radius: 0 !important;
+	font-size: 15px;
+	font-family: inherit;
+	font-weight: 300;
+	padding: 0;
+	background-color: transparent;
+	box-shadow: none;
+	border-bottom: 1px solid rgba(117, 117, 117, 0.15);
 }
 #forgot-password-css .form-control-qda:focus {
-  border-bottom: 2px solid rgb(3, 169, 245);
-  outline: none;
-  box-shadow: none;
+	border-bottom: 2px solid rgb(3, 169, 245);
+	outline: none;
+	box-shadow: none;
 }
 #forgot-password-css .form-highlight {
-  position: absolute;
-  height: 60%;
-  width: 60px;
-  top: 25%;
-  left: 0;
-  pointer-events: none;
-  opacity: 0.4;
+	position: absolute;
+	height: 60%;
+	width: 60px;
+	top: 25%;
+	left: 0;
+	pointer-events: none;
+	opacity: 0.4;
 }
 #forgot-password-css .form-control-qda:focus ~ .form-highlight {
-  -webkit-animation: inputHighlighter 0.3s ease;
-  -moz-animation: inputHighlighter 0.3s ease;
-  animation: inputHighlighter 0.3s ease;
+	-webkit-animation: inputHighlighter 0.3s ease;
+	-moz-animation: inputHighlighter 0.3s ease;
+	animation: inputHighlighter 0.3s ease;
 }
 #forgot-password-css .float-label {
-  position: absolute;
-  left: 0;
-  top: 10px;
-  font-size: 16px;
-  color: #999;
-  font-weight: 300;
-  transition: 0.2s ease all;
-  -moz-transition: 0.2s ease all;
-  -webkit-transition: 0.2s ease all;
+	position: absolute;
+	left: 0;
+	top: 10px;
+	font-size: 16px;
+	color: #999;
+	font-weight: 300;
+	transition: 0.2s ease all;
+	-moz-transition: 0.2s ease all;
+	-webkit-transition: 0.2s ease all;
 }
 #forgot-password-css .form-control-qda:focus ~ .float-label, #forgot-password-css .form-control-qda:valid ~ .float-label {
-  top: -15px;
-  font-size: 12px;
+	top: -15px;
+	font-size: 12px;
 }
 #forgot-password-css .form-group-qda erroru, .form-group-qda errorp {
 	position: absolute;
@@ -1555,39 +1523,39 @@ footer{
 }
 #forgot-password-css input[type=checkbox]
 {
-    display: none;
-    visibility: hidden;
+	display: none;
+	visibility: hidden;
 }
 #forgot-password-css input[type="checkbox"] + label
 {
-    cursor: pointer;
-    font-size: 15px;
-    font-weight: 500;
-    transition: border-color 0.3s ease-in-out, background-color 0.3s ease-in-out;
+	cursor: pointer;
+	font-size: 15px;
+	font-weight: 500;
+	transition: border-color 0.3s ease-in-out, background-color 0.3s ease-in-out;
 }
 #forgot-password-css input[type="checkbox"] + label:before
 {
-    display: inline-block;
-    content: "";
-    margin: 0 15px 3px 0px;
-    width: 18px;
-    height: 18px;
-    background-color: #fff;
-    border: 2px solid #5a5a5a;
-    border-radius: 2px;
-    vertical-align: middle;
+	display: inline-block;
+	content: "";
+	margin: 0 15px 3px 0px;
+	width: 18px;
+	height: 18px;
+	background-color: #fff;
+	border: 2px solid #5a5a5a;
+	border-radius: 2px;
+	vertical-align: middle;
 }
 #forgot-password-css input[type=checkbox]:checked + label:before
 {
-    background-image: url('data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjIwcHgiIGhlaWdodD0iMTVweCIgdmlld0JveD0iMCAwIDIwIDE1Ij4NCjxwb2x5Z29uIGZpbGw9IiNGRkZGRkYiIHBvaW50cz0iNy4xNDMsMTQuOTM4IDAsNy43OTYgMi4wMjEsNS43NzYgNy4xNDMsMTAuODk4IDE3Ljk3OSwwLjA2MiAyMCwyLjA4MiAiLz4NCjwvc3ZnPg0K');
-    background-color: rgb(3, 169, 245);
-    border-color: rgb(3, 169, 245);
-    background-repeat: no-repeat;
-    background-position: 50% 50%;
-    -webkit-background-size: 11px auto;
-    -moz-background-size: 11px auto;
-    -o-background-size: 11px auto;
-    background-size: 11px auto;
+	background-image: url('data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjIwcHgiIGhlaWdodD0iMTVweCIgdmlld0JveD0iMCAwIDIwIDE1Ij4NCjxwb2x5Z29uIGZpbGw9IiNGRkZGRkYiIHBvaW50cz0iNy4xNDMsMTQuOTM4IDAsNy43OTYgMi4wMjEsNS43NzYgNy4xNDMsMTAuODk4IDE3Ljk3OSwwLjA2MiAyMCwyLjA4MiAiLz4NCjwvc3ZnPg0K');
+	background-color: rgb(3, 169, 245);
+	border-color: rgb(3, 169, 245);
+	background-repeat: no-repeat;
+	background-position: 50% 50%;
+	-webkit-background-size: 11px auto;
+	-moz-background-size: 11px auto;
+	-o-background-size: 11px auto;
+	background-size: 11px auto;
 }
 #forgot-password-css button[type="submit"] {
 	position: absolute;
@@ -1638,20 +1606,20 @@ footer{
 	font-size: 12px;
 }
 #forgot-password-css .copyright a {
-  text-decoration: none;
-  color: rgb(3, 169, 245);
+	text-decoration: none;
+	color: rgb(3, 169, 245);
 }
 #forgot-password-css .copyright a:hover {
-  transition: none;
-  border-bottom: 1px solid rgb(3, 169, 245);
+	transition: none;
+	border-bottom: 1px solid rgb(3, 169, 245);
 }
 
 /* ========== ENTER SURVEY CODE FORM ========== */
 
 @media screen and (max-width: 339px) {
 	#enter-code-css .mainLogo > img {
-        max-width:200px;
-    }
+		max-width:200px;
+	}
 	#enter-code-css .invisibleClass {
 		display:none;
 	}
@@ -1666,8 +1634,8 @@ footer{
 }
 @media screen and (min-width:340px) and (max-width: 360px) {
 	#enter-code-css .mainLogo > img {
-        max-width:200px;
-    }
+		max-width:200px;
+	}
 	#enter-code-css .invisibleClass {
 		display:none;
 	}
@@ -1683,8 +1651,8 @@ footer{
 }
 @media screen and (min-width:361px) and (max-width: 439px) {
 	#enter-code-css .mainLogo > img {
-        max-width:200px;
-    }
+		max-width:200px;
+	}
 	#enter-code-css .invisibleClass {
 		display:none;
 	}
@@ -1700,8 +1668,8 @@ footer{
 }
 @media screen and (min-width:440px) and (max-width: 767px) {
 	#enter-code-css .mainLogo > img {
-        max-width:200px;
-    }
+		max-width:200px;
+	}
 	#enter-code-css .invisibleClass {
 		display:none;
 	}
@@ -1734,8 +1702,8 @@ footer{
 @media screen and (height:1024px) and (width: 768px) {
 	#enter-code-css .mainLogo > img {
 		min-width:300px;
-        max-width:300px;
-    }
+		max-width:300px;
+	}
 	#enter-code-css .invisibleClass {
 		display:none;
 	}
@@ -1750,8 +1718,8 @@ footer{
 }
 @media screen and (height:1366px) and (width: 1024px) {
 	#enter-code-css .mainLogo > img {
-        max-width:200px;
-    }
+		max-width:200px;
+	}
 	#enter-code-css .invisibleClass {
 		display:none;
 	}
@@ -1763,40 +1731,23 @@ footer{
 		height:275px;
 	}
 }
-#enter-code-css html, body 
-{
-	position: absolute;
-	height: 100%;
+#enter-code-css {
 	width: 100%;
+	height: 100%;
 	background: #4676fa;
 	color: rgba(0,0,0,0.6);
-	font-family: RobotoDraft,Roboto;
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	-o-user-select: none;
-	user-select: none;
+	font-family: Roboto;
+	font-weight: 500;
 }
-#enter-code-css body header {
-	position: relative;
-	width: 100%;
-	height: 80px;
-	box-shadow: 0 2px 5px 0 rgba(0,0,0,0.26);
-	background: #4676fa;
-	font-size: 30px;
-	font-weight: 300;
-	color: rgb(242, 251, 253);
-	text-align: center;
-	line-height: 75px;
-}
+
 #enter-code-css .login {
 	position: relative;
-    padding: 10px;
-    margin: 40px auto 80px auto;
-    border-radius: 3px;
-    background: white;
-    box-shadow: 0 1px 5px 0 rgba(0,0,0,0.26);
-    overflow: hidden;
+	padding: 10px;
+	margin: 40px auto 80px auto;
+	border-radius: 3px;
+	background: white;
+	box-shadow: 0 1px 5px 0 rgba(0,0,0,0.26);
+	overflow: hidden;
 }
 #enter-code-css .profileImage{
 	text-align:center;
@@ -1864,57 +1815,57 @@ footer{
 	margin: 50px 15px;
 }
 #enter-code-css .form-group-qda {
-  position: relative;
-  margin-top: 35px;
-  margin-bottom: 20px;
+	position: relative;
+	margin-top: 35px;
+	margin-bottom: 20px;
 }
 #enter-code-css .form-control-qda {
-  display: block;
-  height: 36px;
-  width: 100%;
-  border: none;
-  border-radius: 0 !important;
-  font-size: 15px;
-  font-family: inherit;
-  font-weight: 300;
-  padding: 0;
-  background-color: transparent;
-  box-shadow: none;
-  border-bottom: 1px solid rgba(117, 117, 117, 0.15);
+	display: block;
+	height: 36px;
+	width: 100%;
+	border: none;
+	border-radius: 0 !important;
+	font-size: 15px;
+	font-family: inherit;
+	font-weight: 300;
+	padding: 0;
+	background-color: transparent;
+	box-shadow: none;
+	border-bottom: 1px solid rgba(117, 117, 117, 0.15);
 }
 #enter-code-css .form-control-qda:focus {
-  border-bottom: 2px solid rgb(3, 169, 245);
-  outline: none;
-  box-shadow: none;
+	border-bottom: 2px solid rgb(3, 169, 245);
+	outline: none;
+	box-shadow: none;
 }
 #enter-code-css .form-highlight {
-  position: absolute;
-  height: 60%;
-  width: 60px;
-  top: 25%;
-  left: 0;
-  pointer-events: none;
-  opacity: 0.4;
+	position: absolute;
+	height: 60%;
+	width: 60px;
+	top: 25%;
+	left: 0;
+	pointer-events: none;
+	opacity: 0.4;
 }
 #enter-code-css .form-control-qda:focus ~ .form-highlight {
-  -webkit-animation: inputHighlighter 0.3s ease;
-  -moz-animation: inputHighlighter 0.3s ease;
-  animation: inputHighlighter 0.3s ease;
+	-webkit-animation: inputHighlighter 0.3s ease;
+	-moz-animation: inputHighlighter 0.3s ease;
+	animation: inputHighlighter 0.3s ease;
 }
 #enter-code-css .float-label {
-  position: absolute;
-  left: 0;
-  top: 10px;
-  font-size: 16px;
-  color: #999;
-  font-weight: 300;
-  transition: 0.2s ease all;
-  -moz-transition: 0.2s ease all;
-  -webkit-transition: 0.2s ease all;
+	position: absolute;
+	left: 0;
+	top: 10px;
+	font-size: 16px;
+	color: #999;
+	font-weight: 300;
+	transition: 0.2s ease all;
+	-moz-transition: 0.2s ease all;
+	-webkit-transition: 0.2s ease all;
 }
 #enter-code-css .form-control-qda:focus ~ .float-label, #enter-code-css .form-control-qda:valid ~ .float-label {
-  top: -15px;
-  font-size: 12px;
+	top: -15px;
+	font-size: 12px;
 }
 #enter-code-css .form-group-qda erroru, #enter-code-css .form-group-qda errorp {
 	position: absolute;
@@ -1954,39 +1905,39 @@ footer{
 }
 #enter-code-css input[type=checkbox]
 {
-    display: none;
-    visibility: hidden;
+	display: none;
+	visibility: hidden;
 }
 #enter-code-css input[type="checkbox"] + label
 {
-    cursor: pointer;
-    font-size: 15px;
-    font-weight: 500;
-    transition: border-color 0.3s ease-in-out, background-color 0.3s ease-in-out;
+	cursor: pointer;
+	font-size: 15px;
+	font-weight: 500;
+	transition: border-color 0.3s ease-in-out, background-color 0.3s ease-in-out;
 }
 #enter-code-css input[type="checkbox"] + label:before
 {
-    display: inline-block;
-    content: "";
-    margin: 0 15px 3px 0px;
-    width: 18px;
-    height: 18px;
-    background-color: #fff;
-    border: 2px solid #5a5a5a;
-    border-radius: 2px;
-    vertical-align: middle;
+	display: inline-block;
+	content: "";
+	margin: 0 15px 3px 0px;
+	width: 18px;
+	height: 18px;
+	background-color: #fff;
+	border: 2px solid #5a5a5a;
+	border-radius: 2px;
+	vertical-align: middle;
 }
 #enter-code-css input[type=checkbox]:checked + label:before
 {
-    background-image: url('data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjIwcHgiIGhlaWdodD0iMTVweCIgdmlld0JveD0iMCAwIDIwIDE1Ij4NCjxwb2x5Z29uIGZpbGw9IiNGRkZGRkYiIHBvaW50cz0iNy4xNDMsMTQuOTM4IDAsNy43OTYgMi4wMjEsNS43NzYgNy4xNDMsMTAuODk4IDE3Ljk3OSwwLjA2MiAyMCwyLjA4MiAiLz4NCjwvc3ZnPg0K');
-    background-color: rgb(3, 169, 245);
-    border-color: rgb(3, 169, 245);
-    background-repeat: no-repeat;
-    background-position: 50% 50%;
-    -webkit-background-size: 11px auto;
-    -moz-background-size: 11px auto;
-    -o-background-size: 11px auto;
-    background-size: 11px auto;
+	background-image: url('data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjIwcHgiIGhlaWdodD0iMTVweCIgdmlld0JveD0iMCAwIDIwIDE1Ij4NCjxwb2x5Z29uIGZpbGw9IiNGRkZGRkYiIHBvaW50cz0iNy4xNDMsMTQuOTM4IDAsNy43OTYgMi4wMjEsNS43NzYgNy4xNDMsMTAuODk4IDE3Ljk3OSwwLjA2MiAyMCwyLjA4MiAiLz4NCjwvc3ZnPg0K');
+	background-color: rgb(3, 169, 245);
+	border-color: rgb(3, 169, 245);
+	background-repeat: no-repeat;
+	background-position: 50% 50%;
+	-webkit-background-size: 11px auto;
+	-moz-background-size: 11px auto;
+	-o-background-size: 11px auto;
+	background-size: 11px auto;
 }
 #enter-code-css button[type="submit"] {
 	position: absolute;
@@ -2037,10 +1988,10 @@ footer{
 	font-size: 12px;
 }
 #enter-code-css .copyright a {
-  text-decoration: none;
-  color: rgb(3, 169, 245);
+	text-decoration: none;
+	color: rgb(3, 169, 245);
 }
 #enter-code-css .copyright a:hover {
-  transition: none;
-  border-bottom: 1px solid rgb(3, 169, 245);
+	transition: none;
+	border-bottom: 1px solid rgb(3, 169, 245);
 }

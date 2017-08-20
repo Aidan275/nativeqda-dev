@@ -1,99 +1,28 @@
-<style>
-*/
-*,
-*:after,
-*:before 
-{
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    -ms-box-sizing: border-box;
-    -o-box-sizing: border-box;
-    box-sizing: border-box;
-    padding: 0;
-    margin: 0;
-}
-/* -- highlighter animation --------------------------- */
-@-webkit-keyframes inputHighlighter {
-  from { background:#5264AE; }
-  to { width:0; background:transparent; }
-}
-@-moz-keyframes inputHighlighter {
-  from { background:#5264AE; }
-  to { width:0; background:transparent; }
-}
-@keyframes inputHighlighter {
-  from { background:#5264AE; }
-  to { width:0; background:transparent; }
-}
-@-webkit-keyframes user-head {
-100% {
-	-webkit-transform:scale(1);
-	transform:scale(1);
-	-moz-transform:scale(1);
-} }
-@-moz-keyframes user-head {
-100% {
-	-webkit-transform:scale(1);
-	transform:scale(1);
-	-moz-transform:scale(1);
-} }
-@keyframes user-head {
-100% {
-	-webkit-transform:scale(1);
-	transform:scale(1);
-	-moz-transform:scale(1);
-} }
-@-webkit-keyframes user-body {
-100% {
-	-webkit-transform:translateY(2px);
-	transform:translateY(2px);
-	-moz-transform:translateY(2px);
-} }
-@-moz-keyframes user-body {
-100% {
-	-webkit-transform:translateY(2px);
-	transform:translateY(2px);
-	-moz-transform:translateY(2px);
-} }
-@keyframes user-body {
-100% {
-	-webkit-transform:translateY(2px);
-	transform:translateY(2px);
-	-moz-transform:translateY(2px);
-} }
-button:disabled {
-	background: #eee;
-    color: #333;
-    box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0.37);
-    cursor: not-allowed;
-}
-</style>
-
-<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=RobotoDraft:300,500"> 
- 
 <div class="mainLogo" style="text-align:center;">
-	<img src="assets/img/Logo.png" height="25%" width="25%" style="min-width:185px;max-width:500px;">
+	<img src="assets/img/Logo.png" height="25%" width="25%" style="min-width:185px;max-width:350px;">
 </div>
 
 <div class="login" style="max-width:90%;min-width:300px;width:400px;">
 
-	<p align="center"><span><font size="5">Having trouble signing in?</font></span></p><br />
-	
+	<p align="center">
+		<span>
+			<font size="5">Having trouble signing in?</font>
+		</span>
+	</p>
+
+	<br />
+
 	<form ng-submit="vm.onSubmit()" id="login-form">
 		<div id="u" class="form-group-qda">
 			<input type="text" class="form-control-qda" id="email" name="username" required="required" ng-model="vm.email"> 
 			<span class="form-highlight"></span>
 			<span class="form-bar"></span>
 			<label for="email" class="float-label">Email</label>
-			<erroru>
-				Email is required
-				<i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
-			</erroru>
 		</div>
 
-	<div class="form-group-qda buttonPlacementFix" style="text-align:center;">
-		<button id="submit" type="submit" ng-disabled="vm.reset">Reset password</button>
-	</div>
+		<div class="form-group-qda buttonPlacementFix" style="text-align:center;">
+			<button id="submit" type="submit" ng-disabled="vm.reset">Reset password</button>
+		</div>
 	</form>
 
 </div>
