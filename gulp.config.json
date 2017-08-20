@@ -7,6 +7,11 @@
 		"!./src/app_client/*.html",
 		"!./src/app_client/assets/**/*.html"
 	],
+	"appCSS": [
+		"./src/app_client/**/*.css",
+		"!./src/app_client/*.css",
+		"!./src/app_client/assets/**/*.css"
+	],
 	"minVendorJS": [
 		"./node_modules/angular/angular.min.js",
 		"./node_modules/angular-route/angular-route.min.js",

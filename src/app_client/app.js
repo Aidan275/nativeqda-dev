@@ -10,10 +10,10 @@
 		.when('/login', {
 			title: 'NativeQDA | Login',
 			templateUrl: '/components/auth/login/login.view.html',
+			css: '/components/auth/login/login.style.css',
 			controller: 'loginCtrl',
 			controllerAs: 'vm',
-			loginRequired: false,
-			css: 'assets/css/login.css'
+			loginRequired: false
 		})
 		.when('/register', {
 			title: 'NativeQDA | Register',
@@ -25,10 +25,10 @@
 		.when('/forgot-password', {
 			title: 'NativeQDA | Forgot Password',
 			templateUrl: '/components/auth/forgotPass/forgotPass.view.html',
+			css: '/components/auth/forgotPass/forgotPass.style.css',
 			controller: 'forgotPassCtrl',
 			controllerAs: 'vm',
-			loginRequired: false,
-			css: 'assets/css/forgot-password.css'
+			loginRequired: false
 		})
 		.when('/', {
 			title: 'NativeQDA | Home',
@@ -82,10 +82,10 @@
 		.when('/complete-survey', {
 			title: 'NativeQDA | Complete Survey',
 			templateUrl: '/components/survey/surveyEnterCode/surveyEnterCode.view.html',
+			css: '/components/survey/surveyEnterCode/surveyEnterCode.style.css',
 			controller: 'surveyEnterCodeCtrl',
 			controllerAs: 'vm',
-			loginRequired: false,
-			css: 'assets/css/survey-enter-code.css'
+			loginRequired: false
 		})
 		.when('/complete-survey/:accessId', {
 			title: 'NativeQDA | Complete Survey',
