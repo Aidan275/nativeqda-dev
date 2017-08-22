@@ -138,6 +138,7 @@
 		"./src/app_client/app.js",
 		"./src/app_client/config.js",
 		"./src/app_client/common/directives/footerGeneric/footerGeneric.directive.js",
+		"./src/app_client/common/directives/footerGeneric/footerGeneric.controller.js",
 		"./src/app_client/common/directives/navigation/navigation.controller.js",
 		"./src/app_client/common/directives/navigation/navigation.directive.js",
 		"./src/app_client/common/directives/pageHeader/pageHeader.directive.js",
