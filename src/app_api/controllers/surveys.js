@@ -137,7 +137,7 @@ module.exports.readSurveyJSON = function(req, res) {
 				});
 
 				if(!foundResponse) {	/* If the users IP address does not exist in the survey responses return the survey */
-					sendJSONresponse(res, 200, survey);
+					sendJSONresponse(res, 200, survey.surveyJSON);
 					return;
 				} else if(moment().valueOf() < moment(foundResponse.dateCreated).valueOf() + 300000) {	/* If the users IP address does exist and the survey was completed less than 5 minutes before */
 					var timeRemaining = (moment(foundResponse.dateCreated).valueOf() + 300000) - moment().valueOf();	/* the last response was saved, respond with an unauthorised error and the error message below */
