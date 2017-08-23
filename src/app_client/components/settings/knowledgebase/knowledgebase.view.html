@@ -1,20 +1,123 @@
+<style>
+	body {
+		width: 100%;
+		height: 100%;
+		overflow:hidden;
+	}
 
+	#menu {
+		padding: 75px 25px 25px 25px;
+		overflow: hidden;
+		background: #eee;
+	}
+
+	.slideout-menu {
+		position: fixed;
+		top: 0;
+		bottom: 0;
+		width: 256px;
+		min-height: 100vh;
+		overflow-y: scroll;
+		-webkit-overflow-scrolling: touch;
+		z-index: 0;
+		display: none;
+	}
+
+	.slideout-menu-left {
+		left: 0;
+	}
+
+	.slideout-menu-right {
+		right: 0;
+	}
+
+	.slideout-panel {
+		position: relative;
+		z-index: 1;
+		will-change: transform;
+		background-color: #FFF; /* A background-color is required */
+		min-height: 100vh;
+	}
+
+	.slideout-open,
+	.slideout-open body,
+	.slideout-open .slideout-panel {
+		overflow: hidden;
+	}
+
+	.slideout-open .slideout-menu {
+		display: block;
+	}
+
+	#graph {
+		position: absolute;
+		top: 0; 
+		right: 0; 
+		bottom: 0; 
+		left: 0;
+	}
+
+	#graph svg {
+	}
+
+	#controls-button {
+
+		position:relative;
+	}
+	.pageItem {
+	position:relative;
+	}
+</style>
 <navigation></navigation>
 
-<div class="container">
+<nav id="menu">
 
-	<page-header content="vm.pageHeader"></page-header>
+  <header>
+  
+    <h1>Menu</h1>
 	
-	<!--System Settings-->
-	<div class="col-md-12" style="height:100%;">
-		<div class="well" style="min-height:370px;height:100%;">
+		<a  href="#Terminology" class="btn btn-success " role="button">Terminology</a>
+		<br />
+		<br />
+		<a href="#U" class="btn btn-success " role="button">Uploading Files</a>
+		<br />
+		<br />
+		<a  href="#D" class="btn btn-success " role="button">Creating Datasets</a>
+		<br />
+		<br />
+		<a   href="#A"class="btn btn-success " role="button">Creating an Analysis</a>
+		<br />
+		<br />
+		<a  href="#V" class="btn btn-success " role="button">Viewing Visualisations</a>
+		<br />
+		<br />
+		<a   href="#M" class="btn btn-success " role="button">The Map</a>
+		<br />
+		<br />
+		<a  href="#G" class="btn btn-success " role="button">General System Things</a>
+		
+	
+  </header>
+</nav>
 
-				<div class="form-group col-lg-8">
-					<p>Content goes here</p>
-				</div>
-				
+<div id="panel">
+  <div class="bs-loading-container" bs-loading-overlay bs-loading-overlay-active-class="loading-overlay--active" bs-loading-overlay-reference-id="bubble-chart"> 
+		<div class="blur-this">
+			<div id="graph"></div>
+			<div id="controls-button">
+				<button ng-click="vm.toggleOptions()" class="btn btn-success">Find</button>
+			</div>
+			<h1 class="pageItem" >Knowledgebase</h1>
+			<h2 class = "pageItem" id="Terminology">Terminology</h2>
+			<h2 class = "pageItem" id="U">Uploading Files</h2>
+			<h2 class = "pageItem" id="D">Creating Datasets</h2>
+			<h2 class = "pageItem" id="A">Creating and Analysis</h2>
+			<h2 class = "pageItem" id="V">Viewing Visualisations</h2>
+			<h2 class = "pageItem" id="M">The Map</h2>
+			<h2 class = "pageItem" id="G">General System Things</h2>
+			<svg id="svg-legend"></svg>
 		</div>
 	</div>
-</div>	
-	<footer-generic></footer-generic>
+</div>
 
+</div>
