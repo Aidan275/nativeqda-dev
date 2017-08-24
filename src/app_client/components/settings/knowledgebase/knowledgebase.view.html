@@ -1,9 +1,4 @@
 <style>
-	body {
-		width: 100%;
-		height: 100%;
-		overflow:hidden;
-	}
 
 	#menu {
 		padding: 75px 25px 25px 25px;
@@ -49,75 +44,89 @@
 		display: block;
 	}
 
-	#graph {
-		position: absolute;
-		top: 0; 
-		right: 0; 
-		bottom: 0; 
-		left: 0;
-	}
-
-	#graph svg {
-	}
-
-	#controls-button {
-
+	.pageItem {
 		position:relative;
 	}
-	.pageItem {
-	position:relative;
+
+	.ng-hide {
+		opacity: 0;
 	}
+
+	.ng-hide-add { 
+		position: absolute;
+		transition: all linear 300ms;
+	}
+
+	.ng-hide-remove { 
+		position: absolute;
+		transition: all linear 300ms;
+	}
+
 </style>
+
 <navigation></navigation>
 
 <nav id="menu">
 
-  <header>
-  
-    <h1>Menu</h1>
-	
-		<a  href="#Terminology" class="btn btn-success " role="button">Terminology</a>
+	<header>
+
+		<h1>Menu</h1>
+
+		<a ng-click="vm.togglePage('knowledgebase')" class="btn btn-success" role="button">Knowledgebase</a>
 		<br />
 		<br />
-		<a href="#U" class="btn btn-success " role="button">Uploading Files</a>
+		<a ng-click="vm.togglePage('terminology')" class="btn btn-success" role="button">Terminology</a>
 		<br />
 		<br />
-		<a  href="#D" class="btn btn-success " role="button">Creating Datasets</a>
+		<a ng-click="vm.togglePage('uploading')" class="btn btn-success" role="button">Uploading Files</a>
 		<br />
 		<br />
-		<a   href="#A"class="btn btn-success " role="button">Creating an Analysis</a>
+		<a ng-click="vm.togglePage('datasets')" class="btn btn-success" role="button">Creating Datasets</a>
 		<br />
 		<br />
-		<a  href="#V" class="btn btn-success " role="button">Viewing Visualisations</a>
+		<a ng-click="vm.togglePage('analysis')" class="btn btn-success" role="button">Creating an Analysis</a>
 		<br />
 		<br />
-		<a   href="#M" class="btn btn-success " role="button">The Map</a>
+		<a ng-click="vm.togglePage('visualisations')" class="btn btn-success" role="button">Viewing Visualisations</a>
 		<br />
 		<br />
-		<a  href="#G" class="btn btn-success " role="button">General System Things</a>
+		<a ng-click="vm.togglePage('map')" class="btn btn-success" role="button">The Map</a>
+		<br />
+		<br />
+		<a ng-click="vm.togglePage('system')" class="btn btn-success" role="button">General System Things</a>
 		
-	
-  </header>
+	</header>
 </nav>
 
 <div id="panel">
-  <div class="bs-loading-container" bs-loading-overlay bs-loading-overlay-active-class="loading-overlay--active" bs-loading-overlay-reference-id="bubble-chart"> 
-		<div class="blur-this">
-			<div id="graph"></div>
-			<div id="controls-button">
-				<button ng-click="vm.toggleOptions()" class="btn btn-success">Find</button>
-			</div>
-			<h1 class="pageItem" >Knowledgebase</h1>
-			<h2 class = "pageItem" id="Terminology">Terminology</h2>
-			<h2 class = "pageItem" id="U">Uploading Files</h2>
-			<h2 class = "pageItem" id="D">Creating Datasets</h2>
-			<h2 class = "pageItem" id="A">Creating and Analysis</h2>
-			<h2 class = "pageItem" id="V">Viewing Visualisations</h2>
-			<h2 class = "pageItem" id="M">The Map</h2>
-			<h2 class = "pageItem" id="G">General System Things</h2>
-			<svg id="svg-legend"></svg>
+
+	<button ng-click="vm.toggleOptions()" class="btn btn-success">Find</button>
+
+	<div class="container">
+		<div ng-show="vm.knowledgebase" class="pageItem">
+			<h1>Knowledgebase</h1>
+		</div>
+		<div ng-show="vm.terminology" class="pageItem">
+			<h2>Terminology</h2>
+		</div>
+		<div ng-show="vm.uploading" class="pageItem">
+			<h2 id="U">Uploading Files</h2>
+		</div>
+		<div ng-show="vm.datasets" class="pageItem">
+			<h2 id="D">Creating Datasets</h2>
+		</div>
+		<div ng-show="vm.analysis" class="pageItem">
+			<h2 id="A">Creating and Analysis</h2>
+		</div>
+		<div ng-show="vm.visualisations" class="pageItem">
+			<h2 id="V">Viewing Visualisations</h2>
+		</div>
+		<div ng-show="vm.map" class="pageItem">
+			<h2 id="M">The Map</h2>
+		</div>
+		<div ng-show="vm.system" class="pageItem">
+			<h2 id="G">General System Things</h2>
 		</div>
 	</div>
-</div>
 
 </div>

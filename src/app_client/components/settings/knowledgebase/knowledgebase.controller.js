@@ -4,186 +4,78 @@
 	.module('nativeQDAApp')
 	.controller('knowledgebaseCtrl', knowledgebaseCtrl);
 	
-	function knowledgebaseCtrl ($routeParams,analysisService, bsLoadingOverlayService) {
-	
+	function knowledgebaseCtrl() {
 		var vm = this;
 
-		// Scrolls to the top of the page
-		document.body.scrollTop = 0; // For Chrome, Safari and Opera 
-	    document.documentElement.scrollTop = 0; // For IE and Firefox
+		/* Bindable Functions */
+		vm.toggleOptions = toggleOptions;
+		vm.togglePage = togglePage;
 
-	    var slideout = new Slideout({
-	    	'panel': document.querySelector('#panel'),
-	    	'menu': document.querySelector('#menu'),
-	    	'padding': 256,
-	    	'tolerance': 70
-	    });
+		/* Bindable Data */
+		vm.knowledgebase = true;
+		vm.terminology = false;
+		vm.uploading = false;
+		vm.datasets = false;
+		vm.analysis = false;
+		vm.visualisations = false;
+		vm.map = false;
+		vm.system = false;
 
-	    vm.toggleOptions = toggleOptions;
-	    vm.updateFontScale = updateFontScale;
-	    vm.setCicleColour = setCicleColour;
-	    vm.updateToLinearScale = updateToLinearScale;
-	    vm.updateToPowScale = updateToPowScale;
+		/* Slideout side menu initialisation */
+		var slideout = new Slideout({
+			'panel': document.querySelector('#panel'),
+			'menu': document.querySelector('#menu'),
+			'padding': 256,
+			'tolerance': 70
+		});
 
-	    vm.textColour = '#000000';
-	    vm.bubbleColour1 = '#e4e4d9';
-	    vm.bubbleColour2 = '#4676fa';
-	    vm.bgColour = '#ffffff';
-	    vm.fontScale = {
-	    	value: 14
-	    };
-	    vm.powScale = {
-	    	value: 2
-	    };
-	    vm.selectedScale = 'linear';
-
-	    vm.textColourChange;
-
-	    var analysisType = $routeParams.type;
-	    var id = $routeParams.id;
-
-	    var dataNodes = [];
-	    var data;
-
-	    var width = document.querySelector("#graph").clientWidth;
-	    var height = document.querySelector("#graph").clientHeight;
-	    var maxRelevance = 0;
-	    var minRelevance = 100;
-
-	    function toggleOptions() {
-	    	slideout.toggle();
-	    }
-
-	   
-	   
 		///////////////////////////
 
-		
-
-		
-
-		function setCicleColour() {
-			var colours = d3.scaleLinear()
-			.domain([minRelevance, maxRelevance])
-			.range([vm.bubbleColour1, vm.bubbleColour2]);
-
-			svg.selectAll("circle").style("fill", function(d) { return colours(d.relevance) });
-
-			var linear = d3.scaleLinear()
-			.domain([minRelevance*100, maxRelevance*100])
-			.range([vm.bubbleColour1, vm.bubbleColour2]);
-
-			var legendLinear = d3.legendColor()
-			.shapeWidth(30)
-			.cells(10)
-			.orient('horizontal')
-			.scale(linear)
-			.title("Relevance (%)");
-
-			legendSvg.select(".svg-legend-class")
-			.call(legendLinear);
+		function toggleOptions() {
+			slideout.toggle();
 		}
 
-		vm.bgColourOptions = { format:'hexString', case:'lower' };
-		vm.textColourOptions = { format:'hexString', case:'lower' };
-		vm.bubbleColourOptions1 = { format:'hexString', case:'lower' };
-		vm.bubbleColourOptions2 = { format:'hexString', case:'lower' };
+		/* Clicking the page button gives this function the page string which then hides all the pages and uses */
+		/* a switch statement to show the selected page - could probably be done better but it's simple and works */
+		function togglePage(page) {
+			vm.knowledgebase = false;
+			vm.terminology = false;
+			vm.uploading = false;
+			vm.datasets = false;
+			vm.analysis = false;
+			vm.visualisations = false;
+			vm.map = false;
+			vm.system = false;
 
-		vm.bgColourChange = { onChange: function(api, color) { document.querySelector(".graph-svg-component").style.background = color; } };
-		vm.textColourChange = {	onChange: function(api, color, $event) { svg.selectAll("text").style("fill", color); } };
-		vm.bubbleColourChange1 = { onChange: function() { setCicleColour(); } };
-		vm.bubbleColourChange2 = { onChange: function() { setCicleColour(); } };
-
-		function updateFontScale() { 
-			svg.selectAll("text").style("font-size", function(d) { 
-				return d.radius*vm.fontScale.value/50; 
-			})
-		}
-
-		function updateToLinearScale() { 
-			if(vm.selectedScale === 'linear') {
-				var linearScale = d3.scaleLinear()
-				.domain([0, 1])
-				.range([0, 100]);
-
-				var colours = d3.scaleLinear()
-				.domain([minRelevance, maxRelevance])
-				.range([vm.bubbleColour1, vm.bubbleColour2]);
-
-				svg.selectAll("circle").style("fill", function(d) { return colours(d.relevance); });
-
-				node
-				.each(function(d) {
-					d.radius = linearScale(d.relevance);
-				})
-				.transition()
-				.duration(500)
-				.attr("r", function(d) { return d.radius; });
-				forceCollide.radius(function(d) { return d.radius; });
-
-				updateFontScale()
-
-				var linear = d3.scaleLinear()
-				.domain([minRelevance*100, maxRelevance*100])
-				.range([vm.bubbleColour1, vm.bubbleColour2]);
-
-				var legendLinear = d3.legendColor()
-				.shapeWidth(30)
-				.cells(10)
-				.orient('horizontal')
-				.scale(linear)
-				.title("Relevance (%)");
-
-				legendSvg.select(".svg-legend-class")
-				.call(legendLinear);
-
-				simulation.alphaTarget(0.3).restart();
+			switch(page) {
+				case 'knowledgebase':
+				vm.knowledgebase = true;
+				break;
+				case 'terminology':
+				vm.terminology = true;
+				break;
+				case 'uploading':
+				vm.uploading = true;
+				break;
+				case 'datasets':
+				vm.datasets = true;
+				break;
+				case 'analysis':
+				vm.analysis = true;
+				break;
+				case 'visualisations':
+				vm.visualisations = true;
+				break;
+				case 'map':
+				vm.map = true;
+				break;
+				case 'system':
+				vm.system = true;
+				break;
+				default:
+				vm.knowledgebase = true;
 			}
 		}
-
-		function updateToPowScale() { 
-			vm.selectedScale = 'power';
-			if(vm.powScale.value) {
-				var powerScale = d3.scalePow().exponent(vm.powScale.value)
-				.domain([0, 1])
-				.range([0, 100]);
-
-				var colours = d3.scalePow().exponent(vm.powScale.value)
-				.domain([minRelevance, maxRelevance])
-				.range([vm.bubbleColour1, vm.bubbleColour2]);
-
-				svg.selectAll("circle").style("fill", function(d) { return colours(d.relevance); });
-
-				node
-				.each(function(d) {
-					d.radius = powerScale(d.relevance);
-				})
-				.transition()
-				.duration(500)
-				.attr("r", function(d) { return d.radius; });
-
-				forceCollide.radius(function(d) { return d.radius; });
-
-				updateFontScale()
-
-				var legPower = d3.scalePow().exponent(vm.powScale.value)
-				.domain([minRelevance*100, maxRelevance*100])
-				.range([vm.bubbleColour1, vm.bubbleColour2]);
-
-				var legendPower = d3.legendColor()
-				.shapeWidth(30)
-				.cells(10)
-				.orient('horizontal')
-				.scale(legPower)
-				.title("Relevance (%)");
-
-				legendSvg.select(".svg-legend-class")
-				.call(legendPower);
-
-				simulation.alphaTarget(0.3).restart();
-			}
-		}
-
 	}
 
 })();
