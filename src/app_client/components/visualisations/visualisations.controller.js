@@ -18,10 +18,11 @@
 		vm.analysisID = $routeParams.id;
 		vm.analysisData = {};
 		vm.pageHeader = {
-			title: 'Visualisations'
+			title: 'Visualisations',
+			strapline: 'Use the side menu on the left to see available visualisations'
 		};
 		vm.details = true;
-		vm.assistance = true;
+		vm.upAndComing = false;
 		vm.categories = false;
 		vm.concepts = false;
 		vm.entities = false;
@@ -49,7 +50,7 @@
 		/* a switch statement to show the selected page - could probably be done better but it's simple and works */
 		function togglePage(page) {
 				vm.details = false;
-				vm.assistance = false;
+				vm.upAndComing = false;
 				vm.categories = false;
 				vm.concepts = false;
 				vm.entities = false;
@@ -60,31 +61,36 @@
 			switch(page) {
 				case 'details':
 				vm.details = true;
-				vm.assistance = true;
 				break;
 				case 'categories':
 				vm.details = true;
 				vm.categories = true;
+				vm.upAndComing = true;
 				break;
 				case 'concepts':
 				vm.details = true;
 				vm.concepts = true;
+				vm.upAndComing = true;
 				break;
 				case 'entites':
 				vm.details = true;
 				vm.entities = true;
+				vm.upAndComing = true;
 				break;
 				case 'keywords':
 				vm.details = true;
 				vm.keywords = true;
+				vm.upAndComing = true;
 				break;
 				case 'relations':
 				vm.details = true;
 				vm.relations = true;
+				vm.upAndComing = true;
 				break;
 				case 'semanticRoles':
 				vm.details = true;
 				vm.semanticRoles = true;
+				vm.upAndComing = true;
 				break;
 				default:
 				vm.details = true;
