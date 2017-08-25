@@ -23,8 +23,8 @@
 
 		/* Slideout side menu initialisation */
 		var slideout = new Slideout({
-			'panel': document.querySelector('#panel'),
-			'menu': document.querySelector('#menu'),
+			'panel': document.querySelector('#kbPanel'),
+			'menu': document.querySelector('#kbMenu'),
 			'padding': 256,
 			'tolerance': 70
 		});

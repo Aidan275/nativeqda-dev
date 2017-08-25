@@ -31,8 +31,8 @@
 		
 		/* Slideout side menu initialisation */
 		var slideout = new Slideout({
-			'panel': document.querySelector('#panel'),
-			'menu': document.querySelector('#menu'),
+			'panel': document.querySelector('#viPanel'),
+			'menu': document.querySelector('#viMenu'),
 			'padding': 256,
 			'tolerance': 70
 		});
