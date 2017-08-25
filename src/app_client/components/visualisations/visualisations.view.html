@@ -62,7 +62,6 @@
 		position: absolute;
 		transition: all linear 300ms;
 	}
-
 </style>
 
 <navigation></navigation>
@@ -71,34 +70,35 @@
 
 	<header>
 
-		<h1>Menu</h1>
+		<h4>Visualisation Types</h4>
+		<hr style="border-top: 3px dashed #4676fa;">
 
-		<a ng-click="vm.togglePage('details')" class="btn btn-success" role="button">Details</a>
+		<a ng-click="vm.togglePage('details')" class="btn" style="background-color:#4676fa;border-color:#4676fa;color:#fff;font-weight:500;" role="button">Details</a>
 		<br />
 		<br />
-		<a ng-click="vm.togglePage('categories')" class="btn btn-success" role="button">Categories</a>
+		<a ng-click="vm.togglePage('categories')" class="btn" style="background-color:#4676fa;border-color:#4676fa;color:#fff;font-weight:500;" role="button">Categories</a>
 		<br />
 		<br />
-		<a ng-click="vm.togglePage('concepts')" class="btn btn-success" role="button">Concepts</a>
+		<a ng-click="vm.togglePage('concepts')" class="btn" style="background-color:#4676fa;border-color:#4676fa;color:#fff;font-weight:500;" role="button">Concepts</a>
 		<br />
 		<br />
-		<a ng-click="vm.togglePage('entites')" class="btn btn-success" role="button">Entities</a>
+		<a ng-click="vm.togglePage('entites')" class="btn" style="background-color:#4676fa;border-color:#4676fa;color:#fff;font-weight:500;" role="button">Entities</a>
 		<br />
 		<br />
-		<a ng-click="vm.togglePage('keywords')" class="btn btn-success" role="button">Keywords</a>
+		<a ng-click="vm.togglePage('keywords')" class="btn" style="background-color:#4676fa;border-color:#4676fa;color:#fff;font-weight:500;" role="button">Keywords</a>
 		<br />
 		<br />
-		<a ng-click="vm.togglePage('relations')" class="btn btn-success" role="button">Relations</a>
+		<a ng-click="vm.togglePage('relations')" class="btn" style="background-color:#4676fa;border-color:#4676fa;color:#fff;font-weight:500;" role="button">Relations</a>
 		<br />
 		<br />
-		<a ng-click="vm.togglePage('semanticRoles')" class="btn btn-success" role="button">Semantic Roles</a>
+		<a ng-click="vm.togglePage('semanticRoles')" class="btn" style="background-color:#4676fa;border-color:#4676fa;color:#fff;font-weight:500;" role="button">Semantic Roles</a>
 		
 	</header>
 </nav>
 
 <div id="viPanel">
 
-	<button ng-click="vm.toggleOptions()" class="btn btn-success">Visuals</button>
+	<img src="assets/img/vismenu.png" alt="VisMenu" ng-click="vm.toggleOptions()">
 	
 	<div class="container">
 	
@@ -125,7 +125,7 @@
 					<br/>
 					<label>S3 Key: </label> {{vm.analysisData.sourceDataKey}}
 					<br/>
-					<a ng-click="vm.viewFile(vm.analysisData.sourceDataKey)" class="btn btn-primary btn-sm" role="button">Raw Text</a>
+					<a ng-click="vm.viewFile(vm.analysisData.sourceDataKey)" class="btn btn-primary btn-sm" style="background-color:#4676fa;border-color:#4676fa;color:#fff;font-weight:500;" role="button">Raw Text</a>
 
 					<br/>
 					<br/>
@@ -142,8 +142,8 @@
 					<p>Supported languages: English</p>
 
 					<p>
-						<a href="/basic-table/categories/{{vm.analysisID}}" class="btn btn-primary btn-lg" role="button">Basic Table</a>
-						<a href="/word-cloud/categories/{{vm.analysisID}}" class="btn btn-primary btn-lg" role="button">Word Cloud</a>
+						<a href="/basic-table/categories/{{vm.analysisID}}" class="btn btn-primary btn-lg" style="background-color:#4676fa;border-color:#4676fa;color:#fff;font-weight:500;" role="button">Basic Table</a>
+						<a href="/word-cloud/categories/{{vm.analysisID}}" class="btn btn-primary btn-lg" style="background-color:#4676fa;border-color:#4676fa;color:#fff;font-weight:500;" role="button">Word Cloud</a>
 					</p>
 
 					<br/>
@@ -154,11 +154,11 @@
 					<p>Supported languages: English, Spanish</p>
 
 					<p>
-						<a href="/bubble-chart/concepts/{{vm.analysisID}}" class="btn btn-primary btn-lg" role="button">Bubble Chart</a> 
-						<a href="/basic-table/concepts/{{vm.analysisID}}" class="btn btn-primary btn-lg" role="button">Basic Table</a>
-						<a href="/bar-chart/concepts/{{vm.analysisID}}" class="btn btn-primary btn-lg" role="button">Bar Chart</a>
-						<a href="/pie-chart/concepts/{{vm.analysisID}}" class="btn btn-primary btn-lg" role="button">Pie Chart </a>
-						<a href="/word-cloud/concepts/{{vm.analysisID}}" class="btn btn-primary btn-lg" role="button">Word Cloud</a>
+						<a href="/bubble-chart/concepts/{{vm.analysisID}}" class="btn btn-primary btn-lg" style="background-color:#4676fa;border-color:#4676fa;color:#fff;font-weight:500;" role="button">Bubble Chart</a> 
+						<a href="/basic-table/concepts/{{vm.analysisID}}" class="btn btn-primary btn-lg" style="background-color:#4676fa;border-color:#4676fa;color:#fff;font-weight:500;" role="button">Basic Table</a>
+						<a href="/bar-chart/concepts/{{vm.analysisID}}" class="btn btn-primary btn-lg" style="background-color:#4676fa;border-color:#4676fa;color:#fff;font-weight:500;" role="button">Bar Chart</a>
+						<a href="/pie-chart/concepts/{{vm.analysisID}}" class="btn btn-primary btn-lg" style="background-color:#4676fa;border-color:#4676fa;color:#fff;font-weight:500;" role="button">Pie Chart </a>
+						<a href="/word-cloud/concepts/{{vm.analysisID}}" class="btn btn-primary btn-lg" style="background-color:#4676fa;border-color:#4676fa;color:#fff;font-weight:500;" role="button">Word Cloud</a>
 					</p>
 
 					<br/>
@@ -171,10 +171,10 @@
 					<p>Supported languages: English, French, German, Italian, Portuguese, Russian, Spanish, Swedish</p>
 
 					<p>
-						<a href="/radar-chart/entities/{{vm.analysisID}}" class="btn btn-primary btn-lg" role="button">Radar Chart</a> 
-						<a href="/basic-table/entities/{{vm.analysisID}}" class="btn btn-primary btn-lg" role="button">Basic Table</a>
-						<a href="/bar-chart/entities/{{vm.analysisID}}" class="btn btn-primary btn-lg" role="button">Bar Chart</a>
-						<a href="/word-cloud/entities/{{vm.analysisID}}" class="btn btn-primary btn-lg" role="button">Word Cloud</a>
+						<a href="/radar-chart/entities/{{vm.analysisID}}" class="btn btn-primary btn-lg" style="background-color:#4676fa;border-color:#4676fa;color:#fff;font-weight:500;" role="button">Radar Chart</a> 
+						<a href="/basic-table/entities/{{vm.analysisID}}" class="btn btn-primary btn-lg" style="background-color:#4676fa;border-color:#4676fa;color:#fff;font-weight:500;" role="button">Basic Table</a>
+						<a href="/bar-chart/entities/{{vm.analysisID}}" class="btn btn-primary btn-lg" style="background-color:#4676fa;border-color:#4676fa;color:#fff;font-weight:500;" role="button">Bar Chart</a>
+						<a href="/word-cloud/entities/{{vm.analysisID}}" class="btn btn-primary btn-lg" style="background-color:#4676fa;border-color:#4676fa;color:#fff;font-weight:500;" role="button">Word Cloud</a>
 					</p>
 
 					<br/>
@@ -185,13 +185,13 @@
 					<p>Supported languages: English, French, German, Italian, Portuguese, Russian, Spanish, Swedish</p>
 
 					<p>
-						<a href="/bubble-chart/keywords/{{vm.analysisID}}" class="btn btn-primary btn-lg" role="button">Bubble Chart</a> 
-						<a href="/radar-chart/keywords/{{vm.analysisID}}" class="btn btn-primary btn-lg" role="button">Radar Chart</a> 
-						<a href="/treemap-chart/keywords/{{vm.analysisID}}" class="btn btn-primary btn-lg" role="button">Treemap Chart</a> 
-						<a href="/basic-table/keywords/{{vm.analysisID}}" class="btn btn-primary btn-lg" role="button">Basic Table</a>
-						<a href="/bar-chart/keywords/{{vm.analysisID}}" class="btn btn-primary btn-lg" role="button">Bar Chart</a>
-						<a href="/pie-chart/keywords/{{vm.analysisID}}" class="btn btn-primary btn-lg" role="button">Pie Chart</a>
-						<a href="/word-cloud/keywords/{{vm.analysisID}}" class="btn btn-primary btn-lg" role="button">Word Cloud</a>
+						<a href="/bubble-chart/keywords/{{vm.analysisID}}" class="btn btn-primary btn-lg" style="background-color:#4676fa;border-color:#4676fa;color:#fff;font-weight:500;" role="button">Bubble Chart</a> 
+						<a href="/radar-chart/keywords/{{vm.analysisID}}" class="btn btn-primary btn-lg" style="background-color:#4676fa;border-color:#4676fa;color:#fff;font-weight:500;" role="button">Radar Chart</a> 
+						<a href="/treemap-chart/keywords/{{vm.analysisID}}" class="btn btn-primary btn-lg" style="background-color:#4676fa;border-color:#4676fa;color:#fff;font-weight:500;" role="button">Treemap Chart</a> 
+						<a href="/basic-table/keywords/{{vm.analysisID}}" class="btn btn-primary btn-lg" style="background-color:#4676fa;border-color:#4676fa;color:#fff;font-weight:500;" role="button">Basic Table</a>
+						<a href="/bar-chart/keywords/{{vm.analysisID}}" class="btn btn-primary btn-lg" style="background-color:#4676fa;border-color:#4676fa;color:#fff;font-weight:500;" role="button">Bar Chart</a>
+						<a href="/pie-chart/keywords/{{vm.analysisID}}" class="btn btn-primary btn-lg" style="background-color:#4676fa;border-color:#4676fa;color:#fff;font-weight:500;" role="button">Pie Chart</a>
+						<a href="/word-cloud/keywords/{{vm.analysisID}}" class="btn btn-primary btn-lg" style="background-color:#4676fa;border-color:#4676fa;color:#fff;font-weight:500;" role="button">Word Cloud</a>
 					</p>
 
 					<br />
@@ -202,7 +202,7 @@
 					<p>Supported languages: Arabic, English, Spanish</p>
 
 					<p>
-						<a href="/basic-table/relations/{{vm.analysisID}}" class="btn btn-primary btn-lg" role="button">Basic Table</a>
+						<a href="/basic-table/relations/{{vm.analysisID}}" class="btn btn-primary btn-lg" style="background-color:#4676fa;border-color:#4676fa;color:#fff;font-weight:500;" role="button">Basic Table</a>
 					</p>
 
 					<br />
@@ -213,7 +213,7 @@
 					<p>Supported languages: English, Spanish</p>
 
 					<p>
-						<a href="/basic-table/semanticRoles/{{vm.analysisID}}" class="btn btn-primary btn-lg" role="button">Basic Table</a>
+						<a href="/basic-table/semanticRoles/{{vm.analysisID}}" class="btn btn-primary btn-lg" style="background-color:#4676fa;border-color:#4676fa;color:#fff;font-weight:500;" role="button">Basic Table</a>
 					</p>
 
 					<br />

@@ -72,7 +72,7 @@
 				break;
 				case 'entites':
 				vm.details = true;
-				vm.entites = true;
+				vm.entities = true;
 				break;
 				case 'keywords':
 				vm.details = true;
