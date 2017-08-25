@@ -1,14 +1,112 @@
+<style>
+
+	#menu {
+		padding: 75px 25px 25px 25px;
+		overflow: hidden;
+		background: #eee;
+	}
+
+	.slideout-menu {
+		position: fixed;
+		top: 0;
+		bottom: 0;
+		width: 256px;
+		min-height: 100vh;
+		overflow-y: scroll;
+		-webkit-overflow-scrolling: touch;
+		z-index: 0;
+		display: none;
+	}
+
+	.slideout-menu-left {
+		left: 0;
+	}
+
+	.slideout-menu-right {
+		right: 0;
+	}
+
+	.slideout-panel {
+		position: relative;
+		z-index: 1;
+		will-change: transform;
+		background-color: #FFF; /* A background-color is required */
+		min-height: 100vh;
+	}
+
+	.slideout-open,
+	.slideout-open body,
+	.slideout-open .slideout-panel {
+		overflow-x: hidden;
+		overflow-y: auto;
+	}
+
+	.slideout-open .slideout-menu {
+		display: block;
+	}
+
+	.pageItem {
+		position:relative;
+	}
+
+	.ng-hide {
+		opacity: 0;
+	}
+
+	.ng-hide-add { 
+		position: absolute;
+		transition: all linear 300ms;
+	}
+
+	.ng-hide-remove { 
+		position: absolute;
+		transition: all linear 300ms;
+	}
+
+</style>
+
 <navigation></navigation>
 
-<div class="container">
+<nav id="menu">
 
+	<header>
+
+		<h1>Menu</h1>
+
+		<a ng-click="vm.togglePage('details')" class="btn btn-success" role="button">Details</a>
+		<br />
+		<br />
+		<a ng-click="vm.togglePage('categories')" class="btn btn-success" role="button">Categories</a>
+		<br />
+		<br />
+		<a ng-click="vm.togglePage('concepts')" class="btn btn-success" role="button">Concepts</a>
+		<br />
+		<br />
+		<a ng-click="vm.togglePage('entites')" class="btn btn-success" role="button">Entities</a>
+		<br />
+		<br />
+		<a ng-click="vm.togglePage('keywords')" class="btn btn-success" role="button">Keywords</a>
+		<br />
+		<br />
+		<a ng-click="vm.togglePage('relations')" class="btn btn-success" role="button">Relations</a>
+		<br />
+		<br />
+		<a ng-click="vm.togglePage('semantic-roles')" class="btn btn-success" role="button">Semantic Roles</a>
+		
+	</header>
+</nav>
+
+<div class="panel">
+
+	<button ng-click="vm.toggleOptions()" class="btn btn-success">Find</button>
+	
 	<page-header content="vm.pageHeader"></page-header>
-
 
 	<div class="bs-loading-container" bs-loading-overlay bs-loading-overlay-active-class="loading-overlay--active" bs-loading-overlay-reference-id="visuals-info"> 
 		<div class="blur-this">
 			<div class="row">
 				<div class="col-md-12">
+				<div ng-show="vm.details" class="pageItem">
 					<h3>Analysis Details</h3>
 
 					<label>Name: </label> {{vm.analysisData.name}}
@@ -29,11 +127,8 @@
 
 					<br/>
 					<br/>
-
-					<h3>Below are the visualisations that are available for {{vm.analysisData.name}}</h3>
-
-					<br/>
-
+				</div>
+				<div ng-show="vm.categories" class="pageItem">
 					<h4>Categories</h4>
 					<p>Categorise your content into a 5-level taxonomy. The top three categories will be returned.</p>
 					<p>View the complete list of categories <a href="https://www.ibm.com/watson/developercloud/doc/natural-language-understanding/categories.html" target="_blank">here</a>.</p>
@@ -45,7 +140,8 @@
 					</p>
 
 					<br/>
-
+				</div>
+				<div ng-show="vm.concepts" class="pageItem">
 					<h4>Concepts</h4>
 					<p>Recognise high-level concepts that are related to your text. For example, analysis of a research paper about deep learning would likely return the concept "Artificial Intelligence", even if that term is not explicitly mentioned in the paper.</p>
 					<p>Supported languages: English, Spanish</p>
@@ -59,7 +155,8 @@
 					</p>
 
 					<br/>
-
+				</div>
+				<div ng-show="vm.entities" class="pageItem">
 					<h4>Entities</h4>
 					<p>Identify people, cities, organisations, and many other types of entities in your text.</p>
 					<p>View the complete list of entity types and subtypes 
@@ -74,7 +171,8 @@
 					</p>
 
 					<br/>
-
+				</div>
+				<div ng-show="vm.keywords" class="pageItem">
 					<h4>Keywords</h4>
 					<p>Identify the important keywords in your content.</p>
 					<p>Supported languages: English, French, German, Italian, Portuguese, Russian, Spanish, Swedish</p>
@@ -90,7 +188,8 @@
 					</p>
 
 					<br />
-
+				</div>
+				<div ng-show="vm.relations" class="pageItem">
 					<h4>Relations</h4>
 					<p>Recognise when two entities are related, and identify the type of relation. For example, an "awardedTo" relation might connect the entities "Nobel Prize" and "Albert Einstein".</p>
 					<p>Supported languages: Arabic, English, Spanish</p>
@@ -100,7 +199,8 @@
 					</p>
 
 					<br />
-
+				</div>
+				<div ng-show="vm.semantic-roles" class="pageItem">
 					<h4>Semantic Roles</h4>
 					<p>Parse sentences into subject, action, and object form.</p>
 					<p>Supported languages: English, Spanish</p>
@@ -110,7 +210,7 @@
 					</p>
 
 					<br />
-
+				</div>
 					<p><strong>More to come!</strong></p>
 				</div>
 			</div>
