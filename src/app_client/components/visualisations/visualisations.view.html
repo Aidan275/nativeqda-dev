@@ -91,14 +91,16 @@
 		<a ng-click="vm.togglePage('relations')" class="btn btn-success" role="button">Relations</a>
 		<br />
 		<br />
-		<a ng-click="vm.togglePage('semantic-roles')" class="btn btn-success" role="button">Semantic Roles</a>
+		<a ng-click="vm.togglePage('semanticRoles')" class="btn btn-success" role="button">Semantic Roles</a>
 		
 	</header>
 </nav>
 
-<div class="panel">
+<div id="panel">
 
-	<button ng-click="vm.toggleOptions()" class="btn btn-success">Find</button>
+	<button ng-click="vm.toggleOptions()" class="btn btn-success">Visuals</button>
+	
+	<div class="container">
 	
 	<page-header content="vm.pageHeader"></page-header>
 
@@ -126,6 +128,11 @@
 					<a ng-click="vm.viewFile(vm.analysisData.sourceDataKey)" class="btn btn-primary btn-sm" role="button">Raw Text</a>
 
 					<br/>
+					<br/>
+				</div>
+				<div ng-show="vm.assistance" class="pageItem">
+					<h3>Use the side menu on the left to see available visualisations for {{vm.analysisData.name}}</h3>
+
 					<br/>
 				</div>
 				<div ng-show="vm.categories" class="pageItem">
@@ -200,13 +207,13 @@
 
 					<br />
 				</div>
-				<div ng-show="vm.semantic-roles" class="pageItem">
+				<div ng-show="vm.semanticRoles" class="pageItem">
 					<h4>Semantic Roles</h4>
 					<p>Parse sentences into subject, action, and object form.</p>
 					<p>Supported languages: English, Spanish</p>
 
 					<p>
-						<a href="/basic-table/semantic-roles/{{vm.analysisID}}" class="btn btn-primary btn-lg" role="button">Basic Table</a>
+						<a href="/basic-table/semanticRoles/{{vm.analysisID}}" class="btn btn-primary btn-lg" role="button">Basic Table</a>
 					</p>
 
 					<br />
@@ -216,7 +223,7 @@
 			</div>
 		</div>
 	</div>
-
+  </div>
+</div>
 	<footer-generic></footer-generic>
 
-</div>

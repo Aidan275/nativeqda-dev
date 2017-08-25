@@ -12,7 +12,7 @@
 		vm.viewFile = viewFile;
 		vm.toggleOptions = toggleOptions;
 		vm.togglePage = togglePage;
-		vm.pageId = 'visualisations';
+		vm.pageId = 'visualisations-index';
 
 		// Bindable Data
 		vm.analysisID = $routeParams.id;
@@ -21,12 +21,13 @@
 			title: 'Visualisations'
 		};
 		vm.details = true;
+		vm.assistance = true;
 		vm.categories = false;
 		vm.concepts = false;
 		vm.entities = false;
 		vm.keywords = false;
 		vm.relations = false;
-		vm.semantic-roles = false;
+		vm.semanticRoles = false;
 		
 		/* Slideout side menu initialisation */
 		var slideout = new Slideout({
@@ -48,16 +49,18 @@
 		/* a switch statement to show the selected page - could probably be done better but it's simple and works */
 		function togglePage(page) {
 				vm.details = false;
+				vm.assistance = false;
 				vm.categories = false;
 				vm.concepts = false;
 				vm.entities = false;
 				vm.keywords = false;
 				vm.relations = false;
-				vm.semantic-roles = false;
+				vm.semanticRoles = false;
 
 			switch(page) {
 				case 'details':
 				vm.details = true;
+				vm.assistance = true;
 				break;
 				case 'categories':
 				vm.details = true;
@@ -79,9 +82,9 @@
 				vm.details = true;
 				vm.relations = true;
 				break;
-				case 'semantic-roles':
+				case 'semanticRoles':
 				vm.details = true;
-				vm.semantic-roles = true;
+				vm.semanticRoles = true;
 				break;
 				default:
 				vm.details = true;
