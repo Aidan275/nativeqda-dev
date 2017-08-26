@@ -15,8 +15,8 @@
 	    document.documentElement.scrollTop = 0; // For IE and Firefox
 
 	    var slideout = new Slideout({
-	    	'panel': document.querySelector('#panel'),
-	    	'menu': document.querySelector('#menu'),
+	    	'panel': document.querySelector('#bcPanel'),
+	    	'menu': document.querySelector('#bcMenu'),
 	    	'padding': 256,
 	    	'tolerance': 70
 	    });
