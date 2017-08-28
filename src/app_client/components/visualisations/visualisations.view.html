@@ -1,5 +1,8 @@
 <style>
-
+	@media screen and (min-width:768px){
+		.container { left:-256px; }
+		.vismenuicon { display:none; }
+	}
 	#viMenu {
 		padding: 75px 25px 25px 25px;
 		overflow: hidden;
@@ -98,9 +101,9 @@
 
 <div id="viPanel">
 
-	<img src="assets/img/vismenu.png" alt="VisMenu" style="cursor:pointer;padding-top:0.5%;" ng-click="vm.toggleOptions()">
+	<img class="vismenuicon" src="assets/img/vismenu_medium.png" alt="VisMenu" style="cursor:pointer;padding-top:0.5%;" ng-click="vm.toggleOptions()">
 	
-	<div class="container">
+	<div class="container" style="position:relative;">
 	
 	<page-header content="vm.pageHeader"></page-header>
 
@@ -218,7 +221,6 @@
 
 					<br />
 				</div>
-					<p><strong>More to come!</strong></p>
 				</div>
 			</div>
 		</div>

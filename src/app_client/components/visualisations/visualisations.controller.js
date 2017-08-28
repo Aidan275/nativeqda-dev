@@ -99,6 +99,7 @@
 
 		function activate() {
 			getAnalysisData();
+			slideout.toggle();
 		}
 
 		function getAnalysisData() {
