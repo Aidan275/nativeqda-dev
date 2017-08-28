@@ -99,7 +99,14 @@
 
 		function activate() {
 			getAnalysisData();
-			slideout.toggle();
+			if( /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) ) {
+				//Browser is mobile based
+			}
+			else{
+				slideout.toggle(); //Browser is desktop based
+			}
+	
+			
 		}
 
 		function getAnalysisData() {
