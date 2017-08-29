@@ -229,6 +229,38 @@
 
 		// Gets all the files from the MongoDB database to be displayed on the map and the recent files table
 		function getFileList() {
+			bsLoadingOverlayService.start({referenceId: 'file-list'});	// Start animated loading overlay
+			filesService.getFileDB(vm.currentPath, '')
+			.then(function(response) {
+
+				vm.fileList = [];	/* reset fileList array on folder navigation */
+
+				if(vm.currentPath != '') {	/* If not in the root folder, add a parent directory link */
+					vm.fileList.push({
+						name: '..',
+						lastModified: '',
+						createdBy: '',
+						size: '',
+						type: 'parent-dir',
+						typeOrder: 0	/* For sorting by parent directory, folder, file */
+					});
+				}
+
+				response.data.forEach(function(file) {	/* Add each file to the fileList array */
+					if(file.type === 'folder') {
+						file.typeOrder = 1;	/* For sorting by parent directory, folder, file */
+					} else {
+						file.typeOrder = 2;	/* For sorting by parent directory, folder, file */
+					}
+					vm.fileList.push(file);
+				});
+				listFiles();	/* List files in the view using ng-table */
+			}, function(err){
+				bsLoadingOverlayService.stop({referenceId: 'file-list'});	// If error, stop animated loading overlay
+			});
+
+			//Old from here
+			/*
 			filesService.getFileListDB()
 			.then(function(response) {
 				vm.fileList = response.data;
@@ -238,9 +270,11 @@
 				bsLoadingOverlayService.stop({referenceId: 'file-list'});	// If error, stop animated loading overlays
 				bsLoadingOverlayService.stop({referenceId: 'home-map'});
 			});
+			*/
 		}
 
 		function listFiles() {
+
 			vm.tableParams = new NgTableParams({
 				count: 5,
 				page: 1,
@@ -341,41 +375,59 @@
 		// Gets signed URL to download the requested file from S3 
 		// if successful, opens the signed URL in a new tab
 		function viewFile(file) {
-			// Open a blank new tab while still in a trusted context to prevent a popup blocker warning
-			var newTab = $window.open("about:blank", '_blank')
+			//Check file type and path
+			if(file.type === 'folder') {
 
-			// CSS and HTML for loading animation to display while fetching the signed URL
-			var loaderHTML = '<style>#loader{position: absolute;left: 50%;top: 50%;border:0.5em solid rgba(70, 118, 250, 0.2);border-radius:50%;'+
-			'border-top:0.5em solid #4676fa;width:75px;height:75px;-webkit-animation:spin 1s linear infinite;animation:spin 1s linear infinite;}'+
-			'@-webkit-keyframes spin{0%{-webkit-transform:rotate(0deg);}100%{-webkit-transform:rotate(360deg);}}'+
-			'@keyframes spin{0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}</style>'+
-			'<div id="loader"></div>';
-
-			// Write the loading animation code to the new window
-			newTab.document.write(loaderHTML);
-
-			// Make a request to the server for a signed URL to download/view the requested file
-			s3Service.signDownload(file.path, file.name)
-			.then(function(response) {
-				// Remove the animation 1s after the signed URL is retrieved
-				setTimeout(function(){
-					newTab.document.getElementById("loader").remove();
-				},1000);
-
-				// Redirect the new tab to the signed URL
-				// If the file is a document or text file, open in google docs viewer to view in the browser
-				if(response.data.type === "document" || response.data.type === "text") {
-					var encodedUrl = 'https://docs.google.com/viewer?url=' + encodeURIComponent(response.data.url) + '&embedded=true';
-					newTab.location = encodedUrl;
+				if(file.path === '/') {
+					vm.currentPath = file.name;
 				} else {
-					// Else either download or view in browser (if natively compatible)
-					newTab.location = response.data.url;
+					//If path already exists, concatenate the filename on the end
+					vm.currentPath = file.path + '/' + file.name;
 				}
 
-			}, function() {
-				// If there is an error, close the new tab
-				newTab.close();
-			});
+				vm.pathsArray = vm.currentPath.split("/");
+				getFileList();
+			} else if (file.type === 'parent-dir') {
+				vm.currentPath = vm.currentPath.substr(0, vm.currentPath.lastIndexOf('/'));
+				vm.pathsArray = vm.currentPath.split("/");
+				getFileList();
+			}else {
+				// Open a blank new tab while still in a trusted context to prevent a popup blocker warning
+				var newTab = $window.open("about:blank", '_blank')
+
+				// CSS and HTML for loading animation to display while fetching the signed URL
+				var loaderHTML = '<style>#loader{position: absolute;left: 50%;top: 50%;border:0.5em solid rgba(70, 118, 250, 0.2);border-radius:50%;'+
+				'border-top:0.5em solid #4676fa;width:75px;height:75px;-webkit-animation:spin 1s linear infinite;animation:spin 1s linear infinite;}'+
+				'@-webkit-keyframes spin{0%{-webkit-transform:rotate(0deg);}100%{-webkit-transform:rotate(360deg);}}'+
+				'@keyframes spin{0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}</style>'+
+				'<div id="loader"></div>';
+
+				// Write the loading animation code to the new window
+				newTab.document.write(loaderHTML);
+
+				// Make a request to the server for a signed URL to download/view the requested file
+				s3Service.signDownload(file.path, file.name)
+				.then(function(response) {
+					// Remove the animation 1s after the signed URL is retrieved
+					setTimeout(function(){
+						newTab.document.getElementById("loader").remove();
+					},1000);
+
+					// Redirect the new tab to the signed URL
+					// If the file is a document or text file, open in google docs viewer to view in the browser
+					if(response.data.type === "document" || response.data.type === "text") {
+						var encodedUrl = 'https://docs.google.com/viewer?url=' + encodeURIComponent(response.data.url) + '&embedded=true';
+						newTab.location = encodedUrl;
+					} else {
+						// Else either download or view in browser (if natively compatible)
+						newTab.location = response.data.url;
+					}
+
+				}, function() {
+					// If there is an error, close the new tab
+					newTab.close();
+				});				
+			}
 		}
 
 		function popupFileDetails(file) {
@@ -498,7 +550,7 @@
             function getImage(target) {
             	var i = target.length
             	, p = (($scope.galleryNumber-1)*$scope.setOfImagesToShow)+i;
-            	console.log("i=" + i + "--" + p);
+            	//console.log("i=" + i + "--" + p);
 
             	return slideImages[p];
             }
@@ -518,7 +570,7 @@
             $scope.setOfImagesToShow = 3;
             addImages($scope.slides7, $scope.setOfImagesToShow);
             $scope.loadNextImages = function() {
-            	console.log("loading Next images");
+            	//console.log("loading Next images");
             	if (slideImages[slideImages.length-1].id !== $scope.slides7[$scope.slides7.length-1].id) {
                     // Go to next set of images if exist
                     $scope.slides7 = [];
@@ -542,13 +594,13 @@
                     addImages($scope.slides7, $scope.setOfImagesToShow);
                 } else {
                     // Go to last set of images if not exist
-                    console.log("slideimageslength: " + slideImages.length + ", " + slideImages.length-1 / $scope.setOfImagesToShow);
+                    //console.log("slideimageslength: " + slideImages.length + ", " + slideImages.length-1 / $scope.setOfImagesToShow);
                     // console.log("slideimageslength: " + slideImages.length );
                     $scope.galleryNumber = slideImages.length / $scope.setOfImagesToShow;
                     $scope.slides7 = [];
                     $scope.carouselIndex7 = 0;
                     addImages($scope.slides7, $scope.setOfImagesToShow);
-                    console.log("no images left");
+                    //console.log("no images left");
                 }
                 
             }

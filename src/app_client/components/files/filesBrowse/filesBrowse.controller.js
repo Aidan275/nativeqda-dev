@@ -81,11 +81,12 @@
 		// Gets signed URL to download the requested file from S3 
 		// if successful, opens the signed URL in a new tab
 		function viewFile(file) {
+			//Check file type and path
 			if(file.type === 'folder') {
-
 				if(file.path === '/') {
 					vm.currentPath = file.name;
 				} else {
+					//If path already exists, concatenate the filename on the end
 					vm.currentPath = file.path + '/' + file.name;
 				}
 
