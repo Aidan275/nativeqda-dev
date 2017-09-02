@@ -295,8 +295,10 @@ footer span {
 
 #map-homepage{
 	position: absolute; 
-	width: 100%;
-	height: 100%;
+	top: 0; 
+	left: 15px; 
+	right: 15px; 
+	bottom: 0; 
 	background: rgb(229, 227, 223);
 }
 
