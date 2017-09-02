@@ -198,7 +198,7 @@
 		function geoLocateUser(position) {
 			vm.map.on('locationfound', onLocationFound);
 			vm.map.on('locationerror', onLocationError);
-			vm.map.locate({setView: true, maxZoom: 15});
+			vm.map.locate({setView: true, maxZoom: 4});
 		}
 
 		function onLocationFound(response) {
@@ -243,7 +243,7 @@
 		function listFiles() {
 
 			vm.tableParams = new NgTableParams({
-				count: 5,
+				count: 7,
 				page: 1,
 				sorting: {lastModified: "desc"}
 			}, {
