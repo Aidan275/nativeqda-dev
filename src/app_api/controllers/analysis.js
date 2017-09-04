@@ -67,6 +67,38 @@ module.exports.watsonAnalysis = function(req, res) {
 	});
 };
 
+module.exports.watsonTextAnalysis = function(req, res) {
+	var parameters = {
+		'text': req.body.text,
+		'features': {
+			'categories': {},
+			'concepts': {
+				'limit': 50
+			},
+			'entities': {
+				'emotion': true,
+				'sentiment': true,
+				'limit': 250
+			},
+			'keywords': {
+				'emotion': true,
+				'sentiment': true,
+				'limit': 250
+			},
+			'relations': {},
+			'semantic_roles': {}
+		}
+	}
+
+	natural_language_understanding.analyze(parameters, function(err, response) {
+		if (err) {
+			console.log('error:', err);
+		} else {
+			console.log(JSON.stringify(response,null,2));
+		}
+	});
+}
+
 module.exports.saveWatsonAnalysis = function(req, res) {
 	var analysisResults = new AnalysisResults();
 

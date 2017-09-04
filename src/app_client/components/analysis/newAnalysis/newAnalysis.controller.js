@@ -220,8 +220,11 @@
 					processingEvent(false, 'error');	/* ng-bs-animated-button status & result */
 				});
 			});	
-			console.log(concatText);
+
+			//Send string to server
+			analysisService.watsonTextAnalysis({text: concatText});
 		}
+
 
 		function saveAnalysisResults() {
 			var saveData = {
