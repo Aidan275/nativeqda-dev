@@ -25,15 +25,61 @@
 		vm.resultButton = null;
 		vm.analyseButtonOptions = { buttonDefaultText: 'Analyse', animationCompleteTime: 1000, buttonSubmittingText: 'Processing...', buttonSuccessText: 'Done!' };
 		vm.isProcessing = false;
+		vm.selectedFiles = [];
+		vm.selectedPathName = [];
+		vm.selectedKeys = [];
+		vm.allFilesSoFar = [];
+		vm.fileList = [];
+
+		/* Extends the Array prototype with a custom method for pushing unique elements */
+		/* Needed since a user must be able to select files from multiple directories so */
+		/* we must store a list of all the files accessed so far in a separate array */
+		/* Check if an element exists in array using a comparer function */
+		Array.prototype.inArray = function(comparer) { 
+			for(var i=0; i < this.length; i++) { 
+				if(comparer(this[i])) return true; 
+			}
+			return false; 
+		}; 
+
+		/* Adds an element to the array if it does not already exist using a comparer function */
+		Array.prototype.pushIfNotExist = function(element, comparer) { 
+			if (!this.inArray(comparer)) {
+				this.push(element);
+			}
+		};
+
+		function testCheckBox() {
+			console.log("hello");
+		}
+
+		function updateSelected() {
+			console.log("B");
+			vm.selectedPathName = [];
+
+			vm.selectedKeys = Object.keys(vm.selectedFiles)	/* Extracts the keys from the associative array */ 
+			.filter(function(key) {					/* Filters the true values only. Left with the file keys */
+				return vm.selectedFiles[key]
+			});
+
+			vm.selectedKeys.forEach(function(key) {
+				var index = vm.allFilesSoFar.findIndex(function(file){return file.textFileKey == key});
+				vm.selectedPathName.push(vm.allFilesSoFar[index]);
+			});
+		}
 
 		activate();
 
 		///////////////////////////
 
 		function activate() {
-			getDatasetList();
+			//Remove?
+			//getDatasetList();
+			getFileList();
 		}
 
+		/*
+		Removing 
 		// Gets all the datasets from the MongoDB database
 		function getDatasetList() {
 			bsLoadingOverlayService.start({referenceId: 'data-list'});	// Start animated loading overlay
@@ -51,11 +97,27 @@
 				bsLoadingOverlayService.stop({referenceId: 'data-list'});	// If error, stop animated loading overlay
 			});
 		}
+		*/
 
 		// Gets all the files from the database
 		function getFileList() {
 			filesService.getFileDB(vm.currentPath, '', 'true')
 			.then(function(response) {
+
+				response.data.forEach(function(file) {	/* Uses the custom method 'pushIfNotExist' to add unique files to the allFilesSoFar array */
+					vm.allFilesSoFar.pushIfNotExist(file, function(element) {
+						return element._id === file._id;
+					});
+				});
+
+				vm.fileList = response.data.map(function(file) {	/* Maps the file list to the fileList array adding typeOrder for sorting */
+					if(file.type === 'folder') {
+						file.typeOrder = 1;	/* For sorting by parent directory, folder, file */
+					} else {
+						file.typeOrder = 2;	/* For sorting by parent directory, folder, file */
+					}
+					return file;
+				});
 
 				if(vm.currentPath != '') {	/* If not in the root folder, add a parent directory link */
 					vm.data.push({
@@ -92,14 +154,22 @@
 		}
 
 		function onSubmit() {
-			if(!vm.formData.analysisName || !vm.formData.description) {
-				logger.error('All fields required, please try again', '', 'Error');
-			} else if(!vm.formData.selectedID) {
-				logger.error('Please select data for analysis', '', 'Error');
+	
+			processingEvent(true, null);	/* ng-bs-animated-button status & result */
+			if(angular.isDefined(vm.formData)){
+				if(!vm.formData.analysisName || !vm.formData.description) {
+					logger.error('All fields required, please try again', '', 'Error');
+				} else if (vm.selectedKeys.length > 1) {
+					//Multiple files to be analyzed
+				} else {
+					console.log(vm.selectedFiles);
+				}
 			} else {
-				doAnalysis();
+				logger.error('All fields required, please try again', '', 'Error');
 			}
 		}
+
+
 
 		function doAnalysis() {
 			processingEvent(true, null);	// ng-bs-animated-button status & result
