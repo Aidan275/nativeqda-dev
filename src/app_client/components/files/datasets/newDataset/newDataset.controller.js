@@ -46,7 +46,10 @@
 			}
 		};
 
+
+		//Extracts keys of selected files and stores them in a seperate array which is used to retrieve files from S3
 		function updateSelected() {
+
 			vm.selectedPathName = [];
 
 			vm.selectedKeys = Object.keys(vm.selectedFiles)	/* Extracts the keys from the associative array */ 

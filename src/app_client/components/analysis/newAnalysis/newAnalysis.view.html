@@ -28,7 +28,7 @@
 						<table ng-table="vm.tableParams" class="table table-condensed table-bordered table-striped analysis-file-browser-table">
 							<tr class="table-row" ng-repeat="row in $data">
 								<td style="text-align: center;">
-									<input type="checkbox" ng-if="row.type != 'folder' && row.type != 'parent-dir'" ng-model="vm.selectedFiles[row.textFileKey]" ng-change="vm.testCheckBox()"/>
+									<input type="checkbox" ng-if="row.type != 'folder' && row.type != 'parent-dir'" ng-model="vm.selectedFiles[row.textFileKey]" ng-change="vm.updateSelected()"/>
 								</td>
 								<td data-title="'Name'" filter="{name: 'text'}" sortable="'name'" class="name-cell" ng-click="vm.viewFile(row.name, row.path, row.type, true, row._id)">
 									<span>

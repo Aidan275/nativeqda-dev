@@ -13,6 +13,8 @@
 		// Bindable Functions
 		vm.onSubmit = onSubmit;
 		vm.viewFile = viewFile;
+		vm.updateSelected = updateSelected;
+		vm.doMultipleAnalysis = doMultipleAnalysis;
 
 		// Bindable Data
 		vm.data = [];
@@ -49,12 +51,8 @@
 			}
 		};
 
-		function testCheckBox() {
-			console.log("hello");
-		}
 
 		function updateSelected() {
-			console.log("B");
 			vm.selectedPathName = [];
 
 			vm.selectedKeys = Object.keys(vm.selectedFiles)	/* Extracts the keys from the associative array */ 
@@ -159,10 +157,10 @@
 			if(angular.isDefined(vm.formData)){
 				if(!vm.formData.analysisName || !vm.formData.description) {
 					logger.error('All fields required, please try again', '', 'Error');
-				} else if (vm.selectedKeys.length > 1) {
-					//Multiple files to be analyzed
+				}	else if (vm.selectedKeys.length < 2) {
+					doAnalysis();
 				} else {
-					console.log(vm.selectedFiles);
+					doMultipleAnalysis();
 				}
 			} else {
 				logger.error('All fields required, please try again', '', 'Error');
@@ -174,6 +172,7 @@
 		function doAnalysis() {
 			processingEvent(true, null);	// ng-bs-animated-button status & result
 
+				
 			// Find the index for the selected file/dataset, will return -1 if not found 
 			var dataIndex = vm.data.findIndex(function(obj){return obj._id === vm.formData.selectedID});
 
@@ -181,6 +180,10 @@
 			var path = vm.data[dataIndex].path;
 			vm.formData.sourceDataKey = vm.data[dataIndex].textFileKey;
 
+			//console.log(name);
+			//console.log(path);
+
+			
 			s3Service.signDownload(path, name, 'true')	// true flag to return the associated text file, not the actual file
 			.then(function(response) {
 				analysisService.watsonAnalysis({url: response.data.url})
@@ -193,6 +196,31 @@
 			}, function(err) {
 				processingEvent(false, 'error');	// ng-bs-animated-button status & result
 			});
+				
+		}
+
+		function doMultipleAnalysis() {
+
+			var fileCounter = 0;
+			var concatText = '';
+			vm.selectedKeys.forEach(function(key){	/* For each key in the vm.selectedKeys array */
+				s3Service.signDownloadKey(key)	/* Get a S3 signed URL to download the file */ 
+				.then(function(response) {	
+					filesService.downloadFile(response.data)	/* Download each file (response.data = signed URL) */
+					.then(function(response) {
+						fileCounter++
+						concatText += response.data + '\n\n';	/* Add text from file to concatText */
+						if(fileCounter === vm.selectedKeys.length) {	/* Check if last file */
+							var newFile = new File([concatText], vm.formData.datasetName, {type: 'text/plain; charset=utf-8'}); /* Creates the file with the concatText content */
+						}
+					}, function(err) {
+						processingEvent(false, 'error');	/* ng-bs-animated-button status & result */
+					});
+				}, function(err) {
+					processingEvent(false, 'error');	/* ng-bs-animated-button status & result */
+				});
+			});	
+			console.log(concatText);
 		}
 
 		function saveAnalysisResults() {
