@@ -103,8 +103,8 @@ var analysisResultsSchema = new mongoose.Schema({
 		type: Date,
 		"default": Date.now
 	},
-	sourceDataKey: {
-		type: String,
+	sourceDataKeys: {
+		type: [String],
 		required: true
 	},
 	language: {

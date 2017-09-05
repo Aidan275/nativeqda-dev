@@ -189,6 +189,7 @@ var folderList = function(req, res, pathname) {
 				return;
 			}
 			var fileList = buildFileListDB(req, res, results);
+			//use this
 			sendJSONresponse(res, 200, fileList);
 		});
 };

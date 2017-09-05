@@ -14,7 +14,7 @@
 		vm.onSubmit = onSubmit;
 		vm.viewFile = viewFile;
 		vm.updateSelected = updateSelected;
-		vm.doMultipleAnalysis = doMultipleAnalysis;
+
 
 		// Bindable Data
 		vm.data = [];
@@ -160,7 +160,7 @@
 				}	else if (vm.selectedKeys.length < 2) {
 					doAnalysis();
 				} else {
-					doMultipleAnalysis();
+					getTextFromFiles();
 				}
 			} else {
 				logger.error('All fields required, please try again', '', 'Error');
@@ -179,10 +179,6 @@
 			var name = vm.data[dataIndex].name;
 			var path = vm.data[dataIndex].path;
 			vm.formData.sourceDataKey = vm.data[dataIndex].textFileKey;
-
-			//console.log(name);
-			//console.log(path);
-
 			
 			s3Service.signDownload(path, name, 'true')	// true flag to return the associated text file, not the actual file
 			.then(function(response) {
@@ -199,8 +195,7 @@
 				
 		}
 
-		function doMultipleAnalysis() {
-
+		function getTextFromFiles() {
 			var fileCounter = 0;
 			var concatText = '';
 			vm.selectedKeys.forEach(function(key){	/* For each key in the vm.selectedKeys array */
@@ -213,6 +208,10 @@
 						if(fileCounter === vm.selectedKeys.length) {	/* Check if last file */
 							var newFile = new File([concatText], vm.formData.datasetName, {type: 'text/plain; charset=utf-8'}); /* Creates the file with the concatText content */
 						}
+
+						//Send text to be analyzed
+						doAnalysisSave(concatText);
+
 					}, function(err) {
 						processingEvent(false, 'error');	/* ng-bs-animated-button status & result */
 					});
@@ -220,28 +219,19 @@
 					processingEvent(false, 'error');	/* ng-bs-animated-button status & result */
 				});
 			});	
-
-			//Send string to server
-			analysisService.watsonTextAnalysis({text: concatText});
 		}
 
 
-		function saveAnalysisResults() {
+		function doAnalysisSave(concatText) {
 			var saveData = {
+				text: concatText,
 				name: vm.formData.analysisName,
 				description: vm.formData.description,
 				createdBy: authentication.currentUser().firstName,
-				sourceDataKey: vm.formData.sourceDataKey,
-				language: vm.analysisResults.language,
-				categories: vm.analysisResults.categories,
-				concepts: vm.analysisResults.concepts,
-				entities: vm.analysisResults.entities,
-				keywords: vm.analysisResults.keywords,
-				relations: vm.analysisResults.relations,
-				semanticRoles: vm.analysisResults.semantic_roles
+				sourceDataKeys: vm.selectedKeys
 			};
 
-			analysisService.saveWatsonAnalysis(saveData)
+			analysisService.watsonTextAnalysis(saveData)
 			.then(function(response) {
 				logger.success('Analysis "' + vm.formData.analysisName + '" successfully completed', '', 'Success')
 				processingEvent(false, 'success');	// ng-bs-animated-button status & result
@@ -249,7 +239,7 @@
 					vm.modal.close(response.data);	// Close modal if the analysis was completed successfully and return the new analysis data
 				}, 1000);	// Timeout function so the user can see the analysis has completed before closing modal
 			}, function(err) {
-				processingEvent(false, 'error');	// ng-bs-animated-button status & result
+				processingEvent(false, 'error');
 			});
 		}
 

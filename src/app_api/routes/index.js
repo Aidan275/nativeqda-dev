@@ -88,7 +88,8 @@ router.post('/s3/:key/acl', auth, checkDatabaseStatus, ctrlS3.acl);
 /* Analysis */
 router.post('/analysis/aylien/concept', auth, ctrlAnalysis.aylienConceptAnalysis);
 router.post('/analysis/watson', auth, checkDatabaseStatus, ctrlAnalysis.watsonAnalysis);
-router.post('/analysis/watson/save', auth, checkDatabaseStatus, ctrlAnalysis.saveWatsonAnalysis);
+router.post('/analysis/watsonText', auth, checkDatabaseStatus, ctrlAnalysis.watsonTextAnalysis);
+//router.post('/analysis/watson/save', auth, checkDatabaseStatus, ctrlAnalysis.saveWatsonAnalysis);
 router.get('/analysis/watson/read', auth, checkDatabaseStatus, ctrlAnalysis.readWatsonAnalysis);
 router.get('/analysis/watson/list', auth, checkDatabaseStatus, ctrlAnalysis.listWatsonAnalysis);
 router.delete('/analysis/watson/delete', auth, checkDatabaseStatus, ctrlAnalysis.deleteWatsonAnalysis);

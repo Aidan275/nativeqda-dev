@@ -67,6 +67,8 @@ module.exports.watsonAnalysis = function(req, res) {
 	});
 };
 
+
+
 module.exports.watsonTextAnalysis = function(req, res) {
 	var parameters = {
 		'text': req.body.text,
@@ -92,27 +94,28 @@ module.exports.watsonTextAnalysis = function(req, res) {
 
 	natural_language_understanding.analyze(parameters, function(err, response) {
 		if (err) {
-			console.log('error:', err);
+			sendJSONresponse(res, 404, err);
 		} else {
-			console.log(JSON.stringify(response,null,2));
+			saveWatsonAnalysis(req, res, response);
 		}
 	});
 }
 
-module.exports.saveWatsonAnalysis = function(req, res) {
+var saveWatsonAnalysis = function(req, res, response) {
 	var analysisResults = new AnalysisResults();
+	console.log("hello");
 
-	analysisResults.name = req.body.name
+	analysisResults.name = req.body.name;
 	analysisResults.description = req.body.description;
 	analysisResults.createdBy = req.body.createdBy;
-	analysisResults.sourceDataKey = req.body.sourceDataKey;
-	analysisResults.language = req.body.language,
-	analysisResults.categories = req.body.categories;
-	analysisResults.concepts = req.body.concepts;
-	analysisResults.entities = req.body.entities;
-	analysisResults.keywords = req.body.keywords;
-	analysisResults.relations = req.body.relations;
-	analysisResults.semanticRoles = req.body.semanticRoles;
+	analysisResults.sourceDataKeys = req.body.sourceDataKeys;
+	analysisResults.language = response.language;
+	analysisResults.categories = response.categories;
+	analysisResults.concepts = response.concepts;
+	analysisResults.entities = response.entities;
+	analysisResults.keywords = response.keywords;
+	analysisResults.relations = response.relations;
+	analysisResults.semanticRoles = response.semanticRoles;
 
 	analysisResults.save(function(err) {
 		if (err) {
@@ -122,6 +125,7 @@ module.exports.saveWatsonAnalysis = function(req, res) {
 		}
 	});	
 };
+
 
 module.exports.readWatsonAnalysis = function(req, res) {
 	var id = req.query.id;

@@ -14,7 +14,8 @@
 			saveWatsonAnalysis 		: saveWatsonAnalysis,
 			readWatsonAnalysis 		: readWatsonAnalysis,
 			listWatsonAnalysis 		: listWatsonAnalysis,
-			deleteWatsonAnalysis 	: deleteWatsonAnalysis
+			deleteWatsonAnalysis 	: deleteWatsonAnalysis,
+			watsonTextAnalysis		: watsonTextAnalysis
 		};
 
 		///////////////////////////
@@ -41,6 +42,18 @@
 
 			function watsonAnalysisComplete(data) { return data; }
 			function watsonAnalysisFailed(e) { return exception.catcher('Failed Watson analysis.')(e); }
+		};
+
+		function watsonTextAnalysis(data){
+			return $http.post('/api/analysis/watsonText', data, {
+				headers: {
+					Authorization: 'Bearer ' + authentication.getToken()
+				}
+			}).then(watsonTextAnalysisComplete)
+			.catch(watsonTextAnalysisFailed);
+
+			function watsonTextAnalysisComplete(data) { return data; }
+			function watsonTextAnalysisFailed(e) { return exception.catcher('Failed Watson analysis.')(e); }
 		};
 
 		function saveWatsonAnalysis(data){
