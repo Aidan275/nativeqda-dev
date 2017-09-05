@@ -103,8 +103,6 @@ module.exports.watsonTextAnalysis = function(req, res) {
 
 var saveWatsonAnalysis = function(req, res, response) {
 	var analysisResults = new AnalysisResults();
-	console.log("hello");
-
 	analysisResults.name = req.body.name;
 	analysisResults.description = req.body.description;
 	analysisResults.createdBy = req.body.createdBy;
