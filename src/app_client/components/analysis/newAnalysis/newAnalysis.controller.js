@@ -130,7 +130,6 @@
 		}
 
 		function onSubmit() {
-	
 			processingEvent(true, null);	/* ng-bs-animated-button status & result */
 			if(angular.isDefined(vm.formData)){
 				if(!vm.formData.analysisName || !vm.formData.description) {
