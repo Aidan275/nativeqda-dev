@@ -71,31 +71,9 @@
 		///////////////////////////
 
 		function activate() {
-			//Remove?
-			//getDatasetList();
 			getFileList();
 		}
 
-		/*
-		Removing 
-		// Gets all the datasets from the MongoDB database
-		function getDatasetList() {
-			bsLoadingOverlayService.start({referenceId: 'data-list'});	// Start animated loading overlay
-			vm.data = [];	// Reset data list if navigating folders
-			vm.formData.selectedID = null;	// Reset selected file/dataset if navigating folders
-			datasetService.listDatasets()
-			.then(function(response) {
-				response.data.forEach(function(data) {
-					data.type = 'Dataset';
-					data.typeOrder = 3;
-					vm.data.push(data);
-				});
-				getFileList();
-			}, function(err) {
-				bsLoadingOverlayService.stop({referenceId: 'data-list'});	// If error, stop animated loading overlay
-			});
-		}
-		*/
 
 		// Gets all the files from the database
 		function getFileList() {
@@ -157,42 +135,12 @@
 			if(angular.isDefined(vm.formData)){
 				if(!vm.formData.analysisName || !vm.formData.description) {
 					logger.error('All fields required, please try again', '', 'Error');
-				}	else if (vm.selectedKeys.length < 2) {
-					doAnalysis();
 				} else {
 					getTextFromFiles();
 				}
 			} else {
 				logger.error('All fields required, please try again', '', 'Error');
 			}
-		}
-
-
-
-		function doAnalysis() {
-			processingEvent(true, null);	// ng-bs-animated-button status & result
-
-				
-			// Find the index for the selected file/dataset, will return -1 if not found 
-			var dataIndex = vm.data.findIndex(function(obj){return obj._id === vm.formData.selectedID});
-
-			var name = vm.data[dataIndex].name;
-			var path = vm.data[dataIndex].path;
-			vm.formData.sourceDataKey = vm.data[dataIndex].textFileKey;
-			
-			s3Service.signDownload(path, name, 'true')	// true flag to return the associated text file, not the actual file
-			.then(function(response) {
-				analysisService.watsonAnalysis({url: response.data.url})
-				.then(function(response) {
-					vm.analysisResults = response.data;
-					saveAnalysisResults();
-				}, function(err) {
-					processingEvent(false, 'error');	// ng-bs-animated-button status & result
-				});
-			}, function(err) {
-				processingEvent(false, 'error');	// ng-bs-animated-button status & result
-			});
-				
 		}
 
 		function getTextFromFiles() {
@@ -205,9 +153,6 @@
 					.then(function(response) {
 						fileCounter++
 						concatText += response.data + '\n\n';	/* Add text from file to concatText */
-						if(fileCounter === vm.selectedKeys.length) {	/* Check if last file */
-							var newFile = new File([concatText], vm.formData.datasetName, {type: 'text/plain; charset=utf-8'}); /* Creates the file with the concatText content */
-						}
 
 						//Send text to be analyzed
 						doAnalysisSave(concatText);
