@@ -15,7 +15,9 @@
 					<td data-title="'Date Created'" filter="{dateCreated: 'text'}" sortable="'dateCreated'">{{row.dateCreated | date : "dd MMMM, yyyy h:mm a"}}</td>
 					<td data-title="'Command'">
 						<a href="/survey/responses/{{vm.accessId}}/{{row.id}}" class="btn btn-success btn-xs" role="button">View Response</a>
+						<a href="/survey/responses/{{row.accessId}}" class="btn btn-primary btn-xs" role="button">Edit Response</a>
 						<a ng-click="vm.confirmDelete(row._id, row.name)" class="btn btn-danger btn-xs" role="button">Delete</a>
+
 					</td class="data-command-cell">
 				</tr>
 			</table>
