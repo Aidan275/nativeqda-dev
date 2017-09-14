@@ -7,7 +7,7 @@ var filetypes = ["folder", "file", "text", "doc", "pdf", "image", "video", "audi
 
 // Font Awesome icons Classes
 // Order: Generic-File, Folder, Open-Folder, PDF, Word, Text, Image
-var iconTypes = ["fa fa-file-o", "fa fa-folder-o", "fa fa-folder-open-o", "fa fa-file-pdf-o", "fa fa-file-word-o", "fa fa-file-text-o", "fa fa-file-image-o"]
+var iconTypes = ["fa fa-file-o", "fa fa-folder-o", "fa fa-folder-open-o", "fa fa-file-pdf-o", "fa fa-file-word-o", "fa fa-file-text-o", "fa fa-file-image-o", "fa fa-file-video-o", "fa fa-file-audio-o"]
 
 var fileSchema = new mongoose.Schema({
 	name: { //Name of the file as it appears to the user

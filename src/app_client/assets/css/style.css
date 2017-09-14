@@ -489,6 +489,12 @@ footer span {
 	padding: 20px 0;
 }
 
+/******* MARKERS *******/
+
+.position-icon {
+	border-radius: 50px;	/* sets the radius of the avatar in the position icon so it appears as a circle, not a rectangle */
+}
+
 /* ========== SCROLLBAR ========== */
 
 ::-webkit-scrollbar-track {
@@ -591,12 +597,21 @@ footer span {
 }
 
 .fa-file-image-o {
-	color: #26b99a;
+	color: #00a514;
 }
 
 .fa-file-text-o {
 	color: #464646;
 }
+
+.fa-file-video-o {
+	color: #6d36a0;
+}
+
+.fa-file-audio-o {
+	color: #b3b300;
+}
+
 
 /* ========== FILE BROWSER PAGE ========== */
 
