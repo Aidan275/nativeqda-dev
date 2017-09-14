@@ -97,128 +97,389 @@
 <div id="viPanel">
 	
 	<div class="container" style="position:relative;">
-	
-	<page-header content="vm.pageHeader"></page-header>
 
-	<div class="bs-loading-container" bs-loading-overlay bs-loading-overlay-active-class="loading-overlay--active" bs-loading-overlay-reference-id="visuals-info"> 
-		<div class="blur-this">
-			<div class="row">
-				<div class="col-md-12">
-				<div ng-show="vm.details" class="pageItem">
-					<h3 ng-click="vm.toggleOptions()" style="color:#4676fa;cursor:pointer;cursor:hand;">Analysis Details</h3>
+		<page-header content="vm.pageHeader"></page-header>
 
-					<label>Name: </label> {{vm.analysisData.name}}
-					<br/>
-					<label>Language: </label> {{vm.analysisData.language}}
-					<br/>
-					<label>Date Created: </label> {{vm.analysisData.dateCreated | date : "dd MMMM, yyyy h:mm:ss a"}}
-					<br/>
-					<label>Last Modified: </label> {{vm.analysisData.lastModified | date : "dd MMMM, yyyy h:mm:ss a"}}
-					<br/>
-					<label>Uploaded By: </label> {{vm.analysisData.createdBy}}
-					<br/>
-					<label>Database ID: </label> {{vm.analysisData._id}}
-					<br/>
-					<label>S3 Key: </label> {{vm.analysisData.sourceDataKey}}
-					<br/>
-					<a ng-click="vm.viewFile(vm.analysisData.sourceDataKey)" class="btn btn-primary btn-sm" style="background-color:#4676fa;border-color:#4676fa;color:#fff;font-weight:500;" role="button">Raw Text</a>
+		<div class="bs-loading-container" bs-loading-overlay bs-loading-overlay-active-class="loading-overlay--active" bs-loading-overlay-reference-id="visuals-info"> 
+			<div class="blur-this">
+				<div class="row">
+					<div class="col-md-12">
+						<div ng-show="vm.details" class="pageItem">
+							<h3 ng-click="vm.toggleOptions()" style="color:#4676fa;cursor:pointer;cursor:hand;">Analysis Details</h3>
 
-					<br/>
-					<br/>
-				</div>
-				<div ng-show="vm.assistance" class="pageItem">
-					<h3>Use the side menu on the left to see available visualisations for {{vm.analysisData.name}}</h3>
+							<label>Name: </label> {{vm.analysisData.name}}
+							<br/>
+							<label>Language: </label> {{vm.analysisData.language}}
+							<br/>
+							<label>Date Created: </label> {{vm.analysisData.dateCreated | date : "dd MMMM, yyyy h:mm:ss a"}}
+							<br/>
+							<label>Last Modified: </label> {{vm.analysisData.lastModified | date : "dd MMMM, yyyy h:mm:ss a"}}
+							<br/>
+							<label>Uploaded By: </label> {{vm.analysisData.createdBy}}
+							<br/>
+							<label>Database ID: </label> {{vm.analysisData._id}}
+							<br/>
+							<label>S3 Key: </label> {{vm.analysisData.sourceDataKey}}
+							<br/>
+							<a ng-click="vm.viewFile(vm.analysisData.sourceDataKey)" class="btn btn-primary btn-sm" style="background-color:#4676fa;border-color:#4676fa;color:#fff;font-weight:500;" role="button">Raw Text</a>
 
-					<br/>
-				</div>
-				<div ng-show="vm.categories" class="pageItem">
-					<h4>Categories</h4>
-					<p>Categorise your content into a 5-level taxonomy. The top three categories will be returned.</p>
-					<p>View the complete list of categories <a href="https://www.ibm.com/watson/developercloud/doc/natural-language-understanding/categories.html" target="_blank">here</a>.</p>
-					<p>Supported languages: English</p>
+							<br/>
+							<br/>
+						</div>
+						<div ng-show="vm.assistance" class="pageItem">
+							<h3>Use the side menu on the left to see available visualisations for {{vm.analysisData.name}}</h3>
 
-					<p>
-						<a href="/basic-table/categories/{{vm.analysisID}}" class="btn btn-primary btn-lg" style="background-color:#4676fa;border-color:#4676fa;color:#fff;font-weight:500;" role="button">Basic Table</a>
-						<a href="/word-cloud/categories/{{vm.analysisID}}" class="btn btn-primary btn-lg" style="background-color:#4676fa;border-color:#4676fa;color:#fff;font-weight:500;" role="button">Word Cloud</a>
-					</p>
+							<br/>
+						</div>
+						<div ng-show="vm.categories" class="pageItem">
+							<h4>Categories</h4>
+							<p>Categorise your content into a 5-level taxonomy. The top three categories will be returned.</p>
+							<p>View the complete list of categories <a href="https://www.ibm.com/watson/developercloud/doc/natural-language-understanding/categories.html" target="_blank">here</a>.</p>
+							<p>Supported languages: English</p>
 
-					<br/>
-				</div>
-				<div ng-show="vm.concepts" class="pageItem">
-					<h4>Concepts</h4>
-					<p>Recognise high-level concepts that are related to your text. For example, analysis of a research paper about deep learning would likely return the concept "Artificial Intelligence", even if that term is not explicitly mentioned in the paper.</p>
-					<p>Supported languages: English, Spanish</p>
+							<ul>
+								<li class="vis-thumb-list-item">
+									<div class="vis-thumb-outer-div">
+										<div class="vis-thumb-inner-div">
+											<a href="/data-table/categories/{{vm.analysisID}}">
+												<img src="assets/img/visualisations/data-table-thumb.png"/>
+											</a>
+											<a class="vis-thumb-img-overlay" href="/data-table/categories/{{vm.analysisID}}">
+												<span>
+													<strong>Data Table</strong>
+												</span>
+											</a>
+										</div>
+									</div>
+								</li>
+								<li class="vis-thumb-list-item">
+									<div class="vis-thumb-outer-div">
+										<div class="vis-thumb-inner-div">
+											<a href="/word-cloud/categories/{{vm.analysisID}}">
+												<img src="assets/img/visualisations/word-cloud-thumb.png"/>
+											</a>
+											<a class="vis-thumb-img-overlay" href="/word-cloud/categories/{{vm.analysisID}}">
+												<span>
+													<strong>Word Cloud</strong>
+												</span>
+											</a>
+										</div>
+									</div>
+								</li>
+							</ul>
 
-					<p>
-						<a href="/bubble-chart/concepts/{{vm.analysisID}}" class="btn btn-primary btn-lg" style="background-color:#4676fa;border-color:#4676fa;color:#fff;font-weight:500;" role="button">Bubble Chart</a> 
-						<a href="/basic-table/concepts/{{vm.analysisID}}" class="btn btn-primary btn-lg" style="background-color:#4676fa;border-color:#4676fa;color:#fff;font-weight:500;" role="button">Basic Table</a>
-						<a href="/bar-chart/concepts/{{vm.analysisID}}" class="btn btn-primary btn-lg" style="background-color:#4676fa;border-color:#4676fa;color:#fff;font-weight:500;" role="button">Bar Chart</a>
-						<a href="/pie-chart/concepts/{{vm.analysisID}}" class="btn btn-primary btn-lg" style="background-color:#4676fa;border-color:#4676fa;color:#fff;font-weight:500;" role="button">Pie Chart </a>
-						<a href="/word-cloud/concepts/{{vm.analysisID}}" class="btn btn-primary btn-lg" style="background-color:#4676fa;border-color:#4676fa;color:#fff;font-weight:500;" role="button">Word Cloud</a>
-					</p>
+							<br/>
+						</div>
+						<div ng-show="vm.concepts" class="pageItem">
+							<h4>Concepts</h4>
+							<p>Recognise high-level concepts that are related to your text. For example, analysis of a research paper about deep learning would likely return the concept "Artificial Intelligence", even if that term is not explicitly mentioned in the paper.</p>
+							<p>Supported languages: English, Spanish</p>
 
-					<br/>
-				</div>
-				<div ng-show="vm.entities" class="pageItem">
-					<h4>Entities</h4>
-					<p>Identify people, cities, organisations, and many other types of entities in your text.</p>
-					<p>View the complete list of entity types and subtypes 
-					<a href="https://www.ibm.com/watson/developercloud/doc/natural-language-understanding/entity-types.html" target="_blank">here</a>.</p>
-					<p>Supported languages: English, French, German, Italian, Portuguese, Russian, Spanish, Swedish</p>
+							<ul>
+								<li class="vis-thumb-list-item">
+									<div class="vis-thumb-outer-div">
+										<div class="vis-thumb-inner-div">
+											<a href="/bubble-chart/concepts/{{vm.analysisID}}">
+												<img src="assets/img/visualisations/bubble-chart-thumb.png"/>
+											</a>
+											<a class="vis-thumb-img-overlay" href="/bubble-chart/concepts/{{vm.analysisID}}">
+												<span>
+													<strong>Bubble Chart</strong>
+												</span>
+											</a>
+										</div>
+									</div>
+								</li>
+								<li class="vis-thumb-list-item">
+									<div class="vis-thumb-outer-div">
+										<div class="vis-thumb-inner-div">
+											<a href="/data-table/concepts/{{vm.analysisID}}">
+												<img src="assets/img/visualisations/data-table-thumb.png"/>
+											</a>
+											<a class="vis-thumb-img-overlay" href="/data-table/concepts/{{vm.analysisID}}">
+												<span>
+													<strong>Data Table</strong>
+												</span>
+											</a>
+										</div>
+									</div>
+								</li>
+								<li class="vis-thumb-list-item">
+									<div class="vis-thumb-outer-div">
+										<div class="vis-thumb-inner-div">
+											<a href="/bar-chart/concepts/{{vm.analysisID}}">
+												<img src="assets/img/visualisations/bar-chart-thumb.png"/>
+											</a>
+											<a class="vis-thumb-img-overlay" href="/bar-chart/concepts/{{vm.analysisID}}">
+												<span>
+													<strong>Bar Chart</strong>
+												</span>
+											</a>
+										</div>
+									</div>
+								</li>
+								<li class="vis-thumb-list-item">
+									<div class="vis-thumb-outer-div">
+										<div class="vis-thumb-inner-div">
+											<a href="/pie-chart/concepts/{{vm.analysisID}}">
+												<img src="assets/img/visualisations/pie-chart-thumb.png"/>
+											</a>
+											<a class="vis-thumb-img-overlay" href="/pie-chart/concepts/{{vm.analysisID}}">
+												<span>
+													<strong>Pie Chart</strong>
+												</span>
+											</a>
+										</div>
+									</div>
+								</li>
+								<li class="vis-thumb-list-item">
+									<div class="vis-thumb-outer-div">
+										<div class="vis-thumb-inner-div">
+											<a href="/word-cloud/concepts/{{vm.analysisID}}">
+												<img src="assets/img/visualisations/word-cloud-thumb.png"/>
+											</a>
+											<a class="vis-thumb-img-overlay" href="/word-cloud/concepts/{{vm.analysisID}}">
+												<span>
+													<strong>Word Cloud</strong>
+												</span>
+											</a>
+										</div>
+									</div>
+								</li>
+							</ul>
 
-					<p>
-						<a href="/radar-chart/entities/{{vm.analysisID}}" class="btn btn-primary btn-lg" style="background-color:#4676fa;border-color:#4676fa;color:#fff;font-weight:500;" role="button">Radar Chart</a> 
-						<a href="/basic-table/entities/{{vm.analysisID}}" class="btn btn-primary btn-lg" style="background-color:#4676fa;border-color:#4676fa;color:#fff;font-weight:500;" role="button">Basic Table</a>
-						<a href="/bar-chart/entities/{{vm.analysisID}}" class="btn btn-primary btn-lg" style="background-color:#4676fa;border-color:#4676fa;color:#fff;font-weight:500;" role="button">Bar Chart</a>
-						<a href="/word-cloud/entities/{{vm.analysisID}}" class="btn btn-primary btn-lg" style="background-color:#4676fa;border-color:#4676fa;color:#fff;font-weight:500;" role="button">Word Cloud</a>
-					</p>
+							<br/>
+						</div>
+						<div ng-show="vm.entities" class="pageItem">
+							<h4>Entities</h4>
+							<p>Identify people, cities, organisations, and many other types of entities in your text.</p>
+							<p>View the complete list of entity types and subtypes</p>
+							<a href="https://www.ibm.com/watson/developercloud/doc/natural-language-understanding/entity-types.html" target="_blank">here</a>.</p>
+							<p>Supported languages: English, French, German, Italian, Portuguese, Russian, Spanish, Swedish</p>
 
-					<br/>
-				</div>
-				<div ng-show="vm.keywords" class="pageItem">
-					<h4>Keywords</h4>
-					<p>Identify the important keywords in your content.</p>
-					<p>Supported languages: English, French, German, Italian, Portuguese, Russian, Spanish, Swedish</p>
+							<ul>
+								<li class="vis-thumb-list-item">
+									<div class="vis-thumb-outer-div">
+										<div class="vis-thumb-inner-div">
+											<a href="/radar-chart/entities/{{vm.analysisID}}">
+												<img src="assets/img/visualisations/radar-chart-thumb.png"/>
+											</a>
+											<a class="vis-thumb-img-overlay" href="/radar-chart/entities/{{vm.analysisID}}">
+												<span>
+													<strong>Radar Chart</strong>
+												</span>
+											</a>
+										</div>
+									</div>
+								</li>
+								<li class="vis-thumb-list-item">
+									<div class="vis-thumb-outer-div">
+										<div class="vis-thumb-inner-div">
+											<a href="/data-table/entities/{{vm.analysisID}}">
+												<img src="assets/img/visualisations/data-table-thumb.png"/>
+											</a>
+											<a class="vis-thumb-img-overlay" href="/data-table/entities/{{vm.analysisID}}">
+												<span>
+													<strong>Data Table</strong>
+												</span>
+											</a>
+										</div>
+									</div>
+								</li>
+								<li class="vis-thumb-list-item">
+									<div class="vis-thumb-outer-div">
+										<div class="vis-thumb-inner-div">
+											<a href="/bar-chart/entities/{{vm.analysisID}}">
+												<img src="assets/img/visualisations/bar-chart-thumb.png"/>
+											</a>
+											<a class="vis-thumb-img-overlay" href="/bar-chart/entities/{{vm.analysisID}}">
+												<span>
+													<strong>Bar Chart</strong>
+												</span>
+											</a>
+										</div>
+									</div>
+								</li>
+								<li class="vis-thumb-list-item">
+									<div class="vis-thumb-outer-div">
+										<div class="vis-thumb-inner-div">
+											<a href="/word-cloud/entities/{{vm.analysisID}}">
+												<img src="assets/img/visualisations/word-cloud-thumb.png"/>
+											</a>
+											<a class="vis-thumb-img-overlay" href="/word-cloud/entities/{{vm.analysisID}}">
+												<span>
+													<strong>Word Cloud</strong>
+												</span>
+											</a>
+										</div>
+									</div>
+								</li>
+							</ul>
 
-					<p>
-						<a href="/bubble-chart/keywords/{{vm.analysisID}}" class="btn btn-primary btn-lg" style="background-color:#4676fa;border-color:#4676fa;color:#fff;font-weight:500;" role="button">Bubble Chart</a> 
-						<a href="/radar-chart/keywords/{{vm.analysisID}}" class="btn btn-primary btn-lg" style="background-color:#4676fa;border-color:#4676fa;color:#fff;font-weight:500;" role="button">Radar Chart</a> 
-						<a href="/treemap-chart/keywords/{{vm.analysisID}}" class="btn btn-primary btn-lg" style="background-color:#4676fa;border-color:#4676fa;color:#fff;font-weight:500;" role="button">Treemap Chart</a> 
-						<a href="/basic-table/keywords/{{vm.analysisID}}" class="btn btn-primary btn-lg" style="background-color:#4676fa;border-color:#4676fa;color:#fff;font-weight:500;" role="button">Basic Table</a>
-						<a href="/bar-chart/keywords/{{vm.analysisID}}" class="btn btn-primary btn-lg" style="background-color:#4676fa;border-color:#4676fa;color:#fff;font-weight:500;" role="button">Bar Chart</a>
-						<a href="/pie-chart/keywords/{{vm.analysisID}}" class="btn btn-primary btn-lg" style="background-color:#4676fa;border-color:#4676fa;color:#fff;font-weight:500;" role="button">Pie Chart</a>
-						<a href="/word-cloud/keywords/{{vm.analysisID}}" class="btn btn-primary btn-lg" style="background-color:#4676fa;border-color:#4676fa;color:#fff;font-weight:500;" role="button">Word Cloud</a>
-					</p>
+							<br/>
+						</div>
+						<div ng-show="vm.keywords" class="pageItem">
+							<h4>Keywords</h4>
+							<p>Identify the important keywords in your content.</p>
+							<p>Supported languages: English, French, German, Italian, Portuguese, Russian, Spanish, Swedish</p>
 
-					<br />
-				</div>
-				<div ng-show="vm.relations" class="pageItem">
-					<h4>Relations</h4>
-					<p>Recognise when two entities are related, and identify the type of relation. For example, an "awardedTo" relation might connect the entities "Nobel Prize" and "Albert Einstein".</p>
-					<p>Supported languages: Arabic, English, Spanish</p>
+							<ul>
+								<li class="vis-thumb-list-item">
+									<div class="vis-thumb-outer-div">
+										<div class="vis-thumb-inner-div">
+											<a href="/bubble-chart/keywords/{{vm.analysisID}}">
+												<img src="assets/img/visualisations/bubble-chart-thumb.png"/>
+											</a>
+											<a class="vis-thumb-img-overlay" href="/bubble-chart/keywords/{{vm.analysisID}}">
+												<span>
+													<strong>Bubble Chart</strong>
+												</span>
+											</a>
+										</div>
+									</div>
+								</li>
+								<li class="vis-thumb-list-item">
+									<div class="vis-thumb-outer-div">
+										<div class="vis-thumb-inner-div">
+											<a href="/radar-chart/keywords/{{vm.analysisID}}">
+												<img src="assets/img/visualisations/radar-chart-thumb.png"/>
+											</a>
+											<a class="vis-thumb-img-overlay" href="/radar-chart/keywords/{{vm.analysisID}}">
+												<span>
+													<strong>Radar Chart</strong>
+												</span>
+											</a>
+										</div>
+									</div>
+								</li>
+								<li class="vis-thumb-list-item">
+									<div class="vis-thumb-outer-div">
+										<div class="vis-thumb-inner-div">
+											<a href="/treemap-chart/keywords/{{vm.analysisID}}">
+												<img src="assets/img/visualisations/treemap-chart-thumb.png"/>
+											</a>
+											<a class="vis-thumb-img-overlay" href="/treemap-chart/keywords/{{vm.analysisID}}">
+												<span>
+													<strong>Treemap Chart</strong>
+												</span>
+											</a>
+										</div>
+									</div>
+								</li>
+								<li class="vis-thumb-list-item">
+									<div class="vis-thumb-outer-div">
+										<div class="vis-thumb-inner-div">
+											<a href="/data-table/keywords/{{vm.analysisID}}">
+												<img src="assets/img/visualisations/data-table-thumb.png"/>
+											</a>
+											<a class="vis-thumb-img-overlay" href="/data-table/keywords/{{vm.analysisID}}">
+												<span>
+													<strong>Data Table</strong>
+												</span>
+											</a>
+										</div>
+									</div>
+								</li>
+								<li class="vis-thumb-list-item">
+									<div class="vis-thumb-outer-div">
+										<div class="vis-thumb-inner-div">
+											<a href="/bar-chart/keywords/{{vm.analysisID}}">
+												<img src="assets/img/visualisations/bar-chart-thumb.png"/>
+											</a>
+											<a class="vis-thumb-img-overlay" href="/bar-chart/keywords/{{vm.analysisID}}">
+												<span>
+													<strong>Bar Chart</strong>
+												</span>
+											</a>
+										</div>
+									</div>
+								</li>
+								<li class="vis-thumb-list-item">
+									<div class="vis-thumb-outer-div">
+										<div class="vis-thumb-inner-div">
+											<a href="/pie-chart/keywords/{{vm.analysisID}}">
+												<img src="assets/img/visualisations/pie-chart-thumb.png"/>
+											</a>
+											<a class="vis-thumb-img-overlay" href="/pie-chart/keywords/{{vm.analysisID}}">
+												<span>
+													<strong>Pie Chart</strong>
+												</span>
+											</a>
+										</div>
+									</div>
+								</li>
+								<li class="vis-thumb-list-item">
+									<div class="vis-thumb-outer-div">
+										<div class="vis-thumb-inner-div">
+											<a href="/word-cloud/keywords/{{vm.analysisID}}">
+												<img src="assets/img/visualisations/word-cloud-thumb.png"/>
+											</a>
+											<a class="vis-thumb-img-overlay" href="/word-cloud/keywords/{{vm.analysisID}}">
+												<span>
+													<strong>Word Cloud</strong>
+												</span>
+											</a>
+										</div>
+									</div>
+								</li>
+							</ul>
 
-					<p>
-						<a href="/basic-table/relations/{{vm.analysisID}}" class="btn btn-primary btn-lg" style="background-color:#4676fa;border-color:#4676fa;color:#fff;font-weight:500;" role="button">Basic Table</a>
-					</p>
 
-					<br />
-				</div>
-				<div ng-show="vm.semanticRoles" class="pageItem">
-					<h4>Semantic Roles</h4>
-					<p>Parse sentences into subject, action, and object form.</p>
-					<p>Supported languages: English, Spanish</p>
+							<br />
+						</div>
+						<div ng-show="vm.relations" class="pageItem">
+							<h4>Relations</h4>
+							<p>Recognise when two entities are related, and identify the type of relation. For example, an "awardedTo" relation might connect the entities "Nobel Prize" and "Albert Einstein".</p>
+							<p>Supported languages: Arabic, English, Spanish</p>
 
-					<p>
-						<a href="/basic-table/semanticRoles/{{vm.analysisID}}" class="btn btn-primary btn-lg" style="background-color:#4676fa;border-color:#4676fa;color:#fff;font-weight:500;" role="button">Basic Table</a>
-					</p>
+							<ul>
+								<li class="vis-thumb-list-item">
+									<div class="vis-thumb-outer-div">
+										<div class="vis-thumb-inner-div">
+											<a href="/data-table/relations/{{vm.analysisID}}">
+												<img src="assets/img/visualisations/data-table-thumb.png"/>
+											</a>
+											<a class="vis-thumb-img-overlay" href="/data-table/relations/{{vm.analysisID}}">
+												<span>
+													<strong>Word Cloud</strong>
+												</span>
+											</a>
+										</div>
+									</div>
+								</li>
+							</ul>
 
-					<br />
-				</div>
+							<br />
+						</div>
+						<div ng-show="vm.semanticRoles" class="pageItem">
+							<h4>Semantic Roles</h4>
+							<p>Parse sentences into subject, action, and object form.</p>
+							<p>Supported languages: English, Spanish</p>
+
+							<ul>
+								<li class="vis-thumb-list-item">
+									<div class="vis-thumb-outer-div">
+										<div class="vis-thumb-inner-div">
+											<a href="/data-table/semantic-roles/{{vm.analysisID}}">
+												<img src="assets/img/visualisations/data-table-thumb.png"/>
+											</a>
+											<a class="vis-thumb-img-overlay" href="/data-table/semantic-roles/{{vm.analysisID}}">
+												<span>
+													<strong>Word Cloud</strong>
+												</span>
+											</a>
+										</div>
+									</div>
+								</li>
+							</ul>
+
+							<br />
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-  </div>
 </div>
-	<footer-generic></footer-generic>
+<footer-generic></footer-generic>
 

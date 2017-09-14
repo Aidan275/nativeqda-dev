@@ -190,10 +190,10 @@
 			controllerAs: 'vm',
 			loginRequired: true
 		})
-		.when('/basic-table/:type/:id', {
-			title: 'NativeQDA | Basic Table',
-			templateUrl: '/components/visualisations/visuals/basicTable/basicTable.view.html',
-			controller: 'basicTableCtrl',
+		.when('/data-table/:type/:id', {
+			title: 'NativeQDA | Data Table',
+			templateUrl: '/components/visualisations/visuals/dataTable/dataTable.view.html',
+			controller: 'dataTableCtrl',
 			controllerAs: 'vm',
 			loginRequired: true
 		})
