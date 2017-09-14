@@ -1898,7 +1898,7 @@ footer span {
 	border-radius: 50%;
 	float: right;
 }
-#enter-code-css .form-group-qda erroru i svg, .form-group-qda errorp i svg {
+#enter-code-css .form-group-qda erroru i svg, #visualisations-index .form-group-qda errorp i svg {
 	fill:#d34336;
 }
 #enter-code-css .form-group-qda[errr] .float-label {
@@ -1910,7 +1910,7 @@ footer span {
 #enter-code-css .form-group-qda[errr] .form-control-qda:focus {
 	border-bottom: 2px solid #d34336 !important;	
 }
-#enter-code-css .form-group-qda[errr] erroru, .form-group-qda[errr] errorp  {
+#enter-code-css .form-group-qda[errr] erroru, #visualisations-index .form-group-qda[errr] errorp  {
 	opacity: 1;
 }
 #enter-code-css input[type=checkbox]
@@ -1981,3 +1981,27 @@ footer span {
 	transition: none;
 	border-bottom: 1px solid rgb(3, 169, 245);
 }
+
+/* ========== VISUALISATIONS INDEX PAGE ========== */
+
+	@media screen and (min-width:1690px){
+		#visualisations-index .container { left:-256px; }
+	}
+	@media screen and (min-width:1430px) and (max-width:1689px){
+		#visualisations-index .container { left:-128px; }
+	}
+	@media screen and (min-width:1300px) and (max-width:1429px){
+		#visualisations-index .container { left:-64px; }
+	}
+	@media screen and (min-width:1025px) and (max-width:1299px){
+		#visualisations-index .container { left:-32px; }
+	}
+	@media screen and (min-width:991px) and (max-width:1024px){
+		#visualisations-index .container { left:-8px; }
+	}
+	@media screen and (min-width:420px) and (max-width:990px){
+		#visualisations-index .container { left:0px; }
+	}
+	@media screen and(max-width:419px){
+		#visualisations-index .container { left:0px; }
+	}

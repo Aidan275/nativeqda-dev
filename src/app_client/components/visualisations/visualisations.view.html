@@ -1,14 +1,9 @@
 <style>
-	@media screen and (min-width:768px){
-		.container { left:-256px; }
-		.vismenuicon { display:none; }
-	}
 	#viMenu {
 		padding: 75px 25px 25px 25px;
 		overflow: hidden;
 		background: #eee;
 	}
-
 	.slideout-menu {
 		position: fixed;
 		top: 0;
@@ -47,7 +42,7 @@
 	.slideout-open .slideout-menu {
 		display: block;
 	}
-
+	
 	.pageItem {
 		position:relative;
 	}
@@ -100,8 +95,6 @@
 </nav>
 
 <div id="viPanel">
-
-	<img class="vismenuicon" src="assets/img/vismenu_medium.png" alt="VisMenu" style="cursor:pointer;padding-top:0.5%;" ng-click="vm.toggleOptions()">
 	
 	<div class="container" style="position:relative;">
 	
@@ -112,7 +105,7 @@
 			<div class="row">
 				<div class="col-md-12">
 				<div ng-show="vm.details" class="pageItem">
-					<h3>Analysis Details</h3>
+					<h3 ng-click="vm.toggleOptions()" style="color:#4676fa;cursor:pointer;cursor:hand;">Analysis Details</h3>
 
 					<label>Name: </label> {{vm.analysisData.name}}
 					<br/>
