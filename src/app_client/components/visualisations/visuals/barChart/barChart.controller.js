@@ -18,6 +18,11 @@
 		activate();
 		
 
+    //Bindable functions
+    vm.top10 = top10;
+    vm.bottom10 = bottom10;
+    vm.redraw = redraw;
+
 		///////////////////////////
 
 		function activate() {
@@ -59,7 +64,8 @@
 		function checkLength() {
 			//If there are too many entities the graph becomes unusable
 			if(data.length > 15) {
-				sortData = data.slice(0, 15); //Take first 10 elements
+				sortData = data.slice((data.length-10), data.length);
+        sortData.reverse();
 				drawChart(sortData);										
 
 			}else {
@@ -68,11 +74,33 @@
 		}
 		
 		function sortRelevance() {
-			//Sort data by relevance
+			//Sort data by relevance in descending order
 			data.sort(function (a, b) {
 				return a.relevance - b.relevance;
 			});	
 		}
+
+    function sortRelevanceAsc() {
+      data.sort(function (a, b) {
+        return a.relevance + b.relevance;
+      }); 
+    }
+
+    function top10() {
+      //This might not be necessary
+      //Refresh drawing with only top 10 elements
+      sortRelevance(); //Sort them in ascending order
+      sortData = data.slice(0, 10); //Grab first 10 elements
+
+      console.log(data);
+
+    }
+
+    function bottom10() {
+      sortData = data.slice(0, 10);
+      sortRelevance();
+      console.log(data);
+    }
 
 		function conceptChart(analysisData) {
 			analysisData.concepts.forEach(function(concept){
@@ -243,5 +271,9 @@
     	.on("mouseout", function(d){ tooltip.style("display", "none");});
 		}
 	}
+
+  function redraw() {
+
+  }
 
 })();
