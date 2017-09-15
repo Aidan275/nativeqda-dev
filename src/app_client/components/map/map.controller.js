@@ -331,8 +331,8 @@
 				}
 
 				/* HTML for the popup boxes displayed when the file marker is pressed */
-				var popupString = '<div class="info-window">' +
-				'<h3>' + file.name + '</h3>' +
+				var popupString = '<div class="info-window"><div style="background-color:#4676fa;border-radius: 12px 12px 0 0 !important;text-align:center;">' +
+				'<h3 style="color:#FFF;margin-left:5px;margin-right:5px;padding-bottom:5px;padding-top:5px;">' + file.name + '</h3></div><div style="margin-left: 15px;margin-right:15px;margin-top:5px;margin-bottom:15px;"' +
 				'<p><strong>Created By:</strong> ' + file.createdBy + '<br />' +
 				'<strong>Size:</strong> ' + $filter('formatFileSize')(file.size, 2) + '<br />' +	/* uses formatFileSize filter to format the file size */
 				'<strong>Last Modified:</strong> ' + $filter('date')(file.lastModified, "dd MMMM, yyyy h:mm a");	/* uses date filter to format the date */
@@ -347,11 +347,11 @@
 					popupString += '</p>';
 				}
 
-				popupString += '<a ng-click="vm.viewFile(file)" class="btn btn-success" role="button">View</a> ' +
-				'<a ng-click="vm.popupFileDetails(file)" class="btn btn-primary" role="button">Details</a> ' +
-				'<a ng-click="vm.confirmFileDelete(file)" class="btn btn-danger" role="button">Delete</a>' +
-				'<a ng-click="vm.selectDependent(precedent)" class="btn btn-primary" role="button">Add Dependent</a>' +
-				'</div>';
+				popupString += '<div style="text-align:center;"><a ng-click="vm.viewFile(file)" class="btn btn-success btn-xs" role="button">View</a> ' +
+				'<a ng-click="vm.popupFileDetails(file)" class="btn btn-primary btn-xs" role="button">Details</a> ' +
+				'<a ng-click="vm.confirmFileDelete(file)" class="btn btn-danger btn-xs" role="button">Delete</a> ' +
+				'<a ng-click="vm.selectDependent(precedent)" class="btn btn-info btn-xs" role="button">Add Dependent</a></div>' +
+				'</div></div>';
 
 				/* compiles the HTML so ng-click works */
 				var compiledPopupString = $compile(angular.element(popupString));
