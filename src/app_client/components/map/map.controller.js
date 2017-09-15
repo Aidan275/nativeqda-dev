@@ -253,8 +253,8 @@
 			var userPos = response.latlng;
 
 			vm.posMarker.setLatLng(userPos);
-			vm.posMarker.bindPopup("<p style='margin: 0 33px 5px 5px !important;padding-top:8px;'>You are within " + $filter('formatDistance')(radius) + " of this point</p>");
-			vm.posMarker.addTo(vm.map)
+			vm.posMarker.bindPopup("<p style='margin: 5px !important;padding-top:8px;'>You are within " + $filter('formatDistance')(radius) + " of this point</p>", { closeButton:false });
+			vm.posMarker.addTo(vm.map);
 
 			var posCicle = L.circle(userPos, {
 				radius: radius,
