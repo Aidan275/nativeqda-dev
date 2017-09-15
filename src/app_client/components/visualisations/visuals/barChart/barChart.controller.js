@@ -41,6 +41,7 @@
 					break;
 					case 'entities':
 					entitiesChart(analysisData);
+          data.reverse();
 					drawEntityChart(data);
 					break;
 					case 'keywords':
@@ -63,12 +64,14 @@
 		}
 		function checkLength() {
 			//If there are too many entities the graph becomes unusable
+
 			if(data.length > 15) {
 				sortData = data.slice((data.length-10), data.length);
         sortData.reverse();
 				drawChart(sortData);										
 
 			}else {
+        data.reverse();
 				drawChart(data);
 			}	
 		}
@@ -80,9 +83,9 @@
 			});	
 		}
 
-    function sortRelevanceAsc() {
+    function sortCount() {
       data.sort(function (a, b) {
-        return a.relevance + b.relevance;
+        return a.count - b.count;
       }); 
     }
 
@@ -124,12 +127,13 @@
 
 		function entitiesChart(analysisData) {
 			analysisData.entities.forEach(function(entity){
-				console.log(entity);
 				var count = entity.count;
 				var text = entity.text;
 				data.push({count: entity.count, text: text});
 			});
-			sortRelevance();
+      //Sort by count for entities
+			sortCount();
+
 		}
 
 		function drawChart(data) {
