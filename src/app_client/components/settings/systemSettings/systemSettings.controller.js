@@ -1,7 +1,7 @@
 (function () { 
 
 	angular
-	.module('nativeQDAApp')
+	.module('components.settings')
 	.controller('systemSettingsCtrl', systemSettingsCtrl);
 	
 	function systemSettingsCtrl () {

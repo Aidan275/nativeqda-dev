@@ -3,7 +3,7 @@
 	'use strict';
 
 	angular
-	.module('nativeQDAApp')
+	.module('components.analysis')
 	.controller('newAnalysisCtrl', newAnalysisCtrl);
 
 	/* @ngInject */

@@ -3,7 +3,7 @@
 	'use strict';
 
 	angular
-	.module('nativeQDAApp')
+	.module('components.settings')
 	.controller('userManagementCtrl', userManagementCtrl);
 	
 	/* @ngInject */

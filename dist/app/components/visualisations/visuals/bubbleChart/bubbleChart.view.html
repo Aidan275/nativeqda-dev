@@ -56,12 +56,8 @@
 		bottom: 0; 
 		left: 0;
 	}
-
-	#graph svg {
-	}
-
+	
 	#controls-button {
-
 		position:relative;
 	}
 </style><navigation></navigation><div id=bcMenu><label>Background Colour</label><color-picker ng-model=vm.bgColour options=vm.bgColourOptions event-api=vm.bgColourChange></color-picker><br><label>Bubble Colours</label><color-picker ng-model=vm.bubbleColour1 options=vm.bubbleColourOptions1 event-api=vm.bubbleColourChange1></color-picker><color-picker ng-model=vm.bubbleColour2 options=vm.bubbleColourOptions2 event-api=vm.bubbleColourChange2></color-picker><br><label>Text Colour</label><color-picker ng-model=vm.textColour options=vm.textColourOptions event-api=vm.textColourChange></color-picker><br><label>Font Scale</label> <input class=number-input-bubble type=number name=font-scale ng-model=vm.fontScale.value ng-change=vm.updateFontScale() min=0 max=50 required> <span class=validity title="Invaild Input"></span><br><label>Bubble Scale</label><br><label>Linear</label> <input type=radio name=radio-scale ng-model=vm.selectedScale ng-click=vm.updateToLinearScale() value=linear><br><label>Power</label> <input type=radio name=radio-scale ng-model=vm.selectedScale ng-click=vm.updateToPowScale() value=power> <input class=number-input-bubble type=number name=bubble-scale ng-model=vm.powScale.value ng-change=vm.updateToPowScale() min=0 max=10 step=0.1 required> <span class=validity title="Invaild Input"></span></div><div id=bcPanel><div class=bs-loading-container bs-loading-overlay bs-loading-overlay-active-class=loading-overlay--active bs-loading-overlay-reference-id=bubble-chart><div class=blur-this><div id=graph></div><div id=controls-button><button ng-click=vm.toggleOptions() class="btn btn-success">Controls</button></div><svg id=svg-legend></svg></div></div></div>

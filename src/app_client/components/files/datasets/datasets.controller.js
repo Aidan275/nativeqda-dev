@@ -1,7 +1,7 @@
 (function () {
 
 	angular
-	.module('nativeQDAApp')
+	.module('components.auth')
 	.controller('datasetsCtrl', datasetsCtrl);
 
 	/* @ngInject */

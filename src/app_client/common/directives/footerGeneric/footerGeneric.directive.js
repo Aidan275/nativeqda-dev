@@ -1,6 +1,6 @@
 (function () {
 	angular
-	.module('nativeQDAApp')
+	.module('common.directives')
 	.directive('footerGeneric', footerGeneric);
 	
 	function footerGeneric () {

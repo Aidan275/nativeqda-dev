@@ -1,7 +1,12 @@
+/**
+ * @file Generates a radar chart from the emotional analysis results from either the 
+ * entity or keyword results.
+ * @author Aidan Andrews <aa275@uowmail.edu.au>
+ */
 (function () {
 
 	angular
-	.module('nativeQDAApp')
+	.module('components.visualisations')
 	.controller('radarChartCtrl', radarChartCtrl);
 
 	/* @ngInject */
@@ -10,6 +15,63 @@
 
 		var analysisType = $routeParams.type;
 		var analysisID = $routeParams.id;
+
+		vm.updateRadarChart = updateRadarChart;
+		vm.toggleOptions = toggleOptions;
+		vm.checkAllBoxes = checkAllBoxes;
+
+		vm.analysisData = [];
+		vm.data = [];
+		vm.selectAll = false;
+
+		var slideout = new Slideout({
+			'panel': document.querySelector('#rcPanel'),
+			'menu': document.querySelector('#rcMenu'),
+			'padding': 256,
+			'tolerance': 70
+		});
+
+		function toggleOptions() {
+			slideout.toggle();
+		}
+
+		function updateRadarChart() {
+			vm.data = [];
+
+			vm.analysisData.forEach(function(data) {
+				if(data.checked){
+					vm.data.push(data);
+				}
+			});
+
+			if (vm.data.length === 0) {
+				d3.select(".radarChart").select("svg").remove();
+			}
+			else {
+				RadarChart(".radarChart", radarChartOptions);
+			}
+		}
+
+		function checkAllBoxes() {
+			if(vm.selectAll) {
+				vm.analysisData.forEach(function(data){
+					data.checked = true;
+					vm.data.push(data);
+				});
+			} else {
+				vm.analysisData.forEach(function(data){
+					data.checked = false;
+				});
+				vm.data = [];
+			}
+
+			if (vm.data.length === 0) {
+				d3.select(".radarChart").select("svg").remove();
+			}
+			else {
+				RadarChart(".radarChart", radarChartOptions);
+			}
+		}
 
 		/* Radar chart design created by Nadieh Bremer - VisualCinnamon.com */
 
@@ -45,9 +107,6 @@
 
 		analysisService.readWatsonAnalysis(analysisID)
 		.then(function(response) {
-			vm.analysisData = response.data;
-			var data = [];
-
 			if(analysisType === 'entities'){
 				response.data.entities.forEach(function(entry) {
 					if(entry.emotion) {
@@ -59,7 +118,7 @@
 						{axis: "Sadness", value: entry.emotion.sadness}
 						];
 
-						data.push(emotionEntry);
+						vm.analysisData.push(emotionEntry);
 					}
 				});
 			} else if(analysisType === 'keywords'){
@@ -73,14 +132,16 @@
 						{axis: "Sadness", value: entry.emotion.sadness}
 						];
 
-						data.push(emotionEntry);
+						vm.analysisData.push(emotionEntry);
 					}
 				});
 			}
-			
+
+			vm.analysisData[0].checked = true;
+			vm.data.push(vm.analysisData[0]);
 
 			//Call function to draw the Radar chart
-			RadarChart(".radarChart", data, radarChartOptions);
+			RadarChart(".radarChart", radarChartOptions);
 		});
 
 		/////////////////////////////////////////////////////////
@@ -91,7 +152,7 @@
 		/////////// Inspired by the code of alangrafu ///////////
 		/////////////////////////////////////////////////////////
 
-		function RadarChart(id, data, options) {
+		function RadarChart(id, options) {
 			var cfg = {
 			 w: 600,				//Width of the circle
 			 h: 600,				//Height of the circle
@@ -116,9 +177,9 @@
 			}//if
 			
 			//If the supplied maxValue is smaller than the actual one, replace by the max in the data
-			var maxValue = Math.max(cfg.maxValue, d3.max(data, function(i){return d3.max(i.map(function(o){return o.value;}))}));
+			var maxValue = Math.max(cfg.maxValue, d3.max(vm.data, function(i){return d3.max(i.map(function(o){return o.value;}))}));
 
-			var allAxis = (data[0].map(function(i, j){return i.axis})),	//Names of each axis
+			var allAxis = (vm.data[0].map(function(i, j){return i.axis})),	//Names of each axis
 				total = allAxis.length,					//The number of different axes
 				radius = Math.min(cfg.w/2, cfg.h/2), 	//Radius of the outermost circle
 				Format = d3.format('%'),			 	//Percentage formatting
@@ -234,7 +295,7 @@
 
 			//Create a wrapper for the blobs	
 			var blobWrapper = g.selectAll(".radarWrapper")
-			.data(data)
+			.data(vm.data)
 			.enter().append("g")
 			.attr("class", "radarWrapper");
 
@@ -299,7 +360,7 @@
 			
 			//Wrapper for the invisible circles on top
 			var blobCircleWrapper = g.selectAll(".radarCircleWrapper")
-			.data(data)
+			.data(vm.data)
 			.enter().append("g")
 			.attr("class", "radarCircleWrapper");
 

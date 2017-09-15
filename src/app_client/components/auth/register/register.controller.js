@@ -1,7 +1,7 @@
 (function () {
 
 	angular
-	.module('nativeQDAApp')
+	.module('components.auth')
 	.controller('registerCtrl', registerCtrl);
 
 	registerCtrl.$inject = ['$location','authentication', 'logger'];

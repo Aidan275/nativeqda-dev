@@ -1,7 +1,7 @@
 (function () {
 
 	angular
-	.module('nativeQDAApp')
+	.module('common.services')
 	.service('datasetService', datasetService);
 
     /* @ngInject */

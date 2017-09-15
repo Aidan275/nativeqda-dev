@@ -1,7 +1,7 @@
 (function () {
 
 	angular
-	.module('nativeQDAApp')
+	.module('components.visualisations')
 	.controller('wordCloudCtrl', wordCloudCtrl);
 
 	/* @ngInject */

@@ -2,7 +2,7 @@
 	'use strict';
 
 	angular
-	.module('nativeQDAApp')
+	.module('common.services')
 	.service('exception', exception);
 
 	/* @ngInject */

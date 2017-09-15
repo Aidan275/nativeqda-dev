@@ -1,7 +1,7 @@
 (function () { 
 
 	angular
-	.module('nativeQDAApp')
+	.module('common.filters')
 	.filter('formatDistance', formatDistance);
 
 	var _isNumeric = function (n) {

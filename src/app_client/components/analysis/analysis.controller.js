@@ -1,7 +1,7 @@
 (function () {
 
 	angular
-	.module('nativeQDAApp')
+	.module('components.analysis')
 	.controller('analysisCtrl', analysisCtrl);
 
 	/* @ngInject */

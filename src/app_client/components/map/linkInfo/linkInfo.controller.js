@@ -3,7 +3,7 @@
 	'use strict';
 
 	angular
-	.module('nativeQDAApp')
+	.module('components.map')
 	.controller('linkInfoCtrl', linkInfoCtrl);
 
 	/* @ngInject */

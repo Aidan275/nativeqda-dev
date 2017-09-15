@@ -1,7 +1,7 @@
 (function () {
 
 	angular
-	.module('nativeQDAApp')
+	.module('components.settings')
 	.controller('editUserCtrl', editUserCtrl);
 
 	/* @ngInject */

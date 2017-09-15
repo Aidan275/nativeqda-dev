@@ -3,7 +3,7 @@
 	"use strict";
 
 	angular
-	.module('nativeQDAApp')
+	.module('components.home')
 	.controller('homeCtrl', homeCtrl);
 	
 	/* @ngInject */

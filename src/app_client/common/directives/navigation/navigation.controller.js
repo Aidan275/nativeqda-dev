@@ -1,7 +1,7 @@
 (function () {
 
 	angular
-	.module('nativeQDAApp')
+	.module('common.directives')
 	.controller('navigationCtrl', navigationCtrl);
 
 	/* @ngInject */

@@ -3,7 +3,7 @@
 	'use strict';
 
 	angular
-	.module('nativeQDAApp')
+	.module('common.factories')
 	.factory('geolocationSvc', geolocationSvc);
 
 	/* @ngInject */

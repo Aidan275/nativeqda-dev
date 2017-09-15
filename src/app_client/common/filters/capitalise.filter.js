@@ -1,7 +1,7 @@
 (function () {
 
 	angular
-	.module('nativeQDAApp')
+	.module('common.filters')
 	.filter('capitalise', capitalise);
 
 	// Filter to capitalise the first letter of a string

@@ -1,7 +1,7 @@
 (function () {
 
 	angular
-	.module('nativeQDAApp')
+	.module('components.files')
 	.controller('viewDatasetCtrl', viewDatasetCtrl);
 
 	/* @ngInject */

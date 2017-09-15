@@ -1,7 +1,7 @@
 (function () {
 
 	angular
-	.module('nativeQDAApp')
+	.module('components.map')
 	.controller('heatmapCtrl', heatmapCtrl);
 
     /* @ngInject */

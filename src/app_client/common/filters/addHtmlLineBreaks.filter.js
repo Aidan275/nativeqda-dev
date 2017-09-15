@@ -1,6 +1,6 @@
 (function () {
 	angular
-	.module('nativeQDAApp')
+	.module('common.filters')
 	.filter('addHtmlLineBreaks', addHtmlLineBreaks);
 
 	function addHtmlLineBreaks () {

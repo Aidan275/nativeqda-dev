@@ -1,6 +1,6 @@
 (function () {
 	angular
-	.module('nativeQDAApp')
+	.module('common.directives')
 	.directive('pwCheck', pwCheck);
 
 	// Directive to check if password match

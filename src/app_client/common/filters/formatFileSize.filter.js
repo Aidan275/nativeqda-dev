@@ -1,7 +1,7 @@
 (function () {
 
 	angular
-	.module('nativeQDAApp')
+	.module('common.filters')
 	.filter('formatFileSize', formatFileSize);
 
 	function formatFileSize () {

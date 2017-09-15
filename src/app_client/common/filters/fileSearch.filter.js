@@ -1,7 +1,7 @@
 (function () {
 
 	angular
-	.module('nativeQDAApp')
+	.module('common.filters')
 	.filter('fileSearch', fileSearch);
 
 	/* Filter for searching for files on the map page */

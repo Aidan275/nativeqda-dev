@@ -3,7 +3,7 @@
 	'use strict';
 
 	angular
-	.module('nativeQDAApp')
+	.module('components.survey')
 	.controller('surveyCompleteCtrl', surveyCompleteCtrl);
 
 	/* @ngInject */
