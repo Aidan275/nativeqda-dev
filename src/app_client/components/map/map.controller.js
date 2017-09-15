@@ -234,8 +234,6 @@
 			vm.posMarker = L.marker([vm.lat, vm.lng], { icon: posIcon, zIndexOffset: -500 })
 			.bindTooltip('<strong>Your Position</strong>');
 
-			console.log(vm.posMarker);
-
 			vm.sidebar = L.control.sidebar('sidebar').addTo(vm.map);
 
 			geoLocateUser();	/* Gets the users position */
@@ -407,375 +405,376 @@
 				fileListArray[index].marker = marker;	/* Adds the marker objects into the corresponding file object */
 			});
 
-vm.map.addLayer(vm.markers);	/* Adds the markers cluster group to the map */
-bsLoadingOverlayService.stop({referenceId: 'map'});	/* Stop animated loading overlay */
-}
-
-/* Get a signed URL to download the requested file from S3 */
-/* and if successful, open the signed URL in a new tab */
-function viewFile(file) {
-
-	/* Open a blank new tab while still in a trusted context to prevent a popup blocker warning */
-	var newTab = $window.open("about:blank", '_blank');
-
-	/* CSS and HTML for loading animation to display while fetching the signed URL */
-	var loaderHTML = '<style>#loader{position: absolute;left: 50%;top: 50%;border:0.5em solid rgba(70, 118, 250, 0.2);border-radius:50%;'+
-	'border-top:0.5em solid #4676fa;width:75px;height:75px;-webkit-animation:spin 1s linear infinite;animation:spin 1s linear infinite;}'+
-	'@-webkit-keyframes spin{0%{-webkit-transform:rotate(0deg);}100%{-webkit-transform:rotate(360deg);}}'+
-	'@keyframes spin{0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}</style>'+
-	'<div id="loader"></div>';
-
-	/* Write the loading animation code to the new window */
-	newTab.document.write(loaderHTML);
-
-	/* Make a request to the server for a signed URL to download/view the requested file */
-	s3Service.signDownload(file.path, file.name)
-	.then(function(response) {
-		/* Remove the animation 1s after the signed URL is retrieved */
-		setTimeout(function(){
-			newTab.document.getElementById("loader").remove();
-		},1000);
-
-		/* Redirect the new tab to the signed URL */
-		/* If the file is a document or text file, open in google docs viewer to view in the browser */
-		if(response.data.type === "document" || response.data.type === "text") {
-			var encodedUrl = 'https://docs.google.com/viewer?url=' + encodeURIComponent(response.data.url) + '&embedded=true';
-			newTab.location = encodedUrl;
-		} else {
-			/* Else either download or view in browser (if natively compatible) */
-			newTab.location = response.data.url;
+			vm.map.addLayer(vm.markers);	/* Adds the markers cluster group to the map */
+			bsLoadingOverlayService.stop({referenceId: 'map'});	/* Stop animated loading overlay */
 		}
 
-	}, function() {
-		/* If there is an error, close the new tab */
-		newTab.close();
-	});
-}
 
-function popupFileDetails(file) {
-	var modalInstance = $uibModal.open({
-		templateUrl: '/components/files/fileDetails/fileDetails.view.html',
-		controller: 'fileDetailsCtrl as vm',
-		size: 'lg',
-		resolve: {
-			file: function () {
-				return file;
-			}
+		/* Get a signed URL to download the requested file from S3 */
+		/* and if successful, open the signed URL in a new tab */
+		function viewFile(file) {
+
+			/* Open a blank new tab while still in a trusted context to prevent a popup blocker warning */
+			var newTab = $window.open("about:blank", '_blank');
+
+			/* CSS and HTML for loading animation to display while fetching the signed URL */
+			var loaderHTML = '<style>#loader{position: absolute;left: 50%;top: 50%;border:0.5em solid rgba(70, 118, 250, 0.2);border-radius:50%;'+
+			'border-top:0.5em solid #4676fa;width:75px;height:75px;-webkit-animation:spin 1s linear infinite;animation:spin 1s linear infinite;}'+
+			'@-webkit-keyframes spin{0%{-webkit-transform:rotate(0deg);}100%{-webkit-transform:rotate(360deg);}}'+
+			'@keyframes spin{0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}</style>'+
+			'<div id="loader"></div>';
+
+			/* Write the loading animation code to the new window */
+			newTab.document.write(loaderHTML);
+
+			/* Make a request to the server for a signed URL to download/view the requested file */
+			s3Service.signDownload(file.path, file.name)
+			.then(function(response) {
+				/* Remove the animation 1s after the signed URL is retrieved */
+				setTimeout(function(){
+					newTab.document.getElementById("loader").remove();
+				},1000);
+
+				/* Redirect the new tab to the signed URL */
+				/* If the file is a document or text file, open in google docs viewer to view in the browser */
+				if(response.data.type === "doc") {
+					var encodedUrl = 'https://docs.google.com/viewer?url=' + encodeURIComponent(response.data.url) + '&embedded=true';
+					newTab.location = encodedUrl;
+				} else {
+					/* Else either download or view in browser (if natively compatible) */
+					newTab.location = response.data.url;
+				}
+
+			}, function() {
+				/* If there is an error, close the new tab */
+				newTab.close();
+			});
 		}
-	});
 
-	modalInstance.result.then(function(results) {}, function() {});
-}
-
-function confirmFileDelete(file) {
-	swal({
-		title: "Are you sure?",
-		text: "Confirm to delete the file '" + file.name + "'",
-		type: "warning",
-		showCancelButton: true,
-		allowOutsideClick: true,
-		confirmButtonColor: "#d9534f",
-		confirmButtonText: "Yes, delete it!"
-	}, function() {
-		deleteFileDB(file);
-	});
-}
-
-function deleteFileDB(file) {
-	filesService.deleteFileDB(file.path, file.name)
-	.then(function(response) {
-		deleteFileS3(file);
-	});
-}
-
-function deleteFileS3(file) {
-	s3Service.deleteFile(file.key)
-	.then(function(response) {
-		/* If a text file was generated for analysis, delete that file too. */
-		/* If the original file was a text file, just delete the original file */
-		if(file.textFileKey && file.textFileKey != file.key){
-			s3Service.deleteFile(file.textFileKey);
-		}
-		vm.markers.removeLayer(vm.currentMarker);
-		logger.success("'" + file.name + "' was deleted successfully", "", "Success");
-	});
-}
-
-function removeAllMarkers() {	
-	vm.map.removeLayer(vm.markers);
-	vm.markers = null;
-}
-
-/* If the cursor enters the file box in the search results side bar this function  */
-/* places a circle around the marker until the cursor leaves the file box */
-function fileSearchHover(event, file) {
-	if(event === 'enter') {
-		var lat = file.coords.coordinates[1];
-		var lng = file.coords.coordinates[0];
-		vm.curFileSearchHov.setLatLng([lat, lng]);
-		vm.curFileSearchHov.addTo(vm.map);
-	} else if (event === 'leave') {
-		vm.curFileSearchHov.remove();
-	}
-}
-
-/* If a file in the search results side bar is clicked this function zooms to  */
-/* the marker, unspiderfying if necessary, and displays the markers popup box */
-function fileSearchClick(file) {
-	vm.markers.zoomToShowLayer(file.marker, function(){	
-		if(file.marker.isPopupOpen()) {
-			file.marker.closePopup();
-		} else {
-			file.marker.openPopup();
-			if (L.Browser.mobile) { /* If on a mobile device close the side bar so the popup is visible */
-				vm.sidebar.close();
-			}
-		}
-	});
-}
-
-/*****************************************************************************/
-/*************************** MARKER LINK FUNCTIONS ***************************/
-/*****************************************************************************/
-
-/* Gets all the marker links from the database to be displayed on the map */
-function getLinks() {
-	mapService.getLinks()
-	.then(function(response) {
-		vm.linkList = response.data;
-	});
-}
-
-/* Adds all marker links to the map when the show dependencies button is pressed */
-function addLinks() {
-	vm.linksHidden = false;	/* Sets false so the show dependencies button displays hide dependencies */
-
-	vm.linkList.forEach(function(link) {
-		/* Creates the polyline for each link from the database */
-		var arrow = L.polyline([[link.dependent.coords.coordinates[1], link.dependent.coords.coordinates[0]], [link.precedent.coords.coordinates[1], link.precedent.coords.coordinates[0]]], {
-			color: '#4676fa',
-			weight: 8
-		}).addTo(vm.map);
-
-		/* Creates the arrow head for each line */
-		var arrowHead = L.polylineDecorator(arrow, {
-			patterns: [{
-				offset: '100%', 
-				repeat: 0, 
-				symbol: L.Symbol.arrowHead({
-					pixelSize: 18, 
-					polygon: false, 
-					pathOptions: {
-						stroke: true,
-						weight: 5,
-						color: '#4676fa'
+		function popupFileDetails(file) {
+			var modalInstance = $uibModal.open({
+				templateUrl: '/components/files/fileDetails/fileDetails.view.html',
+				controller: 'fileDetailsCtrl as vm',
+				size: 'lg',
+				resolve: {
+					file: function () {
+						return file;
 					}
-				})
-			}]
-		}).addTo(vm.map);
-
-		/* HTML for the popup boxes displayed when the link is pressed */
-		var popupString = '<div class="info-window">' +
-		'<h3>' + link.name + '</h3>' +
-		'<p><strong>Description:</strong> ' + link.description + '<br />' +
-		'<strong>Created By:</strong> ' + link._creator.firstName + '<br />' +
-		'<strong>Date Created:</strong> ' + $filter('date')(link.dateCreated, "dd MMMM, yyyy h:mm a") + '</p>' +	/* uses date filter to format the date */
-		'<a ng-click="vm.confirmLinkDelete(linkID, linkName)" class="btn btn-danger" role="button">Delete</a>' +
-		'</div>';
-
-		/* Compiles the HTML so ng-click works */
-		var compiledPopupString = $compile(angular.element(popupString));
-		var newScope = $scope.$new();
-
-		/* New scope variables for the compiled string above */
-		newScope.linkID = link._id;
-		newScope.linkName = link.name;
-
-		arrow.bindPopup(compiledPopupString(newScope)[0]);
-
-		/* Only include tooltips if the browser is not running on a mobile device */
-		/* so mobile devices do not display the tooltip when a link is pressed. */
-		if (L.Browser.mobile != true) {
-			var toolTipString = '<strong>Name:</strong> ' + link.name + '<br />';
-			if(link.description.length < 75) {	/* If the description is more than 75 characters it is not added to the tooltip to prevent it being too wide */
-				toolTipString += '<strong>Description:</strong> ' + link.description + '<br />';
-			}
-			toolTipString += '<strong>Date Created:</strong> ' + $filter('date')(link.dateCreated, "dd MMMM, yyyy h:mm a");
-
-			arrow.bindTooltip(toolTipString, {sticky: true});
-		}
-
-		/* When a link is clicked and it's popup opens, the currentLink variable is set */
-		/* so the link can be removed if it is deleted. */
-		/* Also hides the tooltip from the link when the popup window is open */
-		arrow.on("popupopen", function() { 
-			vm.currentLink = {
-				line: this,
-				head: arrowHead
-			}; 
-			var toolTip = arrow.getTooltip();
-			if(toolTip) {
-				toolTip.setOpacity(0);
-			}
-		});
-
-		/* Sets the current link to null and unhides the tooltip from the link */
-		/* when the popup window is closed */
-		arrow.on("popupclose", function() { 
-			vm.currentLink = null; 
-			var toolTip = arrow.getTooltip();
-			if(toolTip) {
-				toolTip.setOpacity(0.9);
-			}	
-		});
-
-		/* Adds the arrows and arrowHeads to arrays */
-		vm.arrows.push(arrow);
-		vm.arrowHeads.push(arrowHead);
-	});
-}
-
-/* Removes all the marker links from the map - not from the linkList array */
-function removeLinks() {	
-	vm.linksHidden = true;
-	vm.arrows.forEach(function(arrow) {
-		vm.map.removeLayer(arrow);
-	});
-	vm.arrowHeads.forEach(function(arrowHead) {
-		vm.map.removeLayer(arrowHead);
-	});
-}
-
-/* show/hide marker links */
-function toggleLinks() {
-	if(vm.linksHidden) {
-		addLinks();
-	} else {
-		removeLinks();
-	}
-}
-
-/* Fired when the add dependent button is pressed */
-/* Removes all the markers from the map then re-adds them, excluding any that share */
-/* the same coordinates as the precedent marker and excluding the popup window */
-function selectDependent(precedent) {
-	vm.addingLink = true;
-
-	removeAllMarkers();
-
-	vm.markers = L.markerClusterGroup({showCoverageOnHover: false});
-
-	/* For each file returned from the DB, a marker is added to the */ 
-	/* markers cluster group to be displayed on the map */
-	vm.fileList.forEach(function(file) {
-		/* If the marker being added shares coordinates with the precedent marker, skip */
-		if(file.coords.coordinates[1] != precedent.lat && file.coords.coordinates[0] != precedent.lng) {
-			var lat = file.coords.coordinates[1];
-			var lng = file.coords.coordinates[0];
-			var marker = L.marker([lat, lng], { icon: defaultIcon });
-
-			/* Tooltip string containing basic file info */
-			var toolTipString = '<strong>File Name:</strong> ' + file.name + '<br />' + 
-			'<strong>Created By:</strong> ' + file.createdBy + '<br />' + 
-			'<strong>Last Modified:</strong> ' + $filter('date')(file.lastModified, "dd MMMM, yyyy h:mm a");
-
-			marker.bindTooltip(toolTipString);
-
-			/* When a marker is clicked its ids are passed to the popup modal */
-			/* where information about the link is entered */
-			marker.on("click", function() { 
-				vm.addingLink = false; /* To remove the cancel window */
-				popupLinkInfo({ precedent:precedent._id, dependent:file._id});	/* Passes the precedent and dependent marker ids to the Link info popup modal */
+				}
 			});
 
-			vm.markers.addLayer(marker);
+			modalInstance.result.then(function(results) {}, function() {});
 		}
-	});
 
-	/* Adds the markers cluster group to the map */
-	vm.map.addLayer(vm.markers);
-}
+		function confirmFileDelete(file) {
+			swal({
+				title: "Are you sure?",
+				text: "Confirm to delete the file '" + file.name + "'",
+				type: "warning",
+				showCancelButton: true,
+				allowOutsideClick: true,
+				confirmButtonColor: "#d9534f",
+				confirmButtonText: "Yes, delete it!"
+			}, function() {
+				deleteFileDB(file);
+			});
+		}
 
-/* If the user presses cancel when selecting a dependent marker the cancel window is */
-/* hidden and the markers displayed on the map are refreshed */ 
-function cancelAddingLink() {
-	vm.addingLink = false;
-	removeAllMarkers();
-	addMapMarkers();
-}
+		function deleteFileDB(file) {
+			filesService.deleteFileDB(file.path, file.name)
+			.then(function(response) {
+				deleteFileS3(file);
+			});
+		}
 
-/* Opens the link Info modal for entering link information */
-function popupLinkInfo(markers) {
-	var modalInstance = $uibModal.open({
-		templateUrl: '/components/map/linkInfo/linkInfo.view.html',
-		controller: 'linkInfoCtrl as vm',
-		size: 'lg',
-		resolve: {
-			markers: function () {	/* Passes the markers to the modal */
-				return markers;
+		function deleteFileS3(file) {
+			s3Service.deleteFile(file.key)
+			.then(function(response) {
+				/* If a text file was generated for analysis, delete that file too. */
+				/* If the original file was a text file, just delete the original file */
+				if(file.textFileKey && file.textFileKey != file.key){
+					s3Service.deleteFile(file.textFileKey);
+				}
+				vm.markers.removeLayer(vm.currentMarker);
+				logger.success("'" + file.name + "' was deleted successfully", "", "Success");
+			});
+		}
+
+		function removeAllMarkers() {	
+			vm.map.removeLayer(vm.markers);
+			vm.markers = null;
+		}
+
+		/* If the cursor enters the file box in the search results side bar this function  */
+		/* places a circle around the marker until the cursor leaves the file box */
+		function fileSearchHover(event, file) {
+			if(event === 'enter') {
+				var lat = file.coords.coordinates[1];
+				var lng = file.coords.coordinates[0];
+				vm.curFileSearchHov.setLatLng([lat, lng]);
+				vm.curFileSearchHov.addTo(vm.map);
+			} else if (event === 'leave') {
+				vm.curFileSearchHov.remove();
 			}
 		}
-	});
 
-	/* If the link information is successfully saved to the db the new document is */
-	/* added to the linkList array and the links and markers displayed on the map are */
-	/* refreshed. If the modal is canceled, the map markers displayed are refreshed */
-	modalInstance.result.then(function(results) {
-		vm.linkList.push(results);
-		if(!vm.linksHidden) {	/* Only refresh the links displayed if links are currently shown */
-			removeLinks();
-			addLinks();
+		/* If a file in the search results side bar is clicked this function zooms to  */
+		/* the marker, unspiderfying if necessary, and displays the markers popup box */
+		function fileSearchClick(file) {
+			vm.markers.zoomToShowLayer(file.marker, function(){	
+				if(file.marker.isPopupOpen()) {
+					file.marker.closePopup();
+				} else {
+					file.marker.openPopup();
+					if (L.Browser.mobile) { /* If on a mobile device close the side bar so the popup is visible */
+						vm.sidebar.close();
+					}
+				}
+			});
 		}
-		removeAllMarkers();
-		addMapMarkers();
-	}, function () {
-		removeAllMarkers();
-		addMapMarkers();
-	});
-};
 
-/* Alert message displayed to confirm deleting marker link */
-function confirmLinkDelete(linkID, linkName) {
-	swal({
-		title: "Are you sure?",
-		text: "Confirm to delete the link '" + linkName + "'",
-		type: "warning",
-		showCancelButton: true,
-		allowOutsideClick: true,
-		confirmButtonColor: "#d9534f",
-		confirmButtonText: "Yes, delete it!"
-	}, function() {
-		deleteLink(linkID, linkName);	/* If confirmed */
-	});
-}
+		/*****************************************************************************/
+		/*************************** MARKER LINK FUNCTIONS ***************************/
+		/*****************************************************************************/
 
-/* Deletes the marker link from the database */
-function deleteLink(linkID, linkName) {
-	mapService.deleteLink(linkID)
-	.then(function() {
-		removeCurrentLink(linkID);
-		logger.success("'" + linkName + "' was deleted successfully", "", "Success");
-	});
-}
+		/* Gets all the marker links from the database to be displayed on the map */
+		function getLinks() {
+			mapService.getLinks()
+			.then(function(response) {
+				vm.linkList = response.data;
+			});
+		}
 
-/* Removes the deleted marker link from the map */
-function removeCurrentLink(linkID) {	
-	var link = vm.currentLink;
-	vm.map.removeLayer(link.line);
-	vm.map.removeLayer(link.head);
-	removeLink(linkID);
-}
+		/* Adds all marker links to the map when the show dependencies button is pressed */
+		function addLinks() {
+			vm.linksHidden = false;	/* Sets false so the show dependencies button displays hide dependencies */
 
-/* Removes the deleted link from the local linkList array */
-function removeLink(linkID) {	
-	/* Find the links index for the link id in the linkList array, will return -1 if not found  */
-	var linkIndex = vm.linkList.findIndex(function(obj){return obj._id == linkID});
+			vm.linkList.forEach(function(link) {
+				/* Creates the polyline for each link from the database */
+				var arrow = L.polyline([[link.dependent.coords.coordinates[1], link.dependent.coords.coordinates[0]], [link.precedent.coords.coordinates[1], link.precedent.coords.coordinates[0]]], {
+					color: '#4676fa',
+					weight: 8
+				}).addTo(vm.map);
 
-	/* Remove the link from the linkList array */
-	if (linkIndex > -1) {
-		vm.linkList.splice(linkIndex, 1);
+				/* Creates the arrow head for each line */
+				var arrowHead = L.polylineDecorator(arrow, {
+					patterns: [{
+						offset: '100%', 
+						repeat: 0, 
+						symbol: L.Symbol.arrowHead({
+							pixelSize: 18, 
+							polygon: false, 
+							pathOptions: {
+								stroke: true,
+								weight: 5,
+								color: '#4676fa'
+							}
+						})
+					}]
+				}).addTo(vm.map);
+
+				/* HTML for the popup boxes displayed when the link is pressed */
+				var popupString = '<div class="info-window">' +
+				'<h3>' + link.name + '</h3>' +
+				'<p><strong>Description:</strong> ' + link.description + '<br />' +
+				'<strong>Created By:</strong> ' + link._creator.firstName + '<br />' +
+				'<strong>Date Created:</strong> ' + $filter('date')(link.dateCreated, "dd MMMM, yyyy h:mm a") + '</p>' +	/* uses date filter to format the date */
+				'<a ng-click="vm.confirmLinkDelete(linkID, linkName)" class="btn btn-danger" role="button">Delete</a>' +
+				'</div>';
+
+				/* Compiles the HTML so ng-click works */
+				var compiledPopupString = $compile(angular.element(popupString));
+				var newScope = $scope.$new();
+
+				/* New scope variables for the compiled string above */
+				newScope.linkID = link._id;
+				newScope.linkName = link.name;
+
+				arrow.bindPopup(compiledPopupString(newScope)[0]);
+
+				/* Only include tooltips if the browser is not running on a mobile device */
+				/* so mobile devices do not display the tooltip when a link is pressed. */
+				if (L.Browser.mobile != true) {
+					var toolTipString = '<strong>Name:</strong> ' + link.name + '<br />';
+					if(link.description.length < 75) {	/* If the description is more than 75 characters it is not added to the tooltip to prevent it being too wide */
+						toolTipString += '<strong>Description:</strong> ' + link.description + '<br />';
+					}
+					toolTipString += '<strong>Date Created:</strong> ' + $filter('date')(link.dateCreated, "dd MMMM, yyyy h:mm a");
+
+					arrow.bindTooltip(toolTipString, {sticky: true});
+				}
+
+				/* When a link is clicked and it's popup opens, the currentLink variable is set */
+				/* so the link can be removed if it is deleted. */
+				/* Also hides the tooltip from the link when the popup window is open */
+				arrow.on("popupopen", function() { 
+					vm.currentLink = {
+						line: this,
+						head: arrowHead
+					}; 
+					var toolTip = arrow.getTooltip();
+					if(toolTip) {
+						toolTip.setOpacity(0);
+					}
+				});
+
+				/* Sets the current link to null and unhides the tooltip from the link */
+				/* when the popup window is closed */
+				arrow.on("popupclose", function() { 
+					vm.currentLink = null; 
+					var toolTip = arrow.getTooltip();
+					if(toolTip) {
+						toolTip.setOpacity(0.9);
+					}	
+				});
+
+				/* Adds the arrows and arrowHeads to arrays */
+				vm.arrows.push(arrow);
+				vm.arrowHeads.push(arrowHead);
+			});
+		}
+
+		/* Removes all the marker links from the map - not from the linkList array */
+		function removeLinks() {	
+			vm.linksHidden = true;
+			vm.arrows.forEach(function(arrow) {
+				vm.map.removeLayer(arrow);
+			});
+			vm.arrowHeads.forEach(function(arrowHead) {
+				vm.map.removeLayer(arrowHead);
+			});
+		}
+
+		/* show/hide marker links */
+		function toggleLinks() {
+			if(vm.linksHidden) {
+				addLinks();
+			} else {
+				removeLinks();
+			}
+		}
+
+		/* Fired when the add dependent button is pressed */
+		/* Removes all the markers from the map then re-adds them, excluding any that share */
+		/* the same coordinates as the precedent marker and excluding the popup window */
+		function selectDependent(precedent) {
+			vm.addingLink = true;
+
+			removeAllMarkers();
+
+			vm.markers = L.markerClusterGroup({showCoverageOnHover: false});
+
+			/* For each file returned from the DB, a marker is added to the */ 
+			/* markers cluster group to be displayed on the map */
+			vm.fileList.forEach(function(file) {
+				/* If the marker being added shares coordinates with the precedent marker, skip */
+				if(file.coords.coordinates[1] != precedent.lat && file.coords.coordinates[0] != precedent.lng) {
+					var lat = file.coords.coordinates[1];
+					var lng = file.coords.coordinates[0];
+					var marker = L.marker([lat, lng], { icon: defaultIcon });
+
+					/* Tooltip string containing basic file info */
+					var toolTipString = '<strong>File Name:</strong> ' + file.name + '<br />' + 
+					'<strong>Created By:</strong> ' + file.createdBy + '<br />' + 
+					'<strong>Last Modified:</strong> ' + $filter('date')(file.lastModified, "dd MMMM, yyyy h:mm a");
+
+					marker.bindTooltip(toolTipString);
+
+					/* When a marker is clicked its ids are passed to the popup modal */
+					/* where information about the link is entered */
+					marker.on("click", function() { 
+						vm.addingLink = false; /* To remove the cancel window */
+						popupLinkInfo({ precedent:precedent._id, dependent:file._id});	/* Passes the precedent and dependent marker ids to the Link info popup modal */
+					});
+
+					vm.markers.addLayer(marker);
+				}
+			});
+
+			/* Adds the markers cluster group to the map */
+			vm.map.addLayer(vm.markers);
+		}
+
+		/* If the user presses cancel when selecting a dependent marker the cancel window is */
+		/* hidden and the markers displayed on the map are refreshed */ 
+		function cancelAddingLink() {
+			vm.addingLink = false;
+			removeAllMarkers();
+			addMapMarkers();
+		}
+
+		/* Opens the link Info modal for entering link information */
+		function popupLinkInfo(markers) {
+			var modalInstance = $uibModal.open({
+				templateUrl: '/components/map/linkInfo/linkInfo.view.html',
+				controller: 'linkInfoCtrl as vm',
+				size: 'lg',
+				resolve: {
+					markers: function () {	/* Passes the markers to the modal */
+						return markers;
+					}
+				}
+			});
+
+			/* If the link information is successfully saved to the db the new document is */
+			/* added to the linkList array and the links and markers displayed on the map are */
+			/* refreshed. If the modal is canceled, the map markers displayed are refreshed */
+			modalInstance.result.then(function(results) {
+				vm.linkList.push(results);
+				if(!vm.linksHidden) {	/* Only refresh the links displayed if links are currently shown */
+					removeLinks();
+					addLinks();
+				}
+				removeAllMarkers();
+				addMapMarkers();
+			}, function () {
+				removeAllMarkers();
+				addMapMarkers();
+			});
+		};
+
+		/* Alert message displayed to confirm deleting marker link */
+		function confirmLinkDelete(linkID, linkName) {
+			swal({
+				title: "Are you sure?",
+				text: "Confirm to delete the link '" + linkName + "'",
+				type: "warning",
+				showCancelButton: true,
+				allowOutsideClick: true,
+				confirmButtonColor: "#d9534f",
+				confirmButtonText: "Yes, delete it!"
+			}, function() {
+				deleteLink(linkID, linkName);	/* If confirmed */
+			});
+		}
+
+		/* Deletes the marker link from the database */
+		function deleteLink(linkID, linkName) {
+			mapService.deleteLink(linkID)
+			.then(function() {
+				removeCurrentLink(linkID);
+				logger.success("'" + linkName + "' was deleted successfully", "", "Success");
+			});
+		}
+
+		/* Removes the deleted marker link from the map */
+		function removeCurrentLink(linkID) {	
+			var link = vm.currentLink;
+			vm.map.removeLayer(link.line);
+			vm.map.removeLayer(link.head);
+			removeLink(linkID);
+		}
+
+		/* Removes the deleted link from the local linkList array */
+		function removeLink(linkID) {	
+			/* Find the links index for the link id in the linkList array, will return -1 if not found  */
+			var linkIndex = vm.linkList.findIndex(function(obj){return obj._id == linkID});
+
+			/* Remove the link from the linkList array */
+			if (linkIndex > -1) {
+				vm.linkList.splice(linkIndex, 1);
+			}
+		}
 	}
-}
-}
 
 })();

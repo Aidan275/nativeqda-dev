@@ -366,7 +366,7 @@
 
 			// Redirect the new tab to the signed URL
 			// If the file is a document or text file, open in google docs viewer to view in the browser
-			if(response.data.type === "document" || response.data.type === "text") {
+			if(response.data.type === "doc") {
 				var encodedUrl = 'https://docs.google.com/viewer?url=' + encodeURIComponent(response.data.url) + '&embedded=true';
 				newTab.location = encodedUrl;
 			} else {

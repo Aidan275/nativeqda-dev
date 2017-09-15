@@ -282,6 +282,65 @@ footer span {
 	padding-right: 14px;
 }
 
+/* ========== TABLES ========== */
+
+.fa-ellipsis-h {
+	font-size: 20px;
+	width: 75%;
+	color: #666;
+}
+
+.fa-ellipsis-h:hover {
+	color: #000;
+	cursor: pointer;
+}
+
+.context-menu-cell .open .fa-ellipsis-h {
+	color: #000;
+}
+
+/* ========== TOOL TIPS ========== */
+
+.generic-tooltip {
+	position: relative;
+	display: inline-block;
+}
+
+.generic-tooltip .tooltip-text {
+	visibility: hidden;
+	font-size: 14px;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	width: 80px;
+	background-color: black;
+	color: #fff;
+	text-align: center;
+	border-radius: 6px;
+	padding: 4px 0;
+	position: absolute;
+	z-index: 1;
+	top: 150%;
+	left: 50%;
+	margin-left: -40px;
+	opacity: 0;
+	transition: opacity 0.4s;
+}
+
+.generic-tooltip .tooltip-text::after {
+	content: "";
+	position: absolute;
+	bottom: 100%;
+	left: 50%;
+	margin-left: -5px;
+	border-width: 5px;
+	border-style: solid;
+	border-color: transparent transparent black transparent;
+}
+
+.generic-tooltip:hover .tooltip-text {
+	visibility: visible;
+	opacity: 1;
+}
+
 /* ========== MAPS ========== */
 
 #map{
@@ -727,7 +786,19 @@ footer span {
 
 /* ========== NEW ANALYSIS MODAL ========== */
 
-.analysis-file-browser-table .name-cell {
+.analysis-file-browser-table {
+
+}
+
+.analysis-file-browser-table td {
+	border-top: none !important;
+}
+
+.analysis-file-browser-table td.name-cell,
+.analysis-file-browser-table td.checkbox-cell,
+.analysis-file-browser-table td.checkbox-cell input,
+.analysis-file-browser-table td.last-modified-cell,
+.analysis-file-browser-table td.created-by-cell {
 	cursor: pointer;
 }
 
@@ -735,20 +806,39 @@ footer span {
 	background: rgba(70,118,250,0.15) !important;
 }
 
-.analysis-file-browser-table .name-cell i{
-	padding-right: 5px;
+.analysis-file-browser-table .row-selected {
+	background: rgba(33, 203, 2, 0.15) !important;
+}
+
+.analysis-file-browser-table .row-selected:hover {
+	background: rgba(33, 203, 2, 0.15) !important;
 }
 
 .analysis-file-browser-table td.name-cell {
 	vertical-align: middle !important;
 }
 
+.analysis-file-browser-table td.checkbox-cell,
 .analysis-file-browser-table td.last-modified-cell,
 .analysis-file-browser-table td.created-by-cell,
-.analysis-file-browser-table td.command-cell {
+.analysis-file-browser-table td.context-menu-cell {
 	white-space: nowrap;
 	text-align: center;
 	vertical-align: middle !important;
+}
+
+.analysis-file-browser-table td.context-menu-cell .dropdown-menu {
+	border: none;
+}
+
+.analysis-file-browser-table td.context-menu-cell .dropdown-menu>li>a {
+	padding: 5px 20px;
+}
+
+.analysis-file-browser-table td.context-menu-cell .dropdown-menu .delete-cell>a:hover {
+	background-color: #d9534f;
+	border-color: #d43f3a;
+	color: #fff;
 }
 
 /* ========== UPDATE PROFILE MODAL ========== */
@@ -2021,9 +2111,13 @@ footer span {
 	#visualisations-index .container { left:0px; }
 }
 
+.vis-thumb-list {
+	padding: 0;
+}
+
 .vis-thumb-list-item {
 	position: relative; 
-	width: 320px; 
+	width: 350px; 
 	float: left; 
 	padding: 0; 
 	margin: 0 15px 30px 15px;
@@ -2031,7 +2125,7 @@ footer span {
 }
 
 .vis-thumb-list-item img {
-	width: 300px;
+	width: 330px;
 }
 
 .vis-thumb-outer-div {
