@@ -253,7 +253,7 @@
 			var userPos = response.latlng;
 
 			vm.posMarker.setLatLng(userPos);
-			vm.posMarker.bindPopup("<p>You are within " + $filter('formatDistance')(radius) + " from this point</p>");
+			vm.posMarker.bindPopup("<p style='margin: 0 33px 5px 5px !important;padding-top:8px;'>You are within " + $filter('formatDistance')(radius) + " of this point</p>");
 			vm.posMarker.addTo(vm.map)
 
 			var posCicle = L.circle(userPos, {
@@ -345,9 +345,9 @@
 					popupString += '</p>';
 				}
 
-				popupString += '<div style="text-align:center;"><a ng-click="vm.viewFile(file)" class="btn btn-success btn-xs" role="button">View</a> ' +
+				popupString += '<div style="padding-bottom:10px;"></div><div style="text-align:center;"><a ng-click="vm.viewFile(file)" class="btn btn-success btn-xs" role="button">View</a> ' +
 				'<a ng-click="vm.popupFileDetails(file)" class="btn btn-primary btn-xs" role="button">Details</a> ' +
-				'<a ng-click="vm.confirmFileDelete(file)" class="btn btn-danger btn-xs" role="button">Delete</a> ' +
+				/*'<a ng-click="vm.confirmFileDelete(file)" class="btn btn-danger btn-xs" role="button">Delete</a> ' + */
 				'<a ng-click="vm.selectDependent(precedent)" class="btn btn-info btn-xs" role="button">Add Dependent</a></div>' +
 				'</div></div>';
 
