@@ -29,6 +29,16 @@ body.pg-loaded > .inner {
 	visibility: visible;
 }
 
+.blueButton {
+	 background-color: #4676fa;
+	 border-color: #4676fa;
+}
+
+.blueButton:hover, .blueButton:focus {
+	 background-color: #0676fa;
+	 border-color: #0676fa;
+}
+
 .inner {
 	width: 100%; 
 	height: 100%;
