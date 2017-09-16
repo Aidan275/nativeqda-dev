@@ -3,7 +3,7 @@
 	'use strict';
 
 	angular
-	.module('components.files')
+	.module('files')
 	.controller('fileDetailsCtrl', fileDetailsCtrl);
 
 	/* @ngInject */

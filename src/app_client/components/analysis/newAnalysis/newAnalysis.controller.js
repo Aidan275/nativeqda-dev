@@ -1,9 +1,16 @@
+/**
+* @author Aidan Andrews <aa275@uowmail.edu.au>
+* @ngdoc controller
+* @name analysis.controller:newAnalysisCtrl
+* @description Controller for the new analysis modal.
+*/
+
 (function () {
 
 	'use strict';
 
 	angular
-	.module('components.analysis')
+	.module('analysis')
 	.controller('newAnalysisCtrl', newAnalysisCtrl);
 
 	/* @ngInject */

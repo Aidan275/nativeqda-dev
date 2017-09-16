@@ -3,7 +3,7 @@
 	'use strict';
 
 	angular
-	.module('components.survey')
+	.module('survey')
 	.controller('surveyResponseCtrl', surveyResponseCtrl);
 
 	/* @ngInject */

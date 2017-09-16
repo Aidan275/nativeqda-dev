@@ -2,6 +2,6 @@
 
 	'use strict';
 
-	angular.module('components.visualisations', []);
+	angular.module('visualisations', []);
 
 })();

@@ -1,7 +1,7 @@
 (function () {
 
 	angular
-	.module('components.auth')
+	.module('auth')
 	.controller('datasetsCtrl', datasetsCtrl);
 
 	/* @ngInject */

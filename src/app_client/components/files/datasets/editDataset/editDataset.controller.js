@@ -1,7 +1,7 @@
 (function () {
 
 	angular
-	.module('components.files')
+	.module('files')
 	.controller('editDatasetCtrl', editDatasetCtrl);
 
 	editDatasetCtrl.$inject = ['$uibModalInstance', 'datasetService'];

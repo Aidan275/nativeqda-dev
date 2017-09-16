@@ -2,6 +2,6 @@
 
 	'use strict';
 
-	angular.module('components.files', []);
+	angular.module('files', []);
 
 })();

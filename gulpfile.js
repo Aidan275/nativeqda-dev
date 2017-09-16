@@ -396,6 +396,16 @@ gulp.task('nodemon-build', function (cb) {
 	});
 });
 
+
+/**
+* Generates documentation using JSDoc
+* @return {Stream}
+*/
+gulp.task('doc', function (cb) {
+    gulp.src(paths.docs, {read: false})
+        .pipe(plug.jsdoc3(cb));
+});
+
 ///////////////////////////
 
 /**

@@ -10,7 +10,7 @@
 
 	.radarChart svg {
 		display: block;
-		float: left;
+		margin: 0 auto;
 	}
 
 	#rcMenu {
@@ -60,4 +60,4 @@
 	#controls-button {
 		position:relative;
 	}
-</style><navigation></navigation><div id=rcMenu><div class=checkbox-data><div><label><input type=checkbox ng-model=vm.selectAll ng-click=vm.checkAllBoxes()> Select/Deslect All</label></div><div ng-repeat="data in vm.analysisData"><label><input type=checkbox ng-model=data.checked ng-change=vm.updateRadarChart(data)> {{data[0].text}}</label></div></div></div><div id=rcPanel><div class=bs-loading-container bs-loading-overlay bs-loading-overlay-active-class=loading-overlay--active bs-loading-overlay-reference-id=bubble-chart><div class=blur-this><div id=controls-button><button ng-click=vm.toggleOptions() class="btn btn-success">Controls</button></div><div class=container><div class=radarChart></div></div></div></div></div>
+</style><navigation></navigation><div id=rcMenu><div class=checkbox-data><div><label><input type=checkbox ng-model=vm.selectAll ng-click=vm.toogleAllBoxes()> Select/Deslect All</label></div><div ng-repeat="data in vm.analysisData"><label><input type=checkbox ng-model=data.checked ng-change=vm.updateRadarChart(data)> {{data[0].text}}</label></div></div></div><div id=rcPanel><div class=bs-loading-container bs-loading-overlay bs-loading-overlay-active-class=loading-overlay--active bs-loading-overlay-reference-id=bubble-chart><div class=blur-this><div id=controls-button><button ng-click=vm.toggleOptions() class="btn btn-success">Controls</button></div><div class=container><div class=radarChart></div></div></div></div></div>

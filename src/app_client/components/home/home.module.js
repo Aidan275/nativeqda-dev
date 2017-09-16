@@ -2,6 +2,6 @@
 
 	'use strict';
 
-	angular.module('components.home', []);
+	angular.module('home', []);
 
 })();

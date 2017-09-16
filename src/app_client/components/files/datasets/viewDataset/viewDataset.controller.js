@@ -1,7 +1,7 @@
 (function () {
 
 	angular
-	.module('components.files')
+	.module('files')
 	.controller('viewDatasetCtrl', viewDatasetCtrl);
 
 	/* @ngInject */

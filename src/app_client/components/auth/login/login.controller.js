@@ -1,9 +1,16 @@
+/**
+* @author Aidan Andrews <aa275@uowmail.edu.au>
+* @ngdoc controller
+* @name auth.controller:loginCtrl
+* @description Controller for the login page.
+*/
+
 (function () {
 
 	'use strict';
 
 	angular
-	.module('components.auth')
+	.module('auth')
 	.controller('loginCtrl', loginCtrl);
 
 	/* @ngInject */

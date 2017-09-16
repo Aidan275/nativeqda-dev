@@ -1,9 +1,17 @@
+/**
+* @author Aidan Andrews <aa275@uowmail.edu.au>
+* @ngdoc service
+* @name services.service:filesService
+* @description Service used for making requests to the
+* server to handle file functions.
+*/
+
 (function () {
 
 	'use strict';
 
 	angular
-	.module('common.services')
+	.module('services')
 	.service('filesService', filesService);
 
 	/* @ngInject */

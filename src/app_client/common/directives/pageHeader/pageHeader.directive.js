@@ -1,6 +1,14 @@
+/**
+* @author Aidan Andrews <aa275@uowmail.edu.au>
+* @ngdoc directive 
+* @restrict 'EA'
+* @name directives.directive:pageHeader
+* @description Directive to display a page header.
+*/
+
 (function () {
 	angular
-	.module('common.directives')
+	.module('directives')
 	.directive('pageHeader', pageHeader);
 	
 	function pageHeader () {

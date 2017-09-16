@@ -1,7 +1,14 @@
+/**
+* @author Aidan Andrews <aa275@uowmail.edu.au>
+* @ngdoc controller
+* @name auth.controller:registerCtrl
+* @description Controller for the register page.
+*/
+
 (function () {
 
 	angular
-	.module('components.auth')
+	.module('auth')
 	.controller('registerCtrl', registerCtrl);
 
 	registerCtrl.$inject = ['$location','authentication', 'logger'];

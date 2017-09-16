@@ -1,7 +1,7 @@
 (function () {
 
 	angular
-	.module('components.visualisations')
+	.module('visualisations')
 	.controller('dataTableCtrl', dataTableCtrl);
 
 	/* @ngInject */
@@ -9,7 +9,7 @@
 		var vm = this;
 
 		var analysisType = $routeParams.type;
-		var analysisID = $routeParams.id;
+		var analysisId = $routeParams.id;
 		var responseData = {};
 		var data = [];
 		vm.cols = [];
@@ -20,7 +20,7 @@
 
 		function activate() {
 			bsLoadingOverlayService.start({referenceId: 'analysis-data-table'});
-			analysisService.readWatsonAnalysis(analysisID)
+			analysisService.readWatsonAnalysis(analysisId)
 			.then(function(response) {
 				bsLoadingOverlayService.stop({referenceId: 'analysis-data-table'});
 				responseData = response.data;

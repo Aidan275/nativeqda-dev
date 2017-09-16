@@ -2,16 +2,16 @@
 
 	'use strict';
 
-	angular.module('nativeQDAApp.components', [
+	angular.module('components', [
 
-		'components.analysis',
-		'components.auth',
-		'components.files',
-		'components.home',
-		'components.map',
-		'components.settings',
-		'components.survey',
-		'components.visualisations'
+		'analysis',
+		'auth',
+		'files',
+		'home',
+		'map',
+		'settings',
+		'survey',
+		'visualisations'
 
 		]);
 

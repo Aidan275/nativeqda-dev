@@ -2,6 +2,6 @@
 
 	'use strict';
 
-	angular.module('components.settings', []);
+	angular.module('settings', []);
 
 })();

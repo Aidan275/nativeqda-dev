@@ -1,9 +1,18 @@
+/**
+* @author Aidan Andrews <aa275@uowmail.edu.au>
+* @ngdoc service
+* @name services.service:mapService
+* @description Service used for making requests to the
+* server to handle map functions.
+*/
+
+
 (function () {
 
 	'use strict';
 
 	angular
-	.module('common.services')
+	.module('services')
 	.service('mapService', mapService);
 
 	/* @ngInject */

@@ -3,7 +3,7 @@
 	'use strict';
 
 	angular
-	.module('components.settings')
+	.module('settings')
 	.controller('registerNewUserCtrl', registerNewUserCtrl);
 
 	/* @ngInject */

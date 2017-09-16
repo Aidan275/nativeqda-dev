@@ -1,6 +1,13 @@
+/**
+* @author Aidan Andrews <aa275@uowmail.edu.au>
+* @ngdoc directive 
+* @name directives.directive:droppable
+* @description
+*/
+
 (function () {
 	angular
-	.module('common.directives')
+	.module('directives')
 	.directive('droppable', droppable);
 
 	/* Directive to add classes on drag and drop */

@@ -1,7 +1,13 @@
+/**
+* @author Aidan Andrews <aa275@uowmail.edu.au>
+* @ngdoc filter 
+* @name filters.filter:formatFileSize
+* @description Filter for determining and adding the appropriate unit for file sizes
+*/
 (function () {
 
 	angular
-	.module('common.filters')
+	.module('filters')
 	.filter('formatFileSize', formatFileSize);
 
 	function formatFileSize () {

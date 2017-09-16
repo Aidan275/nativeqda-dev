@@ -1,10 +1,16 @@
+/**
+* @author Aidan Andrews <aa275@uowmail.edu.au>
+* @ngdoc filter 
+* @name filters.filter:capitalise
+* @description Filter to capitalise the first letter of a string
+*/
+
 (function () {
 
 	angular
-	.module('common.filters')
+	.module('filters')
 	.filter('capitalise', capitalise);
 
-	// Filter to capitalise the first letter of a string
 	function capitalise () {
 		return function(input) {
 			return (!!input) ? input.charAt(0).toUpperCase() + input.substr(1).toLowerCase() : '';

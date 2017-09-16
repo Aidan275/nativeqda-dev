@@ -1,7 +1,7 @@
 (function () {
 
 	angular
-	.module('components.visualisations')
+	.module('visualisations')
 	.controller('pieChartCtrl', pieChartCtrl);
 
 	/* @ngInject */
@@ -9,7 +9,7 @@
 		var vm = this;
 
 		var analysisType = $routeParams.type; 
-		var analysisID = $routeParams.id;
+		var analysisId = $routeParams.id;
 		var responseData = {};
 		var data = [];
 		vm.cols = [];
@@ -23,7 +23,7 @@
 
 		function activate() {
 			bsLoadingOverlayService.start({referenceId: 'pie-chart'});	// Start animated loading overlay
-			analysisService.readWatsonAnalysis(analysisID) //gets id from url
+			analysisService.readWatsonAnalysis(analysisId) //gets id from url
 			.then(function(response) {
 				var analysisData = response.data; //store watson response in analysisData
 				

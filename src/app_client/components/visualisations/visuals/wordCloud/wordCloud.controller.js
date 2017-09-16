@@ -1,7 +1,7 @@
 (function () {
 
 	angular
-	.module('components.visualisations')
+	.module('visualisations')
 	.controller('wordCloudCtrl', wordCloudCtrl);
 
 	/* @ngInject */
@@ -9,7 +9,7 @@
 		var vm = this;
 
 		var analysisType = $routeParams.type; 
-		var analysisID = $routeParams.id;
+		var analysisId = $routeParams.id;
 
 		var data = [];
 
@@ -24,7 +24,7 @@
 
 		function activate() {
 			bsLoadingOverlayService.start({referenceId: 'word-cloud'});	// Start animated loading overlay
-			analysisService.readWatsonAnalysis(analysisID) //gets id from url
+			analysisService.readWatsonAnalysis(analysisId) //gets id from url
 			.then(function(response) {
 
 				switch (analysisType) {

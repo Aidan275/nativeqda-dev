@@ -1,9 +1,18 @@
+/**
+* @author Aidan Andrews <aa275@uowmail.edu.au>
+* @ngdoc service
+* @name services.service:usersService
+* @description Service used for making requests to the
+* server to handle users functions.
+*/
+
+
 (function () {
 
 	'use strict';
 
 	angular
-	.module('common.services')
+	.module('services')
 	.service('usersService', usersService);
 
 	/* @ngInject */

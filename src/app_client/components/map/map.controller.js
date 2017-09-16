@@ -1,9 +1,17 @@
+/**
+* @author Aidan Andrews <aa275@uowmail.edu.au>
+* @ngdoc controller
+* @name map.controller:mapCtrl
+* @description The main map of the application
+*/
+
+
 (function () {
 
 	'use strict';
 
 	angular
-	.module('components.map')
+	.module('map')
 	.controller('mapCtrl', mapCtrl);
 
 	/* @ngInject */

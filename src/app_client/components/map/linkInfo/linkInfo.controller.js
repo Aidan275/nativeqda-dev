@@ -3,7 +3,7 @@
 	'use strict';
 
 	angular
-	.module('components.map')
+	.module('map')
 	.controller('linkInfoCtrl', linkInfoCtrl);
 
 	/* @ngInject */

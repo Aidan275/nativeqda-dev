@@ -1,7 +1,7 @@
 (function () {
 
 	angular
-	.module('components.visualisations')
+	.module('visualisations')
 	.controller('visualisationsCtrl', visualisationsCtrl);
 
 	/* @ngInject */
@@ -15,7 +15,7 @@
 		vm.pageId = 'visualisations-index';
 
 		// Bindable Data
-		vm.analysisID = $routeParams.id;
+		vm.analysisId = $routeParams.id;
 		vm.analysisData = {};
 		vm.pageHeader = {
 			title: 'Visualisations',
@@ -111,7 +111,7 @@
 
 		function getAnalysisData() {
 			bsLoadingOverlayService.start({referenceId: 'visuals-info'});
-			analysisService.readWatsonAnalysis(vm.analysisID)
+			analysisService.readWatsonAnalysis(vm.analysisId)
 			.then(function(response) {
 				bsLoadingOverlayService.stop({referenceId: 'visuals-info'});
 				vm.analysisData = response.data;

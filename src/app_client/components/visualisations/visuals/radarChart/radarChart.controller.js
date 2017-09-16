@@ -1,40 +1,112 @@
 /**
- * @file Generates a radar chart from the emotional analysis results from either the 
- * entity or keyword results.
- * @author Aidan Andrews <aa275@uowmail.edu.au>
- */
+* @author Aidan Andrews <aa275@uowmail.edu.au>
+* @ngdoc controller
+* @name visualisations.controller:radarChartCtrl
+* @description Controller for the radar chart visual.
+*/
+
 (function () {
 
 	angular
-	.module('components.visualisations')
+	.module('visualisations')
 	.controller('radarChartCtrl', radarChartCtrl);
 
 	/* @ngInject */
-	function radarChartCtrl ($routeParams, analysisService) {
+	function radarChartCtrl($routeParams, analysisService) {
 		var vm = this;
 
-		var analysisType = $routeParams.type;
-		var analysisID = $routeParams.id;
+ 		// Scrolls to the top of the page
+		document.body.scrollTop = 0; // For Chrome, Safari and Opera 
+	    document.documentElement.scrollTop = 0; // For IE and Firefox
 
-		vm.updateRadarChart = updateRadarChart;
-		vm.toggleOptions = toggleOptions;
-		vm.checkAllBoxes = checkAllBoxes;
+	    var analysisType = $routeParams.type;
+	    var analysisId = $routeParams.id;
 
-		vm.analysisData = [];
-		vm.data = [];
-		vm.selectAll = false;
+	    vm.updateRadarChart = updateRadarChart;
+	    vm.toggleOptions = toggleOptions;
+	    vm.toogleAllBoxes = toogleAllBoxes;
 
-		var slideout = new Slideout({
-			'panel': document.querySelector('#rcPanel'),
-			'menu': document.querySelector('#rcMenu'),
-			'padding': 256,
-			'tolerance': 70
+	    vm.analysisData = [];
+	    vm.data = [];
+	    vm.selectAll = false;
+
+	    var slideout = new Slideout({
+	    	'panel': document.querySelector('#rcPanel'),
+	    	'menu': document.querySelector('#rcMenu'),
+	    	'padding': 256,
+	    	'tolerance': 70
+	    });
+
+	    activate();
+
+		///////////////////////////
+
+		/**
+		* @ngdoc function
+		* @name activate
+		* @methodOf visualisations.controller:radarChartCtrl
+		* @description Runs when the page first loads and uses the {@link services.service:analysisService#methods_readWatsonAnalysis readWatsonAnalysis} 
+		* function from {@link services.service:analysisService analysisService} to load the analysis results from the database for the given analysis id.
+		* Then structures the data and calls the function to draw the radar chart. 
+		*/
+		function activate() {
+			analysisService.readWatsonAnalysis(analysisId)
+			.then(function(response) {
+				if(analysisType === 'entities'){
+					response.data.entities.forEach(function(entry) {
+						if(entry.emotion) {
+							var emotionEntry = [
+							{axis: "Anger", value: entry.emotion.anger, text: entry.text},
+							{axis: "Disgust", value: entry.emotion.disgust},
+							{axis: "Fear", value: entry.emotion.fear},
+							{axis: "Joy", value: entry.emotion.joy},
+							{axis: "Sadness", value: entry.emotion.sadness}
+							];
+
+							vm.analysisData.push(emotionEntry);
+						}
+					});
+				} else if(analysisType === 'keywords'){
+					response.data.keywords.forEach(function(entry) {
+						if(entry.emotion) {
+							var emotionEntry = [
+							{axis: "Anger", value: entry.emotion.anger, text: entry.text},
+							{axis: "Disgust", value: entry.emotion.disgust},
+							{axis: "Fear", value: entry.emotion.fear},
+							{axis: "Joy", value: entry.emotion.joy},
+							{axis: "Sadness", value: entry.emotion.sadness}
+							];
+
+							vm.analysisData.push(emotionEntry);
+						}
+					});
+				}
+
+				vm.analysisData[0].checked = true;
+				vm.data.push(vm.analysisData[0]);
+
+			//Call function to draw the Radar chart
+			RadarChart(".radarChart", radarChartOptions);
 		});
 
+		}
+
+		/**
+		* @ngdoc function
+		* @name toggleOptions
+		* @methodOf visualisations.controller:radarChartCtrl
+		* @description Toggles the slideout options side bar
+		*/
 		function toggleOptions() {
 			slideout.toggle();
 		}
 
+		/**
+		* @ngdoc function
+		* @name updateRadarChart
+		* @methodOf visualisations.controller:radarChartCtrl
+		* @description Re-draws the radar chart depending on which checkboxes are checked.
+		*/
 		function updateRadarChart() {
 			vm.data = [];
 
@@ -52,7 +124,14 @@
 			}
 		}
 
-		function checkAllBoxes() {
+		/**
+		* @ngdoc function
+		* @name toogleAllBoxes
+		* @methodOf visualisations.controller:radarChartCtrl
+		* @description Checks/unchecks all the entities/keywords checkboxes by toggling the checked boolean for 
+		* all the data in the @linkvm.analysisData array then re-draws the radar chart.
+		*/
+		function toogleAllBoxes() {
 			if(vm.selectAll) {
 				vm.analysisData.forEach(function(data){
 					data.checked = true;
@@ -100,49 +179,6 @@
 			roundStrokes: true,
 			color: color
 		};
-
-		////////////////////////////////////////////////////////////// 
-		////////////////////////// Data ////////////////////////////// 
-		////////////////////////////////////////////////////////////// 
-
-		analysisService.readWatsonAnalysis(analysisID)
-		.then(function(response) {
-			if(analysisType === 'entities'){
-				response.data.entities.forEach(function(entry) {
-					if(entry.emotion) {
-						var emotionEntry = [
-						{axis: "Anger", value: entry.emotion.anger, text: entry.text},
-						{axis: "Disgust", value: entry.emotion.disgust},
-						{axis: "Fear", value: entry.emotion.fear},
-						{axis: "Joy", value: entry.emotion.joy},
-						{axis: "Sadness", value: entry.emotion.sadness}
-						];
-
-						vm.analysisData.push(emotionEntry);
-					}
-				});
-			} else if(analysisType === 'keywords'){
-				response.data.keywords.forEach(function(entry) {
-					if(entry.emotion) {
-						var emotionEntry = [
-						{axis: "Anger", value: entry.emotion.anger, text: entry.text},
-						{axis: "Disgust", value: entry.emotion.disgust},
-						{axis: "Fear", value: entry.emotion.fear},
-						{axis: "Joy", value: entry.emotion.joy},
-						{axis: "Sadness", value: entry.emotion.sadness}
-						];
-
-						vm.analysisData.push(emotionEntry);
-					}
-				});
-			}
-
-			vm.analysisData[0].checked = true;
-			vm.data.push(vm.analysisData[0]);
-
-			//Call function to draw the Radar chart
-			RadarChart(".radarChart", radarChartOptions);
-		});
 
 		/////////////////////////////////////////////////////////
 		/////////////// The Radar Chart Function ////////////////

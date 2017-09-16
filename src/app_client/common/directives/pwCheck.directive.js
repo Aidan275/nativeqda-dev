@@ -1,9 +1,15 @@
+/**
+* @author Aidan Andrews <aa275@uowmail.edu.au>
+* @ngdoc directive 
+* @name directives.directive:pwCheck
+* @description Directive to check if password and confirm password match.
+*/
+
 (function () {
 	angular
-	.module('common.directives')
+	.module('directives')
 	.directive('pwCheck', pwCheck);
 
-	// Directive to check if password match
 	function pwCheck () {
 		return {
             require: 'ngModel',

@@ -10,7 +10,7 @@
 
 	.radarChart svg {
 		display: block;
-		float: left;
+		margin: 0 auto;
 	}
 
 	#rcMenu {
@@ -70,7 +70,7 @@
 	<div class="checkbox-data">
 		<div>
 			<label>
-				<input type="checkbox" ng-model="vm.selectAll" ng-click="vm.checkAllBoxes()">
+				<input type="checkbox" ng-model="vm.selectAll" ng-click="vm.toogleAllBoxes()">
 				Select/Deslect All
 			</label>
 		</div>

@@ -1,7 +1,7 @@
 (function () { 
 
 	angular
-	.module('components.settings')
+	.module('settings')
 	.controller('editProfileCtrl', editProfileCtrl);
 	
 	/* @ngInject */
@@ -131,7 +131,7 @@
 					/* parses XML data response to jQuery object to be stored in the database */
 					var xml = $.parseXML(response.data);
 					var key = result.data.fields.key;
-					vm.userInfo.avatar = result.data.url + '/' + encodeURIComponent(key);	/* Encode the key for the API URL incase it includes reserved characters (e.g '+', '&') */
+					vm.userInfo.avatar = result.data.url + '/' + encodeURIComponent(key);	/* Encode the key for the API URL in case it includes reserved characters (e.g '+', '&') */
 					uploadUserInfo();
 				}, function(error) {
 					processingEvent(false, 'error');	/* ng-bs-animated-button status & result */

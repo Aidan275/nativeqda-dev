@@ -3,7 +3,7 @@
 	"use strict";
 
 	angular
-	.module('components.home')
+	.module('home')
 	.controller('homeCtrl', homeCtrl);
 	
 	/* @ngInject */

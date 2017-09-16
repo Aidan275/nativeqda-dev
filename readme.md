@@ -55,3 +55,10 @@ mongod
 ```
 * Try gulp serve to run the app in its development environment
 * Not working? Try going to localhost:3000 instead.
+
+### How to generate documentation
+Generate documentation using grunt
+```
+grunt
+```
+This should start a server at [http://localhost:8000](http://localhost:8000) where the documentation can be viewed.

@@ -1,9 +1,16 @@
+/**
+* @author Aidan Andrews <aa275@uowmail.edu.au>
+* @ngdoc controller
+* @name visualisations.controller:bubbleChartCtrl
+* @description Generates a bubble chart
+*/
+
 (function () {
 
 	'use strict'
 
 	angular
-	.module('components.visualisations')
+	.module('visualisations')
 	.controller('bubbleChartCtrl', bubbleChartCtrl);
 
 	/* @ngInject */

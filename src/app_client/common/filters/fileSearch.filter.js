@@ -1,10 +1,16 @@
+/**
+* @author Aidan Andrews <aa275@uowmail.edu.au>
+* @ngdoc filter 
+* @name filters.filter:fileSearch
+* @description Filter for searching for files on the map page
+*/
 (function () {
 
 	angular
-	.module('common.filters')
+	.module('filters')
 	.filter('fileSearch', fileSearch);
 
-	/* Filter for searching for files on the map page */
+
 	function fileSearch($filter) {	/* Need to include $filter to get the formatted date */
 		return function(data, search) {
 			if(angular.isDefined(search)) {

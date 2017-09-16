@@ -1,7 +1,15 @@
+/**
+* @author Aidan Andrews <aa275@uowmail.edu.au>
+* @ngdoc service
+* @name services.service:datasetService
+* @description Service used for making requests to the
+* server to handle dataset functions.
+*/
+
 (function () {
 
 	angular
-	.module('common.services')
+	.module('services')
 	.service('datasetService', datasetService);
 
     /* @ngInject */
@@ -51,7 +59,7 @@
 		};
 
 		function deleteDatasetDB(key){
-			// Encode the key for the API URL incase it includes reserved characters (e.g '+', '&')
+			// Encode the key for the API URL in case it includes reserved characters (e.g '+', '&')
             var encodedKey = encodeURIComponent(key);
 			return $http.delete('/api/analysis/data/delete?key=' + encodedKey, {
 				headers: {

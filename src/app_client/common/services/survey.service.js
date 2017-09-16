@@ -1,9 +1,18 @@
+/**
+* @author Aidan Andrews <aa275@uowmail.edu.au>
+* @ngdoc service
+* @name services.service:surveyService
+* @description Service used for making requests to the
+* server to handle servey functions.
+*/
+
+
 (function () {
 
 	'use strict';
 
 	angular
-	.module('common.services')
+	.module('services')
 	.service('surveyService', surveyService);
 
 	/* @ngInject */
@@ -33,9 +42,9 @@
 		};
 
 		function checkSurvey(accessId){
-			// Encode the id for the API URL incase it includes reserved characters (e.g '+', '&')
-			var encodedID = encodeURIComponent(accessId);
-			return $http.get('/api/survey/check?accessId=' + encodedID, {
+			// Encode the id for the API URL in case it includes reserved characters (e.g '+', '&')
+			var encodedId = encodeURIComponent(accessId);
+			return $http.get('/api/survey/check?accessId=' + encodedId, {
 				headers: {
 					Authorization: 'Bearer '+ authentication.getToken()
 				}
@@ -47,9 +56,9 @@
 		};
 
 		function readSurvey(accessId){
-			// Encode the id for the API URL incase it includes reserved characters (e.g '+', '&')
-			var encodedID = encodeURIComponent(accessId);
-			return $http.get('/api/survey/read?accessId=' + encodedID, {
+			// Encode the id for the API URL in case it includes reserved characters (e.g '+', '&')
+			var encodedId = encodeURIComponent(accessId);
+			return $http.get('/api/survey/read?accessId=' + encodedId, {
 				headers: {
 					Authorization: 'Bearer '+ authentication.getToken()
 				}
@@ -85,9 +94,9 @@
 		};
 
 		function deleteSurvey(id) {
-			// Encode the key for the API URL incase it includes reserved characters (e.g '+', '&')
-			var encodedID = encodeURIComponent(id);
-			return $http.delete('/api/survey/delete?id=' + encodedID, {
+			// Encode the key for the API URL in case it includes reserved characters (e.g '+', '&')
+			var encodedId = encodeURIComponent(id);
+			return $http.delete('/api/survey/delete?id=' + encodedId, {
 				headers: {
 					Authorization: 'Bearer '+ authentication.getToken()
 				}
@@ -123,9 +132,9 @@
 		};
 
 		function readSurveyResponses(accessId){
-			// Encode the id for the API URL incase it includes reserved characters (e.g '+', '&')
-			var encodedID = encodeURIComponent(accessId);
-			return $http.get('/api/survey/responses/read?accessId=' + encodedID, {
+			// Encode the id for the API URL in case it includes reserved characters (e.g '+', '&')
+			var encodedId = encodeURIComponent(accessId);
+			return $http.get('/api/survey/responses/read?accessId=' + encodedId, {
 				headers: {
 					Authorization: 'Bearer '+ authentication.getToken()
 				}

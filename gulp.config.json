@@ -142,7 +142,6 @@
 		"./src/app_client/common/common.module.js",
 		"./src/app_client/common/directives/directives.module.js",	
 		"./src/app_client/common/directives/footerGeneric/footerGeneric.directive.js",
-		"./src/app_client/common/directives/footerGeneric/footerGeneric.controller.js",
 		"./src/app_client/common/directives/navigation/navigation.controller.js",
 		"./src/app_client/common/directives/navigation/navigation.directive.js",
 		"./src/app_client/common/directives/pageHeader/pageHeader.directive.js",
@@ -239,5 +238,12 @@
 	"./src/app_client/assets/js/please-wait-stop.js"
 ],
 "report": "./report/",
-"dist": "./dist/"
+"dist": "./dist/",
+"docs": [
+	"README.md",
+	"./*.js",
+	"./src/app_client/**/*.js",
+	"./src/app_client/*.js",
+	"!./src/app_client/assets/**/*.js"
+]
 }

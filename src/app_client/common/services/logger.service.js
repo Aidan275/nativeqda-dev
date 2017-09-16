@@ -1,8 +1,16 @@
+/**
+* @author Aidan Andrews <aa275@uowmail.edu.au>
+* @ngdoc service
+* @name services.service:logger
+* @description Service used to log error, info, success, and warning messages to the console and to
+* display messages, in the form of toasts, to the users.
+*/
+
 (function() {
     'use strict';
 
     angular
-    .module('common.services')
+    .module('services')
     .service('logger', logger);
 
     /* @ngInject */

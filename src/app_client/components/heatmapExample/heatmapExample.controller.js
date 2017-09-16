@@ -1,7 +1,7 @@
 (function () {
 
 	angular
-	.module('components.map')
+	.module('map')
 	.controller('heatmapCtrl', heatmapCtrl);
 
     /* @ngInject */

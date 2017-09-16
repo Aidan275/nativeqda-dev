@@ -1,7 +1,15 @@
+/**
+* @author Aidan Andrews <aa275@uowmail.edu.au>
+* @ngdoc service
+* @name services.service:authentication
+* @description Service used for making requests to the
+* server to handle authentication functions.
+*/
+
 (function () {
 
 	angular
-	.module('common.services')
+	.module('services')
 	.service('authentication', authentication);
 
 	/* @ngInject */

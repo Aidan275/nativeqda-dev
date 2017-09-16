@@ -1,9 +1,16 @@
+/**
+* @author Aidan Andrews <aa275@uowmail.edu.au>
+* @ngdoc controller
+* @name auth.controller:forgotPassCtrl
+* @description Controller for the forgot password page.
+*/
+
 (function () {
 	
 	'use strict';
 
 	angular
-	.module('components.auth')
+	.module('auth')
 	.controller('forgotPassCtrl', forgotPassCtrl);
 
 	/* @ngInject */

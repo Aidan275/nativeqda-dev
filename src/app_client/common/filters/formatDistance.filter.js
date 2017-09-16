@@ -1,7 +1,15 @@
+/**
+* @author Aidan Andrews <aa275@uowmail.edu.au>
+* @ngdoc filter 
+* @name filters.filter:formatDistance
+* @description Filter for adding appropriate unit for the given distance (m or km).
+*/
+
+
 (function () { 
 
 	angular
-	.module('common.filters')
+	.module('filters')
 	.filter('formatDistance', formatDistance);
 
 	var _isNumeric = function (n) {

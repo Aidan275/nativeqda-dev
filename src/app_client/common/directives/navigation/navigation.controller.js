@@ -1,7 +1,14 @@
+/**
+* @author Aidan Andrews <aa275@uowmail.edu.au>
+* @ngdoc controller 
+* @name directives.controller:navigationCtrl
+* @description Controller for the {@link directives.directive:navigation navigation directive}.
+*/
+
 (function () {
 
 	angular
-	.module('common.directives')
+	.module('directives')
 	.controller('navigationCtrl', navigationCtrl);
 
 	/* @ngInject */

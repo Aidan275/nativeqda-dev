@@ -1,13 +1,20 @@
+/**
+* @author Aidan Andrews <aa275@uowmail.edu.au>
+* @ngdoc directive 
+* @restrict 'EA'
+* @name directives.directive:footerGeneric
+* @description Directive to display a footer.
+*/
+
 (function () {
 	angular
-	.module('common.directives')
+	.module('directives')
 	.directive('footerGeneric', footerGeneric);
 	
-	function footerGeneric () {
+	function footerGeneric() {
 		return {
 			restrict: 'EA',
-			templateUrl: '/common/directives/footerGeneric/footerGeneric.template.html',
-			controller: 'footerCtrl as footvm'
+			templateUrl: '/common/directives/footerGeneric/footerGeneric.template.html'
 		};
 	}
 })();

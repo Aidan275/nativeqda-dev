@@ -3,7 +3,7 @@
     'use strict';
 
     angular
-    .module('nativeQDAApp')
+    .module('nativeQDA')
     .config(configure);
 
     /* @ngInject */

@@ -1,7 +1,7 @@
 (function () { 
 
 	angular
-	.module('components.settings')
+	.module('settings')
 	.controller('systemSettingsCtrl', systemSettingsCtrl);
 	
 	function systemSettingsCtrl () {

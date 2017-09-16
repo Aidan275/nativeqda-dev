@@ -3,7 +3,7 @@
 		'use strict';
 
 		angular
-		.module('nativeQDAApp.core')
+		.module('core')
 		.config(['$routeProvider', '$locationProvider', config])
 		.run(['$rootScope', '$location', 'authentication', 'bsLoadingOverlayService', run]);
 

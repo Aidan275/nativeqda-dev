@@ -1,7 +1,7 @@
 (function () {
 
 	angular
-	.module('components.visualisations')
+	.module('visualisations')
 	.controller('barChartCtrl', barChartCtrl);
 
 
@@ -10,7 +10,7 @@
 		var vm = this;
 
 		var analysisType = $routeParams.type; 
-		var analysisID = $routeParams.id;
+		var analysisId = $routeParams.id;
 		var responseData = {};
 		var data = [];
 		var sortData = [];
@@ -27,7 +27,7 @@
 
 		function activate() {
 			bsLoadingOverlayService.start({referenceId: 'bar-chart'});	// Start animated loading overlay
-			analysisService.readWatsonAnalysis(analysisID) //gets id from url
+			analysisService.readWatsonAnalysis(analysisId) //gets id from url
 			.then(function(response) {
 				var analysisData = response.data; //store watson response in analysisData
 

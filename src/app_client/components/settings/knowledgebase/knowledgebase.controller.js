@@ -1,7 +1,7 @@
 (function () { 
 
 	angular
-	.module('components.settings')
+	.module('settings')
 	.controller('knowledgebaseCtrl', knowledgebaseCtrl);
 	
 	function knowledgebaseCtrl() {

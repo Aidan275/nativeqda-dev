@@ -1,9 +1,23 @@
+/**
+* @author Aidan Andrews <aa275@uowmail.edu.au>
+* @ngdoc controller
+* @name auth.controller:resetPasswordCtrl
+* @description Controller for the reset password page.
+*
+* A link to the reset password page, including the corresponding token, is sent to the user's email
+* address when they enter their email on the {@link auth.controller:forgotPassCtrl forgot password} page.
+*
+* This controller uses the {@link services.service:authentication#methods_resetPassword resetPassword} function
+* in the {@link services.service:authentication authentication} service to pass the token and new password to 
+* the server to be reset.
+*/
+
 (function () {
 
 	'use strict';
 
 	angular
-	.module('components.auth')
+	.module('auth')
 	.controller('resetPasswordCtrl', resetPasswordCtrl);
 
 	/* @ngInject */

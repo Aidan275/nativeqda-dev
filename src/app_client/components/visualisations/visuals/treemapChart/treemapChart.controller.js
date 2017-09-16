@@ -1,7 +1,7 @@
 (function () {
 
 	angular
-	.module('components.visualisations')
+	.module('visualisations')
 	.controller('treemapChartCtrl', treemapChartCtrl);
 
 	/* @ngInject */

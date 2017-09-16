@@ -1,9 +1,16 @@
+/**
+* @author Aidan Andrews <aa275@uowmail.edu.au>
+* @ngdoc object 
+* @name factories.service:geolocationSvc
+* @description Factory for geolocating the user to display their location on a map.
+*/
+
 (function () {
 
 	'use strict';
 
 	angular
-	.module('common.factories')
+	.module('factories')
 	.factory('geolocationSvc', geolocationSvc);
 
 	/* @ngInject */
