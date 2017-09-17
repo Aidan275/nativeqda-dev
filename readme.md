@@ -62,3 +62,29 @@ Generate documentation using grunt
 grunt
 ```
 This should start a server at [http://localhost:8000](http://localhost:8000) where the documentation can be viewed.
+
+## Testing
+
+Unit tests are run using the following set of tools:
+* [http://karma-runner.github.io](Karma) - test runner used to run the tests against code
+* [https://mochajs.org/](Mocha) - testing framework used to define our overall unit test with describe, beforeEach and it functions
+* [http://chaijs.com/](Chai) - assertion library used to verify the results of our unit tests
+* [http://sinonjs.org/](Sinon) - library used for creating test spies, stubs and mocks in javascript 
+
+![Example Figure](http://jasonwatmore.com/_content/images/angular-unit-testing-2.png)
+
+### Running Unit Tests
+
+To run the unit tests use the following karma command
+
+```
+karma start
+```
+
+This script will start the Karma test runner to execute the unit tests. Moreover, Karma will sit and
+watch the source and test files for changes and then re-run the tests whenever any of them change.
+This is the recommended strategy; if your unit tests are being run every time you save a file then
+you receive instant feedback on any changes that break the expected code functionality.
+
+* the configuration is found at 'karma.conf.js'
+* the unit tests are found next to the code they are testing and are named as '....spec.js'.
