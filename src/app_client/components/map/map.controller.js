@@ -338,7 +338,7 @@
 
 				/* HTML for the popup boxes displayed when the file marker is pressed */
 				var popupString = '<div class="info-window"><div style="background-color:#4676fa;border-radius: 12px 12px 0 0 !important;text-align:center;">' +
-				'<h3 style="color:#FFF;margin-left:5px;margin-right:5px;padding-bottom:5px;padding-top:5px;">' + file.name + '</h3></div><div style="margin-left: 15px;margin-right:15px;margin-top:5px;margin-bottom:15px;"' +
+				'<h3 style="color:#FFF;margin-left:5px;margin-right:5px;padding-bottom:5px;padding-top:5px;">' + file.name + '</h3></div><div style="margin-left: 15px;margin-right:15px;margin-top:5px;margin-bottom:15px;">' +
 				'<p><strong>Created By:</strong> ' + file.createdBy + '<br />' +
 				'<strong>Size:</strong> ' + $filter('formatFileSize')(file.size, 2) + '<br />' +	/* uses formatFileSize filter to format the file size */
 				'<strong>Last Modified:</strong> ' + $filter('date')(file.lastModified, "dd MMMM, yyyy h:mm a");	/* uses date filter to format the date */
@@ -582,13 +582,13 @@
 				}).addTo(vm.map);
 
 				/* HTML for the popup boxes displayed when the link is pressed */
-				var popupString = '<div class="info-window">' +
-				'<h3>' + link.name + '</h3>' +
+				var popupString = '<div class="info-window"><div style="background-color:#4676fa;border-radius: 12px 12px 0 0 !important;text-align:center;">' +
+				'<h3 style="color:#FFF;margin-left:5px;margin-right:5px;padding-bottom:5px;padding-top:5px;">' + link.name + '</h3></div><div style="margin-left: 15px;margin-right:15px;margin-top:5px;margin-bottom:15px;">' +
 				'<p><strong>Description:</strong> ' + link.description + '<br />' +
 				'<strong>Created By:</strong> ' + link._creator.firstName + '<br />' +
-				'<strong>Date Created:</strong> ' + $filter('date')(link.dateCreated, "dd MMMM, yyyy h:mm a") + '</p>' +	/* uses date filter to format the date */
-				'<a ng-click="vm.confirmLinkDelete(linkID, linkName)" class="btn btn-danger" role="button">Delete</a>' +
-				'</div>';
+				'<strong>Date Created:</strong> ' + $filter('date')(link.dateCreated, "dd MMMM, yyyy h:mm a") + '</p><div style="padding-bottom:10px;"></div>' +	/* uses date filter to format the date */
+				'<a ng-click="vm.confirmLinkDelete(linkID, linkName)" class="btn btn-danger btn-xs" role="button">Delete</a>' +
+				'</div></div>';
 
 				/* Compiles the HTML so ng-click works */
 				var compiledPopupString = $compile(angular.element(popupString));

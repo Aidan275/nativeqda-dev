@@ -34,7 +34,12 @@ body.pg-loaded > .inner {
 	 border-color: #4676fa;
 }
 
-.blueButton:hover, .blueButton:focus {
+.blueButton:hover {
+	 background-color: #0676fa;
+	 border-color: #0676fa;
+}
+
+.blueButton:focus {
 	 background-color: #0676fa;
 	 border-color: #0676fa;
 }
@@ -2096,7 +2101,7 @@ footer span {
 
 /* ========== VISUALISATIONS INDEX PAGE ========== */
 
-#visualisations-index .tabbar > li > a:focus, a:hover {
+#visualisations-index .tabbar > li > a:focus, #visualisations-index a:hover {
 	color: #fff !important;
 	background-color: #2d65ff !important;
 	cursor: pointer;
