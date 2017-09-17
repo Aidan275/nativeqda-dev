@@ -205,9 +205,6 @@ footer span {
 	left: 0; 
 	right: 0; 
 	height: 50px;
-	-webkit-box-shadow: 0 6px 6px -6px #999;
-	-moz-box-shadow: 0 6px 6px -6px #999;
-	box-shadow: 0 6px 6px -6px #999;
 }
 
 #navbar-main {
@@ -2099,26 +2096,16 @@ footer span {
 
 /* ========== VISUALISATIONS INDEX PAGE ========== */
 
-@media screen and (min-width:1690px){
-	#visualisations-index .container { left:-256px; }
+#visualisations-index .tabbar > li > a:focus, a:hover {
+	color: #fff !important;
+	background-color: #2d65ff !important;
+	cursor: pointer;
 }
-@media screen and (min-width:1430px) and (max-width:1689px){
-	#visualisations-index .container { left:-128px; }
-}
-@media screen and (min-width:1300px) and (max-width:1429px){
-	#visualisations-index .container { left:-64px; }
-}
-@media screen and (min-width:1025px) and (max-width:1299px){
-	#visualisations-index .container { left:-32px; }
-}
-@media screen and (min-width:991px) and (max-width:1024px){
-	#visualisations-index .container { left:-8px; }
-}
-@media screen and (min-width:420px) and (max-width:990px){
-	#visualisations-index .container { left:0px; }
-}
-@media screen and(max-width:419px){
-	#visualisations-index .container { left:0px; }
+#visualisations-index .tabbar > li > a {
+	color: #fff;
+	font-weight: 500;
+	cursor: pointer;
+	padding-top:8px;
 }
 
 .vis-thumb-list {

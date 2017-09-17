@@ -63,11 +63,20 @@
 </style>
 
 <navigation></navigation>
+<div style="height:40px;background-color:#4676fa;position: relative;"><div style="background-color:#fff;height:3px;"></div>
+<ul class="nav navbar-nav tabbar" style="position: absolute;left: 42%;transform: translatex(-42%);">
+  <li><a ng-click="vm.togglePage('details')" role="button">Details</a></li>
+  <li><a ng-click="vm.togglePage('categories')" role="button">Categories</a></li>
+  <li><a ng-click="vm.togglePage('concepts')" role="button">Concepts</a></li>
+  <li><a ng-click="vm.togglePage('entites')" role="button">Entities</a></li>
+  <li><a ng-click="vm.togglePage('keywords')" role="button">Keywords</a></li>
+  <li><a ng-click="vm.togglePage('relations')" role="button">Relations</a></li>
+  <li><a ng-click="vm.togglePage('semanticRoles')" role="button">Semantic Roles</a></li>
+</ul> 
+</div>
 
 <nav id="viMenu">
-
 	<header>
-
 		<h4>Visualisation Types</h4>
 		<hr style="border-top: 3px dashed #4676fa;">
 
@@ -89,8 +98,7 @@
 		<a ng-click="vm.togglePage('relations')" class="btn" style="background-color:#4676fa;border-color:#4676fa;color:#fff;font-weight:500;" role="button">Relations</a>
 		<br />
 		<br />
-		<a ng-click="vm.togglePage('semanticRoles')" class="btn" style="background-color:#4676fa;border-color:#4676fa;color:#fff;font-weight:500;" role="button">Semantic Roles</a>
-		
+		<a ng-click="vm.togglePage('semanticRoles')" class="btn" style="background-color:#4676fa;border-color:#4676fa;color:#fff;font-weight:500;" role="button">Semantic Roles</a>		
 	</header>
 </nav>
 
@@ -105,7 +113,7 @@
 				<div class="row">
 					<div class="col-md-12">
 						<div ng-show="vm.details" class="pageItem">
-							<h3 ng-click="vm.toggleOptions()" style="color:#4676fa;cursor:pointer;cursor:hand;">Analysis Details</h3>
+							<h3>Analysis Details</h3>
 
 							<label>Name: </label> {{vm.analysisData.name}}
 							<br/>
