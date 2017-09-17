@@ -5,7 +5,7 @@
 	.controller('heatmapCtrl', heatmapCtrl);
 
     /* @ngInject */
-	function heatmapCtrl ($scope, authentication) {
+	function heatmapCtrl ($scope) {
 		var vm = this;
 		var lat = -33.848192;
 		var lng = 151.061857;

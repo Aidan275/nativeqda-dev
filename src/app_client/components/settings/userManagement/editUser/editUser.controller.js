@@ -32,10 +32,10 @@
 			};
 
 			usersService.putUserRole(userInfo)
-			.then(function(response) {
+			.then(function(data) {
 				logger.success('Successfully updated user settings', '', 'Success');
 				setTimeout(function() {
-					vm.modal.close(response.data);	/* Close modal if user was updated successfully */
+					vm.modal.close(data);	/* Close modal if user was updated successfully */
 				}, 1000);	/* Timeout function so the user can see the settings had saved before closing modal */
 			});
 		}

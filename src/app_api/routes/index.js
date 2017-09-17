@@ -7,7 +7,7 @@ var auth = jwt({
 	userProperty: 'payload'
 });
 
-var ctrlAuth = require('../controllers/authentication');
+var ctrlAuth = require('../controllers/auth');
 var ctrlDataset = require('../controllers/datasets');
 var ctrlFile = require('../controllers/files');
 var ctrlS3 = require('../controllers/s3');

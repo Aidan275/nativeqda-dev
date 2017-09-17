@@ -15,7 +15,7 @@
 	.controller('mapCtrl', mapCtrl);
 
 	/* @ngInject */
-	function mapCtrl(filesService, $scope, $filter, $compile, $window, $uibModal, logger, bsLoadingOverlayService, mapService, s3Service, authentication) {
+	function mapCtrl(filesService, $scope, $filter, $compile, $window, $uibModal, logger, bsLoadingOverlayService, mapService, s3Service, authService) {
 		var vm = this;
 
 		/* Bindable Functions */
@@ -39,7 +39,7 @@
 		vm.lat = -34.4054039;	/* Default position is UOW */
 		vm.lng = 150.87842999999998;
 		vm.sidebar = null;
-		vm.currentUser = authentication.currentUser();
+		vm.currentUser = authService.currentUser();
 
 		/* File marker variables */
 		vm.fileList = null;
@@ -289,8 +289,8 @@
 		/* Gets all the files from the database to be displayed on the map */
 		function getFileList() {
 			filesService.getFileListDB()
-			.then(function(response) {
-				vm.fileList = response.data;
+			.then(function(data) {
+				vm.fileList = data;
 				addMapMarkers();
 			}, function(err) {
 				bsLoadingOverlayService.stop({referenceId: 'map'});	/* If error, stop animated loading overlay */
@@ -437,7 +437,7 @@
 
 			/* Make a request to the server for a signed URL to download/view the requested file */
 			s3Service.signDownload(file.path, file.name)
-			.then(function(response) {
+			.then(function(data) {
 				/* Remove the animation 1s after the signed URL is retrieved */
 				setTimeout(function(){
 					newTab.document.getElementById("loader").remove();
@@ -445,12 +445,12 @@
 
 				/* Redirect the new tab to the signed URL */
 				/* If the file is a document or text file, open in google docs viewer to view in the browser */
-				if(response.data.type === "doc") {
-					var encodedUrl = 'https://docs.google.com/viewer?url=' + encodeURIComponent(response.data.url) + '&embedded=true';
+				if(data.type === "doc") {
+					var encodedUrl = 'https://docs.google.com/viewer?url=' + encodeURIComponent(data.url) + '&embedded=true';
 					newTab.location = encodedUrl;
 				} else {
 					/* Else either download or view in browser (if natively compatible) */
-					newTab.location = response.data.url;
+					newTab.location = data.url;
 				}
 
 			}, function() {
@@ -490,14 +490,14 @@
 
 		function deleteFileDB(file) {
 			filesService.deleteFileDB(file.path, file.name)
-			.then(function(response) {
+			.then(function(data) {
 				deleteFileS3(file);
 			});
 		}
 
 		function deleteFileS3(file) {
 			s3Service.deleteFile(file.key)
-			.then(function(response) {
+			.then(function(data) {
 				/* If a text file was generated for analysis, delete that file too. */
 				/* If the original file was a text file, just delete the original file */
 				if(file.textFileKey && file.textFileKey != file.key){
@@ -548,8 +548,8 @@
 		/* Gets all the marker links from the database to be displayed on the map */
 		function getLinks() {
 			mapService.getLinks()
-			.then(function(response) {
-				vm.linkList = response.data;
+			.then(function(data) {
+				vm.linkList = data;
 			});
 		}
 

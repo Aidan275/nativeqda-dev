@@ -14,7 +14,7 @@
 	.controller('loginCtrl', loginCtrl);
 
 	/* @ngInject */
-	function loginCtrl($location, authentication, logger, usersService) {
+	function loginCtrl($location, authService, logger, usersService) {
 		var vm = this;
 
 		//vm.pageClass = 'login-page';	/* Class added to the inner div in the index page (for styling) */
@@ -44,13 +44,14 @@
 				return false;
 			} else {
 				login();
+				return true;
 			}
 		};
 
 		function login() {
-			authentication
+			authService
 			.login(vm.credentials)
-			.then(function(response) {
+			.then(function(data) {
 				$location.search('page', null);
 				$location.path(vm.returnPage);
 			});
@@ -59,9 +60,9 @@
 		function getAvatar() {
 			if(vm.credentials.email) {
 				usersService.getAvatar(vm.credentials.email)
-				.then(function(response) {
-					if(response.data) {
-						vm.avatarUrl = response.data.avatar;
+				.then(function(data) {
+					if(data) {
+						vm.avatarUrl = data.avatar;
 					} else {
 						vm.avatarUrl = 'assets/img/settings/default-avatar.png';
 					}

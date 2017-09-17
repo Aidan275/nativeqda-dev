@@ -12,7 +12,7 @@
 	.controller('analysisCtrl', analysisCtrl);
 
 	/* @ngInject */
-	function analysisCtrl ($scope, $window, NgTableParams, $sce, $uibModal, analysisService, bsLoadingOverlayService, logger) {
+	function analysisCtrl(NgTableParams, $uibModal, analysisService, bsLoadingOverlayService, logger) {
 		var vm = this;
 
 		/* Bindable Functions */
@@ -39,7 +39,9 @@
 		*/
 		function activate() {
 			bsLoadingOverlayService.start({referenceId: 'analysis-list'});	/* Start animated loading overlay */
-			getAnalysesList();
+			return getAnalysesList().then(function() {
+				listAnalyses();
+			});
 		}
 
 		/**
@@ -50,10 +52,10 @@
 		* function from {@link services.service:analysisService analysisService} to load the analysis objects from the database.
 		*/
 		function getAnalysesList() {
-			analysisService.listWatsonAnalysis()
-			.then(function(response) {
-				vm.analyses = response.data;
-				listAnalyses();
+			return analysisService.listWatsonAnalysis()
+			.then(function(data) {
+				vm.analyses = data;
+				return vm.analyses;
 			}, function(err) {
 				bsLoadingOverlayService.stop({referenceId: 'analysis-list'});	/* If error, stop animated loading overlay */
 			});

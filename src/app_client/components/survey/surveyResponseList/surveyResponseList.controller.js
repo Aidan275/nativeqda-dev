@@ -29,9 +29,9 @@
 		// Gets all the survey responses from the MongoDB database
 		function getSurveyResponsesList() {
 			surveyService.readSurveyResponses(vm.accessId)
-			.then(function(response) {
-				response.data.responses.forEach(function(response) {
-					var data = {
+			.then(function(data) {
+				data.responses.forEach(function(response) {
+					var dataResponse = {
 						responseJSON: JSON.parse(response.responseJSON),
 						dateCreated: response.dateCreated,
 						fullName: response.fullName,
@@ -45,13 +45,13 @@
 						}
 					};
 
-					if(data.coords.lat && data.coords.lng) {
-						data.location = true;
+					if(dataResponse.coords.lat && dataResponse.coords.lng) {
+						dataResponse.location = true;
 					} else {
-						data.location = false;
+						dataResponse.location = false;
 					}
 
-					vm.surveyResponsesList.push(data);
+					vm.surveyResponsesList.push(dataResponse);
 				});
 				console.log(vm.surveyResponsesList);
 				listSurveyResponses();

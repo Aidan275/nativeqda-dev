@@ -73,7 +73,7 @@ NG_DOCS={
       "type": "controller",
       "moduleName": "auth",
       "shortDescription": "Controller for the reset password page.",
-      "keywords": "address aidan andrews api au authentication controller corresponding email enter forgot function including link methods_resetpassword pass password reset resetpassword server service services token user"
+      "keywords": "address aidan andrews api au authservice controller corresponding email enter forgot function including link methods_resetpassword pass password reset resetpassword server service services token user"
     },
     {
       "section": "api",
@@ -253,7 +253,7 @@ NG_DOCS={
       "type": "overview",
       "moduleName": "services",
       "shortDescription": "The services module is a sub-module of the common module.",
-      "keywords": "aidan analysisservice andrews api au authentication common datasetservice exception filesservice included logger mapservice module overview s3service service services sub-module surveyservice usersservice"
+      "keywords": "aidan analysisservice andrews api au authservice common datasetservice exception filesservice included logger mapservice module overview s3service service services sub-module surveyservice usersservice"
     },
     {
       "section": "api",
@@ -266,8 +266,8 @@ NG_DOCS={
     },
     {
       "section": "api",
-      "id": "services.service:authentication",
-      "shortName": "authentication",
+      "id": "services.service:authService",
+      "shortName": "authService",
       "type": "service",
       "moduleName": "services",
       "shortDescription": "Service used for making requests to the",

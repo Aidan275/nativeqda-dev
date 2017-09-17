@@ -3,9 +3,9 @@
 		'use strict';
 
 		angular
-		.module('core')
+		.module('nativeQDA')
 		.config(['$routeProvider', '$locationProvider', config])
-		.run(['$rootScope', '$location', 'authentication', 'bsLoadingOverlayService', run]);
+		.run(['$rootScope', '$location', 'authService', 'bsLoadingOverlayService', run]);
 
 		/* @ngInject */
 		function config ($routeProvider, $locationProvider) {
@@ -247,15 +247,15 @@
 			$locationProvider.html5Mode(true);
 		}
 
-		function run($rootScope, $location, authentication, bsLoadingOverlayService) {
+		function run($rootScope, $location, authService, bsLoadingOverlayService) {
 			$rootScope.$on("$routeChangeStart", function(event, nextRoute, currentRoute) {
 				var postLogInRoute;
-				if(nextRoute.loginRequired && !authentication.isLoggedIn()){
+				if(nextRoute.loginRequired && !authService.isLoggedIn()){
 					postLogInRoute = $location.path();
 					$location.path('/login').replace();
 					$location.search('page', postLogInRoute);
-				} else if (nextRoute.loginRequired && authentication.isLoggedIn()) {
-					authentication.checkJWT();
+				} else if (nextRoute.loginRequired && authService.isLoggedIn()) {
+					authService.checkJWT();
 					$location.path(postLogInRoute).replace();
 					postLogInRoute = null;
 				} 

@@ -1,7 +1,7 @@
 /**
 * @author Aidan Andrews <aa275@uowmail.edu.au>
 * @ngdoc service
-* @name services.service:authentication
+* @name services.service:authService
 * @description Service used for making requests to the
 * server to handle authentication functions.
 */
@@ -10,10 +10,10 @@
 
 	angular
 	.module('services')
-	.service('authentication', authentication);
+	.service('authService', authService);
 
 	/* @ngInject */
-	function authentication($rootScope, $http, $window, exception, $location) {
+	function authService($rootScope, $http, $window, exception, $location) {
 		return {
 			register		: register,
 			login			: login,
@@ -64,7 +64,7 @@
 			.then(forgotPasswordComplete)
 			.catch(forgotPasswordFailed);
 
-			function forgotPasswordComplete(data) { return data; }
+			function forgotPasswordComplete(data) { return data.data; }
 			function forgotPasswordFailed(e) { return exception.catcher('Forgot Password Failed')(e); }
 		};
 
@@ -73,7 +73,7 @@
 			.then(resetPasswordComplete)
 			.catch(resetPasswordFailed);
 
-			function resetPasswordComplete(data) { return data; }
+			function resetPasswordComplete(data) { return data.data; }
 			function resetPasswordFailed(e) { return exception.catcher('Reset Password Failed')(e); }
 		};
 
@@ -126,8 +126,8 @@
 			if(token){
 				var payload = JSON.parse($window.atob(token.split('.')[1]));
 				lastModified()
-				.then(function(response) {		/* Checks the database for the date/time the user profile was last modified */
-					var date = new Date(response.data.lastModified);
+				.then(function(data) {		/* Checks the database for the date/time the user profile was last modified */
+					var date = new Date(data.lastModified);
 					var lastModifiedTime = parseInt(date.getTime() / 1000);	/* Checks the date/time the user's token was created */
 					if(lastModifiedTime > payload.iat) {		/* If the token was created before the last modified date of the user profile display message and logout */
 						swal({
@@ -160,7 +160,7 @@
 			}).then(lastModifiedComplete)
 			.catch(lastModifiedFailed);
 
-			function lastModifiedComplete(data) { return data; }
+			function lastModifiedComplete(data) { return data.data; }
 			function lastModifiedFailed(e) { return exception.catcher('Failed getting the user\'s last modified date.')(e); }
 		};
 	}

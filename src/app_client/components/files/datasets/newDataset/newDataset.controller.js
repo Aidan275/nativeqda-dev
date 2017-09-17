@@ -7,7 +7,7 @@
 	.controller('newDatasetCtrl', newDatasetCtrl);
 
 	/* @ngInject */
-	function newDatasetCtrl($scope, $http, $uibModalInstance, datasetService, filesService, logger, NgTableParams, $window, Upload, authentication, bsLoadingOverlayService, s3Service) {
+	function newDatasetCtrl($scope, $http, $uibModalInstance, datasetService, filesService, logger, NgTableParams, $window, Upload, authService, bsLoadingOverlayService, s3Service) {
 		var vm = this;
 
 		/* Bindable Functions */
@@ -75,15 +75,15 @@
 		function getFileList() {
 			bsLoadingOverlayService.start({referenceId: 'new-dataset'});	/* Start animated loading overlay */
 			filesService.getFileDB(vm.currentPath, '', 'true')
-			.then(function(response) {
+			.then(function(data) {
 
-				response.data.forEach(function(file) {	/* Uses the custom method 'pushIfNotExist' to add unique files to the allFilesSoFar array */
+				data.forEach(function(file) {	/* Uses the custom method 'pushIfNotExist' to add unique files to the allFilesSoFar array */
 					vm.allFilesSoFar.pushIfNotExist(file, function(element) {
 						return element._id === file._id;
 					});
 				});
 				
-				vm.fileList = response.data.map(function(file) {	/* Maps the file list to the fileList array adding typeOrder for sorting */
+				vm.fileList = data.map(function(file) {	/* Maps the file list to the fileList array adding typeOrder for sorting */
 					if(file.type === 'folder') {
 						file.typeOrder = 1;	/* For sorting by parent directory, folder, file */
 					} else {
@@ -155,14 +155,14 @@
 
 				/* Make a request to the server for a signed URL to download/view the requested file */
 				s3Service.signDownload(file.path, file.name, 'true')	/* true flag to return the associated text file, not the actual file */
-				.then(function(response) {
+				.then(function(data) {
 					/* Remove the animation 1s after the signed URL is retrieved */
 					setTimeout(function(){
 						newTab.document.getElementById("loader").remove();
 					},1000);
 
 					/* View the raw text file in browser */
-					newTab.location = response.data.url;
+					newTab.location = data.url;
 					
 				}, function() {
 					/* If there is an error, close the new tab */
@@ -191,11 +191,11 @@
 			var concatText = '';
 			vm.selectedKeys.forEach(function(key){	/* For each key in the vm.selectedKeys array */
 				s3Service.signDownloadKey(key)	/* Get a S3 signed URL to download the file */ 
-				.then(function(response) {	
-					filesService.downloadFile(response.data)	/* Download each file (response.data = signed URL) */
-					.then(function(response) {
+				.then(function(data) {	
+					filesService.downloadFile(data)	/* Download each file (data = signed URL) */
+					.then(function(data) {
 						fileCounter++
-						concatText += response.data + '\n\n';	/* Add text from file to concatText */
+						concatText += data + '\n\n';	/* Add text from file to concatText */
 						if(fileCounter === vm.selectedKeys.length) {	/* Check if last file */
 							var newFile = new File([concatText], vm.formData.datasetName, {type: 'text/plain; charset=utf-8'}); /* Creates the file with the concatText content */
 							uploadConcatFile(newFile);
@@ -216,14 +216,14 @@
 				type: 'text/plain; charset=utf-8',
 				group: 'dataset'
 			})
-			.then(function(result) {
+			.then(function(data) {
 				Upload.upload({	/* Upload file using the S3 upload URL */
 					method: 'POST',
 					url: result.data.url, 
 					fields: result.data.fields, 
 					file: newFile
 				})
-				.then(function(response) {	/* File uploaded successfully */
+				.then(function(data) {	/* File uploaded successfully */
 					var key = result.data.fields.key;
 					var url = result.data.url + '/' + key;
 
@@ -233,14 +233,14 @@
 						size : newFile.size,
 						key : key,
 						url : url,
-						createdBy : authentication.currentUser().firstName,
+						createdBy : authService.currentUser().firstName,
 						files: vm.datasetFiles
 					})
 					.then(function (response) {
 						processingEvent(false, 'success');	/* ng-bs-animated-button status & result */
 						logger.success('Dataset "' + vm.formData.datasetName + '" was created successfully', '', 'Success')
 						setTimeout(function() {
-							vm.modal.close(response.data);	/* Close modal if dataset was created successfully in DB and return the response from the DB (the new dataset) */
+							vm.modal.close(data);	/* Close modal if dataset was created successfully in DB and return the response from the DB (the new dataset) */
 						}, 1000);	/* Timeout function so the user can see the dataset was created before closing modal */
 					});
 				}, function(error) {
@@ -262,7 +262,7 @@
 
 			if(result === 'error') {	/* Close modal if error */	
 				setTimeout(function() {
-					vm.modal.cancel(response.data);	
+					vm.modal.cancel(data);	
 				}, 1000);	/* Timeout function so the user can see an error occured before closing modal */
 			}
 		}

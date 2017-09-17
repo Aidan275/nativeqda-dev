@@ -32,8 +32,8 @@
 		// Gets all the files from the MongoDB database
 		function getSurveyList() {
 			surveyService.listSurveys()
-			.then(function(response) {
-				vm.surveyList = response.data;
+			.then(function(data) {
+				vm.surveyList = data;
 				listSurveys();
 			}, function(err){
 				bsLoadingOverlayService.stop({referenceId: 'survey-list'});	// If error, stop animated loading overlay

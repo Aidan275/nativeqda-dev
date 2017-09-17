@@ -36,8 +36,8 @@
 		// Gets all the files from the MongoDB database
 		function getFileList() {
 			usersService.getAllUsersInfo()
-			.then(function(response) {
-				vm.userList = response.data;
+			.then(function(data) {
+				vm.userList = data;
 				listUsers();
 			}, function(err){
 				bsLoadingOverlayService.stop({referenceId: 'user-list'});	// If error, stop animated loading overlay
@@ -99,7 +99,7 @@
 
 		function deleteUser(user) {
 			usersService.deleteUser(user.email)
-			.then(function(response) {
+			.then(function(data) {
 				removeFromArray(user._id);
 				logger.success("'" + user.firstName + "' was deleted successfully", "", "Success");
 			});

@@ -21,9 +21,9 @@
 		function activate() {
 			bsLoadingOverlayService.start({referenceId: 'analysis-data-table'});
 			analysisService.readWatsonAnalysis(analysisId)
-			.then(function(response) {
+			.then(function(data) {
 				bsLoadingOverlayService.stop({referenceId: 'analysis-data-table'});
-				responseData = response.data;
+				responseData = data;
 				switch (analysisType) {
 					case 'categories':
 					categoriesTable();

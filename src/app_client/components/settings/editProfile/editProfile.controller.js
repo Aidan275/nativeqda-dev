@@ -5,7 +5,7 @@
 	.controller('editProfileCtrl', editProfileCtrl);
 	
 	/* @ngInject */
-	function editProfileCtrl($scope, $uibModalInstance, userEmail, usersService, bsLoadingOverlayService, logger, authentication, Upload, $animate, s3Service) {
+	function editProfileCtrl($scope, $uibModalInstance, userEmail, usersService, bsLoadingOverlayService, logger, authService, Upload, $animate, s3Service) {
 		var vm = this;
 
 		/* Bindable Functions */
@@ -34,9 +34,9 @@
 		/* Gets all the files from the MongoDB database */
 		function getUserInfo() {
 			usersService.getUserInfo(userEmail)
-			.then(function(response) {
+			.then(function(data) {
 				bsLoadingOverlayService.stop({referenceId: 'user-info'});	/* Stop animated loading overlay */
-				vm.userInfo = response.data;
+				vm.userInfo = data;
 			}, function(err){
 				bsLoadingOverlayService.stop({referenceId: 'user-info'});	/* If error, stop animated loading overlay */
 			});
@@ -119,19 +119,19 @@
 
 		function uploadAvatar() {
 			s3Service.signUpload(vm.fileInfo)
-			.then(function(result) {
+			.then(function(data) {
 				Upload.upload({
 					method: 'POST',
-					url: result.data.url, 
-					fields: result.data.fields, 
+					url: data.url, 
+					fields: data.fields, 
 					file: vm.file
 				})
 				.then(function(response) {
 					console.log('Avatar successfully uploaded to S3');
 					/* parses XML data response to jQuery object to be stored in the database */
-					var xml = $.parseXML(response.data);
-					var key = result.data.fields.key;
-					vm.userInfo.avatar = result.data.url + '/' + encodeURIComponent(key);	/* Encode the key for the API URL in case it includes reserved characters (e.g '+', '&') */
+					var xml = $.parseXML(response);
+					var key = data.fields.key;
+					vm.userInfo.avatar = data.url + '/' + encodeURIComponent(key);	/* Encode the key for the API URL in case it includes reserved characters (e.g '+', '&') */
 					uploadUserInfo();
 				}, function(error) {
 					processingEvent(false, 'error');	/* ng-bs-animated-button status & result */
@@ -147,14 +147,14 @@
 		/* Save user info to the database */
 		function uploadUserInfo() {
 			usersService.updateProfile(vm.userInfo)
-			.then(function(response) {
-				authentication.saveToken(response.data);	/* Updated the JWT stored in the browser */
+			.then(function(data) {
+				authService.saveToken(data);	/* Updated the JWT stored in the browser */
 				processingEvent(false, 'success');	/* ng-bs-animated-button status & result */
 				console.log('Successfully updated profile');
 				logger.success('Successfully updated profile', '', 'Success');
 				cleanUpForNextUpload();
 				setTimeout(function() {
-					vm.modal.close(response.data);	/* Close modal if profile was updated successfully */
+					vm.modal.close(data);	/* Close modal if profile was updated successfully */
 				}, 1000);	/* Timeout function so the user can see the profile has updated before closing modal */
 			});
 		}

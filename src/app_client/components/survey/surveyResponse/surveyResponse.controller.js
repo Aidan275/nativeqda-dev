@@ -27,10 +27,10 @@
 			/* Uses the surveyService to make a call to the DB to retrieve the selected survey data (including response) */
 			/* Might be worth splitting this into two calls, one for fetching the survey and one for fetching the responses. */
 			surveyService.readSurvey(accessId)
-			.then(function(response) {
+			.then(function(data) {
 
 				/* Converts the JSON survey string from the DB to a JS object to display the survey page. */
-				var surveyJSONObj = JSON.parse(response.data.surveyJSON);
+				var surveyJSONObj = JSON.parse(data.surveyJSON);
 
 				/* Loads the survey object from the DB into the survey library. */
 				window.survey = new Survey.Model(surveyJSONObj);
@@ -45,10 +45,10 @@
 
 				/* Gets the survey responses from the DB object returned. */
 				surveyService.readOneSurveyResponse(accessId, responseId)
-				.then(function(response) {
+				.then(function(data) {
 
 					/* Converts the JSON response string from the DB to a JS object to display the response data. */
-					var selectedResponseJSON = JSON.parse(response.data.responseJSON);
+					var selectedResponseJSON = JSON.parse(data.responseJSON);
 
 					/* Sets the data to the selected response data. */
 					survey.data = selectedResponseJSON;

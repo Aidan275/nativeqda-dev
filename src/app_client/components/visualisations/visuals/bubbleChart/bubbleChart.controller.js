@@ -52,7 +52,7 @@
 	    var id = $routeParams.id;
 
 	    var dataNodes = [];
-	    var data;
+	    var responseData = [];
 
 	    var width = document.querySelector("#graph").clientWidth;
 	    var height = document.querySelector("#graph").clientHeight;
@@ -92,18 +92,16 @@
 		function activate() {
 			bsLoadingOverlayService.start({referenceId: 'bubble-chart'});	// Start animated loading overlay
 			analysisService.readWatsonAnalysis(id)
-			.then(function(response) {
-				var analysisData = response.data;
-
+			.then(function(data) {
 				if(analysisType === 'concepts') {
-					analysisData.concepts.forEach(function(concept){
+					data.concepts.forEach(function(concept){
 						var text = concept.text.charAt(0).toUpperCase() + concept.text.slice(1);	// Capitalise first letter
 						maxRelevance = (concept.relevance > maxRelevance ? concept.relevance : maxRelevance);
 						minRelevance = (concept.relevance < minRelevance ? concept.relevance : minRelevance);
 						dataNodes.push({text: text, radius: concept.relevance*100, relevance: concept.relevance, dbpedia_resource: concept.dbpedia_resource});
 					});
 				} else if(analysisType === 'keywords') {
-					analysisData.keywords.forEach(function(keyword){
+					data.keywords.forEach(function(keyword){
 						var text = keyword.text.charAt(0).toUpperCase() + keyword.text.slice(1);	// Capitalise first letter
 						maxRelevance = (keyword.relevance > maxRelevance ? keyword.relevance : maxRelevance);
 						minRelevance = (keyword.relevance < minRelevance ? keyword.relevance : minRelevance);
@@ -111,8 +109,8 @@
 					});
 				}
 
-				data = {nodes: dataNodes};
-				drawChart(data);
+				responseData = {nodes: dataNodes};
+				drawChart(responseData);
 			}, function(err) {
 				bsLoadingOverlayService.stop({referenceId: 'bubble-chart'});	// If error, stop animated loading overlay
 			}); 

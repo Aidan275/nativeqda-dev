@@ -14,7 +14,7 @@
 	.controller('forgotPassCtrl', forgotPassCtrl);
 
 	/* @ngInject */
-	function forgotPassCtrl(authentication, logger) {
+	function forgotPassCtrl(authService, logger) {
 		var vm = this;
 		
 		vm.pageId = "forgot-password-css";
@@ -41,8 +41,8 @@
     	};
 
     	function generateResetToken() {
-    		authentication.forgotPassword({email: vm.email})
-    		.then(function(response) {
+    		authService.forgotPassword({email: vm.email})
+    		.then(function(data) {
     			logger.success('A link to reset your password has been sent to ' + vm.email, '', 'Success');
     			vm.reset = true;
     		})

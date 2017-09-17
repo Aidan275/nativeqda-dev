@@ -7,7 +7,7 @@
 	.controller('surveyCreateCtrl', surveyCreateCtrl);
 
 	/* @ngInject */
-	function surveyCreateCtrl (surveyService, authentication, $scope, $location) {
+	function surveyCreateCtrl (surveyService, authService, $scope, $location) {
 		var vm = this;
 
 		var editorOptions = {
@@ -54,14 +54,14 @@
 				var surveyData = {
 					surveyJSON: survey.text,
 					name: inputValue,
-					createdBy : authentication.currentUser().firstName
+					createdBy : authService.currentUser().firstName
 				};
 
 				surveyService.saveSurvey(surveyData)
-				.then(function(response) {
+				.then(function(data) {
 					swal({
 						title: "Saved!",
-						text: "Survey saved as '" + inputValue + "'\nThis survey's code is " + response.data.accessId,
+						text: "Survey saved as '" + inputValue + "'\nThis survey's code is " + data.accessId,
 						type: "success",
 						confirmButtonColor: "#5cb85c",
 						animation: "slide-from-top"

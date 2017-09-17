@@ -15,7 +15,7 @@
 	.service('filesService', filesService);
 
 	/* @ngInject */
-	function filesService($http, authentication, exception) {
+	function filesService($http, authService, exception) {
 		return {
 			addFileDB		: addFileDB,
 			getFileListDB	: getFileListDB,
@@ -33,20 +33,20 @@
 			if (fileInfo.path == '/') {
 				return $http.put('/api/files/' + fileInfo.name, fileInfo, {
 					headers: {
-						Authorization: 'Bearer ' + authentication.getToken()
+						Authorization: 'Bearer ' + authService.getToken()
 					}
 				}).then(addFileDBComplete)
 				.catch(addFileDBFailed);
 			} else {
 				return $http.put('/api/files/' + fileInfo.path + '/' + fileInfo.name, fileInfo, {
 					headers: {
-						Authorization: 'Bearer ' + authentication.getToken()
+						Authorization: 'Bearer ' + authService.getToken()
 					}
 				}).then(addFileDBComplete)
 				.catch(addFileDBFailed);
 			}
 
-			function addFileDBComplete(data) { return data; }
+			function addFileDBComplete(data) { return data.data; }
 			function addFileDBFailed(e) { return exception.catcher('Failed adding the file to the DB.')(e); }
 		};
 
@@ -54,24 +54,24 @@
 			var currentpath = ""; /* TODO  */
 			return $http.get('/api/files/' + currentpath + filename, {
 				headers: {
-					Authorization: 'Bearer ' + authentication.getToken()
+					Authorization: 'Bearer ' + authService.getToken()
 				}
 			}).then(fileReadOneDBComplete)
 			.catch(fileReadOneDBFailed);
 
-			function fileReadOneDBComplete(data) { return data; }
+			function fileReadOneDBComplete(data) { return data.data; }
 			function fileReadOneDBFailed(e) { return exception.catcher('Failed reading the file form the DB.')(e); }
 		};
 
 		function getFileListDB(getTextFile){
 			return $http.get('/api/map/?getTextFile=' + getTextFile, {
 				headers: {
-					Authorization: 'Bearer ' + authentication.getToken()
+					Authorization: 'Bearer ' + authService.getToken()
 				}
 			}).then(getFileListDBComplete)
 			.catch(getFileListDBFailed);
 
-			function getFileListDBComplete(data) { return data; }
+			function getFileListDBComplete(data) { return data.data; }
 			function getFileListDBFailed(e) { return exception.catcher('Failed listing the files from the DB.')(e); }
 		};
 
@@ -90,48 +90,48 @@
 
 			return $http.get(url, {
 				headers: {
-					Authorization: 'Bearer ' + authentication.getToken()
+					Authorization: 'Bearer ' + authService.getToken()
 				}
 			}).then(getFileDBComplete)
 			.catch(getFileDBFailed);
 
-			function getFileDBComplete(data) { return data; }
+			function getFileDBComplete(data) { return data.data; }
 			function getFileDBFailed(e) { return exception.catcher('Failed getting the file/folder from the DB.')(e); }
 		};
 
 		function deleteFileDB(filePath, fileName){
 			return $http.delete('/api/files/' + filePath + '/' + fileName, {
 				headers: {
-					Authorization: 'Bearer '+ authentication.getToken()
+					Authorization: 'Bearer '+ authService.getToken()
 				}
 			}).then(deleteFileDBComplete)
 			.catch(deleteFileDBFailed);
 
-			function deleteFileDBComplete(data) { return data; }
+			function deleteFileDBComplete(data) { return data.data; }
 			function deleteFileDBFailed(e) { return exception.catcher('Failed deleting the file from the DB.')(e); }
 		};
 
 		function updateACL(objectData) {
 			return $http.post('/api/files/objectAclDB', objectData, {
 				headers: {
-					Authorization: 'Bearer '+ authentication.getToken()
+					Authorization: 'Bearer '+ authService.getToken()
 				}
 			}).then(updateACLComplete)
 			.catch(updateACLFailed);
 
-			function updateACLComplete(data) { return data; }
+			function updateACLComplete(data) { return data.data; }
 			function updateACLFailed(e) { return exception.catcher('Failed changing the file\'s permissions in the DB.')(e); }
 		}
 
 		function syncDBwithS3(key){
 			return $http.post('/api/s3/syncDB', key, {
 				headers: {
-					Authorization: 'Bearer '+ authentication.getToken()
+					Authorization: 'Bearer '+ authService.getToken()
 				}
 			}).then(syncDBwithS3Complete)
 			.catch(syncDBwithS3Failed);
 
-			function syncDBwithS3Complete(data) { return data; }
+			function syncDBwithS3Complete(data) { return data.data; }
 			function syncDBwithS3Failed(e) { return exception.catcher('Failed syncDBwithS3.')(e); }
 		};
 
@@ -140,7 +140,7 @@
 			.then(downloadFileComplete)
 			.catch(downloadFileFailed);
 
-			function downloadFileComplete(data) { return data; }
+			function downloadFileComplete(data) { return data.data; }
 			function downloadFileFailed(e) { return exception.catcher('Failed downloading file.')(e); }
 		};
 	}

@@ -14,7 +14,7 @@
 	.controller('newAnalysisCtrl', newAnalysisCtrl);
 
 	/* @ngInject */
-	function newAnalysisCtrl($uibModalInstance, $window, NgTableParams, datasetService, filesService, analysisService, authentication, logger, bsLoadingOverlayService, s3Service) {
+	function newAnalysisCtrl($uibModalInstance, $window, NgTableParams, datasetService, filesService, analysisService, authService, logger, bsLoadingOverlayService, s3Service) {
 		var vm = this;
 
 		/* Bindable Functions */
@@ -91,15 +91,15 @@
 		function getFileList() {
 			bsLoadingOverlayService.start({referenceId: 'file-list'});	/* Start animated loading overlay */
 			filesService.getFileDB(vm.currentPath, '', 'true')
-			.then(function(response) {
+			.then(function(data) {
 
-				response.data.forEach(function(file) {	/* Uses the custom method 'pushIfNotExist' to add unique files to the allFilesSoFar array */
+				data.forEach(function(file) {	/* Uses the custom method 'pushIfNotExist' to add unique files to the allFilesSoFar array */
 					vm.allFilesSoFar.pushIfNotExist(file, function(element) {
 						return element._id === file._id;
 					});
 				});
 
-				vm.fileList = response.data.map(function(file) {	/* Maps the file list to the fileList array adding typeOrder for sorting */
+				vm.fileList = data.map(function(file) {	/* Maps the file list to the fileList array adding typeOrder for sorting */
 					if(file.type === 'folder') {
 						file.typeOrder = 1;	/* Folders are initially sorted 2nd from the top */
 					} else {
@@ -142,6 +142,7 @@
 					logger.error('All fields required, please try again', '', 'Error');
 				} else {
 					getTextFromFiles();
+					return true;
 				}
 			} else {
 				logger.error('All fields required, please try again', '', 'Error');
@@ -153,11 +154,11 @@
 			var concatText = '';
 			vm.selectedKeys.forEach(function(key){	/* For each key in the vm.selectedKeys array */
 				s3Service.signDownloadKey(key)	/* Get a S3 signed URL to download the file */ 
-				.then(function(response) {	
-					filesService.downloadFile(response.data)	/* Download each file (response.data = signed URL) */
-					.then(function(response) {
+				.then(function(data) {	
+					filesService.downloadFile(data)	/* Download each file (data = signed URL) */
+					.then(function(data) {
 						fileCounter++
-						concatText += response.data + '\n\n';	/* Add text from file to concatText */
+						concatText += data + '\n\n';	/* Add text from file to concatText */
 
 						/*Send text to be analyzed */
 						doAnalysisSave(concatText);
@@ -177,16 +178,16 @@
 				text: concatText,
 				name: vm.formData.analysisName,
 				description: vm.formData.description,
-				createdBy: authentication.currentUser().firstName,
+				createdBy: authService.currentUser().firstName,
 				sourceDataKeys: vm.selectedKeys
 			};
 
 			analysisService.watsonTextAnalysis(saveData)
-			.then(function(response) {
+			.then(function(data) {
 				logger.success('Analysis "' + vm.formData.analysisName + '" successfully completed', '', 'Success')
 				processingEvent(false, 'success');	/* ng-bs-animated-button status & result */
 				setTimeout(function() {
-					vm.modal.close(response.data);	/* Close modal if the analysis was completed successfully and return the new analysis data */
+					vm.modal.close(data);	/* Close modal if the analysis was completed successfully and return the new analysis data */
 				}, 1000);	/* Timeout function so the user can see the analysis has completed before closing modal */
 			}, function(err) {
 				processingEvent(false, 'error');
@@ -237,7 +238,7 @@
 
 			/* Make a request to the server for a signed URL to download/view the requested file */
 			s3Service.signDownload(file.path, file.name, raw)	/* raw variable flag to return the associated text file or the actual file */
-			.then(function(response) {
+			.then(function(data) {
 				/* Remove the animation 1s after the signed URL is retrieved */
 				setTimeout(function(){
 					var loader = newTab.document.getElementById("loader");
@@ -249,10 +250,10 @@
 				/* Redirect the new tab to the signed URL */
 				/* If raw text is true, view in browser. */
 				if(raw === 'true') {
-					newTab.location = response.data.url;
+					newTab.location = data.url;
 				} else {
 					/* Else the file is a document and not the raw text so open in google docs viewer to view in the browser */
-					var encodedUrl = 'https://docs.google.com/viewer?url=' + encodeURIComponent(response.data.url) + '&embedded=true';
+					var encodedUrl = 'https://docs.google.com/viewer?url=' + encodeURIComponent(data.url) + '&embedded=true';
 					newTab.location = encodedUrl;
 				}
 

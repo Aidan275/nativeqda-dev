@@ -7,14 +7,14 @@
 	.controller('linkInfoCtrl', linkInfoCtrl);
 
 	/* @ngInject */
-	function linkInfoCtrl($uibModalInstance, markers, logger, mapService, authentication) {
+	function linkInfoCtrl($uibModalInstance, markers, logger, mapService, authService) {
 		var vm = this;
 
 		// Bindable Functions
 		vm.onSubmit = onSubmit;
 
 		// Bindable Data
-		vm.currentUser = authentication.currentUser();
+		vm.currentUser = authService.currentUser();
 		vm.formData = {}
 
 		///////////////////////////
@@ -36,9 +36,9 @@
 				dependent: markers.dependent
 			};
 			mapService.putLink(link)
-			.then(function(response){
+			.then(function(data){
 				logger.success("The dependecy has been save", "", "Success");
-				vm.modal.close(response.data);	/* Close modal if the link was successfully saved and return the new link data */
+				vm.modal.close(data);	/* Close modal if the link was successfully saved and return the new link data */
 			});
 		}
 

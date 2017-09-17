@@ -32,7 +32,9 @@
 		///////////////////////////
 
 		function toggleOptions() {
-			slideout.toggle();
+			if(slideout.toggle()) {
+				return true;	/* Return true for testing the karma/mocha test runner */
+			}
 		}
 
 		/* Clicking the page button gives this function the page string which then hides all the pages and uses */

@@ -1,8 +1,6 @@
-// app.js
-
 'use strict';
 
-// ============== MODULES ============== //
+/* ============== MODULES ============== */
 
 require('dotenv').load();
 var express = require('express');
@@ -28,8 +26,6 @@ var routesApi = require('./routes/index');
 app.use(secure);
 app.use(favicon(__dirname + '/favicon.ico'));
 app.use(logger('dev'));
-//app.use(bodyParser.json());
-//app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json({limit: "50mb"}));
 app.use(bodyParser.urlencoded({limit: "50mb", extended: true, parameterLimit:50000}));
 app.use(cookieParser());
@@ -40,8 +36,8 @@ switch (environment){
     case 'production':
         console.log('------- PRODUCTION ENVIRONTMENT -------');
         console.log('Serving from: ' + path.join(__dirname, '../../dist'));
-        app.use(express.static(path.join(__dirname, '../../dist')));		// For the bundled/minified/compressed assets (e.g. ng-app.min.js, vendor.min.js, vendor.min.css, images, etc.)
-		app.use(express.static(path.join(__dirname, '../../dist/app')));	// For serving the static html files requested from AngularJS (e.g. home.view.html, data.view.html) ... i think
+        app.use(express.static(path.join(__dirname, '../../dist')));		/* For the bundled/minified/compressed assets (e.g. ng-app.min.js, vendor.min.js, vendor.min.css, images, etc.) */
+		app.use(express.static(path.join(__dirname, '../../dist/app')));	/* For serving the static html files requested from AngularJS (e.g. home.view.html, data.view.html) */
 		app.get('/api/*', function(req, res) {
 			res.sendStatus(404);
 		});
@@ -52,8 +48,8 @@ switch (environment){
     case 'build':
         console.log('------- BUILD ENVIRONEMNT WITH DIST FILES -------');
         console.log('Serving from: ' + path.join(__dirname, '../../dist'));
-        app.use(express.static(path.join(__dirname, '../../dist')));		// For the bundled/minified/compressed assets (e.g. ng-app.min.js, vendor.min.js, vendor.min.css, images, etc.)
-		app.use(express.static(path.join(__dirname, '../../dist/app')));	// For serving the static html files requested from AngularJS (e.g. home.view.html, data.view.html) ... i think
+        app.use(express.static(path.join(__dirname, '../../dist')));		/* For the bundled/minified/compressed assets (e.g. ng-app.min.js, vendor.min.js, vendor.min.css, images, etc.) */
+		app.use(express.static(path.join(__dirname, '../../dist/app')));	/* For serving the static html files requested from AngularJS (e.g. home.view.html, data.view.html) */
 		app.get('/api/*', function(req, res) {
 			res.sendStatus(404);
 		});
@@ -65,8 +61,8 @@ switch (environment){
     default:
         console.log('------- LOCAL DEVELOPMENT ENVIRONMENT -------');
         console.log('Serving from: ' + path.join(__dirname, '../../src'));
-		app.use(express.static(path.join(__dirname, '../../')));				// For vendor assets in node_modules and AngularJS JS files (external vendor assets downloaded using NPM - jquery, ng-tables, angular, moment, bootstrap, etc.) 
-		app.use(express.static(path.join(__dirname, '../app_client')));			// For serving the static html files requested from AngularJS (e.g. home.view.html, data.view.html) ... i think
+		app.use(express.static(path.join(__dirname, '../../')));				/* For vendor assets in node_modules and AngularJS JS files (external vendor assets downloaded using NPM - jquery, ng-tables, angular, moment, bootstrap, etc.) */
+        app.use(express.static(path.join(__dirname, '../app_client')));         /* For serving the static html files requested from AngularJS (e.g. home.view.html, data.view.html) */
 		app.get('/api/*', function(req, res) {
 			res.sendStatus(404);
 		});
@@ -76,11 +72,11 @@ switch (environment){
         break;
 }
 
-// ======================== //
-// ==== Error Handlers ==== //
-// ======================== //
+/* ======================== */
+/* ==== Error Handlers ==== */
+/* ======================== */
 
-// Catch unauthorised errors (e.g. missing authorization token)
+/* Catch unauthorised errors (e.g. missing authorization token) */
 app.use(function (err, req, res, next) {
     if (err.name === 'UnauthorizedError') {
         res.status(401);
@@ -88,8 +84,8 @@ app.use(function (err, req, res, next) {
     }
 });
 
-// Development error handler
-// Will print stacktrace
+/* Development error handler */
+/* Will print stacktrace */
 if (environment === 'development') {
     app.use(function(err, req, res, next) {
         res.status(err.status || 500);
@@ -100,8 +96,8 @@ if (environment === 'development') {
     });
 }
 
-// Production error handler
-// no stacktraces leaked to user
+/* Production error handler */
+/* no stacktraces leaked to user */
 app.use(function(err, req, res, next) {
     res.status(err.status || 500);
     res.render('error', {
@@ -110,9 +106,9 @@ app.use(function(err, req, res, next) {
     });
 });
 
-// ======================== //
-// ===== Start Server ===== //
-// ======================== //
+/* ======================== */
+/* ===== Start Server ===== */
+/* ======================== */
 
 console.log('Starting up Node...');
 console.log('Port: ' + port);

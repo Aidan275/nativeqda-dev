@@ -36,9 +36,8 @@
 
 		function loadSurvey() {
 			surveyService.readSurveyJSON(accessId)
-			.then(function(response) {
-				console.log(response);
-				vm.surveyJSON = response.data;	/* If loading survey data is successful, store survey to display */
+			.then(function(data) {
+				vm.surveyJSON = data;	/* If loading survey data is successful, store survey to display */
 			}, function() {
 				$location.path('/complete-survey');	/* If an error occurs loading the survey, return to the complete survey page */
 			});
@@ -104,7 +103,7 @@
 				}
 
 				surveyService.saveSurveyResponse(surveyResponse)	/* Save survey response to the database */
-				.then(function(response) {
+				.then(function(data) {
 					logger.success('Survey saved successfully.\nThank you for participating.', '', 'Success');
 				});
 

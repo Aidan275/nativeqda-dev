@@ -15,8 +15,8 @@
 		Survey.defaultBootstrapCss.navigationButton = "btn btn-green";
 
 		surveyService.readSurvey(accessId)
-		.then(function(response) {
-			var surveyJSONObj = JSON.parse(response.data.surveyJSON);
+		.then(function(data) {
+			var surveyJSONObj = JSON.parse(data.surveyJSON);
 			window.survey = new Survey.Model(surveyJSONObj);
 			survey.onComplete.add(function(result) {
 				document.querySelector('#surveyResult').innerHTML = "result: " + JSON.stringify(result.data);

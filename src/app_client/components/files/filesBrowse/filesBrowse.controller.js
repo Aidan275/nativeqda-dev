@@ -8,7 +8,7 @@
 	
 
 	/* @ngInject */
-	function filesBrowseCtrl (mapService, $http, $window, $scope, $uibModal, Upload, NgTableParams, filesService, authentication, logger, $filter, $compile, bsLoadingOverlayService, s3Service) {
+	function filesBrowseCtrl (mapService, $http, $window, $scope, $uibModal, Upload, NgTableParams, filesService, authService, logger, $filter, $compile, bsLoadingOverlayService, s3Service) {
 		var vm = this;
 
 		// Bindable Functions
@@ -40,7 +40,7 @@
 		function getFileList() {
 			bsLoadingOverlayService.start({referenceId: 'file-list'});	// Start animated loading overlay
 			filesService.getFileDB(vm.currentPath, '')
-			.then(function(response) {
+			.then(function(data) {
 
 				vm.fileList = [];	/* reset fileList array on folder navigation */
 
@@ -55,7 +55,7 @@
 					});
 				}
 
-				response.data.forEach(function(file) {	/* Add each file to the fileList array */
+				data.forEach(function(file) {	/* Add each file to the fileList array */
 					if(file.type === 'folder') {
 						file.typeOrder = 1;	/* For sorting by parent directory, folder, file */
 					} else {
@@ -112,7 +112,7 @@
 
 				// Make a request to the server for a signed URL to download/view the requested file
 				s3Service.signDownload(file.path, file.name)
-				.then(function(response) {
+				.then(function(data) {
 					// Remove the animation 1s after the signed URL is retrieved
 					setTimeout(function(){
 						newTab.document.getElementById("loader").remove();
@@ -120,12 +120,12 @@
 
 					// Redirect the new tab to the signed URL
 					// If the file is a document, open in google docs viewer to view in the browser
-					if(response.data.type === "doc") {
-						var encodedUrl = 'https://docs.google.com/viewer?url=' + encodeURIComponent(response.data.url) + '&embedded=true';
+					if(data.type === "doc") {
+						var encodedUrl = 'https://docs.google.com/viewer?url=' + encodeURIComponent(data.url) + '&embedded=true';
 						newTab.location = encodedUrl;
 					} else {
 						// Else either download or view in browser (if natively compatible)
-						newTab.location = response.data.url;
+						newTab.location = data.url;
 					}
 
 				}, function() {
@@ -151,10 +151,10 @@
 
 		function deleteFile(file) {
 			filesService.deleteFileDB(file.path, file.name)
-			.then(function(response) {
+			.then(function(data) {
 				if(file.type != 'folder') {	/* If the file is not a folder, delete from S3 too */
 					s3Service.deleteFile(file.key)
-					.then(function(response) {
+					.then(function(data) {
 						/* If a text file was generated for analysis, delete that file too. If the original file was a text file, just */
 						/* delete that file (files that were originally text files have the same key for both key and textFileKey) */
 						if(file.textFileKey && file.textFileKey != file.key){
@@ -211,7 +211,7 @@
 
 			vm.fileList.forEach(function(file) {
 				filesService.syncDBwithS3({key: file.Key})
-				.then(function(response) {
+				.then(function(data) {
 					console.log(response);
 				}, function(err) {
 					console.log(err);
@@ -226,9 +226,9 @@
 		// Amazon S3 free tier only provides 2000 put requests and 20000 get requests a month
 		function getFileListS3() {
 			s3Service.getFileList()
-			.then(function(response) {
-				//syncDB(response.data);
-				doListFilesS3(response.data.Contents);
+			.then(function(data) {
+				//syncDB(data);
+				doListFilesS3(data.Contents);
 			});
 		}
 
@@ -285,16 +285,16 @@
 					name : inputValue,
 					path : vm.currentPath,
 					type : "folder",
-					createdBy : authentication.currentUser().firstName,
+					createdBy : authService.currentUser().firstName,
 					icon : "fa fa-folder-o"
 				}
 
 				filesService.addFileDB(folderDetails)
-				.then(function(response) {
+				.then(function(data) {
 					swal.close();
 					logger.success(folderDetails.name + ' folder successfully created', '', 'Success');
-					response.data.typeOrder = 1;
-					vm.fileList.push(response.data);
+					data.typeOrder = 1;
+					vm.fileList.push(data);
 					listFiles();
 				});
 

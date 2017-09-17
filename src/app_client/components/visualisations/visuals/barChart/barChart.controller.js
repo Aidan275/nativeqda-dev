@@ -11,8 +11,8 @@
 
 		var analysisType = $routeParams.type; 
 		var analysisId = $routeParams.id;
-		var responseData = {};
-		var data = [];
+
+		var responseData = [];
 		var sortData = [];
 		vm.cols = [];
 		activate();
@@ -28,8 +28,8 @@
 		function activate() {
 			bsLoadingOverlayService.start({referenceId: 'bar-chart'});	// Start animated loading overlay
 			analysisService.readWatsonAnalysis(analysisId) //gets id from url
-			.then(function(response) {
-				var analysisData = response.data; //store watson response in analysisData
+			.then(function(data) {
+				var analysisData = data; //store watson response in analysisData
 
 				switch (analysisType) {
 					case 'categories':
@@ -41,8 +41,8 @@
 					break;
 					case 'entities':
 					entitiesChart(analysisData);
-          data.reverse();
-					drawEntityChart(data);
+          responseData.reverse();
+					drawEntityChart(responseData);
 					break;
 					case 'keywords':
 					keywordChart(analysisData);
@@ -65,26 +65,26 @@
 		function checkLength() {
 			//If there are too many entities the graph becomes unusable
 
-			if(data.length > 15) {
-				sortData = data.slice((data.length-10), data.length);
+			if(responseData.length > 15) {
+				sortData = responseData.slice((responseData.length-10), responseData.length);
         sortData.reverse();
 				drawChart(sortData);										
 
 			}else {
-        data.reverse();
-				drawChart(data);
+        responseData.reverse();
+				drawChart(responseData);
 			}	
 		}
 		
 		function sortRelevance() {
 			//Sort data by relevance in descending order
-			data.sort(function (a, b) {
+			responseData.sort(function (a, b) {
 				return a.relevance - b.relevance;
 			});	
 		}
 
     function sortCount() {
-      data.sort(function (a, b) {
+      responseData.sort(function (a, b) {
         return a.count - b.count;
       }); 
     }
@@ -93,23 +93,23 @@
       //This might not be necessary
       //Refresh drawing with only top 10 elements
       sortRelevance(); //Sort them in ascending order
-      sortData = data.slice(0, 10); //Grab first 10 elements
+      sortData = responseData.slice(0, 10); //Grab first 10 elements
 
-      console.log(data);
+      console.log(responseData);
 
     }
 
     function bottom10() {
-      sortData = data.slice(0, 10);
+      sortData = responseData.slice(0, 10);
       sortRelevance();
-      console.log(data);
+      console.log(responseData);
     }
 
 		function conceptChart(analysisData) {
 			analysisData.concepts.forEach(function(concept){
 				var relevance = concept.relevance*100;
 				var text = concept.text.charAt(0).toUpperCase() + concept.text.slice(1);	// Capitalise first letter 
-				data.push({relevance: concept.relevance, text: text, dbpedia_resource: concept.dbpedia_resource});
+				responseData.push({relevance: concept.relevance, text: text, dbpedia_resource: concept.dbpedia_resource});
 					
 			});
 			sortRelevance();
@@ -119,7 +119,7 @@
 			analysisData.keywords.forEach(function(keyword){
 				var relevance = keyword.relevance*100;
 				var text = keyword.text.charAt(0).toUpperCase() + keyword.text.slice(1);	// Capitalise first letter
-				data.push({relevance: keyword.relevance, text: text});
+				responseData.push({relevance: keyword.relevance, text: text});
 			});
 
 			sortRelevance();
@@ -129,7 +129,7 @@
 			analysisData.entities.forEach(function(entity){
 				var count = entity.count;
 				var text = entity.text;
-				data.push({count: entity.count, text: text});
+				responseData.push({count: entity.count, text: text});
 			});
       //Sort by count for entities
 			sortCount();

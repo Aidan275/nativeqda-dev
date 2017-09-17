@@ -94,7 +94,7 @@ module.exports.watsonTextAnalysis = function(req, res) {
 
 	natural_language_understanding.analyze(parameters, function(err, response) {
 		if (err) {
-			sendJSONresponse(res, 404, err);
+			sendJSONresponse(res, 500, err);
 		} else {
 			saveWatsonAnalysis(req, res, response);
 		}

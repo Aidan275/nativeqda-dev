@@ -25,20 +25,20 @@
 		function activate() {
 			bsLoadingOverlayService.start({referenceId: 'word-cloud'});	// Start animated loading overlay
 			analysisService.readWatsonAnalysis(analysisId) //gets id from url
-			.then(function(response) {
+			.then(function(data) {
 
 				switch (analysisType) {
 					case 'categories':
-					categoriesCloud(response.data);
+					categoriesCloud(data);
 					break;
 					case 'concepts':
-					conceptCloud(response.data);
+					conceptCloud(data);
 					break;
 					case 'entities':
-					entitiesCloud(response.data);
+					entitiesCloud(data);
 					break;
 					case 'keywords':
-					keywordCloud(response.data);
+					keywordCloud(data);
 					break;
 					case 'relations':
 					//relationsTable();

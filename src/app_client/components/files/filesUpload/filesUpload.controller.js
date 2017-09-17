@@ -7,7 +7,7 @@
 	.controller('filesUploadCtrl', filesUploadCtrl);
 	
 	/* @ngInject */
-	function filesUploadCtrl(currentPath, $scope, $uibModalInstance, Upload, filesService, authentication, logger, $filter, s3Service) {
+	function filesUploadCtrl(currentPath, $scope, $uibModalInstance, Upload, filesService, authService, logger, $filter, s3Service) {
 		var vm = this;
 
 		vm.currentModalPage = 1;	/* Outside the rendered event to prevent the modal content from suddenly appearing once the modal is ready */
@@ -285,8 +285,8 @@
 			/* Gets all the files from the database to be displayed on the map */
 			function getFileList() {
 				filesService.getFileListDB()
-				.then(function(response) {
-					vm.fileList = response.data;
+				.then(function(data) {
+					vm.fileList = data;
 					addMapMarkers();
 				});
 			}
@@ -494,17 +494,17 @@
 
 			function uploadTextFile() {
 				s3Service.signUpload(vm.textFileInfo)	/* Get S3 signed upload URL */
-				.then(function(result) {
+				.then(function(data) {
 					Upload.upload({	/* Upload the file using the signed URL */
 						method: 'POST',
-						url: result.data.url,
-						fields: result.data.fields,
+						url: data.url,
+						fields: data.fields,
 						file: vm.textFile 	/* Text file extracted from pdf/docx document */
 					})
 					.then(function(response) {	/* If successful */
 						/* use the same key but with the original file extension (e.g. use 2017/08/13/93a75b7c5effdf945b6a.pdf not 2017/08/13/93a75b7c5effdf945b6a.txt) */
-						vm.fileInfo.key = result.data.baseKey + '.' + vm.fileInfo.extension;
-						vm.textFileInfo.key = result.data.fields.key; /* Saves the text data file key to be saved in the DB */
+						vm.fileInfo.key = data.baseKey + '.' + vm.fileInfo.extension;
+						vm.textFileInfo.key = data.fields.key; /* Saves the text data file key to be saved in the DB */
 						uploadActualFile();	/* Upload the original file */
 					}, function(error) {	/* If error */
 						var xml = $.parseXML(error.data);	/* Parse error text to XML */ 
@@ -521,21 +521,21 @@
 			/* Upload the original file */
 			function uploadActualFile() {
 				s3Service.signUpload(vm.fileInfo)	/* Get S3 signed upload URL */
-				.then(function(result) {
+				.then(function(data) {
 					Upload.upload({	/* Upload the file using the signed URL */
 						method: 'POST',
-						url: result.data.url, 
-						fields: result.data.fields, 
+						url: data.url, 
+						fields: data.fields, 
 						file: vm.file	/* Original file */
 					})
 					.progress(function(evt) {	/* Get Upload progress */
 						vm.currentPercentage = parseInt(100.0 * evt.loaded / evt.total); /* Update progress bar with upload progress */ 
 					})
 					.then(function(response) {
-						var xml = $.parseXML(response.data);	/* parses XML data response to jQuery object to be stored in the database */
+						var xml = $.parseXML(response);	/* parses XML data response to jQuery object to be stored in the database */
 						var tagStrings = vm.tags.map(function(item) { return item['text']; });	/* maps the tag obects to an array of strings to be stored in the database */
-						var key = result.data.fields.key;	/* File key to be stored in the DB */
-						var url = result.data.url + '/' + key;	/* Access URL for if the file ACL is public-read */
+						var key = data.fields.key;	/* File key to be stored in the DB */
+						var url = data.url + '/' + key;	/* Access URL for if the file ACL is public-read */
 						var fileDetails = {	/* Information to be stored in the database */
 							name : vm.fileInfo.name + '.' + vm.fileInfo.extension,
 							path : currentPath,
@@ -543,7 +543,7 @@
 							key : key,
 							size : vm.file.size,
 							url : url,
-							createdBy : authentication.currentUser().firstName,
+							createdBy : authService.currentUser().firstName,
 							coords : { 
 								lat : vm.lat,
 								lng : vm.lng
@@ -559,11 +559,11 @@
 						}
 
 						filesService.addFileDB(fileDetails)	/* Save the file information to the database */
-						.then(function(response) {
+						.then(function(data) {
 							processingEvent(false, 'success');	/* ng-bs-animated-button status & result */
-							logger.success(response.data.name + ' successfully uploaded', '', 'Success');
+							logger.success(data.name + ' successfully uploaded', '', 'Success');
 							setTimeout(function() {
-								vm.modal.close(response.data);	/* Close modal if the file was uploaded successfully and return the new file */
+								vm.modal.close(data);	/* Close modal if the file was uploaded successfully and return the new file */
 							}, 1000);	/* Timeout function so the user can see the file uploaded successfully before closing modal */
 						});
 					}, function(error) {

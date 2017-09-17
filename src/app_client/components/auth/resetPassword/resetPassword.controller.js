@@ -7,8 +7,8 @@
 * A link to the reset password page, including the corresponding token, is sent to the user's email
 * address when they enter their email on the {@link auth.controller:forgotPassCtrl forgot password} page.
 *
-* This controller uses the {@link services.service:authentication#methods_resetPassword resetPassword} function
-* in the {@link services.service:authentication authentication} service to pass the token and new password to 
+* This controller uses the {@link services.service:authService#methods_resetPassword resetPassword} function
+* in the {@link services.service:authService authService} service to pass the token and new password to 
 * the server to be reset.
 */
 
@@ -21,7 +21,7 @@
 	.controller('resetPasswordCtrl', resetPasswordCtrl);
 
 	/* @ngInject */
-	function resetPasswordCtrl(authentication, logger, $routeParams, $location, $timeout) {
+	function resetPasswordCtrl(authService, logger, $routeParams, $location, $timeout) {
 		var vm = this;
 
 		var token = $routeParams.token;
@@ -46,8 +46,8 @@
 		};
 
 		function resetPassword() {
-			authentication.resetPassword({token: token, password: vm.credentials.password})
-			.then(function(response) {
+			authService.resetPassword({token: token, password: vm.credentials.password})
+			.then(function(data) {
 				logger.success('Your new password has been saved. Redirecting to the login page in 3 seconds.', '', 'Success')
 				$timeout(function() {
 					$location.path('/login');

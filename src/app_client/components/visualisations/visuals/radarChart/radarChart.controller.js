@@ -51,9 +51,9 @@
 		*/
 		function activate() {
 			analysisService.readWatsonAnalysis(analysisId)
-			.then(function(response) {
+			.then(function(data) {
 				if(analysisType === 'entities'){
-					response.data.entities.forEach(function(entry) {
+					data.entities.forEach(function(entry) {
 						if(entry.emotion) {
 							var emotionEntry = [
 							{axis: "Anger", value: entry.emotion.anger, text: entry.text},
@@ -67,7 +67,7 @@
 						}
 					});
 				} else if(analysisType === 'keywords'){
-					response.data.keywords.forEach(function(entry) {
+					data.keywords.forEach(function(entry) {
 						if(entry.emotion) {
 							var emotionEntry = [
 							{axis: "Anger", value: entry.emotion.anger, text: entry.text},

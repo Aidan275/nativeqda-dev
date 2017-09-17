@@ -11,8 +11,8 @@
 	.module('auth')
 	.controller('registerCtrl', registerCtrl);
 
-	registerCtrl.$inject = ['$location','authentication', 'logger'];
-	function registerCtrl($location, authentication, logger) {
+	registerCtrl.$inject = ['$location','authService', 'logger'];
+	function registerCtrl($location, authService, logger) {
 		var vm = this;
 
 		// Bindable Functions
@@ -44,7 +44,7 @@
 		};
 
 		function register() {
-			authentication
+			authService
 			.register(vm.credentials)
 			.then(function(){
 				$location.search('page', null); 

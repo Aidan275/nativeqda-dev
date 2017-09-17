@@ -49,14 +49,14 @@
 		/* Clicking the page button gives this function the page string which then hides all the pages and uses */
 		/* a switch statement to show the selected page - could probably be done better but it's simple and works */
 		function togglePage(page) {
-				vm.details = false;
-				vm.upAndComing = false;
-				vm.categories = false;
-				vm.concepts = false;
-				vm.entities = false;
-				vm.keywords = false;
-				vm.relations = false;
-				vm.semanticRoles = false;
+			vm.details = false;
+			vm.upAndComing = false;
+			vm.categories = false;
+			vm.concepts = false;
+			vm.entities = false;
+			vm.keywords = false;
+			vm.relations = false;
+			vm.semanticRoles = false;
 
 			switch(page) {
 				case 'details':
@@ -105,16 +105,16 @@
 			else{
 				// slideout.toggle(); Browser is desktop based
 			}
-	
+
 			
 		}
 
 		function getAnalysisData() {
 			bsLoadingOverlayService.start({referenceId: 'visuals-info'});
 			analysisService.readWatsonAnalysis(vm.analysisId)
-			.then(function(response) {
+			.then(function(data) {
 				bsLoadingOverlayService.stop({referenceId: 'visuals-info'});
-				vm.analysisData = response.data;
+				vm.analysisData = data;
 			});
 		}
 
@@ -122,8 +122,8 @@
 		// if successful, opens the signed URL in a new tab
 		function viewFile(key) {
 			s3Service.signDownloadKey(key)
-			.then(function(response) {
-				$window.open(response.data, '_blank');
+			.then(function(data) {
+				$window.open(data, '_blank');
 			});
 		}
 

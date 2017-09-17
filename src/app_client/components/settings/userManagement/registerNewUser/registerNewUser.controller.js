@@ -40,9 +40,9 @@
 		function createUser() {
 			usersService
 			.createUser(vm.credentials)
-			.then(function(response) {
+			.then(function(data) {
 				logger.success("New user created successfully", '', 'Success');
-				vm.modal.close(response.data);			
+				vm.modal.close(data);			
 			});
 		};
 		

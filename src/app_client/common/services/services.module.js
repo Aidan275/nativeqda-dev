@@ -8,7 +8,7 @@
 *
 * **Services**
 * - {@link services.service:analysisService analysisService}
-* - {@link services.service:authentication authentication}
+* - {@link services.service:authService authService}
 * - {@link services.service:datasetService datasetService}
 * - {@link services.service:exception exception}
 * - {@link services.service:filesService filesService}

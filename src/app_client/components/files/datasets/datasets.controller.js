@@ -33,8 +33,8 @@
 
 		function getDatasetList() {
 			datasetService.listDatasets()
-			.then(function(response) {
-				vm.dataset = response.data
+			.then(function(data) {
+				vm.dataset = data
 				ListDatasets();
 			}, function(err) {
 				bsLoadingOverlayService.stop({referenceId: 'dataset-list'});	// If error, stop animated loading overlay
@@ -66,14 +66,14 @@
 
 		function deleteDatasetDB(key, datasetName) {
 			datasetService.deleteDatasetDB(key)
-			.then(function(response) {
+			.then(function(data) {
 				deleteDatasetS3(key, datasetName);
 			});
 		}
 
 		function deleteDatasetS3(key, datasetName) {
 			s3Service.deleteFile(key)
-			.then(function(response) {
+			.then(function(data) {
 				removeFromList(key);	// if deleting the dataset was successful, the deleted dataset is removed from the local array
 				logger.success('Dataset "' + datasetName + '" was successfully deleted' ,'', 'Success');
 			});

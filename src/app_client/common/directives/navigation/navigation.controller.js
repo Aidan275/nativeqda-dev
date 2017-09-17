@@ -12,7 +12,7 @@
 	.controller('navigationCtrl', navigationCtrl);
 
 	/* @ngInject */
-	function navigationCtrl($location, authentication, $uibModal, $scope) {
+	function navigationCtrl($location, authService, $uibModal, $scope) {
 		var vm = this;
 
 		// Bindable Functions
@@ -21,8 +21,8 @@
 
 		// Bindable Data
 		vm.currentPath = $location.path();
-		vm.isLoggedIn = authentication.isLoggedIn();
-		vm.currentUser = authentication.currentUser();
+		vm.isLoggedIn = authService.isLoggedIn();
+		vm.currentUser = authService.currentUser();
 		var userEmail = vm.currentUser.email
 		
 		///////////////////////////
@@ -40,12 +40,12 @@
 			});
 
 			modalInstance.result.then(function() {
-				vm.currentUser = authentication.currentUser();
+				vm.currentUser = authService.currentUser();
 			});
 		}
 
 		function logout() {
-			authentication.logout({
+			authService.logout({
 				email : userEmail,
 				desc : "Logout"
 			});

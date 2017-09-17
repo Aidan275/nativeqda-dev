@@ -26,9 +26,9 @@
 		function activate() {
 			bsLoadingOverlayService.start({referenceId: 'file-details'});
 			filesService.getFileDB(file.path, file.name)
-			.then(function(response) {
+			.then(function(data) {
 				bsLoadingOverlayService.stop({referenceId: 'file-details'});
-				vm.file = response.data;
+				vm.file = data;
 				if(vm.file.tags) {
 					vm.tags = vm.file.tags.join(", ");
 				}
@@ -41,7 +41,7 @@
 		function updateAclS3(key, acl) {
 			vm.isSubmittingButton = true;
 			s3Service.updateACL({key: key, acl: acl})
-			.then(function(response) {
+			.then(function(data) {
 				updateAclDB(key, acl);
 			}, function(err) {
 				vm.resultButton = 'error';
@@ -51,7 +51,7 @@
 		// Database ACL Update
 		function updateAclDB(key, acl) {
 			filesService.updateACL({key: key, acl: acl})
-			.then(function(response) {
+			.then(function(data) {
 				vm.resultButton = 'success';
 				vm.file.acl = acl
 			}, function(err) {

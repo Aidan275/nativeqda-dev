@@ -15,7 +15,7 @@
 	.service('analysisService', analysisService);
 
 	/* @ngInject */
-	function analysisService ($http, authentication, exception) {
+	function analysisService ($http, authService, exception) {
 		return {
 			watsonAnalysis			: watsonAnalysis,
 			saveWatsonAnalysis 		: saveWatsonAnalysis,
@@ -44,12 +44,12 @@
 		function watsonAnalysis(data){
 			return $http.post('/api/analysis/watson', data, {
 				headers: {
-					Authorization: 'Bearer ' + authentication.getToken()
+					Authorization: 'Bearer ' + authService.getToken()
 				}
 			}).then(watsonAnalysisComplete)
 			.catch(watsonAnalysisFailed);
 
-			function watsonAnalysisComplete(data) { return data; }
+			function watsonAnalysisComplete(data) { return data.data; }
 			function watsonAnalysisFailed(e) { return exception.catcher('Failed Watson analysis.')(e); }
 		};
 
@@ -70,12 +70,12 @@
 		function watsonTextAnalysis(data){
 			return $http.post('/api/analysis/watsonText', data, {
 				headers: {
-					Authorization: 'Bearer ' + authentication.getToken()
+					Authorization: 'Bearer ' + authService.getToken()
 				}
 			}).then(watsonTextAnalysisComplete)
 			.catch(watsonTextAnalysisFailed);
 
-			function watsonTextAnalysisComplete(data) { return data; }
+			function watsonTextAnalysisComplete(data) { return data.data; }
 			function watsonTextAnalysisFailed(e) { return exception.catcher('Failed Watson analysis.')(e); }
 		};
 
@@ -83,17 +83,17 @@
 		* @ngdoc function
 		* @name saveWatsonAnalysis
 		* @methodOf services.service:analysisService
-		* @description **Deprecated** - Analysis is now saved directly to the database after being performed
+		* @description **DEPRECATED** - Analysis is now saved directly to the database after being performed
 		*/
 		function saveWatsonAnalysis(data){
 			return $http.post('/api/analysis/watson/save', data, {
 				headers: {
-					Authorization: 'Bearer ' + authentication.getToken()
+					Authorization: 'Bearer ' + authService.getToken()
 				}
 			}).then(saveWatsonAnalysisComplete)
 			.catch(saveWatsonAnalysisFailed);
 
-			function saveWatsonAnalysisComplete(data) { return data; }
+			function saveWatsonAnalysisComplete(data) { return data.data; }
 			function saveWatsonAnalysisFailed(e) { return exception.catcher('Failed saving the analysis.')(e); }
 		};
 
@@ -109,12 +109,12 @@
 			var encodedId = encodeURIComponent(analysisId);
 			return $http.get('/api/analysis/watson/read?id=' + encodedId, {
 				headers: {
-					Authorization: 'Bearer '+ authentication.getToken()
+					Authorization: 'Bearer '+ authService.getToken()
 				}
 			}).then(readWatsonAnalysisComplete)
 			.catch(readWatsonAnalysisFailed);
 
-			function readWatsonAnalysisComplete(data) { return data; }
+			function readWatsonAnalysisComplete(data) { return data.data; }
 			function readWatsonAnalysisFailed(e) { return exception.catcher('Failed reading the analysis.')(e); }
 		}
 
@@ -128,12 +128,12 @@
 		function listWatsonAnalysis() {
 			return $http.get('/api/analysis/watson/list', {
 				headers: {
-					Authorization: 'Bearer '+ authentication.getToken()
+					Authorization: 'Bearer '+ authService.getToken()
 				}
 			}).then(listWatsonAnalysisComplete)
 			.catch(listWatsonAnalysisFailed);
 
-			function listWatsonAnalysisComplete(data) { return data; }
+			function listWatsonAnalysisComplete(data) { return data.data; }
 			function listWatsonAnalysisFailed(e) { return exception.catcher('Failed listing the analyses.')(e); }
 		}
 
@@ -149,12 +149,12 @@
 			var encodedId = encodeURIComponent(analysisId);
 			return $http.delete('/api/analysis/watson/delete?id=' + encodedId, {
 				headers: {
-					Authorization: 'Bearer '+ authentication.getToken()
+					Authorization: 'Bearer '+ authService.getToken()
 				}
 			}).then(deleteWatsonAnalysisComplete)
 			.catch(deleteWatsonAnalysisFailed);
 
-			function deleteWatsonAnalysisComplete(data) { return data; }
+			function deleteWatsonAnalysisComplete(data) { return data.data; }
 			function deleteWatsonAnalysisFailed(e) { return exception.catcher('Failed deleting the analysis.')(e); }
 		}
 

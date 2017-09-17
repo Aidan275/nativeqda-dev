@@ -34,7 +34,7 @@
 
 		function checkSurvey(surveyCode) {
 			surveyService.checkSurvey(surveyCode)
-			.then(function(response) {
+			.then(function(data) {
 				$location.path('/complete-survey/' + surveyCode);
 			}, function(err){});
 		}

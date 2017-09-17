@@ -25,8 +25,8 @@
 		// Gets all the files from the MongoDB database
 		function readDataset() {
 			datasetService.datasetReadOne(datasetId)
-			.then(function(response) {
-				vm.dataset = response.data;
+			.then(function(data) {
+				vm.dataset = data;
 				vm.dataset.files.forEach(function(key){
 					var name = key.substring(key.indexOf("-") + 1);
 					var file = {};
@@ -39,8 +39,8 @@
 
 		function viewFile(key) {
 			s3Service.signDownloadKey(key)
-			.then(function(response) {
-				$window.open(response.data, '_blank');
+			.then(function(data) {
+				$window.open(data, '_blank');
 			});
 		}
 
