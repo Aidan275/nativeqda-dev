@@ -1,6 +1,6 @@
-## NativeQDA 
+# NativeQDA 
 
-### How to Run Locally
+## How to Run Locally
 
 * Download and install Node v6 - [Node.js Download](https://nodejs.org/en/) 
 * Download and install MongoDB - [MongoDB Download](https://www.mongodb.com/download-center?jmp=nav#community) 
@@ -56,12 +56,20 @@ mongod
 * Try gulp serve to run the app in its development environment
 * Not working? Try going to localhost:3000 instead.
 
-### How to generate documentation
-Generate documentation using grunt
+## Documentation
+Documentation is generated from the inline comments stored in the source code. 
+This means that all the docs are kept in sync as the code changes.
+
+For the front-end we use ngDoc, a form of jsDoc, with the task runner Grunt to generate the documentation.
+
+To generate the documentation use the following command
+
 ```
 grunt
 ```
 This should start a server at [http://localhost:8000](http://localhost:8000) where the documentation can be viewed.
+
+The documentation is also hosted at [http://docs.nativeqda.xyz](http://docs.nativeqda.xyz), which we will update periodically. 
 
 ## Testing
 
