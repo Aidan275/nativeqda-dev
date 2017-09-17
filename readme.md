@@ -66,10 +66,10 @@ This should start a server at [http://localhost:8000](http://localhost:8000) whe
 ## Testing
 
 Unit tests are run using the following set of tools:
-* (http://karma-runner.github.io)[Karma] - test runner used to run the tests against code
-* (https://mochajs.org/)[Mocha] - testing framework used to define our overall unit test with describe, beforeEach and it functions
-* (http://chaijs.com/)[Chai] - assertion library used to verify the results of our unit tests
-* (http://sinonjs.org/)[Sinon] - library used for creating test spies, stubs and mocks in javascript 
+* [Karma](http://karma-runner.github.io) - test runner used to run the tests against code
+* [Mocha](https://mochajs.org/) - testing framework used to define our overall unit test with describe, beforeEach and it functions
+* [Chai](http://chaijs.com/) - assertion library used to verify the results of our unit tests
+* [Sinon](http://sinonjs.org/) - library used for creating test spies, stubs and mocks in javascript 
 
 ![Example Figure](http://jasonwatmore.com/_content/images/angular-unit-testing-2.png)
 
