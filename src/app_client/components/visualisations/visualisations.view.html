@@ -60,43 +60,59 @@
 		position: absolute;
 		transition: all linear 300ms;
 	}
+	
+	.menuButtonFix {
+		position:relative;
+		top:-48px;
+	}
 </style>
 
 <navigation></navigation>
-<div style="height:40px;background-color:#4676fa;position: relative;"><div style="background-color:#fff;height:3px;"></div>
-<nav class="navbar navbar-default">
-	<div class="container-fluid">
-		<div class="navbar-header">
-			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#vis-navbar">
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-			</button>
+<div class="hidden-xs hidden-sm" style="height:40px;background-color:#4676fa;position: relative;"><div style="background-color:#fff;height:3px;"></div>
+	<nav class="navbar navbar-default">
+		<div class="container-fluid">
+			<div class="collapse navbar-collapse" id="vis-navbar">
+				<ul class="nav navbar-nav tabbar" style="position: absolute;left: 42%;transform: translatex(-42%);">
+					<li><a ng-click="vm.togglePage('details')" role="button">Details</a></li>
+					<li><a ng-click="vm.togglePage('categories')" role="button">Categories</a></li>
+					<li><a ng-click="vm.togglePage('concepts')" role="button">Concepts</a></li>
+					<li><a ng-click="vm.togglePage('entities')" role="button">Entities</a></li>
+					<li><a ng-click="vm.togglePage('keywords')" role="button">Keywords</a></li>
+					<li><a ng-click="vm.togglePage('relations')" role="button">Relations</a></li>
+					<li><a ng-click="vm.togglePage('semanticRoles')" role="button">Semantic Roles</a></li>
+				</ul>
+			</div>
 		</div>
-		<div class="collapse navbar-collapse" id="vis-navbar">
-			<ul class="nav navbar-nav tabbar" style="position: absolute;left: 42%;transform: translatex(-42%);">
-				<li><a ng-click="vm.togglePage('details')" role="button">Details</a></li>
-				<li><a ng-click="vm.togglePage('categories')" role="button">Categories</a></li>
-				<li><a ng-click="vm.togglePage('concepts')" role="button">Concepts</a></li>
-				<li><a ng-click="vm.togglePage('entites')" role="button">Entities</a></li>
-				<li><a ng-click="vm.togglePage('keywords')" role="button">Keywords</a></li>
-				<li><a ng-click="vm.togglePage('relations')" role="button">Relations</a></li>
-				<li><a ng-click="vm.togglePage('semanticRoles')" role="button">Semantic Roles</a></li>
-			</ul>
-		</div>
-	</div>
-</nav>
+	</nav>
 </div>
 
 <nav id="viMenu">
 	<header>
+		<h3>Analysis Types</h3>
 
+		<a ng-click="vm.togglePage('details')" class="btn btn-success blueButton" role="button">Details</a>
+		<div style="padding-bottom:2px;"></div>
+		<a ng-click="vm.togglePage('categories')" class="btn btn-success blueButton" role="button">Categories</a>
+		<div style="padding-bottom:2px;"></div>
+		<a ng-click="vm.togglePage('concepts')" class="btn btn-success blueButton" role="button">Concepts</a>
+		<div style="padding-bottom:2px;"></div>
+		<a ng-click="vm.togglePage('entities')" class="btn btn-success blueButton" role="button">Entities</a>
+		<div style="padding-bottom:2px;"></div>
+		<a ng-click="vm.togglePage('keywords')" class="btn btn-success blueButton" role="button">Keywords</a>
+		<div style="padding-bottom:2px;"></div>
+		<a ng-click="vm.togglePage('relations')" class="btn btn-success blueButton" role="button">Relations</a>
+		<div style="padding-bottom:2px;"></div>
+		<a ng-click="vm.togglePage('semanticRoles')" class="btn btn-success blueButton" role="button">Semantic Roles</a>
 	</header>
 </nav>
 
 <div id="viPanel">
+
+	<div class="hidden-md hidden-lg" style="padding-bottom:2px;"></div>
 	
-	<div class="container" style="position:relative;">
+	<img ng-click="vm.toggleOptions()" class="hidden-md hidden-lg" alt="AM" src="assets/img/menu.png" height="48"/>
+
+	<div class="container menuButtonFix">
 
 		<div class="bs-loading-container" bs-loading-overlay bs-loading-overlay-active-class="loading-overlay--active" bs-loading-overlay-reference-id="visuals-info"> 
 			<div class="blur-this">
