@@ -118,7 +118,7 @@
 				.style("left", d3.event.pageX - 20 + "px")
 				.style("top", d3.event.pageY - 40 + "px")
 				.style("display", "inline-block")
-				.html((d.text) + "<br>" + (d.relevance) + "%");
+				.html((d.data.text) + "<br>" + (d.data.relevance));
 			})
 			.on("mouseout", function(d){ tooltip.style("display", "none");});
 
