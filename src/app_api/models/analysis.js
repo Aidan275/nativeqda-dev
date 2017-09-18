@@ -1,4 +1,5 @@
 var mongoose = require( 'mongoose' );
+var Schema = mongoose.Schema;
 
 var categoriesSchema = new mongoose.Schema({
 	score: {type: Number},
@@ -103,10 +104,10 @@ var analysisResultsSchema = new mongoose.Schema({
 		type: Date,
 		"default": Date.now
 	},
-	sourceDataKeys: {
-		type: [String],
-		required: true
-	},
+	files: [{	/* Reference to the files used to generate the analysis */
+		type: Schema.Types.ObjectId, 
+		ref: 'File' 
+	}], 
 	language: {
 		type: String,
 		required: true

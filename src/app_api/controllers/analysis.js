@@ -8,7 +8,7 @@ var textapi = new AYLIENTextAPI({
 var NaturalLanguageUnderstandingV1 = require('watson-developer-cloud/natural-language-understanding/v1.js');
 var natural_language_understanding = new NaturalLanguageUnderstandingV1({
 	"username": "ac282974-cb6e-474b-b44f-8a0680ca52c9",
-    "password": "qFuZ38BQwB8z",
+	"password": "qFuZ38BQwB8z",
 	'version_date': '2017-02-27'
 });
 
@@ -106,7 +106,7 @@ var saveWatsonAnalysis = function(req, res, response) {
 	analysisResults.name = req.body.name;
 	analysisResults.description = req.body.description;
 	analysisResults.createdBy = req.body.createdBy;
-	analysisResults.sourceDataKeys = req.body.sourceDataKeys;
+	analysisResults.files = req.body.files;
 	analysisResults.language = response.language;
 	analysisResults.categories = response.categories;
 	analysisResults.concepts = response.concepts;
@@ -127,9 +127,14 @@ var saveWatsonAnalysis = function(req, res, response) {
 
 module.exports.readWatsonAnalysis = function(req, res) {
 	var id = req.query.id;
+	var options = [
+	{path: 'files', select: 'name path icon key textFileKey lastModified createdBy'}
+	];
+
 	if (id) {
 		AnalysisResults
 		.findById(id)
+		.populate(options)
 		.exec(
 			function(err, data) {
 				if (!data) {
@@ -176,10 +181,10 @@ var buildAnalysisList = function(req, res, results) {
 			name: doc.name,
 			description: doc.description,
 			createdBy: doc.createdBy,
-			sourceDataKey: doc.sourceDataKey,
 			language: doc.language,
 			dateCreated: doc.dateCreated,
 			lastModified: doc.lastModified,
+			files: doc.files,
 			_id: doc._id
 		});
 	});

@@ -19,7 +19,7 @@ NG_DOCS={
       "type": "controller",
       "moduleName": "analysis",
       "shortDescription": "Controller for the analysis page.",
-      "keywords": "activate aidan analysis analysisservice andrews api array au confirm confirmation confirmdelete controller database delete deleteanalysis deleted deletewatsonanalysis deletion directive displays function getanalyseslist listanalyses lists listwatsonanalysis load loading loads local message methods_deletewatsonanalysis methods_listwatsonanalysis modal newanalysisctrl ngtable object objectid objects overlay passed popupnewanalysis removefromlist removes runs service services starts table updates"
+      "keywords": "activate aidan analysis analysisservice andrews api array au calls confirm confirmation confirmdelete controller database delete deleteanalysis deleted deletewatsonanalysis deletion directive displays function getanalyseslist listanalyses lists listwatsonanalysis load loading loads local message methods_deletewatsonanalysis methods_getanalyseslist methods_listwatsonanalysis modal newanalysisctrl ngtable object objectid objects overlay passed popupnewanalysis removefromlist removes runs service services starts table updates"
     },
     {
       "section": "api",

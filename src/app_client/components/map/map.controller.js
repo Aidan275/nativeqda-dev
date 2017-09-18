@@ -5,7 +5,6 @@
 * @description The main map of the application
 */
 
-
 (function () {
 
 	'use strict';

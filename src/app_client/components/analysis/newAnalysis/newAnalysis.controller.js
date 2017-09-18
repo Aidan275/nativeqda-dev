@@ -35,10 +35,10 @@
 		vm.resultButton = null;
 		vm.analyseButtonOptions = { buttonDefaultText: 'Analyse', animationCompleteTime: 1000, buttonSubmittingText: 'Processing...', buttonSuccessText: 'Done!' };
 		vm.isProcessing = false;
-		vm.selectedFiles = [];
-		vm.selectedPathName = [];
-		vm.selectedKeys = [];
-		vm.allFilesSoFar = [];
+		vm.allFilesSoFar = [];		/* Keeps track of all the files when navigating folders */
+		vm.selectedFileIds = [];	/* Associative array of file ids - true/false depending on checkboxes selected */
+		vm.fileIds = []				/* Array of file ids extracted from the vm.selectedFileIds associative array */
+		vm.selectedFiles = [];		/* Selected files determined from file ids - updated when checkboxes changed */
 
 		/* Extends the Array prototype with a custom method for pushing unique elements */
 		/* Needed since a user must be able to select files from multiple directories so */
@@ -65,16 +65,19 @@
 		}
 
 		function updateSelected() {
-			vm.selectedPathName = [];
+			vm.fileIds = []
+			vm.selectedFiles = [];
 
-			vm.selectedKeys = Object.keys(vm.selectedFiles)	/* Extracts the keys from the associative array */ 
-			.filter(function(key) {					/* Filters the true values only. Left with the file keys */
-				return vm.selectedFiles[key]
+			vm.fileIds = Object.keys(vm.selectedFileIds)	/* Extracts the keys from the associative array */ 
+			.filter(function(id) {						/* Filters the true values only. Left with the file ids */
+				return vm.selectedFileIds[id]
 			});
 
-			vm.selectedKeys.forEach(function(key) {
-				var index = vm.allFilesSoFar.findIndex(function(file){return file.textFileKey == key});
-				vm.selectedPathName.push(vm.allFilesSoFar[index]);
+			/* Finds all the files in the vm.allFilesSoFar array using the vm.fileIds */
+			/* and adds them to the vm.selectedFiles array */
+			vm.fileIds.forEach(function(id) {
+				var index = vm.allFilesSoFar.findIndex(function(file){return file._id == id});
+				vm.selectedFiles.push(vm.allFilesSoFar[index]);
 			});
 		}
 
@@ -85,7 +88,6 @@
 		function activate() {
 			getFileList();
 		}
-
 
 		/* Gets all the files from the database */
 		function getFileList() {
@@ -152,8 +154,8 @@
 		function getTextFromFiles() {
 			var fileCounter = 0;
 			var concatText = '';
-			vm.selectedKeys.forEach(function(key){	/* For each key in the vm.selectedKeys array */
-				s3Service.signDownloadKey(key)	/* Get a S3 signed URL to download the file */ 
+			vm.selectedFiles.forEach(function(file){	/* For each key in the vm.selectedKeys array */
+				s3Service.signDownloadKey(file.textFileKey)	/* Get a S3 signed URL to download the file */ 
 				.then(function(data) {	
 					filesService.downloadFile(data)	/* Download each file (data = signed URL) */
 					.then(function(data) {
@@ -172,14 +174,13 @@
 			});	
 		}
 
-
 		function doAnalysisSave(concatText) {
 			var saveData = {
 				text: concatText,
 				name: vm.formData.analysisName,
 				description: vm.formData.description,
 				createdBy: authService.currentUser().firstName,
-				sourceDataKeys: vm.selectedKeys
+				files: vm.fileIds
 			};
 
 			analysisService.watsonTextAnalysis(saveData)
@@ -214,7 +215,7 @@
 				vm.pathsArray = vm.currentPath.split("/");
 				getFileList();
 			} else {
-				vm.selectedFiles[file.textFileKey] = !vm.selectedFiles[file.textFileKey];	/* Toggle the true/false values in the selected keys array  */ 
+				vm.selectedFileIds[file._id] = !vm.selectedFileIds[file._id];	/* Toggle the true/false values in the selected file ids array  */ 
 				updateSelected();
 			}
 		}

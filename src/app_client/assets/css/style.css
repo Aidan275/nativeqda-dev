@@ -2156,12 +2156,12 @@ footer span {
 	right: 10px;
 	padding: 10px;
 	font-size: 26px;
-	line-height: 185px;
+	line-height: 215px;
 	font-weight: bold;
 	text-align: center;
 	text-decoration: none !important;
-	color: #333 !important;
-	background: rgba(255,255,255,0.85);
+	color: #fff !important;
+	background: rgba(45,101,255,0.90);
 	overflow: hidden;
 	box-sizing: border-box;
 	transition: opacity 0.3s ease-in-out;
@@ -2178,4 +2178,40 @@ footer span {
 .vis-thumb-img-overlay:hover {
 	opacity: 1.0;
 	filter: alpha(opacity=1.0);
+}
+
+/******* FILE TABLE *******/
+
+.visualisations-file-browser-table td {
+	border-top: none !important;
+}
+
+.visualisations-file-browser-table td.name-cell,
+.visualisations-file-browser-table td.last-modified-cell,
+.visualisations-file-browser-table td.created-by-cell {
+	cursor: pointer;
+}
+
+.visualisations-file-browser-table .table-row:hover {
+	background: rgba(70,118,250,0.15) !important;
+}
+
+.visualisations-file-browser-table td.name-cell {
+	vertical-align: middle !important;
+}
+
+.visualisations-file-browser-table td.last-modified-cell,
+.visualisations-file-browser-table td.created-by-cell,
+.visualisations-file-browser-table td.context-menu-cell {
+	white-space: nowrap;
+	text-align: center;
+	vertical-align: middle !important;
+}
+
+.visualisations-file-browser-table td.context-menu-cell .dropdown-menu {
+	border: none;
+}
+
+.visualisations-file-browser-table td.context-menu-cell .dropdown-menu>li>a {
+	padding: 5px 20px;
 }

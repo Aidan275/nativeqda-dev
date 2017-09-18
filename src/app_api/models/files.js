@@ -32,9 +32,9 @@ var fileSchema = new mongoose.Schema({
 	key: { //Amazon S3 key for the file
 		type: String
 	},
-	textFileKey: { //Amazon S3 for the file converted to text (pdf/docx), otherwise the same as 'key'
-	type: String
-},
+	textFileKey: {	/* Amazon S3 for the file converted to text (pdf/docx), otherwise the same as key */
+		type: String
+	},
 	dateCreated: { //Datetime file was uploaded to system
 		type: Date,
 		"default": Date.now

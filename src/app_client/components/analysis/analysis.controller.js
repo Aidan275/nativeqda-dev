@@ -35,7 +35,8 @@
 		* @ngdoc function
 		* @name activate
 		* @methodOf analysis.controller:analysisCtrl
-		* @description Runs when the page first loads and starts the loading overlay for the analysis table.
+		* @description Runs when the page first loads and starts the loading overlay for the analysis table and calls 
+		* the {@link analysis.controller:analysisCtrl#methods_getAnalysesList getAnalysesList} function.
 		*/
 		function activate() {
 			bsLoadingOverlayService.start({referenceId: 'analysis-list'});	/* Start animated loading overlay */
@@ -55,6 +56,7 @@
 			return analysisService.listWatsonAnalysis()
 			.then(function(data) {
 				vm.analyses = data;
+				console.log(data);
 				return vm.analyses;
 			}, function(err) {
 				bsLoadingOverlayService.stop({referenceId: 'analysis-list'});	/* If error, stop animated loading overlay */
