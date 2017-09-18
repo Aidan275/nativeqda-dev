@@ -96,132 +96,97 @@
 
 		function drawChart(data) {
 
+		var tooltip = d3.select('#chart')            
+		  .append('div')                             
+		  .attr('class', 'tooltip');                 
 
-			var width = 960;
-			var height = 450;
-			var thickness = 40;
-			var duration = 750;
+		tooltip.append('div')                        
+		  .attr('class', 'label');                   
 
-			var radius = Math.min(width, height) / 2;
-			var color = d3.scaleOrdinal(d3.schemeCategory10);
+		tooltip.append('div')                        
+		  .attr('class', 'count');                   
 
-			var svg = d3.select("#chart")
-			.append('svg')
-			.attr('class', 'pie')
-			.attr('width', width)
-			.attr('height', height);
-
-			var g = svg.append('g')
-			.attr('transform', 'translate(' + (width/2) + ',' + (height/2) + ')');
-
-			var arc = d3.arc()
-				.innerRadius(radius - thickness)
-				.outerRadius(radius);
-
-			var pie = d3.pie()
-				.value(function(d) { return d.relevance; })
-				.sort(null);			
-
-			var path = g.selectAll('path')
-			.data(pie(data))
-			.enter()
-			.append("g")
-			.on("mouseover", function(d) {
-			      let g = d3.select(this)
-			        .style("cursor", "pointer")
-			        .style("fill", "black")
-			        .append("g")
-			        .attr("class", "text-group");
-			 
-			      g.append("text")
-			        .attr("class", "name-text")
-			        .text(`${d.data.text}`)
-			        .attr('text-anchor', 'middle')
-			        .attr('dy', '-1.2em');
-			  
-			      g.append("text")
-			        .attr("class", "value-text")
-			        .text(`${d.data.relevance}`)
-			        .attr('text-anchor', 'middle')
-			        .attr('dy', '.6em');
-			    })
-			  .on("mouseout", function(d) {
-			      d3.select(this)
-			        .style("cursor", "none")  
-			        .style("fill", color(this._current))
-			        .select(".text-group").remove();
-			    })
-			  .append('path')
-			  .attr('d', arc)
-			  .attr('fill', (d,i) => color(i))
-			  .on("mouseover", function(d) {
-			      d3.select(this)     
-			        .style("cursor", "pointer")
-			        .style("fill", "black");
-			    })
-			  .on("mouseout", function(d) {
-			      d3.select(this)
-			        .style("cursor", "none")  
-			        .style("fill", color(this._current));
-			    })
-			  .each(function(d, i) { this._current = i; });
+		tooltip.append('div')                        
+		  .attr('class', 'percent');                 
 
 
-			g.append('text')
-			  .attr('text-anchor', 'middle')
-			  .attr('dy', '.35em')
-			  .text(data.text);
-		/*
-			var margin = {top: 20, right: 20, bottom: 200, left: 40},
-			width = +svg.attr("width") - margin.left - margin.right,
-			height = +svg.attr("height") - margin.top - margin.bottom+30; 
+  		var width = 720;
+        var height = 720;
+        var radius = Math.min(width, height) / 2;
 
-			var tooltip = d3.select("body").append("div").attr("class", "toolTip");
+        var color = d3.scaleOrdinal(d3.schemeCategory20c);
 
+        var svg = d3.select('#chart')
+          .append('svg')
+          .attr('width', width)
+          .attr('height', height)
+          .append('g')
+          .attr('transform', 'translate(' + (width / 2) + 
+            ',' + (height / 2) + ')');
 
-			var color = d3.scaleOrdinal()
-			.range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
+          var donutWidth = 150;
 
-			var outerRadius = radius - 10;
-			var innerRadius = radius - 70;
-			var arc = d3.arc()
-			.outerRadius(outerRadius)
-			.innerRadius(innerRadius);
+		var arc = d3.arc()
+          .innerRadius(radius - donutWidth)
+          .outerRadius(radius);
 
-			var pie = d3.pie()
-			.sort(null)
-			.value(function(d) { return d.relevance; });
-
-			var svg = d3.select("body").append("svg")
-			.attr("width", width)
-			.attr("height", height)
-			.append("g")
-			.attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+        var pie = d3.pie()
+          .value(function(d) { return d.relevance; })
+          .sort(null);	
 
 
-			var g = svg.selectAll(".arc")
-			.data(pie(data))
-			.enter().append("g")
-			.attr("class", "arc")
-			.attr("transform", "translate(" + outerRadius + "," + innerRadius + ")")
-			.on("mousemove", function(d){
-				tooltip
-				.style("left", d3.event.pageX - 50 + "px")
-				.style("top", d3.event.pageY - 70 + "px")
-				.style("display", "inline-block")
-				.html((d.text) + "<br>" + (d.relevance));
-			})
-			.on("mouseout", function(d){ tooltip.style("display", "none");});
+        var legendRectSize = 25;
+        var legendSpacing = 8;
+        
+        var path = svg.selectAll('path')
+          .data(pie(data))
+          .enter()
+          .append('path')
+          .attr('d', arc)
+          .attr('fill', function(d, i) { 
+            return color(d.data.text);
+          });
 
-			g.append("path")
-			.attr("d", arc)
-			.style("fill", function(d) { return color(d.data.text); });
+          var div = d3.select("path").append("div").attr("class", "tooltip");
 
-			g.append("text")
-			.attr("transform", function(d) { return "translate(" + arc.centroid(d) + ")"; })
-			.attr("dy", ".35em")
-			.text(function(d) { return d.data.text; });
-			*/
+		path.on('mouseover', function(d) {
+		 tooltip
+                .style("left", d3.event.pageX - 50 + "px")
+                .style("top", d3.event.pageY - 70 + "px")
+                .style("display", "block")
+                .html((d.text) + "<br>" + (d.relevance) + "%");
+        tooltip.select('.label').html(d.data.text);
+        tooltip.select('.count').html(d.data.relevance);
+		});
+        
+		path.on('mouseout', function() {
+		  tooltip.style('display', 'none');
+		});
+
+		var legend = svg.selectAll('.legend')
+		  .data(color.domain())
+		  .enter()
+		  .append('g')
+		  .attr('class', 'legend')
+		  .attr('transform', function(d, i) {
+		    var height = legendRectSize + legendSpacing;
+		    var offset =  height * color.domain().length / 2;
+		    var horz = -2 * legendRectSize;
+		    var vert = i * height - offset;
+		    return 'translate(' + horz + ',' + vert + ')';
+		  });
+		        
+		legend.append('rect')
+		  .attr('width', legendRectSize)
+		  .attr('height', legendRectSize)
+		  .style('fill', color)
+		  .style('stroke', color);
+		        
+		legend.append('text')
+		  .attr('x', legendRectSize + legendSpacing)
+		  .attr('y', legendRectSize - legendSpacing)
+		  .text(function(d) { return d; });
+
 		}
 	}
 

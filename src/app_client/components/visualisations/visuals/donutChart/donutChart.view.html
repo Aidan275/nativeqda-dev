@@ -13,7 +13,41 @@
   stroke: #fff;
 }
 
-.toolTip {
+  .legend {
+    font-size: 13px;
+  }
+  h1 {
+  font-size: 15px;
+  text-align: center;
+  }
+  rect {
+    stroke-width: 2;
+  }
+  #chart {
+  height: 360px;
+  margin: 0 auto;                            
+  position: relative;
+  width: 360px;
+  }
+  .tooltip {
+  box-shadow: 0 0 5px #999999;
+  display: none;
+  font-size: 12px;
+  left: 130px;
+  padding: 10px;
+  position: absolute;
+  text-align: center;
+  top: 95px;
+  width: 80px;
+  z-index: 10;
+  line-height: 140%;
+  font-family: "Open Sans", sans-serif;
+  font-weight: 300;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  border-radius: 2px;
+  }
+  .toolTip {
   position: absolute;
   display: none;
   min-width: 80px;
@@ -22,13 +56,17 @@
   border: 1px solid #6F257F;
   padding: 14px;
   text-align: center;
-}
+}  
+  .label {
+   font-weight: 600;
+  }
 </style>
 
 <navigation> </navigation>
 
- <div style="padding:0 100px;">
-
+ <div style="padding:100 100px;">
+<h3>    </h3>
+<div id ="chart"></div>
  	<svg width="960" height="500"></svg>
  	
 
