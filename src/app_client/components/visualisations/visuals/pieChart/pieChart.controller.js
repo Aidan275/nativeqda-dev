@@ -12,6 +12,7 @@
 		var analysisId = $routeParams.id;
 
 		var analysisData = [];
+		var responseData = [];
 
 		activate();
 		
@@ -21,43 +22,64 @@
 			bsLoadingOverlayService.start({referenceId: 'pie-chart'});	// Start animated loading overlay
 			analysisService.readWatsonAnalysis(analysisId) //gets id from url
 			.then(function(data) {
-				if(analysisType === 'concepts') {
-					data.concepts.forEach(function(concept) {
-						var relevance = concept.relevance*100;
-						var text = concept.text.charAt(0).toUpperCase() + concept.text.slice(1);	// Capitalise first letter
-						//var trimText = text.substring(0, 6); 
-						analysisData.push({relevance: concept.relevance, text: text});
-					});
+				switch (analysisType) {
+					case 'concepts':
+						data.concepts.forEach(function(concept){
+							var relevance = concept.relevance*100;
+							var text = concept.text.charAt(0).toUpperCase() + concept.text.slice(1);  // Capitalise first letter 
+							responseData.push({relevance: concept.relevance, text: text, dbpedia_resource: concept.dbpedia_resource});
+						});
+						sortRelevance(); 
+						checkLength();
+					break;
+					case 'keywords':
+						data.keywords.forEach(function(keyword){
+							var relevance = keyword.relevance*100;
+							var text = keyword.text.charAt(0).toUpperCase() + keyword.text.slice(1);  // Capitalise first letter
+							responseData.push({relevance: keyword.relevance, text: text});
+						});
 
-				} else if (analysisType ==='keywords') {
-					data.keywords.forEach(function(keyword){
-						var relevance = keyword.relevance*100;
-						var text = keyword.text.charAt(0).toUpperCase() + keyword.text.slice(1);	// Capitalise first letter
-						//var trimText = text.substring(0, 6); 
-						analysisData.push({relevance: keyword.relevance, text: text});
-					});	
-				}
-				
-				//Sort vm.data by relevance
-				analysisData.sort(function (a, b) {
-					return  b.relevance - a.relevance;
-				});
-				
-				//If there are too many entities the graph becomes unusable
-				if(analysisData.length > 10) {
-					sortData = analysisData.slice(0, 10); //Take first 10 elements
-					drawChart(sortData);										
-
-				} else {
-					drawChart(analysisData);
-				} 
-
-
-				
+						sortRelevance();
+						checkLength();
+					break;
+	      		}	
 			}, function(err) {
 				bsLoadingOverlayService.stop({referenceId: 'bubble-chart'});	// If error, stop animated loading overlay
 			}); 
 		}
+
+	    /**
+	    * @ngdoc function
+	    * @name checkLength
+	    * @methodOf visualisation.controller:pieChartCtrl
+	    * @description Checks if there are more than 10 elements to be drawn, if so it trims
+	    * and will take the top 10 elements and then reverse them so they are in descending order.
+	    * This functinon is called when drawing a keyword or concept analysis, the function then calls the drawChart function
+	    */
+	    function checkLength() {
+	      if(responseData.length > 10) {
+	        sortData = responseData.slice((responseData.length-10), responseData.length);
+	        sortData.reverse();
+	        drawChart(sortData);                    
+	      }else {
+	        responseData.reverse();
+	        drawChart(responseData);
+	      } 
+	    }
+
+	    /**
+	    * @ngdoc function
+	    * @name sortRelevance
+	    * @methodOf visualisation.controller:pieChartCtrl
+	    * @description Function sorts the analysis data in ascending order on relevance. Function is used
+	    * when drawing keyword and concept analysis
+	    * @returns {array} The sorted array
+	    */    
+	    function sortRelevance() {
+	      responseData.sort(function (a, b) {
+	        return a.relevance - b.relevance;
+	      });
+	    }
 
 		function drawChart(data) {
 			
