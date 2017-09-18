@@ -154,7 +154,7 @@
                 .style("left", d3.event.pageX - 50 + "px")
                 .style("top", d3.event.pageY - 70 + "px")
                 .style("display", "block")
-                .html((d.text) + "<br>" + (d.relevance) + "%");
+                .html((d.data.text) + "<br>" + (d.data.relevance) + "%");
         tooltip.select('.label').html(d.data.text);
         tooltip.select('.count').html(d.data.relevance);
 		});

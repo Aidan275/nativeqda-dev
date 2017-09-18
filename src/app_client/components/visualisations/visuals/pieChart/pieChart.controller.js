@@ -83,37 +83,40 @@
 
 		function drawChart(data) {
 			
+			//set area
 			var svg = d3.select("svg"),
-			margin = {top: 20, right: 20, bottom: 200, left: 40},
-			width = +svg.attr("width") - margin.left - margin.right,
-			height = +svg.attr("height") - margin.top - margin.bottom+30, 
+			margin = {top: 40, right: 40, bottom: 400, left: 80},
+			width = 500,
+			height = 500, 
 			radius = Math.min(width, height) / 2,
 			g = svg.append("g").attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 
 			var tooltip = d3.select("body").append("div").attr("class", "toolTip");
 
-			var color = d3.scaleOrdinal(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
+			//set colours
+			var color = d3.scaleOrdinal(d3.schemeCategory20c);
 
 			var pie = d3.pie()
-			.sort(null)
-			.value(function(d) { return d.relevance; });
+				.sort(null)
+				.value(function(d) { return d.relevance; });
 
 			var outerRadius = radius - 10;
 			var innerRadius = 0;
+			
 			var path = d3.arc()
-			.outerRadius(outerRadius)
-			.innerRadius(innerRadius);	
+				.outerRadius(outerRadius)
+				.innerRadius(innerRadius);	
 
 			var label = d3.arc()
-			.outerRadius(radius - 40)
-			.innerRadius(radius - 40);
+				.outerRadius(radius - 40)
+				.innerRadius(radius - 40);
 
 			var arc = g.selectAll(".arc")
-			.data(pie(data))
-			.enter().append("g")
-			.attr("class", "arc")
-			.attr("transform", "translate(" + outerRadius + "," + innerRadius + ")")
-			.on("mousemove", function(d){
+				.data(pie(data))
+				.enter().append("g")
+				.attr("class", "arc")
+				.attr("transform", "translate(" + outerRadius + "," + innerRadius + ")")
+				.on("mousemove", function(d){
 				tooltip
 				.style("left", d3.event.pageX - 20 + "px")
 				.style("top", d3.event.pageY - 40 + "px")
@@ -123,13 +126,13 @@
 			.on("mouseout", function(d){ tooltip.style("display", "none");});
 
 			arc.append("path")
-			.attr("d", path)
-			.attr("fill", function(d) { return color(d.data.text); });
+				.attr("d", path)
+				.attr("fill", function(d) { return color(d.data.text); });
 
 			arc.append("text")
-			.attr("transform", function(d) { return "translate(" + label.centroid(d) + ")"; })
-			.attr("dy", "0.35em")
-			.text(function(d) { return d.data.age; });
+				.attr("transform", function(d) { return "translate(" + label.centroid(d) + ")"; })
+				.attr("dy", "0.35em")
+				.text(function(d) { return  (d.data.relevance); });
 
 		}
 	}
