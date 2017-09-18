@@ -8,7 +8,7 @@ var sendJSONresponse = function(res, status, content) {
 };
 
 var extractpath = function(filepathparam) {
-	console.log(filepathparam);
+	//console.log(filepathparam);
 	//Getting file name and path can definitely be done better
 	var fileparam = filepathparam;
 	var filepath = "/" + filepathparam;
@@ -22,8 +22,8 @@ var extractpath = function(filepathparam) {
 	var path = new Array();
 	path[0] = fileparam[fileparam.length-1];
 	path[1] = filepath;
-	console.log(path[0]);
-	console.log(path[1]);
+	console.log("Name: " + path[0]);
+	console.log("Path: " + path[1]);
 	return path;
 }
 
@@ -62,9 +62,15 @@ module.exports.getFile = function(req, res) { //Get file info OR browse a folder
 module.exports.putFile = function(req, res) { //Update or add a file
 	var path = extractpath(req.params["filepath"]);
 	var file = new File();
-
+		
 	file.name = path[0];
 	file.path = path[1];
+	
+	if (path[1] == "") {
+		sendJSONresponse(res, 500, "Path is empty");
+		return;
+	}
+	
 	file.type = req.body.type;
 	
 	file.key = req.body.key;

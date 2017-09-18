@@ -22,7 +22,7 @@
 
 		// Bindable Data
 		vm.fileList = [];
-		vm.currentPath = '';
+		vm.currentPath = '/';
 		vm.pathsArray = [''];
 		vm.pageHeader = {
 			title: 'Files'
@@ -44,7 +44,7 @@
 
 				vm.fileList = [];	/* reset fileList array on folder navigation */
 
-				if(vm.currentPath != '') {	/* If not in the root folder, add a parent directory link */
+				if(vm.currentPath != '/') {	/* If not in the root folder, add a parent directory link */
 					vm.fileList.push({
 						name: '..',
 						lastModified: '',

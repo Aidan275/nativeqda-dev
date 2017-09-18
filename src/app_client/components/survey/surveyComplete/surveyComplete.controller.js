@@ -38,6 +38,7 @@
 			surveyService.readSurveyJSON(accessId)
 			.then(function(data) {
 				vm.surveyJSON = data;	/* If loading survey data is successful, store survey to display */
+				showSurvey();
 			}, function() {
 				$location.path('/complete-survey');	/* If an error occurs loading the survey, return to the complete survey page */
 			});
