@@ -11,12 +11,42 @@
 		var analysisType = $routeParams.type; 
 		var analysisId = $routeParams.id;
 
+		/* Scrolls to the top of the page */
+		document.body.scrollTop = 0; /* For Chrome, Safari and Opera */
+		document.documentElement.scrollTop = 0; /* For IE and Firefox */
+
+		var slideout = new Slideout({
+			'panel': document.querySelector('#wcPanel'),
+			'menu': document.querySelector('#wcMenu'),
+			'padding': 256,
+			'tolerance': 70
+		});
+
+		vm.toggleOptions = toggleOptions;
+		vm.updateChart = updateChart;
+
+		vm.wordSpacingFactor = {
+			value: 1
+		};
+		vm.wordColour1 = '#a5a5a5';
+		vm.wordColour2 = '#4676fa';
+		vm.wordColourOptions1 = { format:'hexString', case:'lower' };
+		vm.wordColourOptions2 = { format:'hexString', case:'lower' };
+		vm.wordColourChange1 = { onChange: function() { setWordColour(); } };
+		vm.wordColourChange2 = { onChange: function() { setWordColour(); } };
+
+		var svg;
 		var data = [];
 
 		var width = document.querySelector(".svg-container").clientWidth;
 		var height = document.querySelector(".svg-container").clientHeight;
+
 		var maxSize = 0;
 		var minSize = 100;
+
+		var translateX = width/2;
+		var translateY = height/2;
+		var scale = 1;
 
 		activate();
 		
@@ -56,7 +86,7 @@
 		function categoriesCloud(analysisData) {
 			analysisData.categories.forEach(function(category){
 				console.log(category);
-				var score = category.score*100;
+				var score = category.score*50;
 				var text = category.label.toLowerCase(); 
 
 				maxSize = (score > maxSize ? score : maxSize);
@@ -116,50 +146,68 @@
 
 			var colours = d3.scaleLinear()
 			.domain([minSize, maxSize])
-			.range(['#666', '#4676fa']);
+			.range([vm.wordColour1, vm.wordColour2]);
 
-			var layout = d3.layout.cloud()
-			.timeInterval(10)
-			.size([width, height])
+			d3.layout.cloud().size([width, height])
 			.words(data)
-			.rotate(function() { return Math.floor(Math.random() * 20) + -10; }) /* Sets the rotation of the word between -10 and 10 degrees */
-			.font("Impact")
+			.rotate(0)
 			.fontSize(function(d) { return d.size; })
 			.on("end", draw)
 			.start();
 
 			function draw(words) {
-				var count = 0;
+				var zoom = d3.zoom()
+				.on("zoom", zoomed);
 
-				var svg = d3.select("div.svg-container")
+				svg = d3.select("div.svg-container")
 				.append("svg")
 				.attr("width", width)
-				.attr("height", height);
+				.attr("height", height)
+				.attr("class", "wordcloud")
+				.call(zoom);
 
 				var g = svg.append("g");
-
-				g.selectAll("text")
+				
+				g.attr("transform", "translate(" + translateX + ", " + translateY + ") scale(" + scale + ")")
+				.selectAll("text")
 				.data(words)
 				.enter().append("text")
 				.style("font-size", function(d) { return d.size + "px"; })
 				.style("font-family", "Impact")
 				.style("fill", function(d, i) { return colours(d.size); })
-				.attr("text-anchor", "middle")
-				.attr("transform", function(d) { return "translate(" + [d.x + (width/2), d.y + (height/2)] + ")rotate(" + d.rotate + ")"; })
+				.style("cursor", "default")
+				.attr("transform", function(d) { return "translate(" + [d.x*vm.wordSpacingFactor.value, d.y*vm.wordSpacingFactor.value] + ")"; })
 				.text(function(d) { return d.text; });
 
-				svg.append("rect")
-				.attr("width", width)
-				.attr("height", height)
-				.style("fill", "none")
-				.style("pointer-events", "all")
-				.call(d3.zoom().on("zoom", zoomed));
+				svg.call(zoom.transform, d3.zoomIdentity.translate(translateX, translateY).scale(scale));
 
-				function zoomed() {
+				function zoomed(){
+					translateX = d3.event.transform.x;
+					translateY = d3.event.transform.y;
+					scale = d3.event.transform.k;
 					g.attr("transform", d3.event.transform);
 				}
 
 			}
+
+			bsLoadingOverlayService.stop({referenceId: 'word-cloud'});	// Stop animated loading overlay
+		}
+
+		function toggleOptions() {
+			slideout.toggle();
+		}
+
+		function updateChart() {
+			d3.selectAll("div.svg-container > *").remove();
+			drawWordCloud();
+		}
+
+		function setWordColour() {
+			var colours = d3.scaleLinear()
+			.domain([minSize, maxSize])
+			.range([vm.wordColour1, vm.wordColour2]);
+
+			svg.selectAll("text").style("fill", function(d) { return colours(d.size) });
 		}
 	}
 
