@@ -61,9 +61,10 @@
 		transition: all linear 300ms;
 	}
 	
-	.menuButtonFix {
-		position:relative;
-		top:-48px;
+	@media screen and (max-width: 480px) {	
+		.menuButtonFix {
+			top:-48px;
+		}
 	}
 </style>
 
@@ -112,7 +113,7 @@
 	
 	<img ng-click="vm.toggleOptions()" class="hidden-md hidden-lg" alt="AM" src="assets/img/menu.png" height="48"/>
 
-	<div class="container menuButtonFix">
+	<div class="container menuButtonFix" style="position:relative;">
 
 		<div class="bs-loading-container" bs-loading-overlay bs-loading-overlay-active-class="loading-overlay--active" bs-loading-overlay-reference-id="visuals-info"> 
 			<div class="blur-this">
