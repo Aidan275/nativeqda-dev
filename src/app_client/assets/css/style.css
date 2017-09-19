@@ -30,18 +30,18 @@ body.pg-loaded > .inner {
 }
 
 .blueButton {
-	 background-color: #4676fa;
-	 border-color: #4676fa;
+	background-color: #4676fa;
+	border-color: #4676fa;
 }
 
 .blueButton:hover {
-	 background-color: #0676fa;
-	 border-color: #0676fa;
+	background-color: #0676fa;
+	border-color: #0676fa;
 }
 
 .blueButton:focus {
-	 background-color: #0676fa;
-	 border-color: #0676fa;
+	background-color: #0676fa;
+	border-color: #0676fa;
 }
 
 .inner {
@@ -794,6 +794,57 @@ footer span {
 
 .home-recent-files-table-container .ng-table-pager {
 	display:none;
+}
+
+/* ========== ANALYSIS PAGE ========== */
+
+.analysis-browser-table td {
+	border-top: none !important;
+}
+
+.analysis-browser-table td.name-cell,
+.analysis-browser-table td.date-created-cell,
+.analysis-browser-table td.created-by-cell {
+	cursor: pointer;
+}
+
+.analysis-browser-table .table-row:hover {
+	background: rgba(70,118,250,0.15) !important;
+}
+
+.analysis-browser-table td.name-cell {
+	vertical-align: middle !important;
+}
+
+.analysis-browser-table td.date-created-cell,
+.analysis-browser-table td.created-by-cell,
+.analysis-browser-table td.context-menu-cell {
+	white-space: nowrap;
+	text-align: center;
+	vertical-align: middle !important;
+}
+
+.analysis-browser-table td.context-menu-cell .dropdown-menu {
+	border: none;
+}
+
+.analysis-browser-table td.context-menu-cell .dropdown-menu>li>a {
+	padding: 5px 20px;
+}
+
+.analysis-browser-table td.context-menu-cell .dropdown-menu .view-cell>a:hover {
+	background-color: #5cb85c;
+	color: #fff;
+}
+
+.analysis-browser-table td.context-menu-cell .dropdown-menu .edit-cell>a:hover {
+	color: #fff;
+	background-color: #2d65ff;
+}
+
+.analysis-browser-table td.context-menu-cell .dropdown-menu .delete-cell>a:hover {
+	background-color: #d9534f;
+	color: #fff;
 }
 
 /* ========== NEW ANALYSIS MODAL ========== */
@@ -2215,3 +2266,9 @@ footer span {
 .visualisations-file-browser-table td.context-menu-cell .dropdown-menu>li>a {
 	padding: 5px 20px;
 }
+
+.visualisations-file-browser-table td.context-menu-cell .dropdown-menu>li>a:hover {
+	color: #fff;
+	background-color: #2d65ff;
+}
+

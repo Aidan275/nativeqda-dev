@@ -12,13 +12,14 @@
 	.controller('analysisCtrl', analysisCtrl);
 
 	/* @ngInject */
-	function analysisCtrl(NgTableParams, $uibModal, analysisService, bsLoadingOverlayService, logger) {
+	function analysisCtrl($location, NgTableParams, $uibModal, analysisService, bsLoadingOverlayService, logger) {
 		var vm = this;
 
 		/* Bindable Functions */
 		vm.getAnalysesList = getAnalysesList;
 		vm.confirmDelete  = confirmDelete;
 		vm.popupNewAnalysis = popupNewAnalysis;
+		vm.goToVisUrl = goToVisUrl;
 		
 		/* Bindable Data */
 		vm.analyses = [];
@@ -153,6 +154,17 @@
 				listAnalyses();
 			});
 		};
+
+		/**
+		* @ngdoc function
+		* @name goToVisUrl
+		* @methodOf analysis.controller:analysisCtrl
+		* @description Goes to the visualisation page of the id specified. 
+		* @param {string} id ObjectId of the analysis object
+		*/
+		function goToVisUrl(id) {
+			$location.path('visualisations/' + id);
+		}
 	}
 
 })();

@@ -22,7 +22,6 @@
 		vm.viewFile = viewFile;
 		vm.updateSelected = updateSelected;
 		vm.checkOrOpen = checkOrOpen;	/* Check the checkbox if file, open folder if folder */
-		vm.isInArray = isInArray;
 
 		/* Bindable Data */
 		vm.fileList = [];
@@ -58,12 +57,6 @@
 			}
 		};
 
-		function isInArray(value, array) {
-			console.log(value);
-			console.log(array);
-			return array.indexOf(value) > -1;
-		}
-
 		function updateSelected() {
 			vm.fileIds = []
 			vm.selectedFiles = [];
@@ -79,8 +72,6 @@
 				var index = vm.allFilesSoFar.findIndex(function(file){return file._id == id});
 				vm.selectedFiles.push(vm.allFilesSoFar[index]);
 			});
-
-			console.log(vm.selectedFiles);
 		}
 
 		activate();
@@ -158,22 +149,21 @@
 			processingEvent(true, null);	/* ng-bs-animated-button status & result */
 			var fileCounter = 0;
 			var concatText = '';
-			vm.selectedFiles.forEach(function(file){	/* For each key in the vm.selectedKeys array */
+			vm.selectedFiles.forEach(function(file){		/* For each key in the vm.selectedFiles array */
 				s3Service.signDownloadKey(file.textFileKey)	/* Get a S3 signed URL to download the file */ 
 				.then(function(data) {	
-					filesService.downloadFile(data)	/* Download each file (data = signed URL) */
+					filesService.downloadFile(data)			/* Download each file (data = signed URL) */
 					.then(function(data) {
 						fileCounter++
-						concatText += data + '\n\n';	/* Add text from file to concatText */
-
-						/*Send text to be analyzed */
-						doAnalysisSave(concatText);
-
+						concatText += data + '\n\n';					/* Add text from file to concatText */
+						if(fileCounter === vm.selectedFiles.length) {	/* Check if last file */
+							doAnalysisSave(concatText);					/* if last file, send concatText to be analyzed */
+						}
 					}, function(err) {
 						processingEvent(false, 'error');	/* ng-bs-animated-button status & result */
 					});
 				}, function(err) {
-					processingEvent(false, 'error');	/* ng-bs-animated-button status & result */
+					processingEvent(false, 'error');		/* ng-bs-animated-button status & result */
 				});
 			});	
 		}

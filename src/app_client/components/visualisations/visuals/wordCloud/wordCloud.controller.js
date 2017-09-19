@@ -85,9 +85,8 @@
 
 		function categoriesCloud(analysisData) {
 			analysisData.categories.forEach(function(category){
-				console.log(category);
 				var score = category.score*50;
-				var text = category.label.toLowerCase(); 
+				var text = category.label.toUpperCase(); 
 
 				maxSize = (score > maxSize ? score : maxSize);
 				minSize = (score < minSize ? score : minSize);
@@ -101,7 +100,7 @@
 		function conceptCloud(analysisData) {
 			analysisData.concepts.forEach(function(concept){
 				var relevance = concept.relevance*50;
-				var text = concept.text.toLowerCase(); 
+				var text = concept.text.toUpperCase(); 
 
 				maxSize = (relevance > maxSize ? relevance : maxSize);
 				minSize = (relevance < minSize ? relevance : minSize);
@@ -114,13 +113,13 @@
 
 		function entitiesCloud(analysisData) {
 			analysisData.entities.forEach(function(entity){
-				var count = entity.count*50;
-				var text = entity.text.toLowerCase(); 
+				var relevance = entity.relevance*50;
+				var text = entity.text.toUpperCase(); 
 
-				maxSize = (count > maxSize ? count : maxSize);
-				minSize = (count < minSize ? count : minSize);
+				maxSize = (relevance > maxSize ? relevance : maxSize);
+				minSize = (relevance < minSize ? relevance : minSize);
 
-				data.push({text: text, size: count});
+				data.push({text: text, size: relevance});
 			});
 
 			drawWordCloud();
@@ -130,7 +129,7 @@
 		function keywordCloud(analysisData) {
 			analysisData.keywords.forEach(function(keyword){
 				var relevance = keyword.relevance*50;
-				var text = keyword.text.toLowerCase(); 
+				var text = keyword.text.toUpperCase(); 
 
 				maxSize = (relevance > maxSize ? relevance : maxSize);
 				minSize = (relevance < minSize ? relevance : minSize);
