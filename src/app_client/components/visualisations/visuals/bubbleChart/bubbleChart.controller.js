@@ -21,7 +21,7 @@
 		document.body.scrollTop = 0; // For Chrome, Safari and Opera 
 	    document.documentElement.scrollTop = 0; // For IE and Firefox
 
-	    var slideout = new Slideout({
+	    var bcSlideout = new Slideout({
 	    	'panel': document.querySelector('#bcPanel'),
 	    	'menu': document.querySelector('#bcMenu'),
 	    	'padding': 256,
@@ -60,7 +60,7 @@
 	    var minRelevance = 100;
 
 	    function toggleOptions() {
-	    	slideout.toggle();
+	    	bcSlideout.toggle();
 	    }
 
 	    var svg = d3.select("#graph")

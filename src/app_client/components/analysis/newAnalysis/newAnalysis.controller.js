@@ -79,6 +79,8 @@
 				var index = vm.allFilesSoFar.findIndex(function(file){return file._id == id});
 				vm.selectedFiles.push(vm.allFilesSoFar[index]);
 			});
+
+			console.log(vm.selectedFiles);
 		}
 
 		activate();
@@ -138,10 +140,11 @@
 		}
 
 		function onSubmit() {
-			processingEvent(true, null);	/* ng-bs-animated-button status & result */
 			if(angular.isDefined(vm.formData)){
 				if(!vm.formData.analysisName || !vm.formData.description) {
 					logger.error('All fields required, please try again', '', 'Error');
+				} else if(vm.selectedFiles.length < 1) {
+					logger.error('Please select at least one file for analysis.', '', 'Error');
 				} else {
 					getTextFromFiles();
 					return true;
@@ -152,6 +155,7 @@
 		}
 
 		function getTextFromFiles() {
+			processingEvent(true, null);	/* ng-bs-animated-button status & result */
 			var fileCounter = 0;
 			var concatText = '';
 			vm.selectedFiles.forEach(function(file){	/* For each key in the vm.selectedKeys array */
