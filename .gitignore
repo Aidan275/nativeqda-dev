@@ -119,6 +119,11 @@ jspm_packages
 # Ignore Batch Directory
 /batch/
 
+### Order of script injecting in the index.html file is causing issues. ### 
+### Since the index.html file is generated from gulp serve it can be ignored. ###
+src/app_client/index.html
+/src/app_client/index.html
+
 # Environment variables
 # .env
 

@@ -10,10 +10,19 @@ module.exports = function(grunt) {
 
 		ngdocs: {
 			options: {
-				scripts: ['angular.js', '../src.js'],
-				html5Mode: false
+				scripts: ['angular.js'],
+				html5Mode: false,
+				title: 'NativeQDA',
+				startPage: '/docs',
+				sourceLink: true,
+				titleLink: '/#/docs'
+				
 			},
-			all: 'src/**/*.js'
+			docs: {
+				src: ['src/**/*.js'],
+				title: 'Documentation',
+				api: true
+			}
 		},
 
 		connect: {

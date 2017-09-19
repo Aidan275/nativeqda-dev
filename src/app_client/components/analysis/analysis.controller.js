@@ -1,6 +1,8 @@
 /**
 * @author Aidan Andrews <aa275@uowmail.edu.au>
 * @ngdoc controller
+* @repo nativeqda-dev
+* @file src/app_client/components/analysis/analysis.controller.js
 * @name analysis.controller:analysisCtrl
 * @description Controller for the analysis page.
 */

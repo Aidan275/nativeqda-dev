@@ -1,7 +1,7 @@
 /**
 * @author Ben Rogers <bjr342@uowmail.edu.au>
 * @ngdoc controller
-* @name visualisation.controller:donutChartCtrl
+* @name visualisations.controller:donutChartCtrl
 * @description Controller for the donut chart visualisation
 */
 (function () {
@@ -60,7 +60,7 @@
 	    /**
 	    * @ngdoc function
 	    * @name checkLength
-	    * @methodOf visualisation.controller:donutChartCtrl
+	    * @methodOf visualisations.controller:donutChartCtrl
 	    * @description Checks if there are more than 10 elements to be drawn, if so it trims
 	    * and will take the top 10 elements and then reverse them so they are in descending order.
 	    * This functinon is called when drawing a keyword or concept analysis, the function then calls the drawChart function
@@ -79,7 +79,7 @@
 	    /**
 	    * @ngdoc function
 	    * @name sortRelevance
-	    * @methodOf visualisation.controller:donutChartCtrl
+	    * @methodOf visualisations.controller:donutChartCtrl
 	    * @description Function sorts the analysis data in ascending order on relevance. Function is used
 	    * when drawing keyword and concept analysis
 	    * @returns {array} The sorted array

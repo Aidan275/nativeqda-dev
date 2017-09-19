@@ -1,7 +1,7 @@
 /**
 * @author Ben Rogers <bjr342@uowmail.edu.au>
 * @ngdoc controller
-* @name visualisation.controller:barChartCtrl
+* @name visualisations.controller:barChartCtrl
 * @description Controller for the bar chart visualisation
 */
 (function () {
@@ -33,7 +33,7 @@
     /**
     * @ngdoc function
     * @name activate
-    * @methodOf visualisation.controller:barChartCtrl
+    * @methodOf visualisations.controller:barChartCtrl
     * @description Gets data to draw the bar chart for either concepts, entities or keywords
     */
     function activate() {
@@ -83,7 +83,7 @@
     /**
     * @ngdoc function
     * @name checkLength
-    * @methodOf visualisation.controller:barChartCtrl
+    * @methodOf visualisations.controller:barChartCtrl
     * @description Checks if there are more than 10 elements to be drawn, if so it trims
     * and will take the top 10 elements and then reverse them so they are in descending order.
     * This functinon is called when drawing a keyword or concept analysis, the function then calls the drawChart function
@@ -102,7 +102,7 @@
     /**
     * @ngdoc function
     * @name sortRelevance
-    * @methodOf visualisation.controller:barChartCtrl
+    * @methodOf visualisations.controller:barChartCtrl
     * @description Function sorts the analysis data in ascending order on relevance. Function is used
     * when drawing keyword and concept analysis
     * @returns {array} The sorted array
@@ -116,7 +116,7 @@
     /**
     * @ngdoc function
     * @name sortCount
-    * @methodOf visualisation.controller:barChartCtrl
+    * @methodOf visualisations.controller:barChartCtrl
     * @description Function sorts the analysis data in ascending order on count. Function is used
     * when drawing entity analysis
     * @returns {array} The sorted array
@@ -220,13 +220,13 @@
     /**
     * @ngdoc function
     * @name drawChart
-    * @methodOf visualisation.controller:barChartCtrl
+    * @methodOf visualisations.controller:barChartCtrl
     * @description Function takes the trimmed and sorted data and using d3 draws a bar chart on relevance
     * function is called when drawing keyword and concept analysis
     * @param {object} data An object consisting of
     *
-    * relevance: A score of how relevant the keyword or concept is
-    * text: The name of the element
+    * relevance: A score of how relevant the keyword or concept is  
+    * text: The name of the element  
     * dbpedia_resource: A link to dbpedias page on the resource
     */
     function drawChart(data) {
@@ -302,12 +302,12 @@
     /**
     * @ngdoc function
     * @name drawEntityChart
-    * @methodOf visualisation.controller:barChartCtrl
+    * @methodOf visualisations.controller:barChartCtrl
     * @description Function takes the trimmed and sorted data and using d3 draws a bar chart on relevance
     * function is called when drawing keyword and concept analysis
     * @param {object} data An object consisting of
     *
-    * count: A score of how many times the entity was mentioned
+    * count: A score of how many times the entity was mentioned  
     * text: The name of the element
     */
 
