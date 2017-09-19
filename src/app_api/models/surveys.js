@@ -5,6 +5,10 @@ var surveyResponseSchema = new mongoose.Schema({
 		type: String,
 		required: true
 	},
+	responseId: {
+		type: String,
+		required: true, //Doesn't actually work in the update response
+	},
 	ipAddress: {
 		type: String
 	},

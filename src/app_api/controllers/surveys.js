@@ -221,23 +221,51 @@ module.exports.deleteSurvey = function(req, res) {
 
 module.exports.saveSurveyResponse = function(req, res) {
 	var accessId = req.body.accessId;
-
-	if(accessId) {
-		var surveyResponse = new SurveyResponse();
-
-		surveyResponse.responseJSON = req.body.responseJSON;
-		surveyResponse.ipAddress = (req.headers['x-forwarded-for'] || '').split(',')[0] || req.connection.remoteAddress;
+	var responseId = req.params.responseId;
+	var isCompleted = false;
+	if (req.body.completed == "true") //If final submission set response to completed
+		isCompleted = true;
+	if (!accessId) { //Didn't provide a survey to submit response to.
+		sendJSONresponse(res, 400, {
+			"message": "No accessId or survey response included in request"
+		});
+		return;
+	}
+	
+	var surveyResponse = new SurveyResponse();
+	surveyResponse.responseJSON = req.body.responseJSON;
+	surveyResponse.ipAddress = (req.headers['x-forwarded-for'] || '').split(',')[0] || req.connection.remoteAddress;
+	if(req.body.coords != undefined){
+		surveyResponse.coords = { 
+			coordinates: [parseFloat(req.body.coords.lng), parseFloat(req.body.coords.lat)]
+		};
+	}
+		
+	if (accessId && responseId) { //Updating an already existing response
+		Survey.findOneAndUpdate(
+		{"accessId": accessId, "responses.completed": {$ne: true}, "responses.responseId": {$eq: responseId} }, //Query: Equals accessid and responseid and not set to completed
+		{"responses.$.responseJSON": surveyResponse.responseJSON, "responses.$.ipAddress": surveyResponse.ipAddress, "responses.$.coords": surveyResponse.coords, "responses.$.completed": isCompleted}, //Update: Set responseJSON, ipAddress, coords, and completed
+		function(err, results) {
+			if (!results) {
+				sendJSONresponse(res, 404, {
+					"message": "Survey or response not found"
+				});
+				return;
+			} else if (err) {
+				sendJSONresponse(res, 404, err);
+				return;
+			} //else
+			sendJSONresponse(res, 204, null);
+		});
+	}
+	else { //Create a new response
 		surveyResponse.fullName = req.body.fullName;
 		surveyResponse.email = req.body.email;
 		surveyResponse.age = req.body.age;
 		surveyResponse.gender = req.body.gender;
-
-		if(req.body.coords != undefined){
-			surveyResponse.coords = { 
-				coordinates: [parseFloat(req.body.coords.lng), parseFloat(req.body.coords.lat)]
-			};
-		}
-
+		
+		surveyResponse.responseId = shortid.generate();
+		
 		Survey.findOneAndUpdate(
 			{ "accessId" : accessId },
 			{ $push: { "responses": surveyResponse }, $inc: { numResponses: 1} },
@@ -254,10 +282,6 @@ module.exports.saveSurveyResponse = function(req, res) {
 				}
 				sendJSONresponse(res, 204, null);
 			});
-	} else {
-		sendJSONresponse(res, 400, {
-			"message": "No accessId or survey response included in request"
-		});
 	}
 };
 

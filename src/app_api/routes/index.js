@@ -101,7 +101,7 @@ router.get('/survey/read', auth, checkDatabaseStatus, ctrlSurveys.readSurvey);
 router.get('/survey/read/json/:accessId', checkDatabaseStatus, ctrlSurveys.readSurveyJSON);
 router.get('/survey/list', auth, checkDatabaseStatus, ctrlSurveys.listSurveys);
 router.delete('/survey/delete', auth, checkDatabaseStatus, ctrlSurveys.deleteSurvey);
-router.post('/survey/response/save', checkDatabaseStatus, ctrlSurveys.saveSurveyResponse);
+router.post('/survey/response/save/:responseId?', checkDatabaseStatus, ctrlSurveys.saveSurveyResponse); //Post a survery reponse or, with a responeId, update one.
 router.get('/survey/:accessId/response/:responseId', auth, checkDatabaseStatus, ctrlSurveys.readOneSurveyResponse);
 router.get('/survey/responses/read', auth, checkDatabaseStatus, ctrlSurveys.readSurveyResponses);
 
