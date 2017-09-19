@@ -70,21 +70,21 @@
 
 <navigation></navigation>
 <div class="hidden-xs hidden-sm" style="height:40px;background-color:#4676fa;position: relative;"><div style="background-color:#fff;height:3px;"></div>
-	<nav class="navbar navbar-default">
-		<div class="container-fluid">
-			<div class="collapse navbar-collapse" id="vis-navbar">
-				<ul class="nav navbar-nav tabbar" style="position: absolute;left: 42%;transform: translatex(-42%);">
-					<li><a ng-click="vm.togglePage('details')" role="button">Details</a></li>
-					<li><a ng-click="vm.togglePage('categories')" role="button">Categories</a></li>
-					<li><a ng-click="vm.togglePage('concepts')" role="button">Concepts</a></li>
-					<li><a ng-click="vm.togglePage('entities')" role="button">Entities</a></li>
-					<li><a ng-click="vm.togglePage('keywords')" role="button">Keywords</a></li>
-					<li><a ng-click="vm.togglePage('relations')" role="button">Relations</a></li>
-					<li><a ng-click="vm.togglePage('semanticRoles')" role="button">Semantic Roles</a></li>
-				</ul>
-			</div>
+<nav class="navbar navbar-default">
+	<div class="container-fluid">
+		<div class="collapse navbar-collapse" id="vis-navbar">
+			<ul class="nav navbar-nav tabbar" style="position: absolute;left: 42%;transform: translatex(-42%);">
+				<li><a ng-click="vm.togglePage('details')" role="button">Details</a></li>
+				<li><a ng-click="vm.togglePage('categories')" role="button">Categories</a></li>
+				<li><a ng-click="vm.togglePage('concepts')" role="button">Concepts</a></li>
+				<li><a ng-click="vm.togglePage('entities')" role="button">Entities</a></li>
+				<li><a ng-click="vm.togglePage('keywords')" role="button">Keywords</a></li>
+				<li><a ng-click="vm.togglePage('relations')" role="button">Relations</a></li>
+				<li><a ng-click="vm.togglePage('semanticRoles')" role="button">Semantic Roles</a></li>
+			</ul>
 		</div>
-	</nav>
+	</div>
+</nav>
 </div>
 
 <nav id="viMenu">
@@ -308,6 +308,20 @@
 							<p>Supported languages: English, French, German, Italian, Portuguese, Russian, Spanish, Swedish</p>
 
 							<ul class="vis-thumb-list">
+								<li class="vis-thumb-list-item">
+									<div class="vis-thumb-outer-div">
+										<div class="vis-thumb-inner-div">
+											<a href="/bubble-chart/entities/{{vm.analysisId}}">
+												<img src="assets/img/visualisations/bubble-chart-thumb.png"/>
+											</a>
+											<a class="vis-thumb-img-overlay" href="/bubble-chart/entities/{{vm.analysisId}}">
+												<span>
+													<strong>Bubble Chart</strong>
+												</span>
+											</a>
+										</div>
+									</div>
+								</li>
 								<li class="vis-thumb-list-item">
 									<div class="vis-thumb-outer-div">
 										<div class="vis-thumb-inner-div">

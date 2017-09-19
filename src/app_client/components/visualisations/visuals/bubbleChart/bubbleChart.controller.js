@@ -107,6 +107,13 @@
 						minRelevance = (keyword.relevance < minRelevance ? keyword.relevance : minRelevance);
 						dataNodes.push({text: text, radius: keyword.relevance*100, relevance: keyword.relevance});
 					});
+				} else if(analysisType === 'entities') {
+					data.entities.forEach(function(entity){
+						var text = entity.text.charAt(0).toUpperCase() + entity.text.slice(1);	// Capitalise first letter
+						maxRelevance = (entity.relevance > maxRelevance ? entity.relevance : maxRelevance);
+						minRelevance = (entity.relevance < minRelevance ? entity.relevance : minRelevance);
+						dataNodes.push({text: text, radius: entity.relevance*100, count: entity.count, type: entity.type, relevance: entity.relevance});
+					});
 				}
 
 				responseData = {nodes: dataNodes};
@@ -133,7 +140,7 @@
 			.force("y", d3.forceY(0))
 			.force("x", d3.forceX(0));
 
-			var div = d3.select("body").append("div")	
+			var div = d3.select("#bcPanel").append("div")	
 			.attr("class", "tooltip")				
 			.style("opacity", 0)
 			.style("background", "#fff")
@@ -155,19 +162,32 @@
 				.style("opacity", .9);
 				if(analysisType === 'concepts') {
 					div.html("Concept: " + d.text + "<br/>Relevance: " + d3.format(".2%")(d.relevance) + "<br/>DBpedia Resource: <a href='" + d.dbpedia_resource + "' target='_blank'>" + d.dbpedia_resource + "</a>")	
-					.style("left", (d3.event.pageX) + "px")		
-					.style("top", (d3.event.pageY - 150) + "px");
-				} else {
-					div.html("Concept: " + d.text + "<br/>Relevance: " + d3.format(".2%")(d.relevance))
-					.style("left", (d3.event.pageX) + "px")		
-					.style("top", (d3.event.pageY - 150) + "px");
+					.style("left", width/2 + "px")		
+					.style("transform", "translate(-50%, 0)")		
+					.style("top", 10 + "px")
+					.style("background", "#fafafa")
+					.style("border", "1px solid #000");
+				} else if (analysisType === 'keywords') {
+					div.html("Keyword: " + d.text + "<br/>Relevance: " + d3.format(".2%")(d.relevance))
+					.style("left", width/2 + "px")		
+					.style("transform", "translate(-50%, 0)")		
+					.style("top", 10 + "px")
+					.style("background", "#fafafa")
+					.style("border", "1px solid #000");
+				} else if (analysisType === 'entities') {
+					div.html("Entity: " + d.text + "<br/>Count: " + d.count + "<br/>Type: " + d.type + "<br/>Relevance: " + d3.format(".2%")(d.relevance))
+					.style("left", width/2 + "px")		
+					.style("transform", "translate(-50%, 0)")		
+					.style("top", 10 + "px")
+					.style("background", "#fafafa")
+					.style("border", "1px solid #000");
 				}
 				
 			})					
 			.on("mouseout", function(d) {		
 				div.transition()		
 				.duration(500)		
-				.delay(1000)
+				.delay(3000)
 				.style("opacity", 0);	
 			})
 			.call(d3.drag()

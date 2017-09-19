@@ -1,8 +1,6 @@
 /**
 * @author Aidan Andrews <aa275@uowmail.edu.au>
 * @ngdoc controller
-* @repo nativeqda-dev
-* @file src/app_client/components/analysis/analysis.controller.js
 * @name analysis.controller:analysisCtrl
 * @description Controller for the analysis page.
 */
@@ -58,7 +56,6 @@
 			return analysisService.listWatsonAnalysis()
 			.then(function(data) {
 				vm.analyses = data;
-				console.log(data);
 				return vm.analyses;
 			}, function(err) {
 				bsLoadingOverlayService.stop({referenceId: 'analysis-list'});	/* If error, stop animated loading overlay */
