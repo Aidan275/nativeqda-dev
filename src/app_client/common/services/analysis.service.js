@@ -21,6 +21,7 @@
 			watsonAnalysis			: watsonAnalysis,
 			saveWatsonAnalysis 		: saveWatsonAnalysis,
 			readWatsonAnalysis 		: readWatsonAnalysis,
+			readWatsonCategories 	: readWatsonCategories,
 			listWatsonAnalysis 		: listWatsonAnalysis,
 			deleteWatsonAnalysis 	: deleteWatsonAnalysis,
 			watsonTextAnalysis		: watsonTextAnalysis
@@ -117,6 +118,27 @@
 
 			function readWatsonAnalysisComplete(data) { return data.data; }
 			function readWatsonAnalysisFailed(e) { return exception.catcher('Failed reading the analysis.')(e); }
+		}
+
+		/**
+		* @ngdoc function
+		* @name readWatsonCategories
+		* @methodOf services.service:analysisService
+		* @description Makes a GET request to the back-end to get the category results of the specified Watson analysis object.
+		* @param {String} analysisId The ObjectId for the analysis object
+		*/
+		function readWatsonCategories(analysisId) {
+			/* Encode the key for the API URL in case it includes reserved characters (e.g '+', '&') */
+			var encodedId = encodeURIComponent(analysisId);
+			return $http.get('/api/analysis/watson/read/categories?id=' + encodedId, {
+				headers: {
+					Authorization: 'Bearer '+ authService.getToken()
+				}
+			}).then(readWatsonCategoriesComplete)
+			.catch(readWatsonCategoriesFailed);
+
+			function readWatsonCategoriesComplete(data) { return data.data; }
+			function readWatsonCategoriesFailed(e) { return exception.catcher('Failed reading the categories results.')(e); }
 		}
 
 		/**

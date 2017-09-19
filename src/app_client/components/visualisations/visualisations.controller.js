@@ -59,6 +59,7 @@
 			.then(function(data) {
 				bsLoadingOverlayService.stop({referenceId: 'visuals-info'});
 				vm.analysisData = data;
+				console.log(data);
 				listData();
 			});
 		}

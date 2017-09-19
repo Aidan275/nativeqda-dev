@@ -11,7 +11,7 @@
 		var analysisType = $routeParams.type;
 		var analysisId = $routeParams.id;
 		var responseData = {};
-		var data = [];
+		var tableData = [];
 		vm.cols = [];
 
 		activate();
@@ -44,32 +44,38 @@
 					semanticRolesTable();
 					break;
 				}
-
 			});
 		}
 
-
 		function categoriesTable() {
-			var repeaterID = 0;
-			responseData.categories.forEach(function(object) {
-				object.label = object.label || {};	// If no object child, set object to empty (to prevent undefined error)
-				object.score = object.score || {};
+			bsLoadingOverlayService.start({referenceId: 'analysis-data-table'});
+			analysisService.readWatsonCategories(analysisId)
+			.then(function(data) {
+				bsLoadingOverlayService.stop({referenceId: 'analysis-data-table'});
+				responseData = data;
+				console.log(data);
 
-				var anObject = 	{
-					id: repeaterID,
-					label: object.label,
-					score: object.score
-				};
-				data.push(anObject);
-				repeaterID++;
+				var repeaterID = 0;
+				responseData.categories.forEach(function(object) {
+					object.label = object.label || {};	// If no object child, set object to empty (to prevent undefined error)
+					object.score = object.score || {};
+
+					var anObject = 	{
+						id: repeaterID,
+						label: object.label,
+						score: object.score
+					};
+					tableData.push(anObject);
+					repeaterID++;
+				});
+
+				vm.cols = [
+				{field:"label", filter:{ label:"text" }, show:true, sortable:"label", title:"Label"},
+				{field:"score", filter:{ score:"number" }, show:true, sortable:"score", title:"Score"}
+				];
+
+				vm.tableParams = new NgTableParams({}, { dataset: tableData });
 			});
-
-			vm.cols = [
-			{field:"label", filter:{ label:"text" }, show:true, sortable:"label", title:"Label"},
-			{field:"score", filter:{ score:"number" }, show:true, sortable:"score", title:"Score"}
-			];
-
-			vm.tableParams = new NgTableParams({}, { dataset: data });
 		}
 
 		function conceptsTable() {
@@ -85,7 +91,7 @@
 					relevance: object.relevance,
 					dbpedia_resource: object.dbpedia_resource
 				};
-				data.push(anObject);
+				tableData.push(anObject);
 				repeaterID++;
 			});
 
@@ -95,7 +101,7 @@
 			{field:"dbpedia_resource", filter:{ dbpedia_resource:"number" }, show:true, sortable:"dbpedia_resource", title:"DBpedia Resource"}
 			];
 
-			vm.tableParams = new NgTableParams({}, { dataset: data });
+			vm.tableParams = new NgTableParams({}, { dataset: tableData });
 		}
 
 		function entitiesTable() {
@@ -121,7 +127,7 @@
 					sadness: object.emotion.sadness,
 					sentiment: object.sentiment.score
 				};
-				data.push(anObject);
+				tableData.push(anObject);
 				repeaterID++;
 			});
 
@@ -138,7 +144,7 @@
 			{field:"sentiment", filter:{ sentiment:"number" }, show:true, sortable:"sentiment", title:"Sentiment"}
 			];
 
-			vm.tableParams = new NgTableParams({}, { dataset: data });
+			vm.tableParams = new NgTableParams({}, { dataset: tableData });
 		}
 
 		function keywordsTable() {
@@ -160,7 +166,7 @@
 					sadness: object.emotion.sadness,
 					sentiment: object.sentiment.score
 				};
-				data.push(anObject);
+				tableData.push(anObject);
 				repeaterID++;
 			});
 
@@ -175,7 +181,7 @@
 			{field:"sentiment", filter:{ sentiment:"number" }, show:true, sortable:"sentiment", title:"Sentiment"}
 			];
 
-			vm.tableParams = new NgTableParams({}, { dataset: data });
+			vm.tableParams = new NgTableParams({}, { dataset: tableData });
 
 		}
 
@@ -196,7 +202,7 @@
 					type: object.type,
 					score: object.score
 				};
-				data.push(anObject);
+				tableData.push(anObject);
 				repeaterID++;
 			});
 
@@ -208,7 +214,7 @@
 			{field:"score", filter:{ score:"number" }, show:true, sortable:"score", title:"Score"}
 			];
 
-			vm.tableParams = new NgTableParams({}, { dataset: data });	
+			vm.tableParams = new NgTableParams({}, { dataset: tableData });	
 		}
 
 		function semanticRolesTable() {
@@ -229,7 +235,7 @@
 					actionNormalized: object.action.normalized,
 					objectText: object.object.text
 				};
-				data.push(anObject);
+				tableData.push(anObject);
 				repeaterID++;
 			});
 
@@ -243,7 +249,7 @@
 			{field:"objectText", filter:{ objectText:"text" }, show:true, sortable:"objectText", title:"objectText"}
 			];
 
-			vm.tableParams = new NgTableParams({}, { dataset: data });
+			vm.tableParams = new NgTableParams({}, { dataset: tableData });
 		}
 	}
 

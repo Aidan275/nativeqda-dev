@@ -1,10 +1,5 @@
 var mongoose = require('mongoose');
 var AnalysisResults = mongoose.model('analysisResults');
-var AYLIENTextAPI = require('aylien_textapi');
-var textapi = new AYLIENTextAPI({
-	application_id: "82b88370",
-	application_key: "f5a54d679ae9544885175a11b26d7efd"
-});
 var NaturalLanguageUnderstandingV1 = require('watson-developer-cloud/natural-language-understanding/v1.js');
 var natural_language_understanding = new NaturalLanguageUnderstandingV1({
 	"username": "ac282974-cb6e-474b-b44f-8a0680ca52c9",
@@ -12,26 +7,9 @@ var natural_language_understanding = new NaturalLanguageUnderstandingV1({
 	'version_date': '2017-02-27'
 });
 
-
 var sendJSONresponse = function(res, status, content) {
 	res.status(status);
 	res.json(content);
-};
-
-module.exports.aylienConceptAnalysis = function(req, res) {
-	var text = req.body.text;
-	var language = req.body.language; 
-
-	textapi.concepts({
-		'text': text,
-		'language': language
-	}, function(error, response) {
-		if (error === null) {
-			sendJSONresponse(res, 200, response);
-		} else {
-			sendJSONresponse(res, 404, error);
-		}
-	});
 };
 
 module.exports.watsonAnalysis = function(req, res) {
@@ -59,15 +37,13 @@ module.exports.watsonAnalysis = function(req, res) {
 
 	natural_language_understanding.analyze(parameters, function(error, response) {
 		if (error) {
-			sendJSONresponse(res, 404, error);
+			sendJSONresponse(res, 503, error);
 		}
 		else {
-			sendJSONresponse(res, 200, response);
+			saveWatsonAnalysis(req, res, response);
 		}
 	});
 };
-
-
 
 module.exports.watsonTextAnalysis = function(req, res) {
 	var parameters = {
@@ -94,7 +70,7 @@ module.exports.watsonTextAnalysis = function(req, res) {
 
 	natural_language_understanding.analyze(parameters, function(err, response) {
 		if (err) {
-			sendJSONresponse(res, 500, err);
+			sendJSONresponse(res, 503, err);
 		} else {
 			saveWatsonAnalysis(req, res, response);
 		}
@@ -117,13 +93,17 @@ var saveWatsonAnalysis = function(req, res, response) {
 
 	analysisResults.save(function(err) {
 		if (err) {
-			sendJSONresponse(res, 404, err);
+			sendJSONresponse(res, 500, err);
 		} else {
-			sendJSONresponse(res, 200, analysisResults);
+			sendJSONresponse(res, 200, {
+				_id: analysisResults._id,
+				name: analysisResults.name,
+				createdBy: analysisResults.createdBy,
+				dateCreated: analysisResults.dateCreated
+			});
 		}
 	});	
 };
-
 
 module.exports.readWatsonAnalysis = function(req, res) {
 	var id = req.query.id;
@@ -150,6 +130,30 @@ module.exports.readWatsonAnalysis = function(req, res) {
 			});
 	} else {
 		sendJSONresponse(res, 404, {
+			"message": "No id in request"
+		});
+	}
+};
+
+module.exports.readWatsonCategories = function(req, res) {
+	var id = req.query.id;
+
+	if (id) {
+		AnalysisResults
+		.findById(id, {_id: 0, categories: 1}, function(err, data) {
+			if (!data) {
+				sendJSONresponse(res, 404, {
+					"message": "analysis not found"
+				});
+				return;
+			} else if (err) {
+				sendJSONresponse(res, 500, err);
+				return;
+			}
+			sendJSONresponse(res, 200, data);
+		});
+	} else {
+		sendJSONresponse(res, 400, {
 			"message": "No id in request"
 		});
 	}
