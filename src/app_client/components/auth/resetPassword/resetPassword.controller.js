@@ -1,5 +1,6 @@
 /**
-* @author Aidan Andrews <aa275@uowmail.edu.au>
+* @author Aidan Andrews
+* @email aa275@uowmail.edu.au
 * @ngdoc controller
 * @name auth.controller:resetPasswordCtrl
 * @description Controller for the reset password page.

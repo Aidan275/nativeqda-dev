@@ -1,5 +1,6 @@
 /**
-* @author Aidan Andrews <aa275@uowmail.edu.au>
+* @author Aidan Andrews
+* @email aa275@uowmail.edu.au
 * @ngdoc service
 * @name services.service:usersService
 * @description Service used for making requests to the

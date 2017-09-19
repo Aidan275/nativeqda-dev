@@ -1,5 +1,6 @@
 /**
-* @author Aidan Andrews <aa275@uowmail.edu.au>
+* @author Aidan Andrews
+* @email aa275@uowmail.edu.au
 * @ngdoc overview 
 * @name factories
 * @description The factories module is a sub-module of the common module.

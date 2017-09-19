@@ -1,5 +1,6 @@
 /**
-* @author Aidan Andrews <aa275@uowmail.edu.au>
+* @author Aidan Andrews
+* @email aa275@uowmail.edu.au
 * @ngdoc overview 
 * @name common
 * @description The common module is a sub-module of the nativeQDA module, the main module of this application.

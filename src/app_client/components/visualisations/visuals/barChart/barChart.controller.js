@@ -1,5 +1,6 @@
 /**
-* @author Ben Rogers <bjr342@uowmail.edu.au>
+* @author Ben Rogers
+* @email bjr342@uowmail.edu.au
 * @ngdoc controller
 * @name visualisations.controller:barChartCtrl
 * @description Controller for the bar chart visualisation

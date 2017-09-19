@@ -1,41 +1,76 @@
 <!DOCTYPE html><meta charset=utf-8><style>
-
 .arc text {
-  font: 10px sans-serif;
-  text-anchor: middle;
+    font: 10px sans-serif;
+    text-anchor: middle;
 }
 
 .arc path {
-  stroke: #fff;
+    stroke: #fff;
 }
 
-  .legend {
+.legend {
     font-size: 13px;
-  }
-  h1 {
-  font-size: 15px;
-  text-align: center;
-  }
-  rect {
+}
+
+h1 {
+    font-size: 15px;
+    text-align: center;
+}
+
+rect {
     stroke-width: 2;
-  }
-  #chart {
-  height: 360px;
-  margin: 0 auto;                            
-  position: relative;
-  width: 360px;
-  }
-  .tooltip {
-  position: absolute;
-  display: none;
-  min-width: 80px;
-  height: auto;
-  background: none repeat scroll 0 0 #ffffff;
-  border: 1px solid #6F257F;
-  padding: 14px;
-  text-align: center;
-}  
-  .label {
-   font-weight: 600;
-  }
-</style><navigation></navigation><div style="padding:100 100px;"><h3></h3><div id=chart></div><svg width=960 height=500></svg></div>
+}
+
+#chart {
+    height: 720;
+    margin: 0 auto;
+    position: relative;
+    width: 720;
+}
+
+.tooltip {
+    position: absolute;
+    display: none;
+    min-width: 80px;
+    height: auto;
+    background: none repeat scroll 0 0 #ffffff;
+    border: 1px solid #6F257F;
+    padding: 14px;
+    text-align: center;
+}
+
+.label {
+    font-weight: 600;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    color: #333333;
+}
+
+/* Add shadow effect to chart. */
+svg {
+    -webkit-filter: drop-shadow( 0px 3px 3px rgba(0,0,0,.3) );
+    filter: drop-shadow( 0px 3px 3px rgba(0,0,0,.25) );
+}
+
+/*Styling for the lines connecting the labels to the slices*/
+polyline{
+    opacity: .3;
+    stroke: black;
+    stroke-width: 2px;
+    fill: none;
+}
+
+/* Make the percentage on the text labels bold*/
+.labelName tspan {
+    font-style: normal;
+    font-weight: 700;
+}
+
+
+.labelName {
+    font-size: 0.9em;
+    font-style: italic;
+}
+</style><navigation></navigation><div style="padding-top: 50px;"></div><div style="padding:100 100px;"><div style="position: absolute; left: 50%;transform: translateX(-50%);"><div id=chart></div></div></div>

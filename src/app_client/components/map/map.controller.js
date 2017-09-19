@@ -1,5 +1,6 @@
 /**
-* @author Aidan Andrews <aa275@uowmail.edu.au>
+* @author Aidan Andrews
+* @email aa275@uowmail.edu.au
 * @ngdoc controller
 * @name map.controller:mapCtrl
 * @description The main map of the application

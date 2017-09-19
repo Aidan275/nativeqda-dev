@@ -1,42 +1,46 @@
 <style>
- .chart div {
-  font: 10px sans-serif;
-  background-color: steelblue;
-  text-align: right;
-  padding: 3px;
-  margin: 1px;
-  color: white;
-      position: absolute;
-    top: 0; 
-    right: 0; 
-    bottom: 0; 
+.chart div {
+    font: 10px sans-serif;
+    background-color: steelblue;
+    text-align: right;
+    padding: 3px;
+    margin: 1px;
+    color: white;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
     left: 0;
 }
+
 .axis {
-	font: 10px sans-serif;
+    font: 10px sans-serif;
 }
+
 .axis path,
 .axis line {
-  fill: none;
-  stroke: #D4D8DA;
-  stroke-width: 1px;
-  shape-rendering: crispEdges;
+    fill: none;
+    stroke: #D4D8DA;
+    stroke-width: 1px;
+    shape-rendering: crispEdges;
 }
+
 .toolTip {
-  position: absolute;
-  display: none;
-  min-width: 80px;
-  height: auto;
-  background: none repeat scroll 0 0 #ffffff;
-  border: 1px solid #6F257F;
-  padding: 14px;
-  text-align: center;
+    position: absolute;
+    display: none;
+    min-width: 80px;
+    height: auto;
+    background: none repeat scroll 0 0 #ffffff;
+    border: 1px solid #6F257F;
+    padding: 14px;
+    text-align: center;
 }
+
 .bar {
-	fill: steelblue;
+    fill: steelblue;
 }
 
 .bar:hover {
-	fill: brown;
+    fill: brown;
 }
- </style><navigation></navigation><div style="padding:0 100px;"><svg width=960 height=500></svg><div class=chart align=center></div><button type=button ng-click=vm.top10()>Top 10</button> <button md-raised-button ng-click=vm.bottom10()>Bottom 10</button><footer-generic></footer-generic></div>
+</style><navigation></navigation><div style="padding:0 100px;"><svg width=960 height=500></svg><div style="position: absolute; left: 50%;transform: translateX(-50%);"><div class=chart align=center></div><button type=button ng-click=vm.top10()>Top 10</button> <button md-raised-button ng-click=vm.bottom10()>Bottom 10</button></div><footer-generic></footer-generic></div>

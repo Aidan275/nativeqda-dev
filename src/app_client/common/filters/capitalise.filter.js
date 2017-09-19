@@ -1,5 +1,6 @@
 /**
-* @author Aidan Andrews <aa275@uowmail.edu.au>
+* @author Aidan Andrews
+* @email aa275@uowmail.edu.au
 * @ngdoc filter 
 * @name filters.filter:capitalise
 * @description Filter to capitalise the first letter of a string

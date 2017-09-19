@@ -1,5 +1,6 @@
 /**
-* @author Aidan Andrews <aa275@uowmail.edu.au>
+* @author Aidan Andrews
+* @email aa275@uowmail.edu.au
 * @ngdoc directive 
 * @name directives.directive:pwCheck
 * @description Directive to check if password and confirm password match.

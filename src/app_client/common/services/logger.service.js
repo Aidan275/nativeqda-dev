@@ -1,5 +1,6 @@
 /**
-* @author Aidan Andrews <aa275@uowmail.edu.au>
+* @author Aidan Andrews
+* @email aa275@uowmail.edu.au
 * @ngdoc service
 * @name services.service:logger
 * @description Service used to log error, info, success, and warning messages to the console and to

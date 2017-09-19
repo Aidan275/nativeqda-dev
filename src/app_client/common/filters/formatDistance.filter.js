@@ -1,5 +1,6 @@
 /**
-* @author Aidan Andrews <aa275@uowmail.edu.au>
+* @author Aidan Andrews
+* @email aa275@uowmail.edu.au
 * @ngdoc filter 
 * @name filters.filter:formatDistance
 * @description Filter for adding appropriate unit for the given distance (m or km).

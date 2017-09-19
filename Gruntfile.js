@@ -16,7 +16,6 @@ module.exports = function(grunt) {
 				startPage: '/docs',
 				sourceLink: true,
 				titleLink: '/#/docs'
-				
 			},
 			docs: {
 				src: ['src/**/*.js'],
@@ -34,7 +33,13 @@ module.exports = function(grunt) {
 			}
 		},
 
-		clean: ['docs'],
+		clean: [
+		'docs/css',
+		'docs/font',
+		'docs/js',
+		'docs/partials',
+		'docs/index.html'
+		],
 
 		watch: {
 			options: {
@@ -45,7 +50,8 @@ module.exports = function(grunt) {
 		}
 	});
 
-	grunt.loadNpmTasks('grunt-ngdocs');
+	grunt.loadTasks('docs/grunt-ngdocs/tasks');
+	//grunt.loadNpmTasks('grunt-ngdocs');
 	grunt.loadNpmTasks('grunt-contrib-connect');
 	grunt.loadNpmTasks('grunt-contrib-clean');
 	grunt.loadNpmTasks('grunt-contrib-watch');
