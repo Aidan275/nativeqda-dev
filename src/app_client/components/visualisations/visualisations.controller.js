@@ -49,7 +49,7 @@
 				//Browser is mobile based
 			}
 			else{
-				// slideout.toggle(); Browser is desktop based
+				//Browser is desktop based
 			}			
 		}
 
