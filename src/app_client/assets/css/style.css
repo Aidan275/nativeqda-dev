@@ -963,15 +963,64 @@ footer span {
 	cursor: pointer;
 }
 
-#user-management .users-table td.avatar-cell,
-#user-management .users-table td.first-name-cell,
-#user-management .users-table td.last-name-cell,
-#user-management .users-table td.email-cell,
-#user-management .users-table td.role-cell,
-#user-management .users-table td.action-cell {
+#user-management .users-browser-table td.avatar-cell,
+#user-management .users-browser-table td.first-name-cell,
+#user-management .users-browser-table td.last-name-cell,
+#user-management .users-browser-table td.email-cell,
+#user-management .users-browser-table td.role-cell,
+#user-management .users-browser-table td.action-cell {
 	white-space: nowrap;
 	text-align: center;
 	vertical-align: middle !important;
+}
+
+#user-management .users-browser-table td {
+	border-top: none !important;
+}
+
+#user-management .users-browser-table td.name-cell,
+#user-management .users-browser-table td.date-created-cell,
+#user-management .users-browser-table td.created-by-cell {
+	cursor: pointer;
+}
+
+#user-management .users-browser-table .table-row:hover {
+	background: rgba(70,118,250,0.15) !important;
+}
+
+#user-management .users-browser-table td.name-cell {
+	vertical-align: middle !important;
+}
+
+#user-management .users-browser-table td.date-created-cell,
+#user-management .users-browser-table td.created-by-cell,
+#user-management .users-browser-table td.context-menu-cell {
+	white-space: nowrap;
+	text-align: center;
+	vertical-align: middle !important;
+}
+
+#user-management .users-browser-table td.context-menu-cell .dropdown-menu {
+	border: none;
+}
+
+#user-management .users-browser-table td.context-menu-cell .dropdown-menu>li>a {
+	padding: 5px 20px;
+}
+
+#user-management .users-browser-table td.context-menu-cell .dropdown-menu .view-cell>a:hover {
+	background-color: #5cb85c;
+	color: #fff;
+}
+
+#user-management .users-browser-table td.context-menu-cell .dropdown-menu .edit-cell>a:hover {
+	color: #fff;
+	background-color: #2d65ff;
+}
+
+#user-management .users-browser-table td.context-menu-cell .dropdown-menu .delete-cell>a:hover {
+	background-color: #d9534f;
+	color: #fff;
 }
 
 /* ========== MAP PAGE ========== */

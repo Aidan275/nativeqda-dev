@@ -9,12 +9,12 @@
 	
 	<p>This page is for creating, viewing, modifying, and deleting users.</p>
 
-	<button  data-step="1" data-intro="Click here to create a new user!" type="button" class="btn btn-md btn-success" ng-click="vm.popupNewUser()">New User</button>
+	<button data-step="1" data-intro="Click here to create a new user!" type="button" class="btn btn-md btn-success" ng-click="vm.popupNewUser()">New User</button>
 	<a style="float:right;" href="javascript:void(0);" onclick="javascript:introJs().start();"><i class="fa fa-question-circle" aria-hidden="true"></i></a>
 
 	<div class="bs-loading-container" bs-loading-overlay bs-loading-overlay-active-class="loading-overlay--active" bs-loading-overlay-reference-id="analysis-list"> 
 		<div class="blur-this">
-		<table ng-table="vm.tableParams" class="table table-condensed table-bordered table-striped users-table" style="margin-top:5px">
+		<table ng-table="vm.tableParams" class="table table-condensed table-striped users-browser-table" style="margin-top:5px">
 			<tr class="table-row" ng-repeat="row in $data">
 				<td data-title="'Avatar'" class="avatar-cell">
 					<div class="img-circle med-avatar-container" style="background-image: url('{{ row.avatar }}');">
@@ -22,16 +22,25 @@
 					</div>
 				</td>
 				<td data-title="'First Name'" filter="{firstName: 'text'}" sortable="'firstName'" class="first-name-cell">{{row.firstName}}</td>
-				<td data-title="'Last Name'" filter="{lastName: 'text'}" sortable="'lastName'" class="last-name-cell">{{row.lastName}}</td>
+				<td data-title="'Last Name'" filter="{lastName: 'text'}" sortable="'lastName'" class="last-name-cell hidden-xs">{{row.lastName}}</td>
 				<td data-title="'Email'" filter="{email: 'number'}" sortable="'email'" class="email-cell">{{row.email}}</td>
-				<td data-title="'Role'" filter="{role: 'number'}" sortable="'role'" class="role-cell">
+				<td data-title="'Role'" filter="{role: 'number'}" sortable="'role'" class="role-cell hidden-xs">
 					<span ng-if="row.role=='Researcher'" class="label label-success">{{row.role}}</span>
 					<span ng-if="row.role=='Bubble Admin'" class="label label-primary">{{row.role}}</span>
 				</td>
-				<td data-title="'Action'" class="action-cell">
-					<a data-step="2" data-intro="Click here to view this user!" class="btn btn-success btn-xs" role="button">View</a>
-					<a data-step="3" data-intro="Click here to edit this user!" ng-click="vm.popupEditUser(row)" class="btn btn-primary btn-xs" role="button">Edit</a>
-					<a data-step="4" data-intro="Click here to delete this user!" ng-click="vm.confirmDelete(row)" class="btn btn-danger btn-xs" role="button">Delete</a>
+				<td data-step="2" data-intro="Click here to view/edit/delete this user!" data-title="'Action'" class="context-menu-cell">
+					<div class="dropdown">
+								<span class="fa fa-ellipsis-h dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"></span>
+								<ul class="dropdown-menu dropdown-menu-right">
+									<li class="view-cell"><a>View</a></li>
+									<li ng-click="vm.popupEditUser(row)" class="edit-cell"><a>Edit</a></li>
+									<li ng-click="vm.confirmDelete(row)" class="delete-cell"><a>Delete</a></li>
+								</ul>
+							</div>
+				
+					
+					
+					
 				</td>
 			</tr>
 
