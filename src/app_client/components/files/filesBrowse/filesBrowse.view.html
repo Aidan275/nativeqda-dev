@@ -6,8 +6,8 @@
 
 	<div class="col-md-12">
 
-		<div class="col-md-8">
-			<a ng-repeat="path in vm.pathsArray" ng-click="vm.openFolder($index)" style="cursor: pointer;">/{{path}}</a>
+		<div class="col-md-8" style="font-size: 18px; cursor: pointer;">
+			<a ng-click="vm.openFolder('/')">Home</a><a ng-repeat="path in vm.pathsArray" ng-click="vm.openFolder($index)">/{{path}}</a>
 		</div>
 
 		<div class="col-md-4">
