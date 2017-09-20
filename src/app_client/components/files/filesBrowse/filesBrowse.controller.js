@@ -8,9 +8,8 @@
 	
 
 	/* @ngInject */
-	function filesBrowseCtrl (mapService, $http, $window, $scope, $uibModal, Upload, NgTableParams, filesService, authService, logger, $filter, $compile, bsLoadingOverlayService, s3Service) {
+	function filesBrowseCtrl (mapService, $http, $window, $routeParams, $scope, $uibModal, Upload, NgTableParams, filesService, authService, logger, $filter, $compile, bsLoadingOverlayService, s3Service) {
 		var vm = this;
-
 		// Bindable Functions
 		vm.viewFile = viewFile;
 		vm.confirmDelete = confirmDelete;
@@ -22,7 +21,7 @@
 
 		// Bindable Data
 		vm.fileList = [];
-		vm.currentPath = '/';
+		vm.currentPath = fileroute($routeParams['folder'], $routeParams['file']);
 		vm.pathsArray = [''];
 		vm.pageHeader = {
 			title: 'Files'
@@ -34,6 +33,17 @@
 
 		function activate() {
 			getFileList();
+		}
+		
+		//Manage router parameters
+		function fileroute(folder, file) {
+			//console.log(folder + " " + file)
+			if (folder == null && file == null) //Root
+				return '';
+			else if (folder == null) //Root-level folder/file
+				return file;
+			else //Otherwise
+				return folder + '/' + file
 		}
 
 		// Gets all the files from the MongoDB database
