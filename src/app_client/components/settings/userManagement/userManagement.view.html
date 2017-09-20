@@ -23,8 +23,8 @@
 				</td>
 				<td data-title="'First Name'" filter="{firstName: 'text'}" sortable="'firstName'" class="first-name-cell">{{row.firstName}}</td>
 				<td data-title="'Last Name'" filter="{lastName: 'text'}" sortable="'lastName'" class="last-name-cell hidden-xs">{{row.lastName}}</td>
-				<td data-title="'Email'" filter="{email: 'number'}" sortable="'email'" class="email-cell">{{row.email}}</td>
-				<td data-title="'Role'" filter="{role: 'number'}" sortable="'role'" class="role-cell hidden-xs">
+				<td data-title="'Email'" filter="{email: 'text'}" sortable="'email'" class="email-cell">{{row.email}}</td>
+				<td data-title="'Role'" filter="{role: 'text'}" sortable="'role'" class="role-cell hidden-xs">
 					<span ng-if="row.role=='Researcher'" class="label label-success">{{row.role}}</span>
 					<span ng-if="row.role=='Bubble Admin'" class="label label-primary">{{row.role}}</span>
 				</td>
@@ -37,10 +37,6 @@
 									<li ng-click="vm.confirmDelete(row)" class="delete-cell"><a>Delete</a></li>
 								</ul>
 							</div>
-				
-					
-					
-					
 				</td>
 			</tr>
 

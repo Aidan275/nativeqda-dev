@@ -9,6 +9,8 @@
 	/* @ngInject */
 	function surveyCtrl (NgTableParams, surveyService, bsLoadingOverlayService, logger) {
 		var vm = this;
+		
+		vm.pageId = 'survey-page-css';
 
 		// Bindable Functions
 		vm.confirmDelete = confirmDelete;
