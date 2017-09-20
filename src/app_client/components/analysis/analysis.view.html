@@ -12,7 +12,7 @@
 
 		<div class="bs-loading-container" bs-loading-overlay bs-loading-overlay-active-class="loading-overlay--active" bs-loading-overlay-reference-id="analysis-list"> 
 			<div class="blur-this">
-				<table ng-table="vm.tableParams" class="table table-condensed table-striped analysis-browser-table">
+				<table ng-table="vm.tableParams" class="table table-condensed table-bordered table-striped file-browser-table">
 					<tr class="table-row" ng-repeat="row in $data">
 						<td ng-click="vm.goToVisUrl(row._id)" data-title="'Analysis'" filter="{name: 'text'}" sortable="'name'" class="name-cell">{{row.name}}</td>
 						<td ng-click="vm.goToVisUrl(row._id)" data-title="'Created By'" filter="{createdBy: 'text'}" sortable="'createdBy'" class="created-by-cell hidden-xs" header-class="'hidden-xs'">{{row.createdBy}}</td>
