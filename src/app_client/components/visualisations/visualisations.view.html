@@ -73,14 +73,14 @@
 <nav class="navbar navbar-default">
 	<div class="container-fluid">
 		<div class="collapse navbar-collapse" id="vis-navbar">
-			<ul class="nav navbar-nav tabbar" style="position: absolute;left: 42%;transform: translatex(-42%);">
+			<ul class="nav navbar-nav tabbar" style="position: absolute;left: 40.5%;transform: translatex(-40.5%);">
 				<li><a ng-click="vm.togglePage('details')" role="button">Details</a></li>
 				<li><a ng-click="vm.togglePage('categories')" role="button">Categories</a></li>
 				<li><a ng-click="vm.togglePage('concepts')" role="button">Concepts</a></li>
 				<li><a ng-click="vm.togglePage('entities')" role="button">Entities</a></li>
 				<li><a ng-click="vm.togglePage('keywords')" role="button">Keywords</a></li>
 				<li><a ng-click="vm.togglePage('relations')" role="button">Relations</a></li>
-				<li><a ng-click="vm.togglePage('semanticRoles')" role="button">Semantic Roles</a></li>
+				<li><a ng-click="vm.togglePage('semanticRoles')" role="button">Semantics</a></li>
 			</ul>
 		</div>
 	</div>
@@ -89,21 +89,21 @@
 
 <nav id="viMenu" class="hidden-md hidden-lg">
 	<header>
-		<h3>Analysis Types</h3>
-
-		<a ng-click="vm.togglePage('details')" class="btn btn-success blueButton" role="button">Details</a>
+		<h3 style="text-align:center;">Analysis Types</h3>
+	
+		<div ng-click="vm.togglePage('details')" width="100%" style="height:40px;background-color:#4676fa;color:#fff;text-align:center;border-radius: 12px 12px 0 0;" role="button"><div style="position:relative;top:10px;">Details</div></div>
 		<div style="padding-bottom:2px;"></div>
-		<a ng-click="vm.togglePage('categories')" class="btn btn-success blueButton" role="button">Categories</a>
+		<div ng-click="vm.togglePage('categories')" style="height:40px;background-color:#4676fa;color:#fff;text-align:center;" width="100%" role="button"><div style="position:relative;top:10px;">Categories</div></div>
 		<div style="padding-bottom:2px;"></div>
-		<a ng-click="vm.togglePage('concepts')" class="btn btn-success blueButton" role="button">Concepts</a>
+		<div ng-click="vm.togglePage('concepts')" style="height:40px;background-color:#4676fa;color:#fff;text-align:center;" width="100%" role="button"><div style="position:relative;top:10px;">Concepts</div></div>
 		<div style="padding-bottom:2px;"></div>
-		<a ng-click="vm.togglePage('entities')" class="btn btn-success blueButton" role="button">Entities</a>
+		<div ng-click="vm.togglePage('entities')" style="height:40px;background-color:#4676fa;color:#fff;text-align:center;" width="100%" role="button"><div style="position:relative;top:10px;">Entities</div></div>
 		<div style="padding-bottom:2px;"></div>
-		<a ng-click="vm.togglePage('keywords')" class="btn btn-success blueButton" role="button">Keywords</a>
+		<div ng-click="vm.togglePage('keywords')" style="height:40px;background-color:#4676fa;color:#fff;text-align:center;" width="100%" role="button"><div style="position:relative;top:10px;">Keywords</div></div>
 		<div style="padding-bottom:2px;"></div>
-		<a ng-click="vm.togglePage('relations')" class="btn btn-success blueButton" role="button">Relations</a>
+		<div ng-click="vm.togglePage('relations')" style="height:40px;background-color:#4676fa;color:#fff;text-align:center;" width="100%" role="button"><div style="position:relative;top:10px;">Relations</div></div>
 		<div style="padding-bottom:2px;"></div>
-		<a ng-click="vm.togglePage('semanticRoles')" class="btn btn-success blueButton" role="button">Semantic Roles</a>
+		<div ng-click="vm.togglePage('semanticRoles')" style="height:40px;background-color:#4676fa;color:#fff;text-align:center;border-radius: 0 0 12px 12px;" width="100%" role="button"><div style="position:relative;top:10px;">Semantics</div></div>
 	</header>
 </nav>
 
@@ -142,7 +142,7 @@
 							<br/>
 							<label>Relations: </label> {{vm.analysisData.relations.length}}
 							<br/>
-							<label>Semantic Roles: </label> {{vm.analysisData.semanticRoles.length}}
+							<label>Semantics: </label> {{vm.analysisData.semanticRoles.length}}
 							<br/>
 							<br/>
 							<h4 ng-if="vm.analysisData.files.length > 1" >Files Analysed</h4>
