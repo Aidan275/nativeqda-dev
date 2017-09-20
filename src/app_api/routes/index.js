@@ -29,7 +29,7 @@ function checkDatabaseStatus(req, res, next) {
 	}
 }
 
-/* Authentication */
+/* ==================== Authentication ==================== */
 router.post('/register', checkDatabaseStatus, ctrlAuth.register);
 router.post('/login', checkDatabaseStatus, ctrlAuth.login);
 router.post('/password/forgot', checkDatabaseStatus, ctrlAuth.forgotPassword);
@@ -85,127 +85,13 @@ router.delete('/s3/:key(*)', auth, checkDatabaseStatus, ctrlS3.deleteFile);
 router.post('/s3/syncDB', auth, checkDatabaseStatus, ctrlS3.syncDB);
 router.post('/s3/:key/acl', auth, checkDatabaseStatus, ctrlS3.acl);
 
-/* ================================================== */
 /* ==================== Analysis ==================== */
-/* ================================================== */
-
-/**
-* @api {post} /api/analysis/watson 	Perform Watson analysis - url
-* 
-* @apiParam {String} url 			URL to be analysed
-*
-* @apiGroup Analysis
-* @apiSuccess {String} _id			ObjectId of the analysis object
-* @apiSuccess {String} name			Name of the analysis as given by the user
-* @apiSuccess {String} createdBy 	First name of the user who created the analysis
-* @apiSuccess {Date} dateCreated 	The date the analysis was created
-*
-* @apiSuccessExample {json} Success 200
-*    HTTP/1.1 200 OK
-*    [{
-*      "_id": "59c132da6bea374820a47f37",
-*      "name": "Language Analysis",
-*      "createdBy": "John",
-*      "dateCreated": "2017-09-19T15:08:10.521Z"
-*    }]
-*
-* @apiErrorExample {json} Error 500
-*    HTTP/1.1 500 Internal Server Error
-* @apiErrorExample {json} Error 503
-*    HTTP/1.1 503 Service Unavailable
-*/
 router.post('/analysis/watson', auth, checkDatabaseStatus, ctrlAnalysis.watsonAnalysis);
-
-/**
-* @api {post} /api/analysis/watsonText 	Perform Watson analysis - text
-* 
-* @apiParam {String} text 			String of text to be analysed
-*
-* @apiGroup Analysis
-* @apiSuccess {String} _id			ObjectId of the analysis object
-* @apiSuccess {String} name			Name of the analysis as given by the user
-* @apiSuccess {String} createdBy 	First name of the user who created the analysis
-* @apiSuccess {Date} dateCreated 	The date the analysis was created
-*
-* @apiSuccessExample {json} Success 200
-*    HTTP/1.1 200 OK
-*    [{
-*      "_id": "59c132da6bea374820a47f37",
-*      "name": "Language Analysis",
-*      "createdBy": "John",
-*      "dateCreated": "2017-09-19T15:08:10.521Z"
-*    }]
-*
-* @apiErrorExample {json} Error 500
-*    HTTP/1.1 500 Internal Server Error
-* @apiErrorExample {json} Error 503
-*    HTTP/1.1 503 Service Unavailable
-*/
 router.post('/analysis/watsonText', auth, checkDatabaseStatus, ctrlAnalysis.watsonTextAnalysis);
-
-/**
-* @api {get} /api/analysis/watson/read 	Read one Watson analysis
-* 
-* @apiParam {String} _id 			ObjectId of the analysis object
-*
-* @apiGroup Analysis
-* @apiSuccess {String} _id			ObjectId of the analysis object
-* @apiSuccess {String} name			Name of the analysis as given by the user
-* @apiSuccess {String} createdBy 	First name of the user who created the analysis
-* @apiSuccess {Date} dateCreated 	The date the analysis was created
-* @apiSuccess {More} More 			More
-*
-* @apiSuccessExample {json} Success 200
-*    HTTP/1.1 200 OK
-*    [{
-*      "_id": "59c132da6bea374820a47f37",
-*      "name": "Language Analysis",
-*      "createdBy": "John",
-*      "dateCreated": "2017-09-19T15:08:10.521Z"
-*    }]
-*
-* @apiErrorExample {json} Error 500
-*    HTTP/1.1 500 Internal Server Error
-* @apiErrorExample {json} Error 503
-*    HTTP/1.1 503 Service Unavailable
-*/
-router.get('/analysis/watson/read', auth, checkDatabaseStatus, ctrlAnalysis.readWatsonAnalysis);
-
-/**
-* @api {get} /api/analysis/watson/read/categories 	Read category results of a Watson analysis
-* 
-* @apiParam {String} _id 			ObjectId of the analysis object
-*
-* @apiGroup Analysis
-* @apiSuccess {Object[]} categories			List of Category objects (Array of Objects)
-* @apiSuccess {Number} categories.score 	Category score
-* @apiSuccess {String} categories.label 	Category label
-* @apiSuccess {String} categories._id 		Category id
-*
-* @apiSuccessExample {json} Success 200
-*    HTTP/1.1 200 OK
-*    "categories" : [{
-*       "score" : 0.488511,
-*       "label" : "/pets/cats",
-*       "_id" : "59c12f70af3cc9188cbf784b"
-*   },
-*   {
-*       "score" : 0.427007,
-*       "label" : "/home and garden",
-*       "_id" : "59c12f70af3cc9188cbf784a"
-*   }]
-*
-* @apiErrorExample {json} Error 404
-*    HTTP/1.1 404 Not Found
-* @apiErrorExample {json} Error 500
-*    HTTP/1.1 500 Internal Server Error
-* @apiErrorExample {json} Error 503
-*    HTTP/1.1 503 Service Unavailable
-*/
-router.get('/analysis/watson/read/categories', auth, checkDatabaseStatus, ctrlAnalysis.readWatsonCategories);
-
+router.get('/analysis/watson/read/:id', auth, checkDatabaseStatus, ctrlAnalysis.readWatsonAnalysis);
+router.get('/analysis/watson/read/:id/categories', auth, checkDatabaseStatus, ctrlAnalysis.readWatsonCategories);
 router.get('/analysis/watson/list', auth, checkDatabaseStatus, ctrlAnalysis.listWatsonAnalysis);
-router.delete('/analysis/watson/delete', auth, checkDatabaseStatus, ctrlAnalysis.deleteWatsonAnalysis);
+router.delete('/analysis/watson/:id', auth, checkDatabaseStatus, ctrlAnalysis.deleteWatsonAnalysis);
 
 /* Surveys */
 router.post('/survey/save', checkDatabaseStatus, ctrlSurveys.saveSurvey);

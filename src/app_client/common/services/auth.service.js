@@ -46,6 +46,7 @@
 			function loginComplete(data) { saveToken(data.data.token); }
 			function loginFailed(e) { return exception.catcher('Login Failed')(e); }
 		};
+
 		/* Saves a JSON Web Token (JWT) to the browser's local storage */
 		function saveToken(token) {
 			$window.localStorage['nativeQDA-token'] = token;

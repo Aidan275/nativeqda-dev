@@ -318,6 +318,8 @@ gulp.task('nodemon', function (cb) {
 		},
 		ignore: [
 		'gulpfile.js',
+		'docs/',
+		'apidocs/',
 		'node_modules/'
 		]
 	})
@@ -380,6 +382,8 @@ gulp.task('nodemon-build', function (cb) {
 		},
 		ignore: [
 		'gulpfile.js',
+		'docs/',
+		'apidocs/',
 		'node_modules/'
 		]
 	})
@@ -394,18 +398,6 @@ gulp.task('nodemon-build', function (cb) {
 			reload({ stream: false });
 		}, 1000);
 	});
-});
-
-
-/**
-* Generates documentation using apiDoc
-* @return {Stream}
-*/
-gulp.task('apidoc', function(done){
-	plug.apidoc({
-		src: "src/app_api/routes/",
-		dest: "apiDocs/"
-	},done);
 });
 
 ///////////////////////////

@@ -289,7 +289,7 @@ NG_DOCS={
       "type": "service",
       "moduleName": "services",
       "shortDescription": "This is an angular service used for making requests to the",
-      "keywords": "aa275 aidan analysed analyses analysis analysisid andrews angular array au back-end consisting createdby data database delete deletewatsonanalysis description directly docs file function listwatsonanalysis making object objectid objects perform performed post read readwatsonanalysis request requests s3 save saved savewatsonanalysis server service services sourcedatakeys string text url user watson watsonanalysis watsontextanalysis"
+      "keywords": "aa275 aidan analysed analyses analysis analysisid andrews angular array au back-end category consisting createdby data database delete deletewatsonanalysis description directly docs file function listwatsonanalysis making object objectid objects perform performed post read readwatsonanalysis readwatsoncategories request requests s3 save saved savewatsonanalysis server service services sourcedatakeys string text url user watson watsonanalysis watsontextanalysis"
     },
     {
       "section": "docs",

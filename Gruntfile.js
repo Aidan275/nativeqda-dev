@@ -24,6 +24,13 @@ module.exports = function(grunt) {
 			}
 		},
 
+		apidoc: {
+			myapp: {
+				src: 'src/app_api/controllers/',
+				dest: 'apidocs/'
+			}
+		},
+
 		connect: {
 			server: {
 				options: {
@@ -38,7 +45,8 @@ module.exports = function(grunt) {
 		'docs/font',
 		'docs/js',
 		'docs/partials',
-		'docs/index.html'
+		'docs/index.html',
+		'apidocs'
 		],
 
 		watch: {
@@ -46,15 +54,16 @@ module.exports = function(grunt) {
 				livereload: LIVERELOAD_PORT
 			},
 			files: 'src/**/*.js',
-			tasks: ['clean', 'ngdocs']
+			tasks: ['clean', 'ngdocs', 'apidoc']
 		}
 	});
 
-	grunt.loadTasks('docs/grunt-ngdocs/tasks');
+	grunt.loadTasks('docs/grunt-ngdocs/tasks'); /* fix for source links */
 	//grunt.loadNpmTasks('grunt-ngdocs');
+	grunt.loadNpmTasks('grunt-apidoc'); 
 	grunt.loadNpmTasks('grunt-contrib-connect');
 	grunt.loadNpmTasks('grunt-contrib-clean');
 	grunt.loadNpmTasks('grunt-contrib-watch');
 
-	grunt.registerTask('default', ['clean', 'ngdocs', 'connect', 'watch']);
+	grunt.registerTask('docs', ['clean', 'ngdocs', 'apidoc', 'connect', 'watch']);
 };

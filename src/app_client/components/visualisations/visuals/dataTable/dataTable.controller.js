@@ -53,7 +53,6 @@
 			.then(function(data) {
 				bsLoadingOverlayService.stop({referenceId: 'analysis-data-table'});
 				responseData = data;
-				console.log(data);
 
 				var repeaterID = 0;
 				responseData.categories.forEach(function(object) {

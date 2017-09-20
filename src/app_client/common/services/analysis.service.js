@@ -107,9 +107,7 @@
 		* @param {String} analysisId The ObjectId for the analysis object
 		*/
 		function readWatsonAnalysis(analysisId) {
-			/* Encode the key for the API URL in case it includes reserved characters (e.g '+', '&') */
-			var encodedId = encodeURIComponent(analysisId);
-			return $http.get('/api/analysis/watson/read?id=' + encodedId, {
+			return $http.get('/api/analysis/watson/read/' + analysisId, {
 				headers: {
 					Authorization: 'Bearer '+ authService.getToken()
 				}
@@ -128,9 +126,7 @@
 		* @param {String} analysisId The ObjectId for the analysis object
 		*/
 		function readWatsonCategories(analysisId) {
-			/* Encode the key for the API URL in case it includes reserved characters (e.g '+', '&') */
-			var encodedId = encodeURIComponent(analysisId);
-			return $http.get('/api/analysis/watson/read/categories?id=' + encodedId, {
+			return $http.get('/api/analysis/watson/read/' + analysisId + '/categories', {
 				headers: {
 					Authorization: 'Bearer '+ authService.getToken()
 				}
@@ -168,9 +164,7 @@
 		* @param {String} analysisId The ObjectId for the analysis object
 		*/
 		function deleteWatsonAnalysis(analysisId) {
-			/* Encode the key for the API URL in case it includes reserved characters (e.g '+', '&') */
-			var encodedId = encodeURIComponent(analysisId);
-			return $http.delete('/api/analysis/watson/delete?id=' + encodedId, {
+			return $http.delete('/api/analysis/watson/' + analysisId, {
 				headers: {
 					Authorization: 'Bearer '+ authService.getToken()
 				}

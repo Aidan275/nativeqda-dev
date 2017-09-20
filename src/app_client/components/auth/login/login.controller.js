@@ -50,8 +50,7 @@
 		};
 
 		function login() {
-			authService
-			.login(vm.credentials)
+			authService.login(vm.credentials)
 			.then(function(data) {
 				$location.search('page', null);
 				$location.path(vm.returnPage);

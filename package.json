@@ -1,5 +1,6 @@
 {
-  "name": "nativeQDA",
+  "name": "NativeQDA",
+  "description": "A qualitative data analysis tool for analysing and visualising text based data",
   "repository": {
     "type": "git",
     "url": "https://github.com/Aidan275/nativeqda-dev.git"
@@ -78,6 +79,7 @@
     "chai": "^4.1.2",
     "del": "^3.0.0",
     "grunt": "^1.0.1",
+    "grunt-apidoc": "^0.11.0",
     "grunt-contrib-clean": "^1.1.0",
     "grunt-contrib-connect": "^1.0.2",
     "grunt-contrib-watch": "^1.0.0",
@@ -85,7 +87,6 @@
     "gulp": "^3.9.1",
     "gulp-angular-jsdoc": "^0.1.6",
     "gulp-angular-templatecache": "^2.0.0",
-    "gulp-apidoc": "^0.2.6",
     "gulp-autoprefixer": "^4.0.0",
     "gulp-bytediff": "^1.0.0",
     "gulp-cache": "^0.4.6",
@@ -126,5 +127,10 @@
     "plato": "^1.7.0",
     "sinon": "^3.2.1",
     "sinon-chai": "^2.13.0"
+  },
+  "apidoc": {
+    "name": "NativeQDA",
+    "description": "NativeQDA API Browser",
+    "title": "NativeQDA API Browser"
   }
 }

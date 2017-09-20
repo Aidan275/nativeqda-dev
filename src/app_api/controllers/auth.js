@@ -40,6 +40,29 @@ module.exports.register = function(req, res) {
 	});
 };
 
+
+/**
+* @apiGroup Authentication
+* @api {port} /api/login	Login
+* @apiDescription Authenticates the user and returns a JWT token.  
+* @apiPermission none
+* @apiParam (Body Parameter) {Object} user			Object containing the user's credentials
+* @apiParam (Body Parameter) {String} user.email	The user's email address
+* @apiParam (Body Parameter) {String} user.password	The user's password
+* @apiParamExample {json} Request Example
+*     {
+*       "email": "anu@uow.edu.au",
+*       "password": "orangejuice35"
+*     }
+* @apiSuccessExample {json} Success Example
+*     HTTP/1.1 200 OK
+*     {
+*       "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1OTg1NWI1MjU5NGMyZjJjN..."
+*     }
+* @apiUse AllFieldsRequiredError
+* @apiUse UnauthorizedError
+* @apiUse InternalServerError
+*/
 module.exports.login = function(req, res) {
 	if(!req.body.email || !req.body.password) {
 		sendJSONresponse(res, 400, {
@@ -68,7 +91,6 @@ module.exports.login = function(req, res) {
 };
 
 module.exports.forgotPassword = function(req, res) {
-	console.log(req.headers.host);
 	var email = req.body.email;
 	var user = new User();
 	User.findOne({email: email}).exec(
@@ -97,6 +119,44 @@ module.exports.forgotPassword = function(req, res) {
 
 		});
 };
+
+module.exports.resetPassword = function(req, res) {
+	var token = req.body.token;
+	var password = req.body.password;
+
+	var user = new User();
+	User.findOne({resetPasswordToken: token, resetPasswordExpires: { $gt: Date.now() }}).exec(
+		function(err, results) {
+			if (!results) {
+				sendJSONresponse(res, 404, {
+					"message": "Password reset token is invalid or has expired."
+				});
+				return;
+			} else if (err) {
+				sendJSONresponse(res, 404, err);
+				return;
+			}
+
+			user = results;
+
+			user.setPassword(req.body.password);
+			user.resetPasswordToken = undefined;
+			user.resetPasswordExpires = undefined;
+			user.lastModified = Date.now();
+
+			user.save(function(err) {
+				if (err) {
+					sendJSONresponse(res, 404, err);
+				} else {
+					sendJSONresponse(res, 200, "Your password has been changed.");
+				}
+			});
+		});
+};
+
+
+/* ============== HELPER FUNCTIONS ============== */
+
 
 var sendEmail = function(req, res, results) {
 	/* create reusable transporter object using the default SMTP transport */
@@ -135,36 +195,35 @@ var sendEmail = function(req, res, results) {
 	});
 };
 
-module.exports.resetPassword = function(req, res) {
-	var token = req.body.token;
-	var password = req.body.password;
 
-	var user = new User();
-	User.findOne({resetPasswordToken: token, resetPasswordExpires: { $gt: Date.now() }}).exec(
-		function(err, results) {
-			if (!results) {
-				sendJSONresponse(res, 404, {
-					"message": "Password reset token is invalid or has expired."
-				});
-				return;
-			} else if (err) {
-				sendJSONresponse(res, 404, err);
-				return;
-			}
+/* ============== API Definitions for inheritance ============== */
 
-			user = results;
+/**
+* @apiDefine AllFieldsRequiredError
+*
+* @apiError AllFieldsRequired Missing field(s) in request
+*
+* @apiErrorExample {json} Error 400
+*     HTTP/1.1 400 Bad Request
+*     {
+*       "message": "All fields required"
+*     }
+*/
 
-			user.setPassword(req.body.password);
-			user.resetPasswordToken = undefined;
-			user.resetPasswordExpires = undefined;
-			user.lastModified = Date.now();
+/**
+* @apiDefine UnauthorizedError
+*
+* @apiError Unauthorized Unauthorized
+*
+* @apiErrorExample {json} Error 401
+*     HTTP/1.1 401 Unauthorized 
+*/
 
-			user.save(function(err) {
-				if (err) {
-					sendJSONresponse(res, 404, err);
-				} else {
-					sendJSONresponse(res, 200, "Your password has been changed.");
-				}
-			});
-		});
-};
+/**
+* @apiDefine InternalServerError
+*
+* @apiError InternalServerError Internal server error
+*
+* @apiErrorExample {json} Error 500
+*     HTTP/1.1 500 Internal Server Error
+*/

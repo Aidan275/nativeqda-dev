@@ -1,22 +1,244 @@
 [
   {
-    "type": "get",
-    "url": "/api/analysis/watson/read",
-    "title": "Read one Watson analysis",
+    "group": "Analysis",
+    "type": "delete",
+    "url": "/api/analysis/watson/:id",
+    "title": "Delete Result",
+    "description": "<p>Deletes the results of a given Watson analysis</p>",
+    "permission": [
+      {
+        "name": "researcher"
+      }
+    ],
     "parameter": {
       "fields": {
-        "Parameter": [
+        "URL Parameter": [
           {
-            "group": "Parameter",
+            "group": "URL Parameter",
             "type": "String",
             "optional": false,
-            "field": "_id",
+            "field": "id",
             "description": "<p>ObjectId of the analysis object</p>"
           }
         ]
       }
     },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "analysis._id",
+            "description": "<p>ObjectId of the analysis object</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "analysis.name",
+            "description": "<p>Name of the analysis as given by the user</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "analysis.createdBy",
+            "description": "<p>First name of the user who created the analysis</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Date",
+            "optional": false,
+            "field": "analysis.dateCreated",
+            "description": "<p>The date the analysis was created</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success Example",
+          "content": "HTTP/1.1 200 OK\n[{\n  \"_id\": \"59c132da6bea374820a47f37\",\n  \"name\": \"Language Analysis\",\n  \"createdBy\": \"Michael\",\n  \"dateCreated\": \"2017-09-19T15:08:10.521Z\"\n},\n{\n  \"_id\": \"5985071083dba80dfced4422\",\n  \"name\": \"Interview\",\n  \"createdBy\": \"Anu\",\n  \"dateCreated\": \"2017-08-04T23:45:20.243Z\"\n}]",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "src/app_api/controllers/analysis.js",
+    "groupTitle": "Analysis",
+    "name": "DeleteApiAnalysisWatsonId",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "AnalysisNotFound",
+            "description": "<p>The id of the Analysis was not found</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "NoIdInRequest",
+            "description": "<p>No id was included in the request</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "InternalServerError",
+            "description": "<p>Internal server error</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error 404",
+          "content": "HTTP/1.1 404 Not Found \n{\n  \"message\": \"Analysis not found\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Error 400",
+          "content": "HTTP/1.1 400 Bad Request\n{\n  \"message\": \"No id in request\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Error 500",
+          "content": "HTTP/1.1 500 Internal Server Error",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
     "group": "Analysis",
+    "type": "get",
+    "url": "/api/analysis/watson/list",
+    "title": "List Results",
+    "description": "<p>Lists details for all the Watson analyses.</p>",
+    "permission": [
+      {
+        "name": "researcher"
+      }
+    ],
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "analysis",
+            "description": "<p>List of Watson analysis objects (Array of Objects)</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "analysis._id",
+            "description": "<p>ObjectId of the analysis object</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "analysis.name",
+            "description": "<p>Name of the analysis as given by the user</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "analysis.createdBy",
+            "description": "<p>First name of the user who created the analysis</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Date",
+            "optional": false,
+            "field": "analysis.dateCreated",
+            "description": "<p>The date the analysis was created</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success Example",
+          "content": "HTTP/1.1 200 OK\n[{\n  \"_id\": \"59c132da6bea374820a47f37\",\n  \"name\": \"Language Analysis\",\n  \"createdBy\": \"Michael\",\n  \"dateCreated\": \"2017-09-19T15:08:10.521Z\"\n},\n{\n  \"_id\": \"5985071083dba80dfced4422\",\n  \"name\": \"Interview\",\n  \"createdBy\": \"Anu\",\n  \"dateCreated\": \"2017-08-04T23:45:20.243Z\"\n}]",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "src/app_api/controllers/analysis.js",
+    "groupTitle": "Analysis",
+    "name": "GetApiAnalysisWatsonList",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "AnalysisNotFound",
+            "description": "<p>The id of the Analysis was not found</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "NoIdInRequest",
+            "description": "<p>No id was included in the request</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "InternalServerError",
+            "description": "<p>Internal server error</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error 404",
+          "content": "HTTP/1.1 404 Not Found \n{\n  \"message\": \"Analysis not found\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Error 400",
+          "content": "HTTP/1.1 400 Bad Request\n{\n  \"message\": \"No id in request\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Error 500",
+          "content": "HTTP/1.1 500 Internal Server Error",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
+    "group": "Analysis",
+    "type": "get",
+    "url": "/api/analysis/watson/read/:id",
+    "title": "Read Results - All",
+    "description": "<p>Reads all the results of a given Watson analysis.</p>",
+    "permission": [
+      {
+        "name": "researcher"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "URL Parameter": [
+          {
+            "group": "URL Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>ObjectId of the analysis object</p>"
+          }
+        ]
+      }
+    },
     "success": {
       "fields": {
         "Success 200": [
@@ -59,49 +281,82 @@
       },
       "examples": [
         {
-          "title": "Success 200",
-          "content": "HTTP/1.1 200 OK\n[{\n  \"_id\": \"59c132da6bea374820a47f37\",\n  \"name\": \"Language Analysis\",\n  \"createdBy\": \"John\",\n  \"dateCreated\": \"2017-09-19T15:08:10.521Z\"\n}]",
-          "type": "json"
-        }
-      ]
-    },
-    "error": {
-      "examples": [
-        {
-          "title": "Error 500",
-          "content": "HTTP/1.1 500 Internal Server Error",
-          "type": "json"
-        },
-        {
-          "title": "Error 503",
-          "content": "HTTP/1.1 503 Service Unavailable",
+          "title": "Success Example",
+          "content": "HTTP/1.1 200 OK\n{\n  \"_id\": \"59c132da6bea374820a47f37\",\n  \"name\": \"Language Analysis\",\n  \"createdBy\": \"Michael\",\n  \"dateCreated\": \"2017-09-19T15:08:10.521Z\",\n  ...\n}",
           "type": "json"
         }
       ]
     },
     "version": "0.0.0",
-    "filename": "src/app_api/routes/index.js",
+    "filename": "src/app_api/controllers/analysis.js",
     "groupTitle": "Analysis",
-    "name": "GetApiAnalysisWatsonRead"
+    "name": "GetApiAnalysisWatsonReadId",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "AnalysisNotFound",
+            "description": "<p>The id of the Analysis was not found</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "NoIdInRequest",
+            "description": "<p>No id was included in the request</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "InternalServerError",
+            "description": "<p>Internal server error</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error 404",
+          "content": "HTTP/1.1 404 Not Found \n{\n  \"message\": \"Analysis not found\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Error 400",
+          "content": "HTTP/1.1 400 Bad Request\n{\n  \"message\": \"No id in request\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Error 500",
+          "content": "HTTP/1.1 500 Internal Server Error",
+          "type": "json"
+        }
+      ]
+    }
   },
   {
+    "group": "Analysis",
     "type": "get",
-    "url": "/api/analysis/watson/read/categories",
-    "title": "Read category results of a Watson analysis",
+    "url": "/api/analysis/watson/read/:id/categories",
+    "title": "Read Results - Categories",
+    "description": "<p>Reads the category results of a given Watson analysis.</p>",
+    "permission": [
+      {
+        "name": "researcher"
+      }
+    ],
     "parameter": {
       "fields": {
-        "Parameter": [
+        "URL Parameter": [
           {
-            "group": "Parameter",
+            "group": "URL Parameter",
             "type": "String",
             "optional": false,
-            "field": "_id",
+            "field": "id",
             "description": "<p>ObjectId of the analysis object</p>"
           }
         ]
       }
     },
-    "group": "Analysis",
     "success": {
       "fields": {
         "Success 200": [
@@ -137,49 +392,89 @@
       },
       "examples": [
         {
-          "title": "Success 200",
+          "title": "Success Example",
           "content": " HTTP/1.1 200 OK\n \"categories\" : [{\n    \"score\" : 0.488511,\n    \"label\" : \"/pets/cats\",\n    \"_id\" : \"59c12f70af3cc9188cbf784b\"\n},\n{\n    \"score\" : 0.427007,\n    \"label\" : \"/home and garden\",\n    \"_id\" : \"59c12f70af3cc9188cbf784a\"\n}]",
           "type": "json"
         }
       ]
     },
+    "version": "0.0.0",
+    "filename": "src/app_api/controllers/analysis.js",
+    "groupTitle": "Analysis",
+    "name": "GetApiAnalysisWatsonReadIdCategories",
     "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "AnalysisNotFound",
+            "description": "<p>The id of the Analysis was not found</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "NoIdInRequest",
+            "description": "<p>No id was included in the request</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "InternalServerError",
+            "description": "<p>Internal server error</p>"
+          }
+        ]
+      },
       "examples": [
+        {
+          "title": "Error 404",
+          "content": "HTTP/1.1 404 Not Found \n{\n  \"message\": \"Analysis not found\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Error 400",
+          "content": "HTTP/1.1 400 Bad Request\n{\n  \"message\": \"No id in request\"\n}",
+          "type": "json"
+        },
         {
           "title": "Error 500",
           "content": "HTTP/1.1 500 Internal Server Error",
           "type": "json"
-        },
-        {
-          "title": "Error 503",
-          "content": "HTTP/1.1 503 Service Unavailable",
-          "type": "json"
         }
       ]
-    },
-    "version": "0.0.0",
-    "filename": "src/app_api/routes/index.js",
-    "groupTitle": "Analysis",
-    "name": "GetApiAnalysisWatsonReadCategories"
+    }
   },
   {
+    "group": "Analysis",
     "type": "post",
     "url": "/api/analysis/watson",
-    "title": "Perform Watson analysis - url",
+    "title": "Watson Analysis - URL",
+    "description": "<p>Performs a Watson analysis, passing the URL to be analysed.<br> Saves the analysis results to the database upon completion.</p>",
+    "permission": [
+      {
+        "name": "researcher"
+      }
+    ],
     "parameter": {
       "fields": {
-        "Parameter": [
+        "Body Parameter": [
           {
-            "group": "Parameter",
+            "group": "Body Parameter",
             "type": "String",
             "optional": false,
             "field": "url",
             "description": "<p>URL to be analysed</p>"
           }
         ]
-      }
+      },
+      "examples": [
+        {
+          "title": "Request Example",
+          "content": "{\n  \"url\": \"https://nativeqda-assets.s3.amazonaws.com/text-data/2017/08/17/bdd5da3b116f50095a7b.txt\"\n}",
+          "type": "json"
+        }
+      ]
     },
-    "group": "Analysis",
     "success": {
       "fields": {
         "Success 200": [
@@ -215,13 +510,33 @@
       },
       "examples": [
         {
-          "title": "Success 200",
-          "content": "HTTP/1.1 200 OK\n[{\n  \"_id\": \"59c132da6bea374820a47f37\",\n  \"name\": \"Language Analysis\",\n  \"createdBy\": \"John\",\n  \"dateCreated\": \"2017-09-19T15:08:10.521Z\"\n}]",
+          "title": "Success Example",
+          "content": "HTTP/1.1 200 OK\n{\n  \"_id\": \"59c132da6bea374820a47f37\",\n  \"name\": \"Language Analysis\",\n  \"createdBy\": \"Michael\",\n  \"dateCreated\": \"2017-09-19T15:08:10.521Z\"\n}",
           "type": "json"
         }
       ]
     },
+    "version": "0.0.0",
+    "filename": "src/app_api/controllers/analysis.js",
+    "groupTitle": "Analysis",
+    "name": "PostApiAnalysisWatson",
     "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "InternalServerError",
+            "description": "<p>Internal server error</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ServiceUnavailable",
+            "description": "<p>Watson service unavailable</p>"
+          }
+        ]
+      },
       "examples": [
         {
           "title": "Error 500",
@@ -234,30 +549,39 @@
           "type": "json"
         }
       ]
-    },
-    "version": "0.0.0",
-    "filename": "src/app_api/routes/index.js",
-    "groupTitle": "Analysis",
-    "name": "PostApiAnalysisWatson"
+    }
   },
   {
+    "group": "Analysis",
     "type": "post",
     "url": "/api/analysis/watsonText",
-    "title": "Perform Watson analysis - text",
+    "title": "Watson Analysis - Text",
+    "description": "<p>Performs a Watson analysis, passing the content to be analysed as a string of text.<br> Saves the analysis results to the database upon completion.</p>",
+    "permission": [
+      {
+        "name": "researcher"
+      }
+    ],
     "parameter": {
       "fields": {
-        "Parameter": [
+        "Body Parameter": [
           {
-            "group": "Parameter",
+            "group": "Body Parameter",
             "type": "String",
             "optional": false,
             "field": "text",
             "description": "<p>String of text to be analysed</p>"
           }
         ]
-      }
+      },
+      "examples": [
+        {
+          "title": "Request Example",
+          "content": "{\n  \"text\": \"Garcia’s (2009) main thesis is that bilingual education is the only way to educate children...\"\n}",
+          "type": "json"
+        }
+      ]
     },
-    "group": "Analysis",
     "success": {
       "fields": {
         "Success 200": [
@@ -293,13 +617,33 @@
       },
       "examples": [
         {
-          "title": "Success 200",
-          "content": "HTTP/1.1 200 OK\n[{\n  \"_id\": \"59c132da6bea374820a47f37\",\n  \"name\": \"Language Analysis\",\n  \"createdBy\": \"John\",\n  \"dateCreated\": \"2017-09-19T15:08:10.521Z\"\n}]",
+          "title": "Success Example",
+          "content": "HTTP/1.1 200 OK\n{\n  \"_id\": \"59c132da6bea374820a47f37\",\n  \"name\": \"Language Analysis\",\n  \"createdBy\": \"Michael\",\n  \"dateCreated\": \"2017-09-19T15:08:10.521Z\"\n}",
           "type": "json"
         }
       ]
     },
+    "version": "0.0.0",
+    "filename": "src/app_api/controllers/analysis.js",
+    "groupTitle": "Analysis",
+    "name": "PostApiAnalysisWatsontext",
     "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "InternalServerError",
+            "description": "<p>Internal server error</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ServiceUnavailable",
+            "description": "<p>Watson service unavailable</p>"
+          }
+        ]
+      },
       "examples": [
         {
           "title": "Error 500",
@@ -312,10 +656,106 @@
           "type": "json"
         }
       ]
+    }
+  },
+  {
+    "group": "Authentication",
+    "type": "port",
+    "url": "/api/login",
+    "title": "Login",
+    "description": "<p>Authenticates the user and returns a JWT token.</p>",
+    "permission": [
+      {
+        "name": "none"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Body Parameter": [
+          {
+            "group": "Body Parameter",
+            "type": "Object",
+            "optional": false,
+            "field": "user",
+            "description": "<p>Object containing the user's credentials</p>"
+          },
+          {
+            "group": "Body Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "user.email",
+            "description": "<p>The user's email address</p>"
+          },
+          {
+            "group": "Body Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "user.password",
+            "description": "<p>The user's password</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request Example",
+          "content": "{\n  \"email\": \"anu@uow.edu.au\",\n  \"password\": \"orangejuice35\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success Example",
+          "content": "HTTP/1.1 200 OK\n{\n  \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1OTg1NWI1MjU5NGMyZjJjN...\"\n}",
+          "type": "json"
+        }
+      ]
     },
     "version": "0.0.0",
-    "filename": "src/app_api/routes/index.js",
-    "groupTitle": "Analysis",
-    "name": "PostApiAnalysisWatsontext"
+    "filename": "src/app_api/controllers/auth.js",
+    "groupTitle": "Authentication",
+    "name": "PortApiLogin",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "AllFieldsRequired",
+            "description": "<p>Missing field(s) in request</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "Unauthorized",
+            "description": "<p>Unauthorized</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "InternalServerError",
+            "description": "<p>Internal server error</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error 400",
+          "content": "HTTP/1.1 400 Bad Request\n{\n  \"message\": \"All fields required\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Error 401",
+          "content": "HTTP/1.1 401 Unauthorized",
+          "type": "json"
+        },
+        {
+          "title": "Error 500",
+          "content": "HTTP/1.1 500 Internal Server Error",
+          "type": "json"
+        }
+      ]
+    }
   }
 ]
