@@ -18,7 +18,7 @@
 		<!-- displays file list for MongoDB database -->
 		<div class="bs-loading-container" bs-loading-overlay bs-loading-overlay-active-class="loading-overlay--active" bs-loading-overlay-reference-id="file-list"> 
 			<div class="blur-this file-browser-table-container">
-				<table ng-table="vm.tableParams" class="table table-condensed table-bordered table-striped file-browser-table">
+				<table ng-table="vm.tableParams" class="table  table-bordered table-striped file-browser-table">
 					<tr class="table-row" ng-repeat="row in $data">
 						<td data-title="'File Name'" filter="{name: 'text'}" sortable="'name'" class="file-name-cell" ng-click="vm.viewFile(row)">
 							<span>
