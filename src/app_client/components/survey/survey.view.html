@@ -12,7 +12,7 @@
 
 		<div class="bs-loading-container" bs-loading-overlay bs-loading-overlay-active-class="loading-overlay--active" bs-loading-overlay-reference-id="file-list"> 
 			<div class="blur-this file-browser-table-container">
-				<table ng-table="vm.tableParams" class="table table-condensed table-striped surveys-browser-table" style="margin-top:5px">
+				<table ng-table="vm.tableParams"class="table table-condensed table-bordered table-striped file-browser-table" style="margin-top:5px">
 					<tr class="table-row" ng-repeat="row in $data">
 					
 						<td data-title="'Survey Name'" filter="{name: 'text'}" sortable="'name'" class="survey-name-cell hidden-sm"  header-class="'hidden-xs hidden-sm'">{{row.name}}</td>
