@@ -1,0 +1,54 @@
+<a href="https://github.com/Aidan275/nativeqda-dev/edit/master/src/app_client/components/analysis/analysis.controller.js" class="improve-docs"><i class="icon-edit"> </i>Improve this doc</a><a href="https://github.com/Aidan275/nativeqda-dev/blob/ec5b49b/src/app_client/components/analysis/analysis.controller.js#L8" class="view-source"><i class="icon-eye-open"> </i>View source</a><span class="email">Author: </span>
+<a href="mailto:aa275@uowmail.edu.au" class="email">Aidan Andrews</a><h1><code ng:non-bindable="">analysisCtrl</code>
+<div><span class="hint">controller in module <code ng:non-bindable="">analysis</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="analysis-controller-page analysis-controller-analysisctrl-page"><p>Controller for the analysis page.</p>
+</div></div>
+<div class="member method"><h2 id="methods">Methods</h2>
+<ul class="methods"><li><a href="https://github.com/Aidan275/nativeqda-dev/blob/ec5b49b/src/app_client/components/analysis/analysis.controller.js#L43" class="view-source icon-eye-open"> </a><h3 id="methods_activate">activate()</h3>
+<div class="activate"><div class="activate-page"><p>Runs when the page first loads and starts the loading overlay for the analysis table and calls
+the <a href="#/docs/analysis.controller:analysisCtrl#methods_getanalyseslist">getAnalysesList</a> function.</p>
+</div></div>
+</li>
+<li><a href="https://github.com/Aidan275/nativeqda-dev/blob/ec5b49b/src/app_client/components/analysis/analysis.controller.js#L90" class="view-source icon-eye-open"> </a><h3 id="methods_confirmdelete">confirmDelete(name, id)</h3>
+<div class="confirmdelete"><div class="confirmdelete-page"><p>Displays a confirmation message to confirm deletion of the passed analysis object</p>
+</div><h5 id="methods_confirmdelete_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>name</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="confirmdelete-page"><p>Name of the analysis object</p>
+</div></td></tr><tr><td>id</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="confirmdelete-page"><p>ObjectId of the analysis object</p>
+</div></td></tr></tbody></table></div>
+</li>
+<li><a href="https://github.com/Aidan275/nativeqda-dev/blob/ec5b49b/src/app_client/components/analysis/analysis.controller.js#L113" class="view-source icon-eye-open"> </a><h3 id="methods_deleteanalysis">deleteAnalysis(name, id)</h3>
+<div class="deleteanalysis"><div class="deleteanalysis-page"><p>Uses the <a href="#/docs/services.service:analysisService#methods_deletewatsonanalysis">deleteWatsonAnalysis</a>
+function from <a href="#/docs/services.service:analysisService">analysisService</a> to delete the analysis object from the database.</p>
+</div><h5 id="methods_deleteanalysis_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>name</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="deleteanalysis-page"><p>Name of the analysis object</p>
+</div></td></tr><tr><td>id</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="deleteanalysis-page"><p>ObjectId of the analysis object</p>
+</div></td></tr></tbody></table></div>
+</li>
+<li><a href="https://github.com/Aidan275/nativeqda-dev/blob/ec5b49b/src/app_client/components/analysis/analysis.controller.js#L57" class="view-source icon-eye-open"> </a><h3 id="methods_getanalyseslist">getAnalysesList()</h3>
+<div class="getanalyseslist"><div class="getanalyseslist-page"><p>Uses the <a href="#/docs/services.service:analysisService#methods_listwatsonanalysis">listWatsonAnalysis</a>
+function from <a href="#/docs/services.service:analysisService">analysisService</a> to load the analysis objects from the database.</p>
+</div></div>
+</li>
+<li><a href="https://github.com/Aidan275/nativeqda-dev/blob/ec5b49b/src/app_client/components/analysis/analysis.controller.js#L166" class="view-source icon-eye-open"> </a><h3 id="methods_gotovisurl">goToVisUrl(id)</h3>
+<div class="gotovisurl"><div class="gotovisurl-page"><p>Goes to the visualisation page of the id specified.</p>
+</div><h5 id="methods_gotovisurl_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>id</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="gotovisurl-page"><p>ObjectId of the analysis object</p>
+</div></td></tr></tbody></table></div>
+</li>
+<li><a href="https://github.com/Aidan275/nativeqda-dev/blob/ec5b49b/src/app_client/components/analysis/analysis.controller.js#L73" class="view-source icon-eye-open"> </a><h3 id="methods_listanalyses">listAnalyses()</h3>
+<div class="listanalyses"><div class="listanalyses-page"><p>Lists the analysis objects in a table using the NgTable directive.</p>
+</div></div>
+</li>
+<li><a href="https://github.com/Aidan275/nativeqda-dev/blob/ec5b49b/src/app_client/components/analysis/analysis.controller.js#L146" class="view-source icon-eye-open"> </a><h3 id="methods_popupnewanalysis">popupNewAnalysis()</h3>
+<div class="popupnewanalysis"><div class="popupnewanalysis-page"><p>Displays the <a href="#/docs/analysis.controller:newAnalysisCtrl">newAnalysisCtrl</a> modal.</p>
+</div></div>
+</li>
+<li><a href="https://github.com/Aidan275/nativeqda-dev/blob/ec5b49b/src/app_client/components/analysis/analysis.controller.js#L128" class="view-source icon-eye-open"> </a><h3 id="methods_removefromlist">removeFromList(id)</h3>
+<div class="removefromlist"><div class="removefromlist-page"><p>Removes the deleted analysis object from the local analysis array and updates the table .</p>
+</div><h5 id="methods_removefromlist_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>id</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="removefromlist-page"><p>ObjectId of the analysis object</p>
+</div></td></tr></tbody></table></div>
+</li>
+</ul>
+</div>
+</div>

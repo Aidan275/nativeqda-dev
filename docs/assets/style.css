@@ -1,0 +1,54 @@
+body {
+	font-family: 'Roboto', sans-serif;
+	width: 100%; 
+}
+
+.button-container {
+	position: absolute;
+	margin: auto;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	width: 800px;
+	height: 500px;
+}
+
+.logo {
+	margin: 0 auto;
+	display: block;
+	margin-bottom: 100px;
+	width: 500px;
+}
+
+.left {
+	float: left;
+}
+
+.right {
+	float: right;
+}
+
+.doc-button {
+	display: block;
+	margin: 0 auto;
+	border-radius: 10px;
+	box-shadow: 1px 1px 6px 0 #333;
+	padding: 20px 25px 0 25px;
+}
+
+.doc-button:hover {
+	box-shadow: 1px 1px 16px 0 #333;
+}
+
+.doc-button h2{
+	text-align: center;
+	color: #000;
+	font-size: 26px;
+}
+
+.doc-button img{
+	display: block;
+	margin: 0 auto;
+	width: 200px;
+}

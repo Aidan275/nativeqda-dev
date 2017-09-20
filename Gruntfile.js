@@ -15,7 +15,8 @@ module.exports = function(grunt) {
 				title: 'NativeQDA',
 				startPage: '/docs',
 				sourceLink: true,
-				titleLink: '/#/docs'
+				titleLink: '/#/docs',
+				dest: 'docs/front-end-docs/'
 			},
 			docs: {
 				src: ['src/**/*.js'],
@@ -27,7 +28,7 @@ module.exports = function(grunt) {
 		apidoc: {
 			myapp: {
 				src: 'src/app_api/controllers/',
-				dest: 'apidocs/'
+				dest: 'docs/back-end-docs'
 			}
 		},
 
@@ -41,11 +42,8 @@ module.exports = function(grunt) {
 		},
 
 		clean: [
-		'docs/css',
-		'docs/font',
-		'docs/js',
-		'docs/partials',
-		'docs/index.html',
+		'docs/front-end-docs',
+		'docs/back-end-docs',
 		'apidocs'
 		],
 
@@ -58,7 +56,7 @@ module.exports = function(grunt) {
 		}
 	});
 
-	grunt.loadTasks('docs/grunt-ngdocs/tasks'); /* fix for source links */
+	grunt.loadTasks('docs/assets/grunt-ngdocs/tasks'); /* fix for source links */
 	//grunt.loadNpmTasks('grunt-ngdocs');
 	grunt.loadNpmTasks('grunt-apidoc'); 
 	grunt.loadNpmTasks('grunt-contrib-connect');

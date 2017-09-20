@@ -1,217 +1,35 @@
 <!doctype html>
-<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" ng-app="docsApp"  lang="en" ng-controller="DocsController"> <![endif]-->
-<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" ng-app="docsApp"  lang="en" ng-controller="DocsController"> <![endif]-->
-<!--[if IE 8]>    <html class="no-js lt-ie9" ng-app="docsApp"  lang="en" ng-controller="DocsController"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" ng-app="docsApp"  lang="en" ng-controller="DocsController"> <!--<![endif]-->
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <meta name="Description"
-        content="AngularJS is what HTML would have been, had it been designed for building web-apps.
-                 Declarative templates with data-binding, MVC, dependency injection and great
-                 testability story all implemented with pure client-side JavaScript!">
-  <meta name="fragment" content="!">
-  <title ng-bind-template="NativeQDA: {{partialTitle}}">Docs</title>
-  <script type="text/javascript">
-    // dynamically add base tag as well as css and javascript files.
-    // we can't add css/js the usual way, because some browsers (FF) eagerly prefetch resources
-    // before the base attribute is added, causing 404 and terribly slow loading of the docs app.
-    (function() {
-      var indexFile = (location.pathname.match(/\/(index[^\.]*\.html)/) || ['', ''])[1],
-          origin, baseUrl, rUrl = /(\/?#!\/.*|\/(docs)\/?(\?.*)*|\/index[^\.]*\.html.*)$/,
-          headEl = document.getElementsByTagName('head')[0],
-          sync = true;
-
-      if (location.href.slice(0, 7) == 'file://') {
-        baseUrl = location.href.replace(rUrl, '/' + indexFile);
-      } else {
-        origin = location.origin || (window.location.protocol + "//" + window.location.hostname +
-                                    (window.location.port ? ':' + window.location.port: ''));
-        baseUrl = origin + location.href.substr(origin.length).replace(rUrl, '/' + indexFile);
-      }
-
-      addTag('base', {href: baseUrl});
-      addTag('link', {rel: 'stylesheet', href: 'css/bootstrap.min.css', type: 'text/css'});
-      addTag('link', {rel: 'stylesheet', href: 'css/font-awesome.css', type: 'text/css'});
-      addTag('link', {rel: 'stylesheet', href: 'css/prettify.css', type: 'text/css'});
-      addTag('link', {rel: 'stylesheet', href: 'css/docs.css', type: 'text/css'});
-      addTag('link', {rel: 'stylesheet', href: 'css/animations.css', type: 'text/css'});
-
-      
-
-      addTag('script', {src: 'js/google-code-prettify.js'}, sync);
-      addTag('script', {src: 'js/marked.js'}, sync);
-
-      
-        addTag('script', {src: 'js/angular.min.js'}, sync);
-      
-      
-      addTag('script', {src: 'js/angular-bootstrap.js'}, sync);
-      addTag('script', {src: 'js/angular-bootstrap-prettify.js'}, sync);
-      addTag('script', {src: 'js/docs-setup.js'}, sync);
-      addTag('script', {src: 'js/docs.js'}, sync);
-      
-      function addTag(name, attributes, sync) {
-        var el = document.createElement(name),
-            attrName;
-
-        for (attrName in attributes) {
-          el.setAttribute(attrName, attributes[attrName]);
-        }
-
-        sync ? document.write(outerHTML(el)) : headEl.appendChild(el);
-      }
-
-      function outerHTML(node){
-        // if IE, Chrome take the internal method otherwise build one
-        return node.outerHTML || (
-            function(n){
-                var div = document.createElement('div'), h;
-                div.appendChild(n);
-                h = div.innerHTML;
-                div = null;
-                return h;
-            })(node);
-      }
-    })();
-
-  </script>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto" >
+	<link rel="stylesheet" href="assets/style.css">
+	<title>NativeQDA Docs</title>
 </head>
 
 <body>
-  <header class="header">
-    <div class="navbar navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container">
-          
-          
-            <a  href="/#/docs"  class="brand">NativeQDA</a>
-          
-          <ul class="nav">
-            <li ng-repeat="(url, name) in sections" ng-class="{active: isActivePath(url)}">
-              <a ng-href="{{url}}"><i class="icon-book icon-white"></i> {{name}}</a>
-            </li>
-          </ul>
-          
-        </div>
-      </div>
-    </div>
-  </header>
 
-  <div role="main" class="container">
-    <div class="row clear-navbar"></div>
+	<a href="https://github.com/Aidan275/nativeqda-dev" target="_blank" class="github-corner" aria-label="View source on Github"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
 
-    <div class="row">
-      <div class="span12">
-        <!--[if lt IE 7]>
-        <p class="alert alert-error">Your browser is <em>ancient!</em>
-          <a href="http://browsehappy.com/">Upgrade to a different browser</a> or
-          <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to
-          experience this site.
-        </p>
-        <![endif]-->
+	<div class="button-container">
 
-        <!--[if lt IE 9]>
-        <div class="alert">
-          You are using an old version of Internet Explorer.
-          For better and safer browsing experience please <a href="http://www.microsoft.com/IE9">upgrade IE</a>
-          or install <a href="http://google.com/chrome">Google Chrome browser</a>.
-        </div>
-        <![endif]-->
-      </div>
+		<a class="logo" href="https://nativeqda-dev.herokuapp.com/" target="_blank">
+			<img class="logo" src="assets/Logo.png" />
+		</a>
 
-    </div>
+		<a href="front-end-docs/index.html">
+			<div class="doc-button left">
+				<img src="assets/front-end-img.png" />
+				<h2>Front End Documentation</h2>
+			</div>
+		</a>
 
-    <div class="row">
-      <div class="span3">
-        <form class="form-search" ng-submit="submitForm()">
-          
-          <input type="text" ng-model="search" placeholder="search the docs"
-                 tabindex="1" accesskey="s" class="search-query">
-          
-          <div class="spacer"></div>
-
-          <ul class="nav nav-list well" ng-show="pages.length">
-            <li ng-repeat="page in pages track by page.url" ng-class="navClass(page)" class="api-list-item expand">
-              <a href="{{page.url}}" tabindex="2">{{page.shortName}}</a>
-            </li>
-          </ul>
-
-          <ul class="nav nav-list well" ng-repeat="module in modules track by module.url" class="api-list-item">
-            <li class="nav-header module">
-              <a class="guide">module</a>
-              <a class="code" href="{{module.url}}" title="{{module.name}}">{{module.name}}</a>
-            </li>
-
-            <li ng-repeat="page in module.others track by page.url" ng-class="navClass(page)" class="api-list-item expand">
-              <a href="{{page.url}}" tabindex="2">{{page.shortName}}</a>
-            </li>
-
-            <li class="nav-header section" ng-show="module.directives.length">
-              <a class="guide">directive</a>
-            </li>
-            <li ng-repeat="page in module.directives track by page.url" ng-class="navClass(page)" class="api-list-item expand">
-              <a href="{{page.url}}" tabindex="2">{{page.shortName}}</a>
-            </li>
-
-            <li class="nav-header section" ng-show="module.controllers.length">
-              <a class="guide">controller</a>
-            </li>
-            <li ng-repeat="page in module.controllers track by page.url" ng-class="navClass(page)" class="api-list-item expand">
-              <a href="{{page.url}}" tabindex="2">{{page.shortName}}</a>
-            </li>
-
-            <li class="nav-header section" ng-show="module.filters.length">
-              <a class="guide">filter</a>
-            </li>
-            <li ng-repeat="page in module.filters track by page.url" ng-class="navClass(page)" class="api-list-item expand">
-              <a href="{{page.url}}" tabindex="2">{{page.shortName}}</a>
-            </li>
-
-            <li class="nav-header section" ng-show="module.services.length">
-              <a class="guide">service</a>
-            </li>
-            <li ng-repeat="service in module.services track by  (service.instance.url || service.provider.url)" ng-class="navClass(service.instance, service.provider)" class="api-list-item expand">
-              <a ng-show="service.provider" class="pull-right" href="{{service.provider.url}}" tabindex="2"><i class="icon-cog"></i></a>
-              <a href="{{service.instance ? service.instance.url : service.provider.url}}" tabindex="2">{{service.name}}</a>
-            </li>
-
-            <li class="nav-header section" ng-show="module.types.length">
-              <a class="guide">Types</a>
-            </li>
-            <li ng-repeat="page in module.types track by page.url" ng-class="navClass(page)" class="api-list-item expand">
-              <a href="{{page.url}}" tabindex="2">{{page.shortName}}</a>
-            </li>
-
-            <li class="nav-header section" ng-show="module.globals.length">
-              <a class="global guide">global APIs</a>
-              &nbsp;
-            </li>
-            <li ng-repeat="page in module.globals track by page.url" ng-class="navClass(page)" class="api-list-item expand">
-              <a href="{{page.url}}" tabindex="2">{{page.id}}</a>
-            </li>
-
-          </ul>
-
-        </form>
-      </div>
-      <div class="span9">
-
-        <ul class="breadcrumb">
-          <li ng-repeat="crumb in breadcrumb">
-            <span ng-hide="crumb.url">{{crumb.name}}</span>
-            <a ng-show="crumb.url" href="{{crumb.url}}">{{crumb.name}}</a>
-            <span ng-show="crumb.url" class="divider">/</span>
-          </li>
-        </ul>
-
-        <div id="loading" ng-show="loading">Loading...</div>
-
-        <div ng-hide="loading" ng-include src="currentPage.partialUrl" onload="afterPartialLoaded()" autoscroll class="content slide-reveal"></div>
-
-      </div>
-    </div>
-  </div>
+		<a href="back-end-docs/index.html">
+			<div class="doc-button right">
+				<img src="assets/back-end-img.png" />
+				<h2>Back End Documentation</h2>
+			</div>
+		</a>
+	</div>
 
 </body>
+
 </html>

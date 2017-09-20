@@ -43,7 +43,7 @@ module.exports.register = function(req, res) {
 
 /**
 * @apiGroup Authentication
-* @api {port} /api/login	Login
+* @api {post} /api/login	Login
 * @apiDescription Authenticates the user and returns a JWT token.  
 * @apiPermission none
 * @apiParam (Body Parameter) {Object} user			Object containing the user's credentials
