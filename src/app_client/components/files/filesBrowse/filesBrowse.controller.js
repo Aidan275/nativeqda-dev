@@ -8,7 +8,7 @@
 	
 
 	/* @ngInject */
-	function filesBrowseCtrl (mapService, $http, $window, $routeParams, $scope, $uibModal, Upload, NgTableParams, filesService, authService, logger, $filter, $compile, bsLoadingOverlayService, s3Service) {
+	function filesBrowseCtrl (mapService, $http, $window, $routeParams, $location, $scope, $uibModal, Upload, NgTableParams, filesService, authService, logger, $filter, $compile, bsLoadingOverlayService, s3Service) {
 		var vm = this;
 		// Bindable Functions
 		vm.viewFile = viewFile;
@@ -22,7 +22,7 @@
 		// Bindable Data
 		vm.fileList = [];
 		vm.currentPath = fileroute($routeParams['folder'], $routeParams['file']);
-		vm.pathsArray = [''];
+		vm.pathsArray = [vm.currentPath];
 		vm.pageHeader = {
 			title: 'Files'
 		};
@@ -102,6 +102,7 @@
 
 				vm.pathsArray = vm.currentPath.split("/");
 				getFileList();
+				$location.path("files/" + vm.currentPath) //Update URL
 			} else if (file.type === 'parent-dir') {
 				vm.currentPath = vm.currentPath.substr(0, vm.currentPath.lastIndexOf('/'));
 				vm.pathsArray = vm.currentPath.split("/");
@@ -311,8 +312,9 @@
 
 			});
 		}
-
+		
 		function openFolder(index) {
+			//console.log($location.path())
 			var newPath = '';
 
 			for(var i = 0; i < index+1; i++) {
@@ -324,6 +326,7 @@
 
 			vm.currentPath = newPath;
 			vm.pathsArray = vm.currentPath.split("/");
+			$location.path("files/" + newPath) //Update URL
 			getFileList();
 		}
 	}
