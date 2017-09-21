@@ -102,8 +102,8 @@
 			function getFileListFailed(e) { return exception.catcher('Failed listing the files from S3.')(e); }
 		};
 
-		function updateACL(objectData) {
-			return $http.post('/api/s3/acl', objectData, {
+		function updateACL(aclObject) {
+			return $http.post('/api/s3/acl', aclObject, {
 				headers: {
 					Authorization: 'Bearer '+ authService.getToken()
 				}

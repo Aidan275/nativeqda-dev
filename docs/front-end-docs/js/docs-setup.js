@@ -167,6 +167,15 @@ NG_DOCS={
     },
     {
       "section": "docs",
+      "id": "files.controller:fileDetailsCtrl",
+      "shortName": "fileDetailsCtrl",
+      "type": "controller",
+      "moduleName": "files",
+      "shortDescription": "Displays the file details and options for changing permissions and deleting the file.",
+      "keywords": "$uibmodalinstance $window aa275 access acl activate adds aidan alert andrews api associated au avaliable aws-sdk bsloadingoverlayservice called caller calls changing check checks closes confirm confirmdelete confirmed control controller database delete deletefile deletefiledb deletefiles3 deletes deleting deletion details displays docs documentation fetching file filedetailsctrl files filesservice function getfile included informs js list loading loads message methods_deletefile methods_deletefiles3 methods_getfile methods_updateacldb modal object options overlay parameters passed permissions popup private public questions remove runs s3 s3service server service services setting settings starts string success successful text update updateacldb updateacls3 updates user"
+    },
+    {
+      "section": "docs",
       "id": "filters",
       "shortName": "filters",
       "type": "overview",
@@ -221,12 +230,21 @@ NG_DOCS={
     },
     {
       "section": "docs",
+      "id": "home.controller:homeCtrl",
+      "shortName": "homeCtrl",
+      "type": "controller",
+      "moduleName": "home",
+      "shortDescription": "The main homepage/dashboard of the application. Displays all the small map and the recently",
+      "keywords": "$compile $filter $scope $uibmodal $window aa275 accuracy activate add additional addmapmarkers adds aidan andrews application appropriate au binds browser bsloadingoverlayservice called calls checking compiles controller database default delete details display displayed displays distance docs document download error event file filedetailsctrl files filesservice function functions geolocates geolocateuser getfilelist google homepage icon initial initialises initmap level listfiles lists load loading loads location locationerror locationfound main map marker markers message methods_addmapmarkers methods_getfilelist methods_initmap methods_onlocationerror methods_onlocationfound modal natively ngtableparams object onlocationerror onlocationfound opens options overlay overwise passes popup popupfiledetails position prompt puplic radius raduis relevant response runs service services setting settings sidebar small starts success supported tab table tiles type update uploaded user users viewer viewfile window zoom"
+    },
+    {
+      "section": "docs",
       "id": "map.controller:mapCtrl",
       "shortName": "mapCtrl",
       "type": "controller",
       "moduleName": "map",
-      "shortDescription": "The main map of the application",
-      "keywords": "aa275 aidan andrews application au controller docs main map"
+      "shortDescription": "The main map page of the application. Displays all the files from the database based",
+      "keywords": "$compile $filter $scope $uibmodal $window aa275 accuracy activate add adding additional addlinks addmapmarkers adds aidan alert andrews application appropriate array au bar based binds box browser bsloadingoverlayservice bulk button called calls cancel canceladdinglink cancels checking circle clicked compiles confirm confirmlinkdelete controller coordinates currently cursor database default delete deleted deletelink deletes deletion dependencies dependent details differences directive display displayed displays distance docs document download enter entering enters error event events excluding exit exits file filedetailsctrl files filesearchclick filesearchhover filesservice fired function functionality functions future geographical geolocates geolocateuser getfilelist getlinks google hidden icon ideally info initial initialises initmap level link linklist links load loading loads local location locationerror locationfound long main map mapservice marker markers message method_deletelink method_getlinks methods_addmapmarkers methods_getfilelist methods_initmap methods_onlocationerror methods_onlocationfound modal moved multiple natively object objectid onlocationerror onlocationfound opens options overlay overwise passes places popup popupfiledetails popuplinkinfo position precedent pressed presses prompt puplic radius raduis re-adds refreshed relevant removeallmarkers removecurrentlink removelink removelinks removes response result runs search selectdependent selecting service services setting settings share side sidebar simply slight split starts success suffice supported tab tiles togglelinks type unspiderfying update user users viewer viewfile window work zoom zooms"
     },
     {
       "section": "docs",

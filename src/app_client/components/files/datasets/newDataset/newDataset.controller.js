@@ -74,7 +74,7 @@
 		/* Gets all the files from the database */
 		function getFileList() {
 			bsLoadingOverlayService.start({referenceId: 'new-dataset'});	/* Start animated loading overlay */
-			filesService.getFileDB(vm.currentPath, '', 'true')
+			filesService.getFile(vm.currentPath, '', 'true')
 			.then(function(data) {
 
 				data.forEach(function(file) {	/* Uses the custom method 'pushIfNotExist' to add unique files to the allFilesSoFar array */

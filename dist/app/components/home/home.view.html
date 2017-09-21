@@ -1,61 +1,87 @@
 <style>
-	.center {
-		text-align: center;
-	}
-	.bgimage {
-		text-align:center;
-		color:white;
-		background-size:contain;
-		background-repeat:no-repeat;
-		background-position: center; 
-		width: 100%;
-		height: 100%;
-	}
+.center {
+	text-align: center;
+}
+.bgimage {
+	text-align:center;
+	color:white;
+	background-size:contain;
+	background-repeat:no-repeat;
+	background-position: center; 
+	width: 100%;
+	height: 100%;
+}
 
-	ul[rn-carousel] {
-		width:100%;
-		min-height:300px;
-		margin: 0 auto;
-	}
+ul[rn-carousel] {
+	width:100%;
+	min-height:300px;
+	margin: 0 auto;
+}
 
-	.carouselDemo li {
-		width:100%;
-		height:100%;
-		font-size:30px;
-		background-color: #ccc;
-	}
+.carouselDemo li {
+	width:100%;
+	height:100%;
+	font-size:30px;
+	background-color: #ccc;
+}
 
-	.carouselDemo a:hover, a:visited, a:link, a:active {
-		text-decoration: none;
-	}
+.carouselDemo a:hover, a:visited, a:link, a:active {
+	text-decoration: none;
+}
 
-	.carousel-demo {
-		display:inline-block;
-		text-align: center;
-	}
-	.carousel-demo-fullscreen {
-		width:100%;
-		height:100%;
-	}
-	.carousel-demo-fullscreen ul[rn-carousel] {
-		width:100%;
-		height:100%;
-	}
+.carousel-demo {
+	display:inline-block;
+	text-align: center;
+}
+.carousel-demo-fullscreen {
+	width:100%;
+	height:100%;
+}
+.carousel-demo-fullscreen ul[rn-carousel] {
+	width:100%;
+	height:100%;
+}
 
-	input.tiny {
-		width:50px;
-		text-align:center;
-	}
+input.tiny {
+	width:50px;
+	text-align:center;
+}
 
 
-	.carousel-demo ul[rn-carousel-transition="hexagon"] {
-		margin-left:100px;
-	}
+.carousel-demo ul[rn-carousel-transition="hexagon"] {
+	margin-left:100px;
+}
 
-	.custom-indicator span {
-		transition: all 0.3s ease-in;
-	}
-	.custom-indicator span.active {
-		color:yellow !important;
-	}
+.custom-indicator span {
+	transition: all 0.3s ease-in;
+}
+.custom-indicator span.active {
+	color:yellow !important;
+}
+.leaflet-popup-content p {
+	margin: 0 !important;
+}
+
+.leaflet-popup-content {
+	margin: 0 !important;
+}
+
+.leaflet-popup-content-wrapper {
+	padding: 0 !important;
+	padding-bottom: 1px !important;
+	border-radius: 12px !important;
+}
+
+.leaflet-container a.leaflet-popup-close-button {
+	color:#FFF;
+	position:absolute;
+	border-radius: 50%;
+	background-color:#4676fa;
+	width:20px;
+	height:20px;
+	border: 2px solid white;
+	padding:0 !important;
+	left:95%;
+	top:5%;
+}
 </style><navigation></navigation><div class=container><page-header content=vm.pageHeader></page-header><div class=col-md-8><div class=carousel-demo style="width:100%;height:100%;border: 1px solid #ddd;"><ul rn-carousel class=image><li ng-repeat="image in vm.testImages"><div ng-style="{'background-image': 'url(' + image.url + ')'}" class=bgimage><a style=background-color:white; href=/analysis>{{ image.title }}</a></div></li></ul></div></div><div class=col-md-4><div class=bs-loading-container bs-loading-overlay bs-loading-overlay-active-class=loading-overlay--active bs-loading-overlay-reference-id=file-list><div class="blur-this home-recent-files-table-container"><table ng-table=vm.tableParams class="table table-condensed table-bordered table-striped home-recent-files-table"><tr class=table-row ng-repeat="row in $data"><td data-title="'Recent Files'" class=file-name-cell ng-click=vm.viewFile(row)><span><i class="{{row.icon}} fa-lg"></i> {{row.name}}</span></td></tr></table></div></div></div><div class=col-md-12 style=min-height:400px;><div class=bs-loading-container bs-loading-overlay bs-loading-overlay-active-class=loading-overlay--active bs-loading-overlay-reference-id=home-map><div class=blur-this><div id=map-homepage></div></div></div></div></div><footer-generic></footer-generic>

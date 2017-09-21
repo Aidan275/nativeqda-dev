@@ -1,10 +1,172 @@
-<a href="https://github.com/Aidan275/nativeqda-dev/edit/master/src/app_client/components/map/map.controller.js" class="improve-docs"><i class="icon-edit"> </i>Improve this doc</a><a href="https://github.com/Aidan275/nativeqda-dev/blob/cdb7bd3/src/app_client/components/map/map.controller.js#L8" class="view-source"><i class="icon-eye-open"> </i>View source</a><span class="email">Author: </span>
+<a href="https://github.com/Aidan275/nativeqda-dev/edit/master/src/app_client/components/map/map.controller.js" class="improve-docs"><i class="icon-edit"> </i>Improve this doc</a><a href="https://github.com/Aidan275/nativeqda-dev/blob/5f6e16a/src/app_client/components/map/map.controller.js#L27" class="view-source"><i class="icon-eye-open"> </i>View source</a><span class="email">Author: </span>
 <a href="mailto:aa275@uowmail.edu.au" class="email">Aidan Andrews</a><h1><code ng:non-bindable="">mapCtrl</code>
 <div><span class="hint">controller in module <code ng:non-bindable="">map</code>
 </span>
 </div>
 </h1>
 <div><h2 id="description">Description</h2>
-<div class="description"><div class="map-controller-page map-controller-mapctrl-page"><p>The main map of the application</p>
+<div class="description"><div class="map-controller-page map-controller-mapctrl-page"><p>The main map page of the application. Displays all the files from the database based
+on their geographical location.</p>
+<p>Ideally the bulk of this functionality should be moved to a directive where it can then simply be 
+added to multiple pages but the slight differences each map has for each page would result in too
+much work/time so this will suffice for now.</p>
+<p>Currently this file is to long. In the future these functions should be split up where possible.</p>
 </div></div>
+<h2 id="dependencies">Dependencies</h2>
+<ul class="dependencies"><li><code ng:non-bindable=""><a href="#/docs/ng.$scope">$scope</a></code>
+</li>
+<li><code ng:non-bindable=""><a href="#/docs/ng.$filter">$filter</a></code>
+</li>
+<li><code ng:non-bindable=""><a href="#/docs/ng.$compile">$compile</a></code>
+</li>
+<li><code ng:non-bindable=""><a href="#/docs/ng.$window">$window</a></code>
+</li>
+<li><code ng:non-bindable=""><a href="#/docs/ng.$uibModal">$uibModal</a></code>
+</li>
+<li><code ng:non-bindable=""><a href="#/docs/bsLoadingOverlayService">bsLoadingOverlayService</a></code>
+</li>
+<li><code ng:non-bindable=""><a href="#/docs/services.service:filesService">filesService</a></code>
+</li>
+<li><code ng:non-bindable=""><a href="#/docs/services.service:s3Service">s3Service</a></code>
+</li>
+<li><code ng:non-bindable=""><a href="#/docs/services.service:mapService">mapService</a></code>
+</li>
+<li><code ng:non-bindable=""><a href="#/docs/services.service:authService">authService</a></code>
+</li>
+<li><code ng:non-bindable=""><a href="#/docs/services.service:logger">logger</a></code>
+</li>
+</ul>
+<div class="member method"><h2 id="methods">Methods</h2>
+<ul class="methods"><li><a href="https://github.com/Aidan275/nativeqda-dev/blob/5f6e16a/src/app_client/components/map/map.controller.js#L121" class="view-source icon-eye-open"> </a><h3 id="methods_activate">activate()</h3>
+<div class="activate"><div class="activate-page"><p>Runs when the page first loads and starts the loading overlay for the map and calls
+the <a href="#/docs/map.controller:mapCtrl#methods_initmap">initMap</a> function.</p>
+</div></div>
+</li>
+<li><a href="https://github.com/Aidan275/nativeqda-dev/blob/5f6e16a/src/app_client/components/map/map.controller.js#L639" class="view-source icon-eye-open"> </a><h3 id="methods_addlinks">addLinks()</h3>
+<div class="addlinks"><div class="addlinks-page"><p>Adds all marker links to the map when the show dependencies button is pressed.
+Also compiles and binds a popup and events to the markers.</p>
+</div></div>
+</li>
+<li><a href="https://github.com/Aidan275/nativeqda-dev/blob/5f6e16a/src/app_client/components/map/map.controller.js#L369" class="view-source icon-eye-open"> </a><h3 id="methods_addmapmarkers">addMapMarkers()</h3>
+<div class="addmapmarkers"><div class="addmapmarkers-page"><p>Adds the files to the map, checking each file type and using the appropriate marker icon.
+Compiles and binds each the popup window and adds relevant event calls for each marker.</p>
+</div></div>
+</li>
+<li><a href="https://github.com/Aidan275/nativeqda-dev/blob/5f6e16a/src/app_client/components/map/map.controller.js#L837" class="view-source icon-eye-open"> </a><h3 id="methods_canceladdinglink">cancelAddingLink()</h3>
+<div class="canceladdinglink"><div class="canceladdinglink-page"><p>Cancels adding a dependent link.
+If the user presses cancel when selecting a dependent marker the cancel window is
+hidden and the markers displayed on the map are refreshed.</p>
+</div></div>
+</li>
+<li><a href="https://github.com/Aidan275/nativeqda-dev/blob/5f6e16a/src/app_client/components/map/map.controller.js#L886" class="view-source icon-eye-open"> </a><h3 id="methods_confirmlinkdelete">confirmLinkDelete(link)</h3>
+<div class="confirmlinkdelete"><div class="confirmlinkdelete-page"><p>Displays a popup alert for the user to confirm the marker link deletion.</p>
+</div><h5 id="methods_confirmlinkdelete_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>link</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="confirmlinkdelete-page"><p>Link object</p>
+</div></td></tr></tbody></table></div>
+</li>
+<li><a href="https://github.com/Aidan275/nativeqda-dev/blob/5f6e16a/src/app_client/components/map/map.controller.js#L909" class="view-source icon-eye-open"> </a><h3 id="methods_deletelink">deleteLink(link)</h3>
+<div class="deletelink"><div class="deletelink-page"><p>Deletes the marker link from the database.
+Uses the <a href="#/docs/services.service:mapService#method_deletelink">mapService</a> function from 
+<a href="#/docs/services.service:mapService">mapService</a>.</p>
+</div><h5 id="methods_deletelink_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>link</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="deletelink-page"><p>Link object</p>
+</div></td></tr></tbody></table></div>
+</li>
+<li><a href="https://github.com/Aidan275/nativeqda-dev/blob/5f6e16a/src/app_client/components/map/map.controller.js#L600" class="view-source icon-eye-open"> </a><h3 id="methods_filesearchclick">fileSearchClick(file)</h3>
+<div class="filesearchclick"><div class="filesearchclick-page"><p>Zooms to the marker, unspiderfying if necessary, and displays the markers
+popup box if a file in the search results side bar is clicked.</p>
+</div><h5 id="methods_filesearchclick_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>file</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="filesearchclick-page"><p>File object</p>
+</div></td></tr></tbody></table></div>
+</li>
+<li><a href="https://github.com/Aidan275/nativeqda-dev/blob/5f6e16a/src/app_client/components/map/map.controller.js#L581" class="view-source icon-eye-open"> </a><h3 id="methods_filesearchhover">fileSearchHover(event, file)</h3>
+<div class="filesearchhover"><div class="filesearchhover-page"><p>Places a circle around the marker if the cursor enters the file box
+in the search results side bar, removes circle when the cursor exits the file box.</p>
+</div><h5 id="methods_filesearchhover_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>event</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="filesearchhover-page"><p>Cursor event (&#39;enter&#39; or &#39;exit&#39;)</p>
+</div></td></tr><tr><td>file</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="filesearchhover-page"><p>File object</p>
+</div></td></tr></tbody></table></div>
+</li>
+<li><a href="https://github.com/Aidan275/nativeqda-dev/blob/5f6e16a/src/app_client/components/map/map.controller.js#L292" class="view-source icon-eye-open"> </a><h3 id="methods_geolocateuser">geoLocateUser()</h3>
+<div class="geolocateuser"><div class="geolocateuser-page"><p>Geolocates the user. If locationfound, calls
+<a href="#/docs/map.controller:mapCtrl#methods_onlocationfound">onLocationFound</a> 
+to update the map with the user location. if locationerror, calls 
+<a href="#/docs/map.controller:mapCtrl#methods_onlocationerror">onLocationError</a></p>
+</div></div>
+</li>
+<li><a href="https://github.com/Aidan275/nativeqda-dev/blob/5f6e16a/src/app_client/components/map/map.controller.js#L348" class="view-source icon-eye-open"> </a><h3 id="methods_getfilelist">getFileList()</h3>
+<div class="getfilelist"><div class="getfilelist-page"><p>Uses the <a href="#/docs/services.service:filesService#methods_getfilelist">getFileList</a>
+function from <a href="#/docs/services.service:filesService">filesService</a> to load the files from the database.
+On success, calls <a href="#/docs/map.controller:mapCtrl#methods_addmapmarkers">addMapMarkers</a> to add the files
+to the map.</p>
+</div></div>
+</li>
+<li><a href="https://github.com/Aidan275/nativeqda-dev/blob/5f6e16a/src/app_client/components/map/map.controller.js#L625" class="view-source icon-eye-open"> </a><h3 id="methods_getlinks">getLinks()</h3>
+<div class="getlinks"><div class="getlinks-page"><p>Gets all the marker links from the database to be displayed on the map.
+Uses the <a href="#/docs/services.service:mapService#method_getlinks">mapService</a> function from 
+<a href="#/docs/services.service:mapService">mapService</a>.</p>
+</div></div>
+</li>
+<li><a href="https://github.com/Aidan275/nativeqda-dev/blob/5f6e16a/src/app_client/components/map/map.controller.js#L134" class="view-source icon-eye-open"> </a><h3 id="methods_initmap">initMap()</h3>
+<div class="initmap"><div class="initmap-page"><p>Initialises the map setting up the initial settings such as default location, zoom level, map tiles
+position marker, and sidebar. Next the functions to get the users location and the file markers and
+marker links from the database are called.</p>
+</div></div>
+</li>
+<li><a href="https://github.com/Aidan275/nativeqda-dev/blob/5f6e16a/src/app_client/components/map/map.controller.js#L335" class="view-source icon-eye-open"> </a><h3 id="methods_onlocationerror">onLocationError(error)</h3>
+<div class="onlocationerror"><div class="onlocationerror-page"><p>Displays error message to the user</p>
+</div><h5 id="methods_onlocationerror_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>error</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="onlocationerror-page"><p>Error object</p>
+</div></td></tr></tbody></table></div>
+</li>
+<li><a href="https://github.com/Aidan275/nativeqda-dev/blob/5f6e16a/src/app_client/components/map/map.controller.js#L306" class="view-source icon-eye-open"> </a><h3 id="methods_onlocationfound">onLocationFound(response)</h3>
+<div class="onlocationfound"><div class="onlocationfound-page"><p>Adds position marker to the map at the users location, adds a accuracy raduis,
+and a binds a popup with with the radius distance.</p>
+</div><h5 id="methods_onlocationfound_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>response</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="onlocationfound-page"><p>Location object</p>
+</div></td></tr></tbody></table></div>
+</li>
+<li><a href="https://github.com/Aidan275/nativeqda-dev/blob/5f6e16a/src/app_client/components/map/map.controller.js#L543" class="view-source icon-eye-open"> </a><h3 id="methods_popupfiledetails">popupFileDetails(file)</h3>
+<div class="popupfiledetails"><div class="popupfiledetails-page"><p>Opens a popup modal (<a href="#/docs/files.controller:fileDetailsCtrl">fileDetailsCtrl</a>)
+to display the file details and some additional options such as make puplic/private and delete. 
+Passes the file object.</p>
+</div><h5 id="methods_popupfiledetails_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>file</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="popupfiledetails-page"><p>File object</p>
+</div></td></tr></tbody></table></div>
+</li>
+<li><a href="https://github.com/Aidan275/nativeqda-dev/blob/5f6e16a/src/app_client/components/map/map.controller.js#L850" class="view-source icon-eye-open"> </a><h3 id="methods_popuplinkinfo">popupLinkInfo(markers)</h3>
+<div class="popuplinkinfo"><div class="popuplinkinfo-page"><p>Opens the link Info modal for entering link information.</p>
+</div><h5 id="methods_popuplinkinfo_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>markers</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="popuplinkinfo-page"><p>Precedent and dependent ObjectId (Files ObjectId)</p>
+</div></td></tr></tbody></table></div>
+</li>
+<li><a href="https://github.com/Aidan275/nativeqda-dev/blob/5f6e16a/src/app_client/components/map/map.controller.js#L567" class="view-source icon-eye-open"> </a><h3 id="methods_removeallmarkers">removeAllMarkers()</h3>
+<div class="removeallmarkers"><div class="removeallmarkers-page"><p>Removes all the map markers from the map.</p>
+</div></div>
+</li>
+<li><a href="https://github.com/Aidan275/nativeqda-dev/blob/5f6e16a/src/app_client/components/map/map.controller.js#L924" class="view-source icon-eye-open"> </a><h3 id="methods_removecurrentlink">removeCurrentLink(link)</h3>
+<div class="removecurrentlink"><div class="removecurrentlink-page"><p>Removes the deleted marker link from the map.</p>
+</div><h5 id="methods_removecurrentlink_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>link</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="removecurrentlink-page"><p>Link object</p>
+</div></td></tr></tbody></table></div>
+</li>
+<li><a href="https://github.com/Aidan275/nativeqda-dev/blob/5f6e16a/src/app_client/components/map/map.controller.js#L938" class="view-source icon-eye-open"> </a><h3 id="methods_removelink">removeLink(link)</h3>
+<div class="removelink"><div class="removelink-page"><p>Removes the deleted link from the local linkList array.</p>
+</div><h5 id="methods_removelink_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>link</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="removelink-page"><p>Link object</p>
+</div></td></tr></tbody></table></div>
+</li>
+<li><a href="https://github.com/Aidan275/nativeqda-dev/blob/5f6e16a/src/app_client/components/map/map.controller.js#L732" class="view-source icon-eye-open"> </a><h3 id="methods_removelinks">removeLinks()</h3>
+<div class="removelinks"><div class="removelinks-page"><p>Removes all the marker links from the map - not from the linkList array.</p>
+</div></div>
+</li>
+<li><a href="https://github.com/Aidan275/nativeqda-dev/blob/5f6e16a/src/app_client/components/map/map.controller.js#L765" class="view-source icon-eye-open"> </a><h3 id="methods_selectdependent">selectDependent(precedent)</h3>
+<div class="selectdependent"><div class="selectdependent-page"><p>Removes all the markers from the map then re-adds them, excluding any that share
+the same coordinates as the precedent marker and excluding the popup window.
+Fired when the add dependent button is pressed</p>
+</div><h5 id="methods_selectdependent_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>precedent</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="selectdependent-page"><p>Precedent marker object</p>
+</div></td></tr></tbody></table></div>
+</li>
+<li><a href="https://github.com/Aidan275/nativeqda-dev/blob/5f6e16a/src/app_client/components/map/map.controller.js#L748" class="view-source icon-eye-open"> </a><h3 id="methods_togglelinks">toggleLinks()</h3>
+<div class="togglelinks"><div class="togglelinks-page"><p>Shows/hides marker links.</p>
+</div></div>
+</li>
+<li><a href="https://github.com/Aidan275/nativeqda-dev/blob/5f6e16a/src/app_client/components/map/map.controller.js#L495" class="view-source icon-eye-open"> </a><h3 id="methods_viewfile">viewFile(file)</h3>
+<div class="viewfile"><div class="viewfile-page"><p>Opens a file in a new tab, using google docs viewer if it is a document, overwise,
+opens in the browser if natively supported. If not supported, a download prompt should be displayed.</p>
+</div><h5 id="methods_viewfile_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>file</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="viewfile-page"><p>File object</p>
+</div></td></tr></tbody></table></div>
+</li>
+</ul>
+</div>
 </div>

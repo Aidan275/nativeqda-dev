@@ -49,12 +49,12 @@
 		// Gets all the files from the MongoDB database
 		function getFileList() {
 			bsLoadingOverlayService.start({referenceId: 'file-list'});	// Start animated loading overlay
-			filesService.getFileDB(vm.currentPath, '')
+			filesService.getFile(vm.currentPath, '')
 			.then(function(data) {
 
 				vm.fileList = [];	/* reset fileList array on folder navigation */
 
-				if(vm.currentPath != '/') {	/* If not in the root folder, add a parent directory link */
+				if(vm.currentPath != '') {	/* If not in the root folder, add a parent directory link */
 					vm.fileList.push({
 						name: '..',
 						lastModified: '',
@@ -101,12 +101,11 @@
 				}
 
 				vm.pathsArray = vm.currentPath.split("/");
-				getFileList();
 				$location.path("files/" + vm.currentPath) //Update URL
 			} else if (file.type === 'parent-dir') {
 				vm.currentPath = vm.currentPath.substr(0, vm.currentPath.lastIndexOf('/'));
 				vm.pathsArray = vm.currentPath.split("/");
-				getFileList();
+				$location.path("files/" + vm.currentPath) //Update URL
 			} else {
 				// Open a blank new tab while still in a trusted context to prevent a popup blocker warning
 				var newTab = $window.open("about:blank", '_blank')
@@ -161,7 +160,7 @@
 		}
 
 		function deleteFile(file) {
-			filesService.deleteFileDB(file.path, file.name)
+			filesService.deleteFile(file.path, file.name)
 			.then(function(data) {
 				if(file.type != 'folder') {	/* If the file is not a folder, delete from S3 too */
 					s3Service.deleteFile(file.key)
@@ -205,10 +204,9 @@
 					}
 				}
 			});
-
 			modalInstance.result.then(function() {
-
-			});
+				removeFileFromArray(file._id);
+			}, function(){});
 		}
 
 		// need to work on back end still
@@ -300,7 +298,7 @@
 					icon : "fa fa-folder-o"
 				}
 
-				filesService.addFileDB(folderDetails)
+				filesService.addFile(folderDetails)
 				.then(function(data) {
 					swal.close();
 					logger.success(folderDetails.name + ' folder successfully created', '', 'Success');
@@ -327,7 +325,6 @@
 			vm.currentPath = newPath;
 			vm.pathsArray = vm.currentPath.split("/");
 			$location.path("files/" + newPath) //Update URL
-			getFileList();
 		}
 	}
 

@@ -3,7 +3,26 @@
 * @email aa275@uowmail.edu.au
 * @ngdoc controller
 * @name map.controller:mapCtrl
-* @description The main map of the application
+* @requires $scope
+* @requires $filter
+* @requires $compile
+* @requires $window
+* @requires $uibModal
+* @requires bsLoadingOverlayService
+* @requires services.service:filesService
+* @requires services.service:s3Service
+* @requires services.service:mapService
+* @requires services.service:authService
+* @requires services.service:logger
+* @description The main map page of the application. Displays all the files from the database based
+* on their geographical location.
+*
+* Ideally the bulk of this functionality should be moved to a directive where it can then simply be 
+* added to multiple pages but the slight differences each map has for each page would result in too
+* much work/time so this will suffice for now.
+*
+* Currently this file is to long. In the future these functions should be split up where possible.
+*
 */
 
 (function () {
@@ -15,14 +34,13 @@
 	.controller('mapCtrl', mapCtrl);
 
 	/* @ngInject */
-	function mapCtrl(filesService, $scope, $filter, $compile, $window, $uibModal, logger, bsLoadingOverlayService, mapService, s3Service, authService) {
+	function mapCtrl($scope, $filter, $compile, $window, $uibModal, bsLoadingOverlayService, filesService, s3Service, mapService, authService, logger) {
 		var vm = this;
 
 		/* Bindable Functions */
 		/* File marker functions */
 		vm.viewFile = viewFile;
 		vm.popupFileDetails = popupFileDetails;
-		vm.confirmFileDelete = confirmFileDelete;
 		vm.fileSearchHover = fileSearchHover;
 		vm.fileSearchClick = fileSearchClick;
 
@@ -42,7 +60,7 @@
 		vm.currentUser = authService.currentUser();
 
 		/* File marker variables */
-		vm.fileList = null;
+		vm.fileList = [];
 		vm.markers = [];
 		vm.currentMarker = null;
 		vm.curFileSearchHov = L.circleMarker([0,0], {radius: 35});	/* For highlighting the marker when the cursor is over its file in the search results */
@@ -56,7 +74,7 @@
 		vm.arrowHeads = [];
 		vm.addingLink = false;
 
-		/* To move - may move the majority of the mapping functions into it's own directive */
+		/* Leaflet icon general marker settings for all new markers using LeafIcon */
 		var LeafIcon = L.Icon.extend({
 			options: {
 				shadowUrl: 'assets/img/map/markers/marker-shadow.png',
@@ -93,14 +111,26 @@
 
 		///////////////////////////
 
+		/**
+		* @ngdoc function
+		* @name activate
+		* @methodOf map.controller:mapCtrl
+		* @description Runs when the page first loads and starts the loading overlay for the map and calls 
+		* the {@link map.controller:mapCtrl#methods_initMap initMap} function.
+		*/
 		function activate() {
 			bsLoadingOverlayService.start({referenceId: 'map'});
 			initMap();
 		}
 
-		/* Initialises the map setting up the initial settings such as default location, zoom level, map tiles */
-		/* position marker, and sidebar. Next the functions to get the users location and the file markers and */
-		/* marker links from the database are called */
+		/**
+		* @ngdoc function
+		* @name initMap
+		* @methodOf map.controller:mapCtrl
+		* @description Initialises the map setting up the initial settings such as default location, zoom level, map tiles
+		* position marker, and sidebar. Next the functions to get the users location and the file markers and
+		* marker links from the database are called.
+		*/
 		function initMap() {
 			var mapOptions = {
 				center: [-34.4054039, 150.87842999999998],	/* Default position is UOW */
@@ -111,6 +141,7 @@
 
 			var maxZoom = 22;
 
+			/* All the available map tiles */
 			var mapboxLight = L.tileLayer('https://api.mapbox.com/v4/{map}/{z}/{x}/{y}.png?access_token={accessToken}', {
 				map: 'mapbox.light',
 				accessToken: 'pk.eyJ1IjoiYWlkYW4yNzUiLCJhIjoiY2o0MWVrMmFxMGVuNjJxbnlocmV6ZDJ0cCJ9.h77mANND4PPZz9U1z4OC3w',
@@ -249,13 +280,29 @@
 			getLinks();			/* Gets the marker links from the DB */
 		}
 
-		/* If getPosition returns successfully, update the user's posistion on the map */
-		function geoLocateUser(position) {
+		/**
+		* @ngdoc function
+		* @name geoLocateUser
+		* @methodOf map.controller:mapCtrl
+		* @description Geolocates the user. If locationfound, calls 
+		* {@link map.controller:mapCtrl#methods_onLocationFound onLocationFound} 
+		* to update the map with the user location. if locationerror, calls 
+		* {@link map.controller:mapCtrl#methods_onLocationError onLocationError}
+		*/
+		function geoLocateUser() {
 			vm.map.on('locationfound', onLocationFound);	/* If location found, call onLocationFound function */
 			vm.map.on('locationerror', onLocationError);	/* If error, call onLocationError function */
 			vm.map.locate({setView: true, maxZoom: 15});
 		}
 
+		/**
+		* @ngdoc function
+		* @name onLocationFound
+		* @param {Object} response Location object
+		* @methodOf map.controller:mapCtrl
+		* @description Adds position marker to the map at the users location, adds a accuracy raduis,
+		* and a binds a popup with with the radius distance.
+		*/
 		function onLocationFound(response) {
 			var radius = response.accuracy / 2;
 			var userPos = response.latlng;
@@ -278,17 +325,28 @@
 			vm.posMarker.on("popupclose", function() { vm.map.removeLayer(posCicle); });
 		}
 
+		/**
+		* @ngdoc function
+		* @name onLocationError
+		* @param {Object} error Error object
+		* @methodOf map.controller:mapCtrl
+		* @description Displays error message to the user
+		*/
 		function onLocationError(error) {
 			logger.error(error.message, error, 'Error');
 		}
 
-		/************************************************************************/
-		/*************************** MARKER FUNCTIONS ***************************/
-		/************************************************************************/
-
-		/* Gets all the files from the database to be displayed on the map */
+		/**
+		* @ngdoc function
+		* @name getFileList
+		* @methodOf map.controller:mapCtrl
+		* @description Uses the {@link services.service:filesService#methods_getFileList getFileList} 
+		* function from {@link services.service:filesService filesService} to load the files from the database.
+		* On success, calls {@link map.controller:mapCtrl#methods_addMapMarkers addMapMarkers} to add the files
+		* to the map.
+		*/
 		function getFileList() {
-			filesService.getFileListDB()
+			filesService.getFileList()
 			.then(function(data) {
 				vm.fileList = data;
 				addMapMarkers();
@@ -297,7 +355,17 @@
 			});
 		}
 
-		/* Adds markers to the map for the files retrieved from the database */
+		/************************************************************************/
+		/*************************** MARKER FUNCTIONS ***************************/
+		/************************************************************************/
+
+		/**
+		* @ngdoc function
+		* @name addMapMarkers
+		* @methodOf map.controller:mapCtrl
+		* @description Adds the files to the map, checking each file type and using the appropriate marker icon.
+		* Compiles and binds each the popup window and adds relevant event calls for each marker.
+		*/
 		function addMapMarkers() {
 			vm.markers = L.markerClusterGroup({showCoverageOnHover: false});
 			
@@ -344,7 +412,7 @@
 				'<strong>Last Modified:</strong> ' + $filter('date')(file.lastModified, "dd MMMM, yyyy h:mm a");	/* uses date filter to format the date */
 
 				/* If the file has tags, add as a comma separated list, listing each tag */
-				/* otherwise skip and exclude the 'tags' label */
+				/* otherwise skip and exclude the tags label */
 				if(file.tags.length != 0) { 
 					popupString += '<br /><strong>Tags:</strong> ';
 					/* lists each tag for current file */
@@ -355,7 +423,6 @@
 
 				popupString += '<div style="padding-bottom:10px;"></div><div style="text-align:center;"><a ng-click="vm.viewFile(file)" class="btn btn-success btn-xs" role="button">View</a> ' +
 				'<a ng-click="vm.popupFileDetails(file)" class="btn btn-primary btn-xs" role="button">Details</a> ' +
-				/*'<a ng-click="vm.confirmFileDelete(file)" class="btn btn-danger btn-xs" role="button">Delete</a> ' + */
 				'<a ng-click="vm.selectDependent(precedent)" class="btn btn-info btn-xs" role="button">Add Dependent</a></div>' +
 				'</div></div>';
 
@@ -388,7 +455,7 @@
 					marker.bindTooltip(toolTipString);
 				}
 
-				/* When a marker is clicked and it's popup opens, the currentMaker variable is set */
+				/* When a marker is clicked and the popup opens, the currentMaker variable is set */
 				/* so the marker can be removed if the file is deleted. */
 				/* Also hides the tooltip from the marker when the popup window is open */
 				marker.on("popupopen", function() { 
@@ -417,9 +484,14 @@
 			bsLoadingOverlayService.stop({referenceId: 'map'});	/* Stop animated loading overlay */
 		}
 
-
-		/* Get a signed URL to download the requested file from S3 */
-		/* and if successful, open the signed URL in a new tab */
+		/**
+		* @ngdoc function
+		* @name viewFile
+		* @param {Object} file File object
+		* @methodOf map.controller:mapCtrl
+		* @description Opens a file in a new tab, using google docs viewer if it is a document, overwise,
+		* opens in the browser if natively supported. If not supported, a download prompt should be displayed.
+		*/
 		function viewFile(file) {
 
 			/* Open a blank new tab while still in a trusted context to prevent a popup blocker warning */
@@ -459,6 +531,15 @@
 			});
 		}
 
+		/**
+		* @ngdoc function
+		* @name popupFileDetails
+		* @param {Object} file File object
+		* @methodOf map.controller:mapCtrl
+		* @description Opens a popup modal ({@link files.controller:fileDetailsCtrl fileDetailsCtrl}) 
+		* to display the file details and some additional options such as make puplic/private and delete. 
+		* Passes the file object.
+		*/
 		function popupFileDetails(file) {
 			var modalInstance = $uibModal.open({
 				templateUrl: '/components/files/fileDetails/fileDetails.view.html',
@@ -470,64 +551,52 @@
 					}
 				}
 			});
-
-			modalInstance.result.then(function(results) {}, function() {});
-		}
-
-		function confirmFileDelete(file) {
-			swal({
-				title: "Are you sure?",
-				text: "Confirm to delete the file '" + file.name + "'",
-				type: "warning",
-				showCancelButton: true,
-				allowOutsideClick: true,
-				confirmButtonColor: "#d9534f",
-				confirmButtonText: "Yes, delete it!"
-			}, function() {
-				deleteFileDB(file);
-			});
-		}
-
-		function deleteFileDB(file) {
-			filesService.deleteFileDB(file.path, file.name)
-			.then(function(data) {
-				deleteFileS3(file);
-			});
-		}
-
-		function deleteFileS3(file) {
-			s3Service.deleteFile(file.key)
-			.then(function(data) {
-				/* If a text file was generated for analysis, delete that file too. */
-				/* If the original file was a text file, just delete the original file */
-				if(file.textFileKey && file.textFileKey != file.key){
-					s3Service.deleteFile(file.textFileKey);
+			modalInstance.result.then(function(result) {
+				if(result.action === "delete") {
+					vm.markers.removeLayer(vm.currentMarker);
 				}
-				vm.markers.removeLayer(vm.currentMarker);
-				logger.success("'" + file.name + "' was deleted successfully", "", "Success");
-			});
+			}, function() {});
 		}
 
+		/**
+		* @ngdoc function
+		* @name removeAllMarkers
+		* @methodOf map.controller:mapCtrl
+		* @description Removes all the map markers from the map.
+		*/
 		function removeAllMarkers() {	
 			vm.map.removeLayer(vm.markers);
 			vm.markers = null;
 		}
 
-		/* If the cursor enters the file box in the search results side bar this function  */
-		/* places a circle around the marker until the cursor leaves the file box */
+		/**
+		* @ngdoc function
+		* @name fileSearchHover
+		* @param {String} event Cursor event ('enter' or 'exit')
+		* @param {Object} file File object
+		* @methodOf map.controller:mapCtrl
+		* @description Places a circle around the marker if the cursor enters the file box 
+		* in the search results side bar, removes circle when the cursor exits the file box.
+		*/
 		function fileSearchHover(event, file) {
 			if(event === 'enter') {
 				var lat = file.coords.coordinates[1];
 				var lng = file.coords.coordinates[0];
 				vm.curFileSearchHov.setLatLng([lat, lng]);
 				vm.curFileSearchHov.addTo(vm.map);
-			} else if (event === 'leave') {
+			} else if (event === 'exit') {
 				vm.curFileSearchHov.remove();
 			}
 		}
 
-		/* If a file in the search results side bar is clicked this function zooms to  */
-		/* the marker, unspiderfying if necessary, and displays the markers popup box */
+		/**
+		* @ngdoc function
+		* @name fileSearchClick
+		* @param {Object} file File object
+		* @methodOf map.controller:mapCtrl
+		* @description Zooms to the marker, unspiderfying if necessary, and displays the markers 
+		* popup box if a file in the search results side bar is clicked.
+		*/
 		function fileSearchClick(file) {
 			vm.markers.zoomToShowLayer(file.marker, function(){	
 				if(file.marker.isPopupOpen()) {
@@ -545,7 +614,14 @@
 		/*************************** MARKER LINK FUNCTIONS ***************************/
 		/*****************************************************************************/
 
-		/* Gets all the marker links from the database to be displayed on the map */
+		/**
+		* @ngdoc function
+		* @name getLinks
+		* @methodOf map.controller:mapCtrl
+		* @description Gets all the marker links from the database to be displayed on the map.
+		* Uses the {@link services.service:mapService#method_getLinks mapService} function from 
+		* {@link services.service:mapService mapService}.
+		*/
 		function getLinks() {
 			mapService.getLinks()
 			.then(function(data) {
@@ -553,7 +629,13 @@
 			});
 		}
 
-		/* Adds all marker links to the map when the show dependencies button is pressed */
+		/**
+		* @ngdoc function
+		* @name addLinks
+		* @methodOf map.controller:mapCtrl
+		* @description Adds all marker links to the map when the show dependencies button is pressed.
+		* Also compiles and binds a popup and events to the markers.
+		*/
 		function addLinks() {
 			vm.linksHidden = false;	/* Sets false so the show dependencies button displays hide dependencies */
 
@@ -587,7 +669,7 @@
 				'<p><strong>Description:</strong> ' + link.description + '<br />' +
 				'<strong>Created By:</strong> ' + link._creator.firstName + '<br />' +
 				'<strong>Date Created:</strong> ' + $filter('date')(link.dateCreated, "dd MMMM, yyyy h:mm a") + '</p><div style="padding-bottom:10px;"></div>' +	/* uses date filter to format the date */
-				'<a ng-click="vm.confirmLinkDelete(linkID, linkName)" class="btn btn-danger btn-xs" role="button">Delete</a>' +
+				'<a ng-click="vm.confirmLinkDelete(link)" class="btn btn-danger btn-xs" role="button">Delete</a>' +
 				'</div></div>';
 
 				/* Compiles the HTML so ng-click works */
@@ -595,8 +677,7 @@
 				var newScope = $scope.$new();
 
 				/* New scope variables for the compiled string above */
-				newScope.linkID = link._id;
-				newScope.linkName = link.name;
+				newScope.link = link;
 
 				arrow.bindPopup(compiledPopupString(newScope)[0]);
 
@@ -612,7 +693,7 @@
 					arrow.bindTooltip(toolTipString, {sticky: true});
 				}
 
-				/* When a link is clicked and it's popup opens, the currentLink variable is set */
+				/* When a link is clicked and it is popup opens, the currentLink variable is set */
 				/* so the link can be removed if it is deleted. */
 				/* Also hides the tooltip from the link when the popup window is open */
 				arrow.on("popupopen", function() { 
@@ -642,7 +723,12 @@
 			});
 		}
 
-		/* Removes all the marker links from the map - not from the linkList array */
+		/**
+		* @ngdoc function
+		* @name removeLinks
+		* @methodOf map.controller:mapCtrl
+		* @description Removes all the marker links from the map - not from the linkList array.
+		*/
 		function removeLinks() {	
 			vm.linksHidden = true;
 			vm.arrows.forEach(function(arrow) {
@@ -653,7 +739,12 @@
 			});
 		}
 
-		/* show/hide marker links */
+		/**
+		* @ngdoc function
+		* @name toggleLinks
+		* @methodOf map.controller:mapCtrl
+		* @description Shows/hides marker links.
+		*/
 		function toggleLinks() {
 			if(vm.linksHidden) {
 				addLinks();
@@ -662,9 +753,15 @@
 			}
 		}
 
-		/* Fired when the add dependent button is pressed */
-		/* Removes all the markers from the map then re-adds them, excluding any that share */
-		/* the same coordinates as the precedent marker and excluding the popup window */
+		/**
+		* @ngdoc function
+		* @name selectDependent
+		* @param {Object} precedent Precedent marker object
+		* @methodOf map.controller:mapCtrl
+		* @description Removes all the markers from the map then re-adds them, excluding any that share
+		* the same coordinates as the precedent marker and excluding the popup window.
+		* Fired when the add dependent button is pressed
+		*/
 		function selectDependent(precedent) {
 			vm.addingLink = true;
 
@@ -679,7 +776,33 @@
 				if(file.coords.coordinates[1] != precedent.lat && file.coords.coordinates[0] != precedent.lng) {
 					var lat = file.coords.coordinates[1];
 					var lng = file.coords.coordinates[0];
-					var marker = L.marker([lat, lng], { icon: defaultIcon });
+					var marker;
+
+					switch(file.type) {
+						case 'file':
+						marker = L.marker([lat, lng], { icon: fileMarkerIcon });
+						break;
+						case 'text':
+						marker = L.marker([lat, lng], { icon: textMarkerIcon });
+						break;
+						case 'doc':
+						marker = L.marker([lat, lng], { icon: wordMarkerIcon });
+						break;
+						case 'pdf':
+						marker = L.marker([lat, lng], { icon: pdfMarkerIcon });
+						break;
+						case 'image':
+						marker = L.marker([lat, lng], { icon: imageMarkerIcon });
+						break;
+						case 'video':
+						marker = L.marker([lat, lng], { icon: videoMarkerIcon });
+						break;
+						case 'audio':
+						marker = L.marker([lat, lng], { icon: audioMarkerIcon });
+						break;
+						default:
+						marker = L.marker([lat, lng], { icon: defaultIcon });
+					}
 
 					/* Tooltip string containing basic file info */
 					var toolTipString = '<strong>File Name:</strong> ' + file.name + '<br />' + 
@@ -703,15 +826,27 @@
 			vm.map.addLayer(vm.markers);
 		}
 
-		/* If the user presses cancel when selecting a dependent marker the cancel window is */
-		/* hidden and the markers displayed on the map are refreshed */ 
+		/**
+		* @ngdoc function
+		* @name cancelAddingLink
+		* @methodOf map.controller:mapCtrl
+		* @description Cancels adding a dependent link.
+		* If the user presses cancel when selecting a dependent marker the cancel window is
+		* hidden and the markers displayed on the map are refreshed.
+		*/
 		function cancelAddingLink() {
 			vm.addingLink = false;
 			removeAllMarkers();
 			addMapMarkers();
 		}
 
-		/* Opens the link Info modal for entering link information */
+		/**
+		* @ngdoc function
+		* @name popupLinkInfo
+		* @param {Object} markers Precedent and dependent ObjectId (Files ObjectId)
+		* @methodOf map.controller:mapCtrl
+		* @description Opens the link Info modal for entering link information.
+		*/
 		function popupLinkInfo(markers) {
 			var modalInstance = $uibModal.open({
 				templateUrl: '/components/map/linkInfo/linkInfo.view.html',
@@ -741,42 +876,68 @@
 			});
 		};
 
-		/* Alert message displayed to confirm deleting marker link */
-		function confirmLinkDelete(linkID, linkName) {
+		/**
+		* @ngdoc function
+		* @name confirmLinkDelete
+		* @param {Object} link Link object
+		* @methodOf map.controller:mapCtrl
+		* @description Displays a popup alert for the user to confirm the marker link deletion.
+		*/
+		function confirmLinkDelete(link) {
 			swal({
 				title: "Are you sure?",
-				text: "Confirm to delete the link '" + linkName + "'",
+				text: "Confirm to delete the link '" + link.name + "'",
 				type: "warning",
 				showCancelButton: true,
 				allowOutsideClick: true,
 				confirmButtonColor: "#d9534f",
 				confirmButtonText: "Yes, delete it!"
 			}, function() {
-				deleteLink(linkID, linkName);	/* If confirmed */
+				deleteLink(link);	/* If confirmed */
 			});
 		}
 
-		/* Deletes the marker link from the database */
-		function deleteLink(linkID, linkName) {
-			mapService.deleteLink(linkID)
+		/**
+		* @ngdoc function
+		* @name deleteLink
+		* @param {Object} link Link object
+		* @methodOf map.controller:mapCtrl
+		* @description Deletes the marker link from the database.
+		* Uses the {@link services.service:mapService#method_deleteLink mapService} function from 
+		* {@link services.service:mapService mapService}.
+		*/
+		function deleteLink(link) {
+			mapService.deleteLink(link._id)
 			.then(function() {
-				removeCurrentLink(linkID);
-				logger.success("'" + linkName + "' was deleted successfully", "", "Success");
+				removeCurrentLink(link);
+				logger.success("'" + link.name + "' was deleted successfully", "", "Success");
 			});
 		}
 
-		/* Removes the deleted marker link from the map */
-		function removeCurrentLink(linkID) {	
-			var link = vm.currentLink;
-			vm.map.removeLayer(link.line);
-			vm.map.removeLayer(link.head);
-			removeLink(linkID);
+		/**
+		* @ngdoc function
+		* @name removeCurrentLink
+		* @param {Object} link Link object
+		* @methodOf map.controller:mapCtrl
+		* @description Removes the deleted marker link from the map.
+		*/
+		function removeCurrentLink(link) {	
+			var leafletLink = vm.currentLink;
+			vm.map.removeLayer(leafletLink.line);
+			vm.map.removeLayer(leafletLink.head);
+			removeLink(link);
 		}
 
-		/* Removes the deleted link from the local linkList array */
-		function removeLink(linkID) {	
+		/**
+		* @ngdoc function
+		* @name removeLink
+		* @param {Object} link Link object
+		* @methodOf map.controller:mapCtrl
+		* @description Removes the deleted link from the local linkList array.
+		*/
+		function removeLink(link) {	
 			/* Find the links index for the link id in the linkList array, will return -1 if not found  */
-			var linkIndex = vm.linkList.findIndex(function(obj){return obj._id == linkID});
+			var linkIndex = vm.linkList.findIndex(function(obj){return obj._id == link._id});
 
 			/* Remove the link from the linkList array */
 			if (linkIndex > -1) {

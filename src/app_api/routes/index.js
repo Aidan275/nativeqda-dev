@@ -69,6 +69,7 @@ router.get('/files/:filepath(*)/download', auth, checkDatabaseStatus, ctrlS3.sig
 router.get('/files/:filepath(*)', auth, checkDatabaseStatus, ctrlFile.getFile);
 router.put('/files/:filepath(*)', auth, checkDatabaseStatus, ctrlFile.putFile);
 router.delete('/files/:filepath(*)', auth, checkDatabaseStatus, ctrlFile.deleteFile);
+router.post('/files/acl', auth, checkDatabaseStatus, ctrlFile.acl);
 
 /* Tag and criteria search of the file system */
 router.get('/files/?tags=:tags', auth, checkDatabaseStatus, ctrlUsers.getUserProfile);
@@ -83,7 +84,7 @@ router.get('/s3/signDownload/:key(*)', auth, checkDatabaseStatus, ctrlS3.signDow
 router.get('/s3/list', auth, ctrlS3.getFileList);
 router.delete('/s3/:key(*)', auth, checkDatabaseStatus, ctrlS3.deleteFile);
 router.post('/s3/syncDB', auth, checkDatabaseStatus, ctrlS3.syncDB);
-router.post('/s3/:key/acl', auth, checkDatabaseStatus, ctrlS3.acl);
+router.post('/s3/acl', auth, checkDatabaseStatus, ctrlS3.acl);
 
 /* ==================== Analysis ==================== */
 router.post('/analysis/watson', auth, checkDatabaseStatus, ctrlAnalysis.watsonAnalysis);

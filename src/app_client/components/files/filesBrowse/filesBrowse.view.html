@@ -33,7 +33,7 @@
 								<span ng-if="row.type!='folder'">View</span>
 								<span ng-if="row.type=='folder'">Open</span>
 							</a>
-							<a ng-if="row.type!='parent-dir'" ng-click="vm.popupFileDetails(row)" class="btn btn-primary btn-xs" role="button">Details</a>
+							<a ng-if="row.type!='parent-dir' && row.type!='folder'" ng-click="vm.popupFileDetails(row)" class="btn btn-primary btn-xs" role="button">Details</a>
 							<a ng-if="row.type!='parent-dir'" ng-click="vm.confirmDelete(row)" class="btn btn-danger btn-xs" role="button">Delete</a>
 						</td>
 					</tr>

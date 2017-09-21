@@ -62,7 +62,7 @@ module.exports.getFile = function(req, res) { //Get file info OR browse a folder
 module.exports.putFile = function(req, res) { //Update or add a file
 	var path = extractpath(req.params["filepath"]);
 	var file = new File();
-		
+
 	file.name = path[0];
 	file.path = path[1];
 	
@@ -227,3 +227,70 @@ var buildFileListDB = function(req, res, results) {
 	});
 	return fileList;
 };
+
+/**
+* @apiGroup Files
+* @api {Post} /api/files/acl	Update ACL Setting
+* @apiDescription Updates the Access Control List (ACL) setting in the database. 
+* @apiPermission researcher
+* @apiParam (Body Parameter) {String} key 	S3 key of the file object
+* @apiParam (Body Parameter) {String} acl 	ACL string of the file object (private/public-read/etc.)
+* @apiParamExample {json} Request Example
+*     {
+*       "key": "files/2017/08/18/cd27ef702889d55d8a98.pdf",
+*       "acl": "private"
+*     }
+* @apiSuccessExample {json} Success Example
+*     HTTP/1.1 204 No Content
+* @apiUse FileNotFoundError
+* @apiUse InternalServerError
+*/
+module.exports.acl = function(req, res) {
+	var key = req.body.key;
+	var acl = req.body.acl;
+	
+	File.update({key: key}, {$set: {acl: acl}}, function(err, results) {
+		if (err)
+			sendJSONresponse(res, 500, err)
+		else if (!results) {
+			sendJSONresponse(res, 404, {
+				"message": "File not found"
+			});
+			return;
+		} else {
+			sendJSONresponse(res, 204, null);
+		}
+	});
+};
+
+/* ============== API Definitions for inheritance ============== */
+
+/**
+* @apiDefine FileNotFoundError
+*
+* @apiError FileNotFound The File was not found
+*
+* @apiErrorExample {json} Error 404
+*     HTTP/1.1 404 Not Found 
+*     {
+*       "message": "File not found"
+*     }
+*/
+
+/**
+* @apiDefine InternalServerError
+*
+* @apiError InternalServerError Internal server error
+*
+* @apiErrorExample {json} Error 500
+*     HTTP/1.1 500 Internal Server Error
+*/
+
+/**
+* @apiDefine ServiceUnavailableError
+*
+* @apiError ServiceUnavailable S3 service unavailable
+*
+* @apiErrorExample {json} Error 503
+*     HTTP/1.1 503 Service Unavailable
+*/

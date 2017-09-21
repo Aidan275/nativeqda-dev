@@ -533,7 +533,7 @@ define({ "api": [
             "group": "Error 4xx",
             "optional": false,
             "field": "ServiceUnavailable",
-            "description": "<p>Watson service unavailable</p>"
+            "description": "<p>S3 service unavailable</p>"
           }
         ]
       },
@@ -640,7 +640,7 @@ define({ "api": [
             "group": "Error 4xx",
             "optional": false,
             "field": "ServiceUnavailable",
-            "description": "<p>Watson service unavailable</p>"
+            "description": "<p>S3 service unavailable</p>"
           }
         ]
       },
@@ -748,6 +748,88 @@ define({ "api": [
         {
           "title": "Error 401",
           "content": "HTTP/1.1 401 Unauthorized",
+          "type": "json"
+        },
+        {
+          "title": "Error 500",
+          "content": "HTTP/1.1 500 Internal Server Error",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
+    "group": "Files",
+    "type": "Post",
+    "url": "/api/files/acl",
+    "title": "Update ACL Setting",
+    "description": "<p>Updates the Access Control List (ACL) setting in the database.</p>",
+    "permission": [
+      {
+        "name": "researcher"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Body Parameter": [
+          {
+            "group": "Body Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "key",
+            "description": "<p>S3 key of the file object</p>"
+          },
+          {
+            "group": "Body Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "acl",
+            "description": "<p>ACL string of the file object (private/public-read/etc.)</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request Example",
+          "content": "{\n  \"key\": \"files/2017/08/18/cd27ef702889d55d8a98.pdf\",\n  \"acl\": \"private\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success Example",
+          "content": "HTTP/1.1 204 No Content",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "src/app_api/controllers/files.js",
+    "groupTitle": "Files",
+    "name": "PostApiFilesAcl",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "FileNotFound",
+            "description": "<p>The File was not found</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "InternalServerError",
+            "description": "<p>Internal server error</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error 404",
+          "content": "HTTP/1.1 404 Not Found \n{\n  \"message\": \"File not found\"\n}",
           "type": "json"
         },
         {

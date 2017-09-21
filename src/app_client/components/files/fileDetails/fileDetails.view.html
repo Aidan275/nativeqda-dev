@@ -29,9 +29,11 @@
 				<br/>
 			</span>
 
-			<a ng-if="vm.file.acl=='private'" ng-click="vm.updateAclS3(vm.file.key, 'public-read')" class="btn btn-primary" role="button" jp-ng-bs-animated-button is-submitting="vm.isSubmittingButton" result="vm.resultButton" options="vm.makePublicOptions">Make Public</a>
+			<a ng-if="vm.file.acl=='private'" ng-click="vm.updateAclS3('public-read')" class="btn btn-primary" role="button" jp-ng-bs-animated-button is-submitting="vm.isSubmittingButton" result="vm.resultButton" options="vm.makePublicOptions">Make Public</a>
 
-			<a ng-if="vm.file.acl=='public-read'" ng-click="vm.updateAclS3(vm.file.key, 'private')" class="btn btn-primary" role="button" jp-ng-bs-animated-button is-submitting="vm.isSubmittingButton" result="vm.resultButton" options="vm.makePrivateOptions">Make Private</a>
+			<a ng-if="vm.file.acl=='public-read'" ng-click="vm.updateAclS3('private')" class="btn btn-primary" role="button" jp-ng-bs-animated-button is-submitting="vm.isSubmittingButton" result="vm.resultButton" options="vm.makePrivateOptions">Make Private</a>
+
+			<a ng-click="vm.confirmDelete()" class="btn btn-danger" role="button">Delete</a>
 
 			<span ng-if="vm.file.acl=='public-read'">
 				<br/>

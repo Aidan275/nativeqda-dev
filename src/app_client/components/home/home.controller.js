@@ -1,3 +1,27 @@
+/**
+* @author Aidan Andrews
+* @email aa275@uowmail.edu.au
+* @ngdoc controller
+* @name home.controller:homeCtrl
+* @requires $scope
+* @requires $filter
+* @requires $compile
+* @requires $window
+* @requires $uibModal
+* @requires NgTableParams
+* @requires bsLoadingOverlayService
+* @requires services.service:filesService
+* @requires services.service:s3Service
+* @requires services.service:mapService
+* @requires services.service:authService
+* @requires services.service:analysisService
+* @requires services.service:logger
+* @description The main homepage/dashboard of the application. Displays all the small map and the recently
+* uploaded files. 
+*
+* More to add.
+*/
+
 (function () { 
 
 	"use strict";
@@ -7,26 +31,32 @@
 	.controller('homeCtrl', homeCtrl);
 	
 	/* @ngInject */
-	function homeCtrl (filesService, $scope, $filter, $compile, $window, $uibModal, logger, bsLoadingOverlayService, NgTableParams, analysisService, s3Service) {
+	function homeCtrl ($scope, $filter, $compile, $window, $uibModal, NgTableParams, bsLoadingOverlayService, filesService, s3Service, mapService, authService, analysisService, logger) {
 		var vm = this;
 
-		// Bindable Functions
+		/* Bindable Functions */
 		vm.getFileList = getFileList;
 		vm.viewFile = viewFile;
 		vm.popupFileDetails = popupFileDetails;
-		vm.confirmDelete = confirmDelete;
 
-		// Bindable Data
+		/* Bindable Data */
 		vm.map = null;
-		vm.markers = [];
-		vm.currentMarker = null;
+		vm.posMarker = null;
+		vm.lat = -34.4054039;	/* Default position is UOW */
+		vm.lng = 150.87842999999998;
+		vm.currentUser = authService.currentUser();
+
+		/* File marker variables */
 		vm.fileList = [];
+		vm.markers = [];		
+		vm.currentMarker = null;
+		
 		vm.pageHeader = {
 			title: 'Dashboard',
 			strapline: 'summary of recent activity'
 		};
 
-		// To move - may move the majority of the mapping functions into it's own directive
+		/* Leaflet icon general marker settings for all new markers using LeafIcon */
 		var LeafIcon = L.Icon.extend({
 			options: {
 				shadowUrl: 'assets/img/map/markers/marker-shadow.png',
@@ -38,23 +68,54 @@
 			}
 		});
 
+		/* Marker icons */
 		var defaultIcon = new LeafIcon({iconUrl: 'assets/img/map/markers/marker-icon-2x.png'});
-		var posIcon = new LeafIcon({iconUrl: 'assets/img/map/markers/marker-icon-pos.png'});
+		var fileMarkerIcon = new LeafIcon({iconUrl: 'assets/img/map/markers/File-Marker.png'});
+		var textMarkerIcon = new LeafIcon({iconUrl: 'assets/img/map/markers/Txt-Marker.png'});
+		var wordMarkerIcon = new LeafIcon({iconUrl: 'assets/img/map/markers/Word-Marker.png'});
+		var pdfMarkerIcon = new LeafIcon({iconUrl: 'assets/img/map/markers/PDF-Doc-Marker.png'});
+		var imageMarkerIcon = new LeafIcon({iconUrl: 'assets/img/map/markers/Image-Marker.png'});
+		var videoMarkerIcon = new LeafIcon({iconUrl: 'assets/img/map/markers/Video-Marker.png'});
+		var audioMarkerIcon = new LeafIcon({iconUrl: 'assets/img/map/markers/Audio-Marker.png'});
+
+		/* User's position icon */
+		var posIcon = new LeafIcon({
+			iconUrl: 'assets/img/map/markers/position-marker.png', 	/* Sets the icon as a marker with a clear circle */
+			iconSize: [50, 62],
+			iconAnchor: [25, 62],
+			shadowUrl: vm.currentUser.avatar,  	/* Sets the shadow as the users avater which appears in the empty circle - circle radius set using position icon class in CSS */
+			shadowSize: [50, 50],
+			shadowAnchor: [25, 62],
+			className: 'position-icon'
+		});
 
 		activate();
 
 		///////////////////////////
 
+		/**
+		* @ngdoc function
+		* @name activate
+		* @methodOf home.controller:homeCtrl
+		* @description Runs when the page first loads and starts the loading overlay for the map/file-list 
+		* and calls the {@link map.controller:mapCtrl#methods_initMap initMap} function.
+		*/
 		function activate() {
-    		bsLoadingOverlayService.start({referenceId: 'home-map'});	// Start animated loading overlay
-    		bsLoadingOverlayService.start({referenceId: 'file-list'});	// Start animated loading overlay
-    		initMap();
-    		TEMPFUNCTION_getIdForButton();	// Temp function for getting an analysis ID for the bubble chart button on the home page - delete later
-    	}
+			bsLoadingOverlayService.start({referenceId: 'home-map'});	/* Start animated loading overlay */
+			bsLoadingOverlayService.start({referenceId: 'file-list'});	/* Start animated loading overlay */
+			initMap();
+		}
 
-    	function initMap() {
-    		var mapOptions = {
-				center: [-34.4054039, 150.87842999999998],	// Default position is UOW
+		/**
+		* @ngdoc function
+		* @name initMap
+		* @methodOf home.controller:homeCtrl
+		* @description Initialises the map setting up the initial settings such as default location, zoom level, map tiles
+		* position marker, and sidebar. Next the functions to get the users location and the file markers from the database are called.
+		*/
+		function initMap() {
+			var mapOptions = {
+				center: [-34.4054039, 150.87842999999998],	/* Default position is UOW */
 				zoom: 4
 			};
 
@@ -62,6 +123,7 @@
 
 			var maxZoom = 22;
 
+			/* All the available map tiles */
 			var mapboxLight = L.tileLayer('https://api.mapbox.com/v4/{map}/{z}/{x}/{y}.png?access_token={accessToken}', {
 				map: 'mapbox.light',
 				accessToken: 'pk.eyJ1IjoiYWlkYW4yNzUiLCJhIjoiY2o0MWVrMmFxMGVuNjJxbnlocmV6ZDJ0cCJ9.h77mANND4PPZz9U1z4OC3w',
@@ -167,7 +229,7 @@
 
 			trafficMutant.addGoogleLayer('TrafficLayer');
 
-			// Might be worth putting this in the user settings, or at least a setting for the default map
+			/* Might be worth putting this in the user settings, or at least a setting for the default map */
 			L.control.layers({
 				'Mapbox Light': mapboxLight,
 				'Mapbox Dark': mapboxDark,
@@ -190,107 +252,162 @@
 				collapsed: true
 			}).addTo(vm.map);
 
-			geoLocateUser();
-			getFileList();
+			vm.posMarker = L.marker([vm.lat, vm.lng], { icon: posIcon, zIndexOffset: -500 })
+			.bindTooltip('<strong>Your Position</strong>');
+
+			geoLocateUser();	/* Gets the users position */
+			getFileList();		/* Gets the files from the DB */
 		}
 
-		// If getPosition returns successfully update the user's posistion on the map
-		function geoLocateUser(position) {
-			vm.map.on('locationfound', onLocationFound);
-			vm.map.on('locationerror', onLocationError);
-			vm.map.locate({setView: true, maxZoom: 4});
+		/**
+		* @ngdoc function
+		* @name geoLocateUser
+		* @methodOf home.controller:homeCtrl
+		* @description Geolocates the user. If locationfound, calls 
+		* {@link home.controller:homeCtrl#methods_onLocationFound onLocationFound} 
+		* to update the map with the user location. if locationerror, calls 
+		* {@link home.controller:homeCtrl#methods_onLocationError onLocationError}
+		*/
+		function geoLocateUser() {
+			vm.map.on('locationfound', onLocationFound);	/* If location found, call onLocationFound function */
+			vm.map.on('locationerror', onLocationError);	/* If error, call onLocationError function */
+			vm.map.locate({setView: true, maxZoom: 15});
 		}
 
+		/**
+		* @ngdoc function
+		* @name onLocationFound
+		* @param {Object} response Location object
+		* @methodOf home.controller:homeCtrl
+		* @description Adds position marker to the map at the users location, adds a accuracy raduis,
+		* and a binds a popup with with the radius distance.
+		*/
 		function onLocationFound(response) {
 			var radius = response.accuracy / 2;
 			var userPos = response.latlng;
 
-			var posMarker = L.marker(userPos, { icon: posIcon, zIndexOffset: -500 }).addTo(vm.map)
-			.bindPopup("You are within " + $filter('formatDistance')(radius) + " from this point")
-			.bindTooltip('<strong>Your Position</strong>');
+			vm.posMarker.setLatLng(userPos);
+			vm.posMarker.bindPopup("<p style='margin: 5px !important;padding-top:8px;'>You are within " + $filter('formatDistance')(radius) + " of this point</p>", { closeButton:false });
+			vm.posMarker.addTo(vm.map);
 
 			var posCicle = L.circle(userPos, {
 				radius: radius,
 				color: '#cb2529'
 			});
 
-			// Adds/removes the circle from the marker when focused/unfocused
-			posMarker.on("popupopen", function() { 
+			/* Adds/removes the circle from the marker when focused/unfocused */
+			vm.posMarker.on("popupopen", function() { 
 				posCicle.addTo(vm.map); 
 				vm.map.fitBounds(posCicle.getBounds());
 			});
 			
-			posMarker.on("popupclose", function() { vm.map.removeLayer(posCicle); });
+			vm.posMarker.on("popupclose", function() { vm.map.removeLayer(posCicle); });
 		}
 
+		/**
+		* @ngdoc function
+		* @name onLocationError
+		* @param {Object} error Error object
+		* @methodOf home.controller:homeCtrl
+		* @description Displays error message to the user
+		*/
 		function onLocationError(error) {
 			logger.error(error.message, error, 'Error');
 		}
 
-		// Gets all the files from the MongoDB database to be displayed on the map and the recent files table
+		/**
+		* @ngdoc function
+		* @name getFileList
+		* @methodOf home.controller:homeCtrl
+		* @description Uses the {@link services.service:filesService#methods_getFileList getFileList} 
+		* function from {@link services.service:filesService filesService} to load the files from the database.
+		* On success, calls {@link map.controller:mapCtrl#methods_addMapMarkers addMapMarkers} to add the files
+		* to the map and the recent files table.
+		*/
 		function getFileList() {
-			filesService.getFileListDB()
+			filesService.getFileList()
 			.then(function(data) {
 				vm.fileList = data;
+				console.log(data);
 				listFiles();
 				addMapMarkers();
 			}, function(err) {
-				bsLoadingOverlayService.stop({referenceId: 'file-list'});	// If error, stop animated loading overlays
+				bsLoadingOverlayService.stop({referenceId: 'file-list'});	/* If error, stop animated loading overlays */
 				bsLoadingOverlayService.stop({referenceId: 'home-map'});
 			});
 		}
 
-		function listFiles() {
-
-			vm.tableParams = new NgTableParams({
-				count: 7,
-				page: 1,
-				sorting: {lastModified: "desc"}
-			}, {
-				counts: [],
-				dataset: vm.fileList
-			});   
-			bsLoadingOverlayService.stop({referenceId: 'file-list'});	// Stop animated loading overlay
-		}
-
-		// Adds markers for the files retrieved from the MongoDB database
+		/**
+		* @ngdoc function
+		* @name addMapMarkers
+		* @methodOf home.controller:homeCtrl
+		* @description Adds the files to the map, checking each file type and using the appropriate marker icon.
+		* Compiles and binds each the popup window and adds relevant event calls for each marker.
+		*/
 		function addMapMarkers() {
 			vm.markers = L.markerClusterGroup({showCoverageOnHover: false});
 
-			// For each file returned from the DB, a marker with an info 
-			// window is created. Each marker is then added to the 
-			// markers cluster group to be displayed on the map
-			vm.fileList.forEach(function(file) {
+			/* For each file returned from the DB, a marker with an info  */
+			/* window is created. Each marker is then added to the  */
+			/* markers cluster group to be displayed on the map */
+			vm.fileList.forEach(function(file, index, fileListArray) {
 				var lat = file.coords.coordinates[1];
 				var lng = file.coords.coordinates[0];
-				var marker = L.marker([lat, lng], { icon: defaultIcon });
 
-				var popupString = '<div class="info-window">' +
-				'<h3>' + file.name + '</h3>' +
+				var marker;
+
+				switch(file.type) {
+					case 'file':
+					marker = L.marker([lat, lng], { icon: fileMarkerIcon });
+					break;
+					case 'text':
+					marker = L.marker([lat, lng], { icon: textMarkerIcon });
+					break;
+					case 'doc':
+					marker = L.marker([lat, lng], { icon: wordMarkerIcon });
+					break;
+					case 'pdf':
+					marker = L.marker([lat, lng], { icon: pdfMarkerIcon });
+					break;
+					case 'image':
+					marker = L.marker([lat, lng], { icon: imageMarkerIcon });
+					break;
+					case 'video':
+					marker = L.marker([lat, lng], { icon: videoMarkerIcon });
+					break;
+					case 'audio':
+					marker = L.marker([lat, lng], { icon: audioMarkerIcon });
+					break;
+					default:
+					marker = L.marker([lat, lng], { icon: defaultIcon });
+				}
+
+				/* HTML for the popup boxes displayed when the file marker is pressed */
+				var popupString = '<div class="info-window"><div style="background-color:#4676fa;border-radius: 12px 12px 0 0 !important;text-align:center;">' +
+				'<h3 style="color:#FFF;margin-left:8px;margin-right:5px;padding-bottom:5px;padding-top:5px;padding-right:18px;">' + file.name + '</h3></div><div style="margin-left: 15px;margin-right:15px;margin-top:5px;margin-bottom:15px;">' +
 				'<p><strong>Created By:</strong> ' + file.createdBy + '<br />' +
-				'<strong>Size:</strong> ' + $filter('formatFileSize')(file.size, 2) + '<br />' +	// uses formatFileSize filter to format the file size
-				'<strong>Last Modified:</strong> ' + $filter('date')(file.lastModified, "dd MMMM, yyyy h:mm a");	// uses date filter to format the date
+				'<strong>Size:</strong> ' + $filter('formatFileSize')(file.size, 2) + '<br />' +	/* uses formatFileSize filter to format the file size */
+				'<strong>Last Modified:</strong> ' + $filter('date')(file.lastModified, "dd MMMM, yyyy h:mm a");	/* uses date filter to format the date */
 
-				// If the file has tags, add as a comma separated list, listing each tag
-				// otherwise skip and exclude the 'tags' label
+				/* If the file has tags, add as a comma separated list, listing each tag */
+				/* otherwise skip and exclude the 'tags' label */
 				if(file.tags.length != 0) { 
 					popupString += '<br /><strong>Tags:</strong> ';
-					// lists each tag for current file
+					/* lists each tag for current file */
 					popupString += file.tags.join(", ") + '</p>';
 				} else {
 					popupString += '</p>';
 				}
 
-				popupString += '<a ng-click="vm.viewFile(file)" class="btn btn-success" role="button">View</a> ' +
-				'<a ng-click="vm.popupFileDetails(file)" class="btn btn-primary" role="button">Details</a> ' +
-				'<a ng-click="vm.confirmDelete(file)" class="btn btn-danger" role="button">Delete</a>' +
-				'</div>';
+				popupString += '<div style="padding-bottom:10px;"></div><div style="text-align:center;"><a ng-click="vm.viewFile(file)" class="btn btn-success btn-xs" role="button">View</a> ' +
+				'<a ng-click="vm.popupFileDetails(file)" class="btn btn-primary btn-xs" role="button">Details</a> ' +
+				'</div></div>';
 
-				// compiles the HTML so ng-click works
+				/* compiles the HTML so ng-click works */
 				var compiledPopupString = $compile(angular.element(popupString));
 				var newScope = $scope.$new();
 
-				// New scope variables for the compiled string above
+				/* New scope variables for the compiled string above */
 				newScope.file = {
 					name: file.name,
 					path: file.path,
@@ -300,8 +417,8 @@
 
 				marker.bindPopup(compiledPopupString(newScope)[0]);
 
-				// Only include tooltips if the browser is not running on a mobile device
-				// so mobile devices do not display the tooltip when a pin is pressed.
+				/* Only include tooltips if the browser is not running on a mobile device */
+				/* so mobile devices do not display the tooltip when a pin is pressed. */
 				if (L.Browser.mobile != true) {
 					var toolTipString = '<strong>File Name:</strong> ' + file.name + '<br />' + 
 					'<strong>Created By:</strong> ' + file.createdBy + '<br />' + 
@@ -310,9 +427,9 @@
 					marker.bindTooltip(toolTipString);
 				}
 
-				// When a marker is clicked and it's popup opens, the currentMaker variable is set
-				// so the marker can be removed if the file is deleted.
-				// Also hides the tooltip from the marker when the popup window is open
+				/* When a marker is clicked and it's popup opens, the currentMaker variable is set */
+				/* so the marker can be removed if the file is deleted. */
+				/* Also hides the tooltip from the marker when the popup window is open */
 				marker.on("popupopen", function() { 
 					vm.currentMarker = this; 
 					var toolTip = marker.getTooltip();
@@ -321,8 +438,8 @@
 					}
 				});
 
-				// Sets the current marker to null and unhides the tooltip from the marker 
-				// when the popup window is closed
+				/* Sets the current marker to null and unhides the tooltip from the marker */
+				/* when the popup window is closed */
 				marker.on("popupclose", function() { 
 					vm.currentMarker = null; 
 					var toolTip = marker.getTooltip();
@@ -334,52 +451,84 @@
 				vm.markers.addLayer(marker);
 			});
 
-			// Adds the markers cluster group to the map
-			vm.map.addLayer(vm.markers);
-			bsLoadingOverlayService.stop({referenceId: 'home-map'});	// Stop animated loading overlay
+			vm.map.addLayer(vm.markers);	/* Adds the markers cluster group to the map */
+			bsLoadingOverlayService.stop({referenceId: 'home-map'});	/* Stop animated loading overlay */
 		}
 
-		// Gets signed URL to download the requested file from S3 
-		// if successful, opens the signed URL in a new tab
+		/**
+		* @ngdoc function
+		* @name listFiles
+		* @methodOf home.controller:homeCtrl
+		* @description Lists the 7 most recent files in the Recent Files table
+		*/
+		function listFiles() {
+			vm.tableParams = new NgTableParams({
+				count: 7,
+				page: 1,
+				sorting: {lastModified: "desc"}
+			}, {
+				counts: [],
+				dataset: vm.fileList
+			});   
+			bsLoadingOverlayService.stop({referenceId: 'file-list'});	/* Stop animated loading overlay */
+		}
+
+		/**
+		* @ngdoc function
+		* @name viewFile
+		* @param {Object} file File object
+		* @methodOf home.controller:homeCtrl
+		* @description Opens a file in a new tab, using google docs viewer if it is a document, overwise,
+		* opens in the browser if natively supported. If not supported, a download prompt should be displayed.
+		*/
 		function viewFile(file) {
 
-		// Open a blank new tab while still in a trusted context to prevent a popup blocker warning
-		var newTab = $window.open("about:blank", '_blank')
+			/* Open a blank new tab while still in a trusted context to prevent a popup blocker warning */
+			var newTab = $window.open("about:blank", '_blank')
 
-		// CSS and HTML for loading animation to display while fetching the signed URL
-		var loaderHTML = '<style>#loader{position: absolute;left: 50%;top: 50%;border:0.5em solid rgba(70, 118, 250, 0.2);border-radius:50%;'+
-				'border-top:0.5em solid #4676fa;width:75px;height:75px;-webkit-animation:spin 1s linear infinite;animation:spin 1s linear infinite;}'+
-				'@-webkit-keyframes spin{0%{-webkit-transform:rotate(0deg);}100%{-webkit-transform:rotate(360deg);}}'+
-				'@keyframes spin{0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}</style>'+
-				'<div id="loader"></div>';
+			/* CSS and HTML for loading animation to display while fetching the signed URL */
+			var loaderHTML = '<style>#loader{position: absolute;left: 50%;top: 50%;border:0.5em solid rgba(70, 118, 250, 0.2);border-radius:50%;'+
+			'border-top:0.5em solid #4676fa;width:75px;height:75px;-webkit-animation:spin 1s linear infinite;animation:spin 1s linear infinite;}'+
+			'@-webkit-keyframes spin{0%{-webkit-transform:rotate(0deg);}100%{-webkit-transform:rotate(360deg);}}'+
+			'@keyframes spin{0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}</style>'+
+			'<div id="loader"></div>';
 
-		// Write the loading animation code to the new window
-		newTab.document.write(loaderHTML);
+			/* Write the loading animation code to the new window */
+			newTab.document.write(loaderHTML);
 
-		// Make a request to the server for a signed URL to download/view the requested file
-		s3Service.signDownload(file.path, file.name)
+			/* Make a request to the server for a signed URL to download/view the requested file */
+			s3Service.signDownload(file.path, file.name)
 			.then(function(data) {
-			// Remove the animation 1s after the signed URL is retrieved
-			setTimeout(function(){
+				/* Remove the animation 1s after the signed URL is retrieved */
+				setTimeout(function(){
 					newTab.document.getElementById("loader").remove();
-			},1000);
+				},1000);
 
-			// Redirect the new tab to the signed URL
-			// If the file is a document or text file, open in google docs viewer to view in the browser
-			if(data.type === "doc") {
-				var encodedUrl = 'https://docs.google.com/viewer?url=' + encodeURIComponent(data.url) + '&embedded=true';
-				newTab.location = encodedUrl;
-			} else {
-				// Else either download or view in browser (if natively compatible)
-				newTab.location = data.url;
-			}
+				/* Redirect the new tab to the signed URL */
+				/* If the file is a document or text file, open in google docs viewer to view in the browser */
+				if(data.type === "doc") {
+					var encodedUrl = 'https://docs.google.com/viewer?url=' + encodeURIComponent(data.url) + '&embedded=true';
+					newTab.location = encodedUrl;
+				} else {
+					/* Else either download or view in browser (if natively compatible) */
+					newTab.location = data.url;
+				}
 
 			}, function() {
-			// If there is an error, close the new tab
+				/* If there is an error, close the new tab */
 				newTab.close();
 			});				
 		}
 
+		/**
+		* @ngdoc function
+		* @name popupFileDetails
+		* @param {Object} file File object
+		* @methodOf home.controller:homeCtrl
+		* @description Opens a popup modal ({@link files.controller:fileDetailsCtrl fileDetailsCtrl}) 
+		* to display the file details and some additional options such as make puplic/private and delete. 
+		* Passes the file object.
+		*/
 		function popupFileDetails(file) {
 			var modalInstance = $uibModal.open({
 				templateUrl: '/components/files/fileDetails/fileDetails.view.html',
@@ -391,55 +540,17 @@
 					}
 				}
 			});
-
-			modalInstance.result.then(function() {});
-		}
-
-		function confirmDelete(file) {
-			swal({
-				title: "Are you sure?",
-				text: "Confirm to delete the file '" + file.name + "'",
-				type: "warning",
-				showCancelButton: true,
-				allowOutsideClick: true,
-				confirmButtonColor: "#d9534f",
-				confirmButtonText: "Yes, delete it!"
-			}, function() {
-				deleteFileDB(file);
-			});
-		}
-
-		function deleteFileDB(file) {
-			filesService.deleteFileDB(file.path, file.name)
-			.then(function(data) {
-				deleteFileS3(file);
-			});
-		}
-
-		function deleteFileS3(file) {
-			s3Service.deleteFile(file.key)
-			.then(function(data) {
-				// If a text file was generated for analysis, delete that file too.
-				// If the original file was a text file, just delete the original file
-				if(file.textFileKey && file.textFileKey != file.key){
-					s3Service.deleteFile(file.textFileKey);
+			modalInstance.result.then(function(result) {
+				if(result.action === "delete") {
+					vm.markers.removeLayer(vm.currentMarker);
 				}
-				removeMapMarker();
-				logger.success("'" + file.name + "' was deleted successfully", "", "Success");
-			});
+			}, function() {});
 		}
 
-		function removeMapMarker() {	
-			vm.markers.removeLayer(vm.currentMarker);
-		}
 
-		function TEMPFUNCTION_getIdForButton() {	// Temp function for getting an analysis ID for the bubble chart button on the home page - delete later
-			analysisService.listWatsonAnalysis()
-			.then(function(data) {
-				vm.URL_ID = data[Math.floor(Math.random()*data.length)]._id;	// Picks random analysis ID
-			});
-		}
-		
+
+
+
 		$scope.colors = ["#fc0003", "#f70008", "#f2000d", "#ed0012", "#e80017", "#e3001c", "#de0021", "#d90026", "#d4002b", "#cf0030", "#c90036", "#c4003b", "#bf0040", "#ba0045", "#b5004a", "#b0004f", "#ab0054", "#a60059", "#a1005e", "#9c0063", "#960069", "#91006e", "#8c0073", "#870078", "#82007d", "#7d0082", "#780087", "#73008c", "#6e0091", "#690096", "#63009c", "#5e00a1", "#5900a6", "#5400ab", "#4f00b0", "#4a00b5", "#4500ba", "#4000bf", "#3b00c4", "#3600c9", "#3000cf", "#2b00d4", "#2600d9", "#2100de", "#1c00e3", "#1700e8", "#1200ed", "#0d00f2", "#0800f7", "#0300fc"];
 
 		function getSlide(target, style) {
@@ -462,7 +573,7 @@
 		$scope.carouselIndex2 = 1;
 		$scope.carouselIndex3 = 5;
 		$scope.carouselIndex4 = 5;
-		
+
 		vm.testImages = [
 		{title: 'Visualisation #1', url: 'assets/img/carousels/recent/bar-chart-preview.png'},
 		{title: 'Visualisation #2', url: 'assets/img/carousels/recent/chord-diagram-preview.png'},
@@ -476,87 +587,80 @@
 				addSlide(target, style);
 			}
 		}
-		
-            // End to End swiping
-            // load 130 images in main javascript container
-            var slideImages = [];
-            addSlides(slideImages, 'sports', 10);
-            addSlides(slideImages, 'people', 10);
-            addSlides(slideImages, 'city', 10);
-            addSlides(slideImages, 'abstract', 10);
-            addSlides(slideImages, 'nature', 10);
-            addSlides(slideImages, 'food', 10);
-            addSlides(slideImages, 'transport', 10);
-            addSlides(slideImages, 'animals', 10);
-            addSlides(slideImages, 'business', 10);
-            addSlides(slideImages, 'nightlife', 10);
-            addSlides(slideImages, 'cats', 10);
-            addSlides(slideImages, 'fashion', 10);
-            addSlides(slideImages, 'technics', 10);
-            $scope.totalimg = slideImages.length;
-            $scope.galleryNumber = 1;
-            console.log($scope.galleryNumber);
-            
-            function getImage(target) {
-            	var i = target.length
-            	, p = (($scope.galleryNumber-1)*$scope.setOfImagesToShow)+i;
-            	//console.log("i=" + i + "--" + p);
 
-            	return slideImages[p];
-            }
-            function addImages(target, qty) {
+		/* End to End swiping */
+		/* load 130 images in main javascript container */
+		var slideImages = [];
+		addSlides(slideImages, 'sports', 10);
+		addSlides(slideImages, 'people', 10);
+		addSlides(slideImages, 'city', 10);
+		addSlides(slideImages, 'abstract', 10);
+		addSlides(slideImages, 'nature', 10);
+		addSlides(slideImages, 'food', 10);
+		addSlides(slideImages, 'transport', 10);
+		addSlides(slideImages, 'animals', 10);
+		addSlides(slideImages, 'business', 10);
+		addSlides(slideImages, 'nightlife', 10);
+		addSlides(slideImages, 'cats', 10);
+		addSlides(slideImages, 'fashion', 10);
+		addSlides(slideImages, 'technics', 10);
+		$scope.totalimg = slideImages.length;
+		$scope.galleryNumber = 1;
+		console.log($scope.galleryNumber);
 
-            	for (var i=0; i < qty; i++) {
-            		addImage(target);
-            	}
-            }
-            
-            function addImage(target) {
-            	target.push(getImage(target));
-            }
-            
-            $scope.slides7 = [];
-            $scope.carouselIndex7 = 0;
-            $scope.setOfImagesToShow = 3;
-            addImages($scope.slides7, $scope.setOfImagesToShow);
-            $scope.loadNextImages = function() {
-            	//console.log("loading Next images");
-            	if (slideImages[slideImages.length-1].id !== $scope.slides7[$scope.slides7.length-1].id) {
-                    // Go to next set of images if exist
-                    $scope.slides7 = [];
-                    $scope.carouselIndex7 = 0;
-                    ++$scope.galleryNumber;
-                    addImages($scope.slides7, $scope.setOfImagesToShow);
-                } else {
-                    // Go to first set of images if not exist
-                    $scope.galleryNumber = 1;
-                    $scope.slides7 = [];
-                    $scope.carouselIndex7 = 0;
-                    addImages($scope.slides7, $scope.setOfImagesToShow);
-                }
-            }
-            $scope.loadPreviousImages = function() {
-            	if (slideImages[0].id !== $scope.slides7[0].id) {
-                    // Go to previous set of images if exist
-                    $scope.slides7 = [];
-                    $scope.carouselIndex7 = 0;
-                    --$scope.galleryNumber;
-                    addImages($scope.slides7, $scope.setOfImagesToShow);
-                } else {
-                    // Go to last set of images if not exist
-                    //console.log("slideimageslength: " + slideImages.length + ", " + slideImages.length-1 / $scope.setOfImagesToShow);
-                    // console.log("slideimageslength: " + slideImages.length );
-                    $scope.galleryNumber = slideImages.length / $scope.setOfImagesToShow;
-                    $scope.slides7 = [];
-                    $scope.carouselIndex7 = 0;
-                    addImages($scope.slides7, $scope.setOfImagesToShow);
-                    //console.log("no images left");
-                }
-                
-            }
-            
-            
+		function getImage(target) {
+			var i = target.length
+			, p = (($scope.galleryNumber-1)*$scope.setOfImagesToShow)+i;
 
-        }
+			return slideImages[p];
+		}
+		function addImages(target, qty) {
 
-    })();
+			for (var i=0; i < qty; i++) {
+				addImage(target);
+			}
+		}
+
+		function addImage(target) {
+			target.push(getImage(target));
+		}
+
+		$scope.slides7 = [];
+		$scope.carouselIndex7 = 0;
+		$scope.setOfImagesToShow = 3;
+		addImages($scope.slides7, $scope.setOfImagesToShow);
+		$scope.loadNextImages = function() {
+			if (slideImages[slideImages.length-1].id !== $scope.slides7[$scope.slides7.length-1].id) {
+				/* Go to next set of images if exist */
+				$scope.slides7 = [];
+				$scope.carouselIndex7 = 0;
+				++$scope.galleryNumber;
+				addImages($scope.slides7, $scope.setOfImagesToShow);
+			} else {
+				/* Go to first set of images if not exist */
+				$scope.galleryNumber = 1;
+				$scope.slides7 = [];
+				$scope.carouselIndex7 = 0;
+				addImages($scope.slides7, $scope.setOfImagesToShow);
+			}
+		}
+		$scope.loadPreviousImages = function() {
+			if (slideImages[0].id !== $scope.slides7[0].id) {
+				/* Go to previous set of images if exist */
+				$scope.slides7 = [];
+				$scope.carouselIndex7 = 0;
+				--$scope.galleryNumber;
+				addImages($scope.slides7, $scope.setOfImagesToShow);
+			} else {
+				/* Go to last set of images if not exist */
+				$scope.galleryNumber = slideImages.length / $scope.setOfImagesToShow;
+				$scope.slides7 = [];
+				$scope.carouselIndex7 = 0;
+				addImages($scope.slides7, $scope.setOfImagesToShow);
+			}
+
+		}
+
+	}
+
+})();

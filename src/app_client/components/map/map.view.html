@@ -59,7 +59,7 @@
 						</div>
 					</div>
 					<div id="sidebar-search-body">
-						<div class="sidebar-search-results-container" ng-repeat="file in vm.fileList | fileSearch: vm.searchText" ng-mouseenter="vm.fileSearchHover('enter', file)" ng-mouseleave="vm.fileSearchHover('leave', file)" ng-click="vm.fileSearchClick(file)">
+						<div class="sidebar-search-results-container" ng-repeat="file in vm.fileList | fileSearch: vm.searchText" ng-mouseenter="vm.fileSearchHover('enter', file)" ng-mouseleave="vm.fileSearchHover('exit', file)" ng-click="vm.fileSearchClick(file)">
 							<div class="left">
 								<i class="{{file.icon}} fa-3x"></i>
 							</div>

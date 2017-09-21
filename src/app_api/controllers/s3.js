@@ -206,7 +206,7 @@ module.exports.syncDB = function(req, res) {
 };
 
 module.exports.acl = function(req, res) {
-	var key = req.params["key"];
+	var key = req.body.key;
 	var acl = req.body.acl;
 
 	var params = {

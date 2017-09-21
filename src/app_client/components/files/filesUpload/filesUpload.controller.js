@@ -284,7 +284,7 @@
 
 			/* Gets all the files from the database to be displayed on the map */
 			function getFileList() {
-				filesService.getFileListDB()
+				filesService.getFileList()
 				.then(function(data) {
 					vm.fileList = data;
 					addMapMarkers();
@@ -558,7 +558,7 @@
 							fileDetails.textFileKey = key;
 						}
 
-						filesService.addFileDB(fileDetails)	/* Save the file information to the database */
+						filesService.addFile(fileDetails)	/* Save the file information to the database */
 						.then(function(data) {
 							processingEvent(false, 'success');	/* ng-bs-animated-button status & result */
 							logger.success(data.name + ' successfully uploaded', '', 'Success');
