@@ -28,6 +28,11 @@
 				color: var(--main-colour);
 				text-decoration: none;
 			}
+			
+			ul.breadcrumb li:last-child {
+				color: black;
+				cursor: default;
+			}
 		</style>
 		
 		<div class="col-md-8"">
@@ -66,7 +71,7 @@
 										</a>
 									</li>
 									<li ng-click="vm.popupEditVisual(row.name, row._id)" class="detail-cell"><a ng-if="row.type!='parent-dir' && row.type!='folder'" ng-click="vm.popupFileDetails(row)">Details</a>
-									<li ng-click="vm.confirmDelete(row.name, row._id)" class="delete-cell"><a ng-if="row.type!='parent-dir'" ng-click="vm.confirmDelete(row)">Delete</a></li>
+									<li class="delete-cell"><a ng-if="row.type!='parent-dir'" ng-click="vm.confirmDelete(row)">Delete</a></li>
 								</ul>
 							</div>
 						</td>
