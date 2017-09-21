@@ -14,7 +14,7 @@
 
 	<div class="bs-loading-container" bs-loading-overlay bs-loading-overlay-active-class="loading-overlay--active" bs-loading-overlay-reference-id="analysis-list"> 
 		<div class="blur-this">
-		<table ng-table="vm.tableParams" class="table table-condensed table-striped users-browser-table" style="margin-top:5px">
+		<table ng-table="vm.tableParams" class="table table-bordered table-striped users-browser-table" style="margin-top:5px">
 			<tr class="table-row" ng-repeat="row in $data">
 				<td data-title="'Avatar'" class="avatar-cell">
 					<div class="img-circle med-avatar-container" style="background-image: url('{{ row.avatar }}');">

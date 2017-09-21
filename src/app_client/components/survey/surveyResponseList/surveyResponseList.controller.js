@@ -9,10 +9,17 @@
 	/* @ngInject */
 	function surveyResponseListCtrl($routeParams, surveyService, bsLoadingOverlayService, NgTableParams, logger) {
 		var vm = this;
+		
+		vm.pageId = 'survey-page-css';
+		
 		vm.accessId = $routeParams.accessId;
 
 		// Bindable Functions
 		vm.confirmDelete = confirmDelete;
+		vm.pageHeader = {
+			title: 'Survey Responses',
+			strapline: 'lists of what people think'
+		};
 
 		// Bindable Data
 		vm.surveyResponsesList = [];

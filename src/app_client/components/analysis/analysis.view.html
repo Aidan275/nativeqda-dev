@@ -18,7 +18,7 @@
 						<td ng-click="vm.goToVisUrl(row._id)" data-title="'Analysis'" filter="{name: 'text'}" sortable="'name'" class="name-cell">{{row.name}}</td>
 						<td ng-click="vm.goToVisUrl(row._id)" data-title="'Created By'" filter="{createdBy: 'text'}" sortable="'createdBy'" class="created-by-cell hidden-xs" header-class="'hidden-xs'">{{row.createdBy}}</td>
 						<td ng-click="vm.goToVisUrl(row._id)" data-title="'Date Created'" filter="{dateCreated: 'text'}" sortable="'dateCreated'" class="date-created-cell hidden-xs hidden-sm" header-class="'hidden-xs hidden-sm'">{{row.dateCreated | date : "dd MMMM, yyyy h:mm a"}}</td>
-						<td class="context-menu-cell">
+						<td data-title="'Action'" class="context-menu-cell">
 							<div class="dropdown" style="text-align:center;">
 								<span class="fa fa-ellipsis-h dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"></span>
 								<ul class="dropdown-menu dropdown-menu-right">

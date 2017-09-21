@@ -116,8 +116,9 @@ bower_components
 /bower_components/
 jspm_packages
 
-# Ignore Batch Directory
+# Ignore Batch/ Stash Directories
 /batch/
+/stash/
 
 ### Order of script injecting in the index.html file is causing issues. ### 
 ### Since the index.html file is generated from gulp serve it can be ignored. ###

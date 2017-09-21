@@ -2206,6 +2206,9 @@ footer span {
 }
 
 #survey-page-css .surveys-browser-table td.survey-name-cell,
+#survey-page-css .surveys-browser-table td.gender-cell,
+#survey-page-css .surveys-browser-table td.age-cell,
+#survey-page-css .surveys-browser-table td.location-cell,
 #survey-page-css .surveys-browser-table td.responses-cell,
 #survey-page-css .surveys-browser-table td.created-by-cell,
 #survey-page-css .surveys-browser-table td.date-created-cell,

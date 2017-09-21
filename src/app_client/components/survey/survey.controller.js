@@ -16,7 +16,7 @@
 		vm.confirmDelete = confirmDelete;
 		vm.pageHeader = {
 			title: 'Surveys',
-			strapline: 'for the masses'
+			strapline: 'create, edit and view'
 		};
 
 		// Bindable Data

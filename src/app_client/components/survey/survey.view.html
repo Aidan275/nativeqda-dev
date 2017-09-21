@@ -13,7 +13,7 @@
 
 		<div class="bs-loading-container" bs-loading-overlay bs-loading-overlay-active-class="loading-overlay--active" bs-loading-overlay-reference-id="file-list"> 
 			<div class="blur-this file-browser-table-container">
-				<table ng-table="vm.tableParams"class="table  Generic-Table" style="margin-top:5px">
+				<table ng-table="vm.tableParams"class="table table-bordered table-striped surveys-browser-table" style="margin-top:5px">
 					<tr class="table-row" ng-repeat="row in $data">
 					
 						<td data-title="'Survey Name'"  sortable="'name'" class="survey-name-cell hidden-sm"  header-class="'hidden-xs hidden-sm'">{{row.name}}</td>
@@ -21,8 +21,8 @@
 						<td data-title="'Responses'"  sortable="'numResponses'" class="responses-cell hidden-sm"   header-class="'hidden-xs hidden-sm'">{{row.numResponses}}</td>
 						<td data-title="'Created By'" sortable="'createdBy'" class="created-by-cell hidden-sm"   header-class="'hidden-xs hidden-sm'">{{row.createdBy}}</td>
 						<td data-title="'Date Created'"  sortable="'dateCreated'" class="date-created-cell hidden-sm"   header-class="'hidden-xs hidden-sm'">{{row.dateCreated | date : "dd MMMM, yyyy h:mm a"}}</td>
-						<td data-title="''" class="context-menu-cell hidden-sm"   header-class="'hidden-xs hidden-sm'">
-						<div class="dropdown">
+						<td data-title="'Action'" class="context-menu-cell hidden-sm"   header-class="'hidden-xs hidden-sm'">
+						<div class="dropdown" style="text-align:center;">
 								<span class="fa fa-ellipsis-h dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"></span>
 								<ul class="dropdown-menu dropdown-menu-right">
 									<li class="view-cell"><a href="/survey/view/{{row.accessId}}">View</a></li>
@@ -30,16 +30,11 @@
 									<li class="edit-cell"><a href="/survey/responses/{{row.accessId}}">Edit</a></li>
 									<li ng-click="vm.confirmDelete(row._id, row.name)" class="delete-cell"><a>Delete</a></li>
 								</ul>
-							</div>
-						
-						
-							
-							
-							
+							</div>						
 							
 						</td class="data-command-cell">
 					
-					<tr/>
+					</tr>
 				</table>
 			</div>	
 		</div>

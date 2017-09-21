@@ -23,7 +23,7 @@
 				</div>
 				<div class="form-group">
 					<div class="col-sm-12">
-						<table ng-table="vm.tableParams" class="table table-condensed table-striped analysis-file-browser-table">
+						<table ng-table="vm.tableParams" class="table table-bordered table-striped analysis-file-browser-table">
 							<tr class="table-row" ng-class="{'row-selected': vm.selectedFileIds[row._id]}" ng-repeat="row in $data">
 								<td class="checkbox-cell" ng-click="vm.checkOrOpen(row)">
 									<input type="checkbox" ng-if="row.type != 'folder' && row.type != 'parent-dir'" ng-model="vm.selectedFileIds[row._id]" ng-click="vm.checkOrOpen(row)"/>
@@ -35,7 +35,7 @@
 								</td>
 								<td data-title="'Created By'" filter="{createdBy: 'text'}" sortable="'createdBy'" class="created-by-cell hidden-xs" header-class="'hidden-xs'" ng-click="vm.checkOrOpen(row)">{{row.createdBy}}</td>
 								<td data-title="'Last Modified'" filter="{lastModified: 'text'}" sortable="'lastModified'" class="last-modified-cell hidden-xs hidden-sm" header-class="'hidden-xs hidden-sm'" ng-click="vm.checkOrOpen(row)">{{row.lastModified | date : "dd MMMM, yyyy h:mm a"}}</td>
-								<td class="context-menu-cell">
+								<td data-title="'Action'" class="context-menu-cell">
 									<div ng-if="row.type != 'folder' && row.type != 'parent-dir'" class="dropdown">
 										<span class="fa fa-ellipsis-h dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"></span>
 										<ul class="dropdown-menu">
