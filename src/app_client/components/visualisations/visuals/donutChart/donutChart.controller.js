@@ -71,12 +71,12 @@
 	      if(responseData.length > 10) {
 	        sortData = responseData.slice((responseData.length-10), responseData.length);
 	        sortData.reverse();
-	       // drawChart(sortData);
-	       drawFancy(sortData);                    
+	        roundUp(sortData);
+                  
 	      }else {
 	        responseData.reverse();
-	        //drawChart(responseData);
-	        drawFancy(responseData);
+	        roundUp(responseData);
+
 	      } 
 	    }
 
@@ -94,107 +94,34 @@
 	      });
 	    }
 
-	    function roundUp() {
+	    function roundUp(data) {
+	    	//Add up to get total
+	    	var total = 0;
+	    	var myTmp = [];
+	    	var i = 0;
 
+	    	//Find total
+	    	data.forEach(function (object){
+	    		total = total + object.relevance;
+	    		myTmp[i] = object.relevance;
+	    		i++;
+	    	});
+
+
+	    	//Get percentages for each
+	    	i = 0;
+	    	data.forEach(function (object){
+	    		myTmp[i] = total/object.relevance;
+	    		object.relevance = myTmp[i];
+	    		i++;
+	    	});
+
+	    	drawFancy(data);
 	    }
 
-		function drawChart(data) {
-
-		var tooltip = d3.select('#chart')            
-		  .append('div')                             
-		  .attr('class', 'tooltip');                 
-
-		tooltip.append('div')                        
-		  .attr('class', 'label');                   
-
-		tooltip.append('div')                        
-		  .attr('class', 'count');                   
-
-		tooltip.append('div')                        
-		  .attr('class', 'percent');                 
-
-
-  		var width = 720;
-        var height = 720;
-        var radius = Math.min(width, height) / 2;
-
-        var color = d3.scaleOrdinal(d3.schemeCategory20c);
-
-        var svg = d3.select('#chart')
-          .append('svg')
-          .attr('width', width)
-          .attr('height', height)
-          .append('g')
-          .attr('transform', 'translate(' + (width / 2) + 
-            ',' + (height / 2) + ')');
-
-          var donutWidth = 150;
-
-		var arc = d3.arc()
-          .innerRadius(radius - donutWidth)
-          .outerRadius(radius);
-
-        var pie = d3.pie()
-          .value(function(d) { return d.relevance; })
-          .sort(null);	
-
-
-        var legendRectSize = 25;
-        var legendSpacing = 8;
-        
-        var path = svg.selectAll('path')
-          .data(pie(data))
-          .enter()
-          .append('path')
-          .attr('d', arc)
-          .attr('fill', function(d, i) { 
-            return color(d.data.text);
-          });
-
-          var div = d3.select("path").append("div").attr("class", "tooltip");
-
-		path.on('mouseover', function(d) {
-		 tooltip
-                .style("left", d3.event.pageX - 50 + "px")
-                .style("top", d3.event.pageY - 70 + "px")
-                .style("display", "block")
-                .html((d.data.text) + "<br>" + (d.data.relevance) + "%");
-        tooltip.select('.label').html(d.data.text);
-        tooltip.select('.count').html(d.data.relevance);
-		});
-        
-		path.on('mouseout', function() {
-		  tooltip.style('display', 'none');
-		});
-
-		var legend = svg.selectAll('.legend')
-		  .data(color.domain())
-		  .enter()
-		  .append('g')
-		  .attr('class', 'legend')
-		  .attr('transform', function(d, i) {
-		    var height = legendRectSize + legendSpacing;
-		    var offset =  height * color.domain().length / 2;
-		    var horz = -2 * legendRectSize;
-		    var vert = i * height - offset;
-		    return 'translate(' + horz + ',' + vert + ')';
-		  });
-		        
-		legend.append('rect')
-		  .attr('width', legendRectSize)
-		  .attr('height', legendRectSize)
-		  .style('fill', color)
-		  .style('stroke', color);
-		        
-		legend.append('text')
-		  .attr('x', legendRectSize + legendSpacing)
-		  .attr('y', legendRectSize - legendSpacing)
-		  .text(function(d) { return d; });
-
-		}
+		
 
 		function drawFancy(data) {
-			console.log(data);
 			var donut = donutChart(data)
 	        .width(960)
 	        .height(500)
@@ -209,7 +136,6 @@
 		}
 
 		function donutChart(data) {
-
 			var width,
 			        height,
 			        margin = {top: 10, right: 10, bottom: 10, left: 10},
@@ -219,11 +145,9 @@
 			        padAngle, // effectively dictates the gap between slices
 			        floatFormat = d3.format('.4r'),
 			        cornerRadius, // sets how rounded the corners are on each slice
-			        percentFormat = d3.format(',.2%');
-			        console.log(data);
+			        percentFormat = d3.format('.3n');
 
 			function chart(selection){
-				console.log(selection);
 		        selection.each(function(data) {
 		       
 		            // generate chart
@@ -231,7 +155,7 @@
 		            // ===========================================================================================
 		            // Set up constructors for making donut. See https://github.com/d3/d3-shape/blob/master/README.md
 		            var radius = Math.min(width, height) / 2;
-		            console.log(data);
+
 		            // creates a new pie generator
 		            var pie = d3.pie()
 		                .value(function(d) { return floatFormat(d.relevance); })
@@ -287,7 +211,7 @@
 		                .attr('dy', '.35em')
 		                .html(function(d) {
 		                    // add "key: value" for given category. Number inside tspan is bolded in stylesheet.
-		                    return d.data.text + ': <tspan>' + percentFormat(d.data.relevance) + '</tspan>';
+		                    return d.data.text + ': <tspan>' + percentFormat(d.data.relevance) + '%</tspan>';
 		                })
 		                .attr('transform', function(d) {
 
@@ -372,8 +296,8 @@
 
 		                    // leave off 'dy' attr for first tspan so the 'dy' attr on text element works. The 'dy' attr on
 		                    // tspan effectively imitates a line break.
-		                    if (i === 0) tip += '<tspan x="0">' + key + ': ' + value + '</tspan>';
-		                    else tip += '<tspan x="0" dy="1.2em">' + key + ': ' + value + '</tspan>';
+		                    if (i === 0) tip += '<tspan x="0">' + key + ': ' + value + '%</tspan>';
+		                    else tip += '<tspan x="0" dy="1.2em">' +  value + '</tspan>';
 		                    i++;
 		                }
 

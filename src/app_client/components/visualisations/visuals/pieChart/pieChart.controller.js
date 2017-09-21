@@ -68,10 +68,10 @@
 	      if(responseData.length > 10) {
 	        sortData = responseData.slice((responseData.length-10), responseData.length);
 	        sortData.reverse();
-	        drawChart(sortData);                    
+	        roundUp(sortData);                   
 	      }else {
 	        responseData.reverse();
-	        drawChart(responseData);
+	        roundUp(responseData);
 	      } 
 	    }
 
@@ -89,8 +89,42 @@
 	      });
 	    }
 
+	    /**
+	    * @ngdoc function
+	    * @name roundUp
+	    * @methodOf visualisations.controller:pieChartCtrl
+	    * @description Function takes each objects relevance, calculates the sum of them and then makes
+	    * each relevance value a percentage
+	    * @returns {array} The sorted array
+	    */ 
+	    function roundUp(data) {
+	    	//Add up to get total
+	    	var total = 0;
+	    	var myTmp = [];
+	    	var i = 0;
+
+	    	//Find total
+	    	data.forEach(function (object){
+	    		total = total + object.relevance;
+	    		myTmp[i] = object.relevance;
+	    		i++;
+	    	});
+
+
+	    	//Get percentages for each
+	    	i = 0;
+	    	data.forEach(function (object){
+	    		myTmp[i] = total/object.relevance;
+	    		object.relevance = myTmp[i];
+	    		i++;
+	    	});
+
+	    	drawChart(data);
+	    }
+
+
 		function drawChart(data) {
-			
+			console.log(data);
 			//set area
 			var svg = d3.select("svg"),
 			margin = {top: 40, right: 40, bottom: 400, left: 80},
@@ -129,7 +163,7 @@
 				.style("left", d3.event.pageX - 20 + "px")
 				.style("top", d3.event.pageY - 40 + "px")
 				.style("display", "inline-block")
-				.html((d.data.text) + "<br>" + (d.data.relevance));
+				.html((d.data.text) + "<br>" + ((d.data.relevance)));
 			})
 			.on("mouseout", function(d){ tooltip.style("display", "none");});
 
@@ -140,7 +174,7 @@
 			arc.append("text")
 				.attr("transform", function(d) { return "translate(" + label.centroid(d) + ")"; })
 				.attr("dy", "0.35em")
-				.text(function(d) { return  (d.data.relevance); });
+				.text(function(d) { return  (d.data.text); });
 
 		}
 	}
