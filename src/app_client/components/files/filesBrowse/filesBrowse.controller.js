@@ -25,7 +25,7 @@
 		// Bindable Data
 		vm.fileList = [];
 		vm.currentPath = fileroute($routeParams['folder'], $routeParams['file']);
-		vm.pathsArray = [vm.currentPath];
+		vm.pathsArray = vm.currentPath.split("/");
 		vm.pageHeader = {
 			title: 'Files'
 		};
@@ -315,7 +315,6 @@
 		}
 		
 		function openFolder(index) {
-			//console.log($location.path())
 			var newPath = '';
 
 			for(var i = 0; i < index+1; i++) {
@@ -326,7 +325,7 @@
 			}
 
 			vm.currentPath = newPath;
-			vm.pathsArray = vm.currentPath.split("/");
+			//vm.pathsArray = vm.currentPath.split("/");
 			$location.path("files/" + newPath) //Update URL
 		}
 	}
