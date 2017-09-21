@@ -38,7 +38,6 @@
 			surveyService.readSurveyJSON(accessId)
 			.then(function(data) {
 				vm.surveyJSON = data;	/* If loading survey data is successful, store survey to display */
-				showSurvey();
 			}, function() {
 				$location.path('/complete-survey');	/* If an error occurs loading the survey, return to the complete survey page */
 			});
@@ -52,10 +51,10 @@
 			} else if (!vm.form.age) {
 				logger.error('Please enter your age', '', 'Error');
 			} else {
-				return true;
+				vm.userFormComplete = true;
+				showSurvey();
 			}
-			return false;
-			//showSurvey();
+			
 		}
 
 		function getLocation() {
@@ -84,7 +83,7 @@
 			window.survey = new Survey.Model(surveyJSONObj);
 
 			survey.onComplete.add(function(result) {
-				vm.surveyComplete = onSubmit();
+				vm.surveyComplete = true;
 				
 				var surveyResponse = {
 					fullName: vm.form.fullName,

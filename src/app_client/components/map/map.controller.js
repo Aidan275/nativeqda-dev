@@ -61,7 +61,7 @@
 
 		/* File marker variables */
 		vm.fileList = [];
-		vm.markers = [];
+		vm.markers = {};
 		vm.currentMarker = null;
 		vm.curFileSearchHov = L.circleMarker([0,0], {radius: 35});	/* For highlighting the marker when the cursor is over its file in the search results */
 

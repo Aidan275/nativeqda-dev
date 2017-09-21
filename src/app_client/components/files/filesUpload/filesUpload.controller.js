@@ -30,11 +30,12 @@
 			vm.currentPath = currentPath;
 			vm.map = null;
 			vm.marker = null;
-			vm.markers = L.markerClusterGroup({showCoverageOnHover: false, maxClusterRadius: 40});
+			vm.markers = {};
 			vm.posMarker = null;
 			vm.posMarkerMoved = false;	/* After moving the marker, the accuracy circle will be removed, i.e. posMarkerMoved = true */
 			vm.lat = -34.4054039;	/* Default position is UOW */
 			vm.lng = 150.87842999999998;
+			vm.currentUser = authService.currentUser();
 			vm.tags = [];
 			vm.fileList = [];
 			vm.currentPercentage = '0';
@@ -47,18 +48,36 @@
 			vm.uploadButtonOptions = { buttonDefaultText: 'Upload', animationCompleteTime: 1000, buttonSubmittingText: 'Uploading...', buttonSuccessText: 'Done!' };
 			vm.isProcessing = false;
 
+			/* Leaflet icon general marker settings for all new markers using LeafIcon */
 			var LeafIcon = L.Icon.extend({
 				options: {
 					shadowUrl: 'assets/img/map/markers/marker-shadow.png',
-					iconSize:	 [25, 41],
+					iconSize:     [25, 41],
 					shadowSize:   [41, 41],
 					iconAnchor:   [12.5, 41],
 					shadowAnchor: [12.5, 41],
 					popupAnchor:  [0, -50]
 				}
 			});
+
+			/* Marker icons */
 			var defaultIcon = new LeafIcon({iconUrl: 'assets/img/map/markers/marker-icon-2x.png'});
-			var posIcon = new LeafIcon({iconUrl: 'assets/img/map/markers/marker-icon-pos.png'});
+			var fileMarkerIcon = new LeafIcon({iconUrl: 'assets/img/map/markers/File-Marker.png'});
+			var textMarkerIcon = new LeafIcon({iconUrl: 'assets/img/map/markers/Txt-Marker.png'});
+			var wordMarkerIcon = new LeafIcon({iconUrl: 'assets/img/map/markers/Word-Marker.png'});
+			var pdfMarkerIcon = new LeafIcon({iconUrl: 'assets/img/map/markers/PDF-Doc-Marker.png'});
+			var imageMarkerIcon = new LeafIcon({iconUrl: 'assets/img/map/markers/Image-Marker.png'});
+			var videoMarkerIcon = new LeafIcon({iconUrl: 'assets/img/map/markers/Video-Marker.png'});
+			var audioMarkerIcon = new LeafIcon({iconUrl: 'assets/img/map/markers/Audio-Marker.png'});
+			var uploadMarkerIcon = new LeafIcon({iconUrl: 'assets/img/map/markers/upload-marker.png'});
+
+			var uploadMarkerIcon = new LeafIcon({
+				iconUrl: 'assets/img/map/markers/upload-marker.png',
+				iconSize: [50, 62],
+				shadowSize: [80, 80],
+				iconAnchor: [25, 62],
+				shadowAnchor: [25, 80]
+			});
 
 			activate();		
 
@@ -207,7 +226,7 @@
 				}).addTo(vm.map);
 
 				/* Create new marker for the file upload position - default position */
-				vm.posMarker = L.marker([vm.lat, vm.lng], { icon: posIcon, draggable: true, zIndexOffset: 1000 })
+				vm.posMarker = L.marker([vm.lat, vm.lng], { icon: uploadMarkerIcon, draggable: true, zIndexOffset: 1000 })
 				.addTo(vm.map)
 				.bindTooltip('<strong>File Upload Position</strong>')
 				.bindPopup(	"<p>Drag me to change the file upload position</p>");
@@ -293,13 +312,43 @@
 
 			/* Adds markers for the files retrieved from the database */
 			function addMapMarkers() {
+				vm.markers = L.markerClusterGroup({showCoverageOnHover: false, maxClusterRadius: 40});
+
 				/* For each file, a marker is added to the marker Cluster Group to be displayed on the map. */
 				/* If the marker is clicked, it sets the upload marker to the file's location. */
 				vm.fileList.forEach(function(file) {
 					var lat = file.coords.coordinates[1];
 					var lng = file.coords.coordinates[0];
-					var marker = L.marker([lat, lng], { icon: defaultIcon })
-					.bindTooltip(	'<strong>File Name:</strong> ' + file.name + '<br />' + 
+					
+					var marker;
+
+					switch(file.type) {
+						case 'file':
+						marker = L.marker([lat, lng], { icon: fileMarkerIcon });
+						break;
+						case 'text':
+						marker = L.marker([lat, lng], { icon: textMarkerIcon });
+						break;
+						case 'doc':
+						marker = L.marker([lat, lng], { icon: wordMarkerIcon });
+						break;
+						case 'pdf':
+						marker = L.marker([lat, lng], { icon: pdfMarkerIcon });
+						break;
+						case 'image':
+						marker = L.marker([lat, lng], { icon: imageMarkerIcon });
+						break;
+						case 'video':
+						marker = L.marker([lat, lng], { icon: videoMarkerIcon });
+						break;
+						case 'audio':
+						marker = L.marker([lat, lng], { icon: audioMarkerIcon });
+						break;
+						default:
+						marker = L.marker([lat, lng], { icon: defaultIcon });
+					}
+
+					marker.bindTooltip(	'<strong>File Name:</strong> ' + file.name + '<br />' + 
 						'<strong>Created By:</strong> ' + file.createdBy + '<br />' + 
 						'<strong>Last Modified:</strong> ' + $filter('date')(file.lastModified, "dd MMMM, yyyy h:mm a"));
 					/* When a marker is clicked, the posMarker is moved to it */
