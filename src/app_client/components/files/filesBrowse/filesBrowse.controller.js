@@ -10,6 +10,9 @@
 	/* @ngInject */
 	function filesBrowseCtrl (mapService, $http, $window, $routeParams, $location, $scope, $uibModal, Upload, NgTableParams, filesService, authService, logger, $filter, $compile, bsLoadingOverlayService, s3Service) {
 		var vm = this;
+		
+		vm.pageId = 'file-browser-css'
+		
 		// Bindable Functions
 		vm.viewFile = viewFile;
 		vm.confirmDelete = confirmDelete;

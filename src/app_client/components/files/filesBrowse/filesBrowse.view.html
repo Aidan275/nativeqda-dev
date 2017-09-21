@@ -28,13 +28,20 @@
 						<td data-title="'Last Modified'" filter="{lastModified: 'text'}" sortable="'lastModified'" class="last-modified-cell hidden-xs" header-class="'hidden-xs'">{{row.lastModified | date : "dd MMMM, yyyy h:mm a"}}</td>
 						<td data-title="'Uploaded By'" filter="{createdBy: 'text'}" sortable="'createdBy'" class="uploaded-by-cell hidden-xs hidden-sm" header-class="'hidden-xs hidden-sm'">{{row.createdBy}}</td>
 						<td data-title="'Size'" filter="{size: 'text'}" sortable="'size'" class="size-cell hidden-xs hidden-sm hidden-md" header-class="'hidden-xs hidden-sm hidden-md'">{{row.size | formatFileSize:2}}</td>
-						<td data-title="'Command'" class="command-cell">
-							<a ng-if="row.type!='parent-dir'" ng-click="vm.viewFile(row)" class="btn btn-success btn-xs" role="button">
-								<span ng-if="row.type!='folder'">View</span>
-								<span ng-if="row.type=='folder'">Open</span>
-							</a>
-							<a ng-if="row.type!='parent-dir' && row.type!='folder'" ng-click="vm.popupFileDetails(row)" class="btn btn-primary btn-xs" role="button">Details</a>
-							<a ng-if="row.type!='parent-dir'" ng-click="vm.confirmDelete(row)" class="btn btn-danger btn-xs" role="button">Delete</a>
+						<td data-title="'Command'" class="context-menu-cell">
+							<div class="dropdown" style="text-align:center;">
+								<span class="fa fa-ellipsis-h dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"></span>
+								<ul class="dropdown-menu dropdown-menu-right">
+									<li class="view-cell">
+										<a ng-if="row.type!='parent-dir'" ng-click="vm.viewFile(row)">
+											<span ng-if="row.type!='folder'">View</span>
+											<span ng-if="row.type=='folder'">Open</span>
+										</a>
+									</li>
+									<li ng-click="vm.popupEditVisual(row.name, row._id)" class="detail-cell"><a ng-if="row.type!='parent-dir' && row.type!='folder'" ng-click="vm.popupFileDetails(row)">Details</a>
+									<li ng-click="vm.confirmDelete(row.name, row._id)" class="delete-cell"><a ng-if="row.type!='parent-dir'" ng-click="vm.confirmDelete(row)">Delete</a></li>
+								</ul>
+							</div>
 						</td>
 					</tr>
 				</table>

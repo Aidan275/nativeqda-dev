@@ -2382,6 +2382,59 @@ footer span {
 	color: #fff;
 	background-color: #2d65ff;
 }
+
+/* ========= FILE BROWSER TABLE ========= */
+
+#file-browser-css .file-browser-table td {
+	border-top: none !important;
+}
+
+#file-browser-css .file-browser-table .table-row:hover {
+	background: rgba(70,118,250,0.15) !important;
+}
+
+#file-browser-css .file-browser-table td.name-cell {
+	vertical-align: middle !important;
+}
+
+#file-browser-css .file-browser-table td.file-name-cell {
+	white-space: nowrap;
+	vertical-align: middle !important;
+	cursor: pointer;
+}
+#file-browser-css .file-browser-table td.last-modified-cell,
+#file-browser-css .file-browser-table td.size-cell,
+#file-browser-css .file-browser-table td.command-cell,
+#file-browser-css .file-browser-table td.uploaded-by-cell {
+	white-space: nowrap;
+	text-align: center;
+	vertical-align: middle !important;
+	cursor: pointer;
+}
+
+#file-browser-css .file-browser-table td.context-menu-cell .dropdown-menu {
+	border: none;
+}
+
+#file-browser-css .file-browser-table td.context-menu-cell .dropdown-menu>li>a {
+	padding: 5px 20px;
+}
+
+#file-browser-css .file-browser-table td.context-menu-cell .dropdown-menu .view-cell>a:hover {
+	background-color: #5cb85c;
+	color: #fff;
+}
+
+#file-browser-css .file-browser-table td.context-menu-cell .dropdown-menu .detail-cell>a:hover {
+	color: #fff;
+	background-color: #2d65ff;
+}
+
+#file-browser-css .file-browser-table td.context-menu-cell .dropdown-menu .delete-cell>a:hover {
+	background-color: #d9534f;
+	color: #fff;
+}
+
 /* ========== GENERIC TABLE ========== */
 @import url(https://fonts.googleapis.com/css?family=Roboto:400,500,700,300,100);
 
