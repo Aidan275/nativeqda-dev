@@ -1,96 +1,108 @@
 <style>
-	body {
-		width: 100%;
-		height: 100%;
-		overflow:hidden;
-	}
+body {
+	width: 100%;
+	height: 100%;
+	overflow:hidden;
+}
 
-	#wcMenu {
-		padding: 75px 25px 25px 25px;
-		overflow: hidden;
-		background: #eee;
-	}
+#wcMenu {
+	padding: 75px 25px 25px 25px;
+	overflow: hidden;
+	background: #eee;
+}
 
-	.slideout-menu {
-		position: fixed;
-		top: 0;
-		bottom: 0;
-		width: 256px;
-		min-height: 100vh;
-		overflow-y: scroll;
-		-webkit-overflow-scrolling: touch;
-		z-index: 0;
-		display: none;
-	}
+.slideout-menu {
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	width: 256px;
+	min-height: 100vh;
+	overflow-y: scroll;
+	-webkit-overflow-scrolling: touch;
+	z-index: 0;
+	display: none;
+}
 
-	.slideout-menu-left {
-		left: 0;
-	}
+.slideout-menu-left {
+	left: 0;
+}
 
-	.slideout-menu-right {
-		right: 0;
-	}
+.slideout-menu-right {
+	right: 0;
+}
 
-	.slideout-panel {
-		position: relative;
-		z-index: 1;
-		will-change: transform;
-		background-color: #FFF; /* A background-color is required */
-		min-height: 100vh;
-	}
+.slideout-panel {
+	position: relative;
+	z-index: 1;
+	will-change: transform;
+	background-color: #FFF; /* A background-color is required */
+	min-height: 100vh;
+}
 
-	.slideout-open,
-	.slideout-open body,
-	.slideout-open .slideout-panel {
-		overflow: hidden;
-	}
+.slideout-open,
+.slideout-open body,
+.slideout-open .slideout-panel {
+	overflow: hidden;
+}
 
-	.slideout-open .slideout-menu {
-		display: block;
-	}
+.slideout-open .slideout-menu {
+	display: block;
+}
 
-	.svg-container {
-		position: absolute;
-		top: 0; 
-		right: 0; 
-		bottom: 0; 
-		left: 0;
-	}
-	
-	#controls-button {
-		position:relative;
-	}
+.svg-container {
+	position: absolute;
+	top: 0; 
+	right: 0; 
+	bottom: 0; 
+	left: 0;
+}
+
+#controls-button {
+	position:relative;
+}
 </style>
 
 <navigation></navigation>
 
 <div id="wcMenu">
 
-	<button ng-click="vm.updateChart()" class="btn btn-primary">Refresh</button>
-	<br />
+	<button ng-click="vm.updateChart()" class="btn btn-primary">Refresh</button><br />
 	<br />
 	<label>Word Spacing Factor</label>
-	<input class="wc-word-spacing" type="number" name="word-spacing" ng-model="vm.wordSpacingFactor.value" ng-change="vm.updateChart()" min="0" max="2" step="0.01" required>
-	<span class="validity" title="Invaild Input"></span>
-	<br />
+	<input class="wc-word-spacing" type="number" name="word-spacing" ng-model="vm.sizes.wordSpacingFactor" ng-change="vm.updateChart()" min="0" max="2" step="0.01" required>
+	<span class="validity" title="Invaild Input"></span><br />
 	<br />
 	<label>Word Colours</label>
 	<color-picker ng-model="vm.wordColour1" options="vm.wordColourOptions1" event-api="vm.wordColourChange1"></color-picker>
 	<color-picker ng-model="vm.wordColour2" options="vm.wordColourOptions2" event-api="vm.wordColourChange2"></color-picker>
 	<br />
+	<label>Bubble Scale</label><br />
+	<label>Linear</label> <input type="radio" name="radio-scale" ng-model="vm.selectedScale" ng-click="vm.updateChart()" value="linear" /><br />
+	<label>Power</label> <input type="radio" name="radio-scale" ng-model="vm.selectedScale" ng-click="vm.updateChart()" value="power"/>
+	<input class="number-input-bubble" type="number" name="bubble-scale" ng-model="vm.sizes.powScale" ng-change="vm.updateChart()" min="0" max="10" step="0.01" required>
+	<span class="validity" title="Invaild Input"></span><br />
+	<br />
+	<label>Min Font Size</label>
+	<input class="wc-min-font-size" type="number" name="min-font-size" ng-model="vm.sizes.minFont" ng-change="vm.updateChart()" min="0" max="200" step="1" required>
+	<span class="validity" title="Invaild Input"></span><br />
+	<label>Max Font Size</label>
+	<input class="wc-max-font-size" type="number" name="max-font-size" ng-model="vm.sizes.maxFont" ng-change="vm.updateChart()" min="0" max="200" step="1" required>
+	<span class="validity" title="Invaild Input"></span><br />
+	<br />
+	<label>Text Stroke: <input type="checkbox" ng-model="vm.stroke" ng-change="vm.updateChart()"></label><br/>
+	<label>Random fill: <input type="checkbox" ng-model="vm.rainbow" ng-change="vm.updateChart()"></label><br/>
 
 </div>
 
 <div id="wcPanel">
 	
 	<div class="bs-loading-container" bs-loading-overlay bs-loading-overlay-active-class="loading-overlay--active" bs-loading-overlay-reference-id="word-cloud"> 
-		<div class="blur-this">
-			<div class="svg-container"></div>
-			<div id="controls-button">
-				<button ng-click="vm.toggleOptions()" class="btn btn-success">Controls</button>
-			</div>
+		<div class="svg-container"></div>
+		<div id="controls-button">
+			<button ng-click="vm.toggleOptions()" class="btn btn-success">Controls</button>
 		</div>
 	</div>
+</div>
 </div>
 
 <footer-generic></footer-generic>

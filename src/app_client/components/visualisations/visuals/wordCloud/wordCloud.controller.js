@@ -25,15 +25,21 @@
 		vm.toggleOptions = toggleOptions;
 		vm.updateChart = updateChart;
 
-		vm.wordSpacingFactor = {
-			value: 1
-		};
 		vm.wordColour1 = '#a5a5a5';
 		vm.wordColour2 = '#4676fa';
 		vm.wordColourOptions1 = { format:'hexString', case:'lower' };
 		vm.wordColourOptions2 = { format:'hexString', case:'lower' };
 		vm.wordColourChange1 = { onChange: function() { setWordColour(); } };
 		vm.wordColourChange2 = { onChange: function() { setWordColour(); } };
+		vm.selectedScale = 'linear';
+		vm.rainbow = false;
+		vm.stroke = false;
+		vm.sizes = {
+			wordSpacingFactor: 1,
+			powScale: 2,
+			minFont: 14,
+			maxFont: 60
+		};
 
 		var svg;
 		var data = [];
@@ -141,16 +147,39 @@
 		}
 
 		function drawWordCloud() {
-			var fill = d3.scaleOrdinal(d3.schemeCategory20);
+			var interpolators = ["interpolateViridis",	"interpolateInferno", "interpolateMagma", "interpolatePlasma", "interpolateWarm", "interpolateCool", "interpolateRainbow", "interpolateCubehelixDefault"];
 
-			var colours = d3.scaleLinear()
-			.domain([minSize, maxSize])
-			.range([vm.wordColour1, vm.wordColour2]);
+			var randomFill = d3.scaleSequential(d3[interpolators[getRandomInt(0, 8)]]);
+			var dataCopy = [];
+			var colourScale;
+			var fontScale;
+
+			angular.copy(data, dataCopy);
+
+			if(vm.selectedScale === 'power') {
+				fontScale = d3.scalePow().exponent(vm.sizes.powScale)
+				.domain([minSize, maxSize])
+				.range([vm.sizes.minFont, vm.sizes.maxFont]);
+
+				colourScale = d3.scalePow().exponent(vm.sizes.powScale)
+				.domain([fontScale(minSize), fontScale(maxSize)])
+				.range([vm.wordColour1, vm.wordColour2]);
+			} else {
+				fontScale = d3.scaleLinear()
+				.domain([minSize, maxSize])
+				.range([vm.sizes.minFont, vm.sizes.maxFont]);
+
+				colourScale = d3.scaleLinear()
+				.domain([fontScale(minSize), fontScale(maxSize)])
+				.range([vm.wordColour1, vm.wordColour2]);
+			}
 
 			d3.layout.cloud().size([width, height])
-			.words(data)
+			.words(dataCopy)
 			.rotate(0)
-			.fontSize(function(d) { return d.size; })
+			.text(function(d) { return d.text; })
+			.font('Impact')
+			.fontSize(function(d) { return fontScale(d.size); })
 			.on("end", draw)
 			.start();
 
@@ -166,16 +195,29 @@
 				.call(zoom);
 
 				var g = svg.append("g");
-				
+
 				g.attr("transform", "translate(" + translateX + ", " + translateY + ") scale(" + scale + ")")
 				.selectAll("text")
 				.data(words)
-				.enter().append("text")
+				.enter()
+				.append("text")
 				.style("font-size", function(d) { return d.size + "px"; })
 				.style("font-family", "Impact")
-				.style("fill", function(d, i) { return colours(d.size); })
+				.style("fill", function(d, i) { 
+					if(vm.rainbow) {
+						return randomFill(Math.random());  
+					} else {
+						return colourScale(d.size);
+					}})
 				.style("cursor", "default")
-				.attr("transform", function(d) { return "translate(" + [d.x*vm.wordSpacingFactor.value, d.y*vm.wordSpacingFactor.value] + ")"; })
+				.style("stroke", function() { 
+					if(vm.stroke) {
+						return "black";
+					} else {
+						return "none";
+					}})
+				.attr("text-anchor", "middle")
+				.attr("transform", function(d) { return "translate(" + [d.x*vm.sizes.wordSpacingFactor, d.y*vm.sizes.wordSpacingFactor] + ")"; })
 				.text(function(d) { return d.text; });
 
 				svg.call(zoom.transform, d3.zoomIdentity.translate(translateX, translateY).scale(scale));
@@ -192,6 +234,12 @@
 			bsLoadingOverlayService.stop({referenceId: 'word-cloud'});	// Stop animated loading overlay
 		}
 
+		function getRandomInt(min, max) {
+			min = Math.ceil(min);
+			max = Math.floor(max);
+			return Math.floor(Math.random() * (max - min)) + min;
+		}
+
 		function toggleOptions() {
 			slideout.toggle();
 		}
@@ -202,11 +250,30 @@
 		}
 
 		function setWordColour() {
-			var colours = d3.scaleLinear()
-			.domain([minSize, maxSize])
-			.range([vm.wordColour1, vm.wordColour2]);
+			vm.rainbow = false;
+			var colourScale;
+			var fontScale;
 
-			svg.selectAll("text").style("fill", function(d) { return colours(d.size) });
+			if(vm.selectedScale === 'power') {
+				fontScale = d3.scalePow().exponent(vm.sizes.powScale)
+				.domain([minSize, maxSize])
+				.range([vm.sizes.minFont, vm.sizes.maxFont]);
+
+				colourScale = d3.scalePow().exponent(vm.sizes.powScale)
+				.domain([fontScale(minSize), fontScale(maxSize)])
+				.range([vm.wordColour1, vm.wordColour2]);
+			} else {
+				fontScale = d3.scaleLinear()
+				.domain([minSize, maxSize])
+				.range([vm.sizes.minFont, vm.sizes.maxFont]);
+
+				colourScale = d3.scaleLinear()
+				.domain([fontScale(minSize), fontScale(maxSize)])
+				.range([vm.wordColour1, vm.wordColour2]);
+			}
+
+			svg.selectAll("text").style("fill", function(d) { return colourScale(d.size) });
+
 		}
 	}
 

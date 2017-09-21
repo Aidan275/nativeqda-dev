@@ -345,7 +345,7 @@
 		* Compiles and binds each the popup window and adds relevant event calls for each marker.
 		*/
 		function addMapMarkers() {
-			vm.markers = L.markerClusterGroup({showCoverageOnHover: false});
+			vm.markers = L.markerClusterGroup({showCoverageOnHover: false, maxClusterRadius: 40});
 
 			/* For each file returned from the DB, a marker with an info  */
 			/* window is created. Each marker is then added to the  */

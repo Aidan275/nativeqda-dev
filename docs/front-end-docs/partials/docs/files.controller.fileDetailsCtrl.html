@@ -1,4 +1,4 @@
-<a href="https://github.com/Aidan275/nativeqda-dev/edit/master/src/app_client/components/files/fileDetails/fileDetails.controller.js" class="improve-docs"><i class="icon-edit"> </i>Improve this doc</a><a href="https://github.com/Aidan275/nativeqda-dev/blob/5f6e16a/src/app_client/components/files/fileDetails/fileDetails.controller.js#L16" class="view-source"><i class="icon-eye-open"> </i>View source</a><span class="email">Author: </span>
+<a href="https://github.com/Aidan275/nativeqda-dev/edit/master/src/app_client/components/files/fileDetails/fileDetails.controller.js" class="improve-docs"><i class="icon-edit"> </i>Improve this doc</a><a href="https://github.com/Aidan275/nativeqda-dev/blob/8914dc6/src/app_client/components/files/fileDetails/fileDetails.controller.js#L16" class="view-source"><i class="icon-eye-open"> </i>View source</a><span class="email">Author: </span>
 <a href="mailto:aa275@uowmail.edu.au" class="email">Aidan Andrews</a><h1><code ng:non-bindable="">fileDetailsCtrl</code>
 <div><span class="hint">controller in module <code ng:non-bindable="">files</code>
 </span>
@@ -23,40 +23,40 @@
 </li>
 </ul>
 <div class="member method"><h2 id="methods">Methods</h2>
-<ul class="methods"><li><a href="https://github.com/Aidan275/nativeqda-dev/blob/5f6e16a/src/app_client/components/files/fileDetails/fileDetails.controller.js#L53" class="view-source icon-eye-open"> </a><h3 id="methods_activate">activate()</h3>
+<ul class="methods"><li><a href="https://github.com/Aidan275/nativeqda-dev/blob/8914dc6/src/app_client/components/files/fileDetails/fileDetails.controller.js#L53" class="view-source icon-eye-open"> </a><h3 id="methods_activate">activate()</h3>
 <div class="activate"><div class="activate-page"><p>Runs when the page first loads, fetching the file details using
 the <a href="#/docs/services.service:filesService#methods_getfile">getFile</a> function from 
 <a href="#/docs/services.service:filesService">filesService</a>. Starts the loading overlay and adds the 
 file details to the modal page.</p>
 </div></div>
 </li>
-<li><a href="https://github.com/Aidan275/nativeqda-dev/blob/5f6e16a/src/app_client/components/files/fileDetails/fileDetails.controller.js#L112" class="view-source icon-eye-open"> </a><h3 id="methods_confirmdelete">confirmDelete()</h3>
+<li><a href="https://github.com/Aidan275/nativeqda-dev/blob/8914dc6/src/app_client/components/files/fileDetails/fileDetails.controller.js#L112" class="view-source icon-eye-open"> </a><h3 id="methods_confirmdelete">confirmDelete()</h3>
 <div class="confirmdelete"><div class="confirmdelete-page"><p>Displays a popup alert for the user to confirm the deletion. If confirmed,
 the <a href="#/docs/files.controller:fileDetailsCtrl#methods_deletefile">deleteFile</a> function 
 is called to delete the file from the database.</p>
 </div></div>
 </li>
-<li><a href="https://github.com/Aidan275/nativeqda-dev/blob/5f6e16a/src/app_client/components/files/fileDetails/fileDetails.controller.js#L135" class="view-source icon-eye-open"> </a><h3 id="methods_deletefiledb">deleteFileDB()</h3>
+<li><a href="https://github.com/Aidan275/nativeqda-dev/blob/8914dc6/src/app_client/components/files/fileDetails/fileDetails.controller.js#L135" class="view-source icon-eye-open"> </a><h3 id="methods_deletefiledb">deleteFileDB()</h3>
 <div class="deletefiledb"><div class="deletefiledb-page"><p>Uses the <a href="#/docs/services.service:filesService#methods_deletefile">deleteFile</a>
 function from <a href="#/docs/services.service:filesService">filesService</a> to delete the file from the database.
 On success, calls <a href="#/docs/files.controller:fileDetailsCtrl#methods_deletefiles3">deleteFileS3</a> to delete 
 the file from the S3 server.</p>
 </div></div>
 </li>
-<li><a href="https://github.com/Aidan275/nativeqda-dev/blob/5f6e16a/src/app_client/components/files/fileDetails/fileDetails.controller.js#L151" class="view-source icon-eye-open"> </a><h3 id="methods_deletefiles3">deleteFileS3()</h3>
+<li><a href="https://github.com/Aidan275/nativeqda-dev/blob/8914dc6/src/app_client/components/files/fileDetails/fileDetails.controller.js#L151" class="view-source icon-eye-open"> </a><h3 id="methods_deletefiles3">deleteFileS3()</h3>
 <div class="deletefiles3"><div class="deletefiles3-page"><p>Uses the <a href="#/docs/services.service:s3Service#methods_deletefile">deleteFile</a>
 function from <a href="#/docs/services.service:s3Service">s3Service</a> to delete the file from the S3 server.
 On success, checks if file has an associated text file on S3, if so, also deletes.
 Displays success message and informs the caller to remove the file then closes the modal.</p>
 </div></div>
 </li>
-<li><a href="https://github.com/Aidan275/nativeqda-dev/blob/5f6e16a/src/app_client/components/files/fileDetails/fileDetails.controller.js#L94" class="view-source icon-eye-open"> </a><h3 id="methods_updateacldb">updateAclDB(acl)</h3>
+<li><a href="https://github.com/Aidan275/nativeqda-dev/blob/8914dc6/src/app_client/components/files/fileDetails/fileDetails.controller.js#L94" class="view-source icon-eye-open"> </a><h3 id="methods_updateacldb">updateAclDB(acl)</h3>
 <div class="updateacldb"><div class="updateacldb-page"><p>Updates the Access Control List (ACL) in the database so the file is either private
 or public. There are other options also avaliable - check aws-sdk js api documentation.</p>
 </div><h5 id="methods_updateacldb_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>acl</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="updateacldb-page"><p>String specifying ACL setting (private/public-read)</p>
 </div></td></tr></tbody></table></div>
 </li>
-<li><a href="https://github.com/Aidan275/nativeqda-dev/blob/5f6e16a/src/app_client/components/files/fileDetails/fileDetails.controller.js#L75" class="view-source icon-eye-open"> </a><h3 id="methods_updateacls3">updateAclS3(acl)</h3>
+<li><a href="https://github.com/Aidan275/nativeqda-dev/blob/8914dc6/src/app_client/components/files/fileDetails/fileDetails.controller.js#L75" class="view-source icon-eye-open"> </a><h3 id="methods_updateacls3">updateAclS3(acl)</h3>
 <div class="updateacls3"><div class="updateacls3-page"><p>Updates the Access Control List (ACL) on S3 so the file is either private or public.
 There are other options also avaliable - check aws-sdk js api documentation. If successful, calls 
 the <a href="#/docs/files.controller:fileDetailsCtrl#methods_updateacldb">updateAclDB</a> function to update

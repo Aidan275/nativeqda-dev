@@ -275,12 +275,21 @@ NG_DOCS={
     },
     {
       "section": "docs",
+      "id": "visualisations.controller:networkChartCtrl",
+      "shortName": "networkChartCtrl",
+      "type": "controller",
+      "moduleName": "visualisations",
+      "shortDescription": "Controller for the network chart visualisation",
+      "keywords": "au ben bjr342 chart controller docs network rogers visualisation visualisations"
+    },
+    {
+      "section": "docs",
       "id": "visualisations.controller:pieChartCtrl",
       "shortName": "pieChartCtrl",
       "type": "controller",
       "moduleName": "visualisations",
       "shortDescription": "Controller for the donut chart visualisation",
-      "keywords": "analysis array ascending au ben bjr342 called calls chart checklength checks concept controller data descending docs donut drawchart drawing drawn elements functinon function keyword order relevance reverse rogers sorted sortrelevance sorts top trims visualisation visualisations"
+      "keywords": "analysis array ascending au ben bjr342 calculates called calls chart checklength checks concept controller data descending docs donut drawchart drawing drawn elements functinon function keyword objects order percentage relevance reverse rogers roundup sorted sortrelevance sorts sum takes top trims visualisation visualisations"
     },
     {
       "section": "docs",

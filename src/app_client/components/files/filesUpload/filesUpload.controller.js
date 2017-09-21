@@ -30,7 +30,7 @@
 			vm.currentPath = currentPath;
 			vm.map = null;
 			vm.marker = null;
-			vm.markers = L.markerClusterGroup({showCoverageOnHover: false});
+			vm.markers = L.markerClusterGroup({showCoverageOnHover: false, maxClusterRadius: 40});
 			vm.posMarker = null;
 			vm.posMarkerMoved = false;	/* After moving the marker, the accuracy circle will be removed, i.e. posMarkerMoved = true */
 			vm.lat = -34.4054039;	/* Default position is UOW */

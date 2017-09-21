@@ -1,4 +1,4 @@
-<a href="https://github.com/Aidan275/nativeqda-dev/edit/master/src/app_client/components/visualisations/visuals/barChart/barChart.controller.js" class="improve-docs"><i class="icon-edit"> </i>Improve this doc</a><a href="https://github.com/Aidan275/nativeqda-dev/blob/5f6e16a/src/app_client/components/visualisations/visuals/barChart/barChart.controller.js#L8" class="view-source"><i class="icon-eye-open"> </i>View source</a><span class="email">Author: </span>
+<a href="https://github.com/Aidan275/nativeqda-dev/edit/master/src/app_client/components/visualisations/visuals/barChart/barChart.controller.js" class="improve-docs"><i class="icon-edit"> </i>Improve this doc</a><a href="https://github.com/Aidan275/nativeqda-dev/blob/8914dc6/src/app_client/components/visualisations/visuals/barChart/barChart.controller.js#L8" class="view-source"><i class="icon-eye-open"> </i>View source</a><span class="email">Author: </span>
 <a href="mailto:bjr342@uowmail.edu.au" class="email">Ben Rogers</a><h1><code ng:non-bindable="">barChartCtrl</code>
 <div><span class="hint">controller in module <code ng:non-bindable="">visualisations</code>
 </span>
@@ -8,37 +8,37 @@
 <div class="description"><div class="visualisations-controller-page visualisations-controller-barchartctrl-page"><p>Controller for the bar chart visualisation</p>
 </div></div>
 <div class="member method"><h2 id="methods">Methods</h2>
-<ul class="methods"><li><a href="https://github.com/Aidan275/nativeqda-dev/blob/5f6e16a/src/app_client/components/visualisations/visuals/barChart/barChart.controller.js#L40" class="view-source icon-eye-open"> </a><h3 id="methods_activate">activate()</h3>
+<ul class="methods"><li><a href="https://github.com/Aidan275/nativeqda-dev/blob/8914dc6/src/app_client/components/visualisations/visuals/barChart/barChart.controller.js#L40" class="view-source icon-eye-open"> </a><h3 id="methods_activate">activate()</h3>
 <div class="activate"><div class="activate-page"><p>Gets data to draw the bar chart for either concepts, entities or keywords</p>
 </div></div>
 </li>
-<li><a href="https://github.com/Aidan275/nativeqda-dev/blob/5f6e16a/src/app_client/components/visualisations/visuals/barChart/barChart.controller.js#L92" class="view-source icon-eye-open"> </a><h3 id="methods_checklength">checkLength()</h3>
+<li><a href="https://github.com/Aidan275/nativeqda-dev/blob/8914dc6/src/app_client/components/visualisations/visuals/barChart/barChart.controller.js#L92" class="view-source icon-eye-open"> </a><h3 id="methods_checklength">checkLength()</h3>
 <div class="checklength"><div class="checklength-page"><p>Checks if there are more than 10 elements to be drawn, if so it trims
 and will take the top 10 elements and then reverse them so they are in descending order.
 This functinon is called when drawing a keyword or concept analysis, the function then calls the drawChart function</p>
 </div></div>
 </li>
-<li><a href="https://github.com/Aidan275/nativeqda-dev/blob/5f6e16a/src/app_client/components/visualisations/visuals/barChart/barChart.controller.js#L233" class="view-source icon-eye-open"> </a><h3 id="methods_drawchart">drawChart(data)</h3>
+<li><a href="https://github.com/Aidan275/nativeqda-dev/blob/8914dc6/src/app_client/components/visualisations/visuals/barChart/barChart.controller.js#L233" class="view-source icon-eye-open"> </a><h3 id="methods_drawchart">drawChart(data)</h3>
 <div class="drawchart"><div class="drawchart-page"><p>Function takes the trimmed and sorted data and using d3 draws a bar chart on relevance
 function is called when drawing keyword and concept analysis</p>
 </div><h5 id="methods_drawchart_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>data</td><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="drawchart-page"><p>An object consisting of</p>
 <p>relevance: A score of how relevant the keyword or concept is<br>text: The name of the element<br>dbpedia_resource: A link to dbpedias page on the resource</p>
 </div></td></tr></tbody></table></div>
 </li>
-<li><a href="https://github.com/Aidan275/nativeqda-dev/blob/5f6e16a/src/app_client/components/visualisations/visuals/barChart/barChart.controller.js#L314" class="view-source icon-eye-open"> </a><h3 id="methods_drawentitychart">drawEntityChart(data)</h3>
+<li><a href="https://github.com/Aidan275/nativeqda-dev/blob/8914dc6/src/app_client/components/visualisations/visuals/barChart/barChart.controller.js#L314" class="view-source icon-eye-open"> </a><h3 id="methods_drawentitychart">drawEntityChart(data)</h3>
 <div class="drawentitychart"><div class="drawentitychart-page"><p>Function takes the trimmed and sorted data and using d3 draws a bar chart on relevance
 function is called when drawing keyword and concept analysis</p>
 </div><h5 id="methods_drawentitychart_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>data</td><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="drawentitychart-page"><p>An object consisting of</p>
 <p>count: A score of how many times the entity was mentioned<br>text: The name of the element</p>
 </div></td></tr></tbody></table></div>
 </li>
-<li><a href="https://github.com/Aidan275/nativeqda-dev/blob/5f6e16a/src/app_client/components/visualisations/visuals/barChart/barChart.controller.js#L125" class="view-source icon-eye-open"> </a><h3 id="methods_sortcount">sortCount()</h3>
+<li><a href="https://github.com/Aidan275/nativeqda-dev/blob/8914dc6/src/app_client/components/visualisations/visuals/barChart/barChart.controller.js#L125" class="view-source icon-eye-open"> </a><h3 id="methods_sortcount">sortCount()</h3>
 <div class="sortcount"><div class="sortcount-page"><p>Function sorts the analysis data in ascending order on count. Function is used
 when drawing entity analysis</p>
 </div><h5 id="methods_sortcount_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-array">array</a></td><td><div class="sortcount-page"><p>The sorted array</p>
 </div></td></tr></table></div>
 </li>
-<li><a href="https://github.com/Aidan275/nativeqda-dev/blob/5f6e16a/src/app_client/components/visualisations/visuals/barChart/barChart.controller.js#L111" class="view-source icon-eye-open"> </a><h3 id="methods_sortrelevance">sortRelevance()</h3>
+<li><a href="https://github.com/Aidan275/nativeqda-dev/blob/8914dc6/src/app_client/components/visualisations/visuals/barChart/barChart.controller.js#L111" class="view-source icon-eye-open"> </a><h3 id="methods_sortrelevance">sortRelevance()</h3>
 <div class="sortrelevance"><div class="sortrelevance-page"><p>Function sorts the analysis data in ascending order on relevance. Function is used
 when drawing keyword and concept analysis</p>
 </div><h5 id="methods_sortrelevance_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-array">array</a></td><td><div class="sortrelevance-page"><p>The sorted array</p>
