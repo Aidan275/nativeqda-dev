@@ -20,7 +20,7 @@
 		vm.surveyJSON;
 		vm.userFormComplete = false;
 		vm.surveyComplete = false;
-		vm.form;
+		vm.form = angular.element(surveyElement);
 		vm.isSubmittingButton = null;	/* variables for button animation - ng-bs-animated-button */
 		vm.resultButton = null;
 		vm.geolocateButtonOptions = { buttonDefaultText: 'Continue', animationCompleteTime: 1000, buttonSubmittingText: 'Finding location...', buttonSuccessText: 'Location Found!' };
@@ -45,16 +45,17 @@
 		}
 		
 		function onSubmit() {
-			if(!vm.form.fullName) {
+			if(!vm.form.fullName == null) {
 				logger.error('Please enter your full name', '', 'Error');
 			} else if (!vm.form.gender) {
 				logger.error('Please select your gender', '', 'Error');
 			} else if (!vm.form.age) {
 				logger.error('Please enter your age', '', 'Error');
 			} else {
-				vm.userFormComplete = true;		/* To show the actual survey form */
-				showSurvey();
+				return true;
 			}
+			return false;
+			//showSurvey();
 		}
 
 		function getLocation() {
@@ -83,8 +84,8 @@
 			window.survey = new Survey.Model(surveyJSONObj);
 
 			survey.onComplete.add(function(result) {
-				vm.surveyComplete = true;
-
+				vm.surveyComplete = onSubmit();
+				
 				var surveyResponse = {
 					fullName: vm.form.fullName,
 					email: vm.form.email,
@@ -102,12 +103,13 @@
 					surveyResponse.coords.lat = vm.form.latitude;
 					surveyResponse.coords.lng = vm.form.longitude;
 				}
-
-				surveyService.saveSurveyResponse(surveyResponse)	/* Save survey response to the database */
-				.then(function(data) {
-					logger.success('Survey saved successfully.\nThank you for participating.', '', 'Success');
-				});
-
+				
+				if (vm.surveyComplete) {
+					surveyService.saveSurveyResponse(surveyResponse)	/* Save survey response to the database */
+					.then(function(data) {
+						logger.success('Survey saved successfully.\nThank you for participating.', '', 'Success');
+					});
+				}
 			});
 
 			survey.render("surveyElement");
