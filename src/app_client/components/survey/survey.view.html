@@ -1,5 +1,6 @@
 <navigation></navigation>
-
+ 
+      
 <div class="container">
 
 	<page-header content="vm.pageHeader"></page-header>
@@ -15,11 +16,11 @@
 				<table ng-table="vm.tableParams"class="table  Generic-Table" style="margin-top:5px">
 					<tr class="table-row" ng-repeat="row in $data">
 					
-						<td data-title="'Survey Name'" filter="{name: 'text'}" sortable="'name'" class="survey-name-cell hidden-sm"  header-class="'hidden-xs hidden-sm'">{{row.name}}</td>
-						<td data-title="'Responses'" filter="{name: 'number'}" sortable="'numResponses'" class="responses-cell hidden-sm"   header-class="'hidden-xs hidden-sm'">{{row.numResponses}}</td>
-						<td data-title="'Created By'" filter="{createdBy: 'text'}" sortable="'createdBy'" class="created-by-cell hidden-sm"   header-class="'hidden-xs hidden-sm'">{{row.createdBy}}</td>
-						<td data-title="'Date Created'" filter="{dateCreated: 'text'}" sortable="'dateCreated'" class="date-created-cell hidden-sm"   header-class="'hidden-xs hidden-sm'">{{row.dateCreated | date : "dd MMMM, yyyy h:mm a"}}</td>
-						<td data-title="'Command'" class="context-menu-cell hidden-sm"   header-class="'hidden-xs hidden-sm'">
+						<td data-title="'Survey Name'"  sortable="'name'" class="survey-name-cell hidden-sm"  header-class="'hidden-xs hidden-sm'">{{row.name}}</td>
+						<td data-title="'Responses'"  sortable="'numResponses'" class="responses-cell hidden-sm"   header-class="'hidden-xs hidden-sm'">{{row.numResponses}}</td>
+						<td data-title="'Created By'" sortable="'createdBy'" class="created-by-cell hidden-sm"   header-class="'hidden-xs hidden-sm'">{{row.createdBy}}</td>
+						<td data-title="'Date Created'"  sortable="'dateCreated'" class="date-created-cell hidden-sm"   header-class="'hidden-xs hidden-sm'">{{row.dateCreated | date : "dd MMMM, yyyy h:mm a"}}</td>
+						<td data-title="''" class="context-menu-cell hidden-sm"   header-class="'hidden-xs hidden-sm'">
 						<div class="dropdown">
 								<span class="fa fa-ellipsis-h dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"></span>
 								<ul class="dropdown-menu dropdown-menu-right">
