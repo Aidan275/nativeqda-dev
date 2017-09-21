@@ -213,6 +213,13 @@
 				controllerAs: 'vm',
 				loginRequired: true
 			})
+			.when('/network-chart/:type/:id', {
+				title: 'NativeQDA | Network Chart',
+				templateUrl: '/components/visualisations/visuals/networkChart/networkChart.view.html',
+				controller: 'networkChartCtrl',
+				controllerAs: 'vm',
+				loginRequired: true
+			})
 			.when('/heatmap-example', {
 				title: 'NativeQDA | Heatmap Example',
 				templateUrl: '/components/heatmapExample/heatmapExample.view.html',
