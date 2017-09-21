@@ -17,6 +17,7 @@
 					<tr class="table-row" ng-repeat="row in $data">
 					
 						<td data-title="'Survey Name'"  sortable="'name'" class="survey-name-cell hidden-sm"  header-class="'hidden-xs hidden-sm'">{{row.name}}</td>
+						<td data-title="'Survey Code'"  class="responses-cell hidden-sm"   header-class="'hidden-xs hidden-sm'"><a href="./complete-survey/{{row.accessId}}">{{row.accessId}}</a></td>
 						<td data-title="'Responses'"  sortable="'numResponses'" class="responses-cell hidden-sm"   header-class="'hidden-xs hidden-sm'">{{row.numResponses}}</td>
 						<td data-title="'Created By'" sortable="'createdBy'" class="created-by-cell hidden-sm"   header-class="'hidden-xs hidden-sm'">{{row.createdBy}}</td>
 						<td data-title="'Date Created'"  sortable="'dateCreated'" class="date-created-cell hidden-sm"   header-class="'hidden-xs hidden-sm'">{{row.dateCreated | date : "dd MMMM, yyyy h:mm a"}}</td>
