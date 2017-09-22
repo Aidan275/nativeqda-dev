@@ -58,6 +58,9 @@
 		position: absolute;
 		transition: all linear 300ms;
 	}
+	
+
+
 </style>
 
 <navigation></navigation>
@@ -77,10 +80,7 @@
 		<a ng-click="vm.togglePage('uploading')" class="btn btn-success" role="button">Uploading Files</a>
 		<br />
 		<br />
-		<a ng-click="vm.togglePage('datasets')" class="btn btn-success" role="button">Creating Datasets</a>
-		<br />
-		<br />
-		<a ng-click="vm.togglePage('analysis')" class="btn btn-success" role="button">Creating an Analysis</a>
+		<a ng-click="vm.togglePage('analysis')"  role="button">Creating an Analysis</a>
 		<br />
 		<br />
 		<a ng-click="vm.togglePage('visualisations')" class="btn btn-success" role="button">Viewing Visualisations</a>
@@ -95,8 +95,8 @@
 </nav>
 
 	<div id="kbPanel">
-
-	<button ng-click="vm.toggleOptions()" class="btn btn-success">Find</button
+<button ng-click="vm.toggleOptions()" class="btn btn-success">Find</button
+	
 
 	  <div class="container">
 	
