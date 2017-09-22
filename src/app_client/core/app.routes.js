@@ -123,7 +123,7 @@
 				loginRequired: true
 			})
 			.when('/files/:folder?/:file*', { 	/* View a file - details, tags, map, download button, edit button, etc OR View a folder, table of all the files in that folder */
-				title: 'NativeQDA | File XYZ',
+				title: 'NativeQDA | File Browser',
 				templateUrl: '/components/files/filesBrowse/filesBrowse.view.html',
 				controller: 'filesBrowseCtrl',
 				controllerAs: 'vm',
