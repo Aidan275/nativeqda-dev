@@ -16,8 +16,11 @@
 	function networkChartCtrl ($routeParams, analysisService, NgTableParams, bsLoadingOverlayService) {
 		var vm = this;
 
+		console.log();
+
 		var analysisType = $routeParams.type; 
 		var analysisId = $routeParams.id;
+		var analysisName;
 		var responseData = [];
 
 		analysisData = [];
@@ -28,7 +31,7 @@
 						"they", "I", "at", "be", "this", "have", "from", "or", "one",
 						"had", "by", "word", "but", "not", "what", "all", "where", "your",
 						"can", "said", "there", "use", "an", "each", "which", "do", "how", "their", 
-						"if", "will", "Mr", "Ms"];
+						"if", "will", "Mr", "Ms", "one", "two", "man", "boy"];
 
 
 		activate();
@@ -39,7 +42,7 @@
 			bsLoadingOverlayService.start({referenceId: 'network-chart'});	// Start animated loading overlay
 			analysisService.readWatsonAnalysis(analysisId) //gets id from url
 			.then(function(data) {	
-			
+				analysisName = data.name;
 				var repeaterID = 0;
 				data.relations.forEach(function(object) {
 					object.arguments = object.arguments || {};	// If no object child, set object to empty (to prevent undefined error)
@@ -49,14 +52,15 @@
 						id: repeaterID,
 						argumentA: object.arguments[0].text,
 						argumentB: object.arguments[1].text,
-						score: object.score
+						score: object.score,
+						common: 0
 					};
 					responseData.push(anObject);
 					repeaterID++;
 				});	
 
 				tidyData(responseData);
-				drawChart();
+
 				
 			}, function(err) {
 				bsLoadingOverlayService.stop({referenceId: 'network-chart'});	// If error, stop animated loading overlay
@@ -67,37 +71,72 @@
 			var tidy = [];
 
 			//Remove common words
-			console.log(data);
 
 			//for each
 			data.forEach(function(obj){
 				var arrayLength = common.length;
+
+				//Search common words array with argumentA
 				for(var i = 0; i < arrayLength; i++) {
 					if(common[i] === obj.argumentA) {
-						console.log("common");
-						//remove
-
-					}else {
-
+						//If match dont use
+						obj.common++;
 					}
-				}
-					
+
+					if(common[i] === obj.argumentB) {
+						obj.common++;
+					}
+				}		
 			});
 
-			//Remove duplicates
+		
 			//Tidy data
-			console.log(tidy);
+			console.log(analysisName);
 
 			var i = 0;
 
+			//Set up root node
+			tidy.push({name: analysisName, group: i, weight: 1});
+			i++;
+
 			data.forEach(function (data) {
-				tidy.push({name: "", group: i});
-				i++;
+				//If no common words used
+				if(data.common == 0) {
+						var tidyLength = tidy.length;
+						for(var i = 0; i < tidyLength; i++) {
+							if(tidy[i].name == data.argumentA) {
+								//Duplicate
+								data.common = -1;
+							}							
+						}
+						if(data.common == 0) {
+							tidy.push({name: data.argumentA, group: i, weight: data.score});
+							tidy.push({name: data.argumentB, group: i, weight: data.score});
+							i++;
+						}
+					}				
+			});
+
+			//Remove duplicates
+			console.log(data);
+
+			//Make links
+			var links = [];
+
+			tidy.forEach(function (data) {
+				//Make links to root node
+				links.push({source: 0, target: data.group, weight: (data.weight*10)});
+			});
+
+			tidy.forEach(function (data) {
+				links.push({source: data.group, target: data.group, weight: (data.weight*10)});
 			});
 
 
-
-			var group = 0;
+			console.log(tidy);
+			console.log(links);
+ 
+			drawChart(tidy, links);
 				
 				
 
@@ -105,69 +144,12 @@
 		}
 
 
-		function drawChart() {
-
-			var json = {
-			  "nodes":[
-			    {"name":"node1","group":1},
-			    {"name":"node2","group":2},
-			    {"name":"node3","group":2},
-			    {"name":"node4","group":3}
-			  ],
-			  "links":[
-			    {"source":2,"target":1,"weight":1},
-			    {"source":0,"target":2,"weight":3}
-			  ]
-			};
-
-			var width = 960,
-			    height = 500
-
-			var svg = d3.select("body").append("svg")
-			    .attr("width", width)
-			    .attr("height", height);
-
-			var force = d3.layout.force()
-			    .gravity(.05)
-			    .distance(100)
-			    .charge(-100)
-			    .size([width, height]);
+		function drawChart(tidy, links) {
 
 
-
-			  force
-			      .nodes(json.nodes)
-			      .links(json.links)
-			      .start();
-
-			  var link = svg.selectAll(".link")
-			      .data(json.links)
-			    .enter().append("line")
-			      .attr("class", "link")
-			    .style("stroke-width", function(d) { return Math.sqrt(d.weight); });
-
-			  var node = svg.selectAll(".node")
-			      .data(json.nodes)
-			    .enter().append("g")
-			      .attr("class", "node")
-			      .call(force.drag);
-
-			  node.append("circle")
-			      .attr("r","5");
-
-			  node.append("text")
-			      .attr("dx", 12)
-			      .attr("dy", ".35em")
-			      .text(function(d) { return d.name });
-
-			  force.on("tick", function() {
-			    link.attr("x1", function(d) { return d.source.x; })
-			        .attr("y1", function(d) { return d.source.y; })
-			        .attr("x2", function(d) { return d.target.x; })
-			        .attr("y2", function(d) { return d.target.y; });
-
-			    node.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
-			  });
+			console.log(tidy);
+			console.log(links);
+ 
 
 		}
 
