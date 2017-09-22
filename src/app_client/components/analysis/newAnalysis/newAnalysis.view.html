@@ -23,7 +23,7 @@
 				</div>
 				<div class="form-group">
 					<div class="col-sm-12">
-						<table ng-table="vm.tableParams" class="table table-bordered table-striped analysis-file-browser-table">
+						<table ng-table="vm.tableParams" class="table table-bordered table-striped analysis-browser-table">
 							<tr class="table-row" ng-class="{'row-selected': vm.selectedFileIds[row._id]}" ng-repeat="row in $data">
 								<td class="checkbox-cell" ng-click="vm.checkOrOpen(row)">
 									<input type="checkbox" ng-if="row.type != 'folder' && row.type != 'parent-dir'" ng-model="vm.selectedFileIds[row._id]" ng-click="vm.checkOrOpen(row)"/>
@@ -36,13 +36,13 @@
 								<td data-title="'Created By'" filter="{createdBy: 'text'}" sortable="'createdBy'" class="created-by-cell hidden-xs" header-class="'hidden-xs'" ng-click="vm.checkOrOpen(row)">{{row.createdBy}}</td>
 								<td data-title="'Last Modified'" filter="{lastModified: 'text'}" sortable="'lastModified'" class="last-modified-cell hidden-xs hidden-sm" header-class="'hidden-xs hidden-sm'" ng-click="vm.checkOrOpen(row)">{{row.lastModified | date : "dd MMMM, yyyy h:mm a"}}</td>
 								<td data-title="'Action'" class="context-menu-cell">
-									<div ng-if="row.type != 'folder' && row.type != 'parent-dir'" class="dropdown">
+									<div ng-if="row.type != 'folder' && row.type != 'parent-dir'" class="dropdown" style="text-align:center;">
 										<span class="fa fa-ellipsis-h dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"></span>
-										<ul class="dropdown-menu">
-											<li ng-hide="vm.selectedFileIds[row._id]" ng-click="vm.checkOrOpen(row)"><a href="#">Select</a></li>
-											<li ng-show="vm.selectedFileIds[row._id]" ng-click="vm.checkOrOpen(row)"><a href="#">Unselect</a></li>
-											<li ng-click="vm.viewFile(row, 'false')"><a href="#">View File</a></li>
-											<li ng-click="vm.viewFile(row, 'true')"><a href="#">View Raw Text</a></li>
+										<ul class="dropdown-menu dropdown-menu-right">
+											<li class="select-cell" ng-hide="vm.selectedFileIds[row._id]" ng-click="vm.checkOrOpen(row)"><a href="#">Select</a></li>
+											<li class="unselect-cell" ng-show="vm.selectedFileIds[row._id]" ng-click="vm.checkOrOpen(row)"><a href="#">Unselect</a></li>
+											<li class="view-cell" ng-click="vm.viewFile(row, 'false')"><a href="#">View File</a></li>
+											<li class="view-raw-cell" ng-click="vm.viewFile(row, 'true')"><a href="#">View Raw Text</a></li>
 										</ul>
 									</div>
 								</td>
