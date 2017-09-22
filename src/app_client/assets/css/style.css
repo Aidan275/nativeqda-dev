@@ -898,9 +898,28 @@ footer span {
 	padding: 5px 20px;
 }
 
-.analysis-file-browser-table td.context-menu-cell .dropdown-menu .delete-cell>a:hover {
+.analysis-browser-table td.context-menu-cell .dropdown-menu .view-cell>a:hover {
+	background-color: #5cb85c;
+	color: #fff;
+}
+
+.analysis-browser-table td.context-menu-cell .dropdown-menu .view-raw-cell>a:hover {
+	color: #fff;
+	background-color: #2d65ff;
+}
+
+.analysis-browser-table td.context-menu-cell .dropdown-menu .select-cell>a:hover {
+	color: #fff;
+	background-color: #551A8B;
+}
+
+.analysis-browser-table td.context-menu-cell .dropdown-menu .unselect-cell>a:hover {
+	color: #fff;
+	background-color: #551A8B;
+}
+
+.analysis-browser-table td.context-menu-cell .dropdown-menu .delete-cell>a:hover {
 	background-color: #d9534f;
-	border-color: #d43f3a;
 	color: #fff;
 }
 
@@ -2221,6 +2240,14 @@ footer span {
 
 #survey-page-css .surveys-browser-table .table-row:hover {
 	background: rgba(70,118,250,0.15) !important;
+}
+
+#survey-page-css .surveys-browser-table .row-selected {
+	background: rgba(33, 203, 2, 0.15) !important;
+}
+
+#survey-page-css .surveys-browser-table .row-selected:hover {
+	background: rgba(33, 203, 2, 0.15) !important;
 }
 
 #survey-page-css .surveys-browser-table td.name-cell {

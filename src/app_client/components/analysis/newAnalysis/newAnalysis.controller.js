@@ -17,6 +17,8 @@
 	/* @ngInject */
 	function newAnalysisCtrl($uibModalInstance, $window, NgTableParams, datasetService, filesService, analysisService, authService, logger, bsLoadingOverlayService, s3Service) {
 		var vm = this;
+		
+		vm.pageId = 'new-analysis-css';
 
 		/* Bindable Functions */
 		vm.onSubmit = onSubmit;
