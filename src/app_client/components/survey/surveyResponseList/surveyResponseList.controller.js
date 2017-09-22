@@ -7,7 +7,7 @@
 	.controller('surveyResponseListCtrl', surveyResponseListCtrl);
 
 	/* @ngInject */
-	function surveyResponseListCtrl($routeParams, surveyService, bsLoadingOverlayService, NgTableParams, logger) {
+	function surveyResponseListCtrl($location, $routeParams, surveyService, bsLoadingOverlayService, NgTableParams, logger) {
 		var vm = this;
 		
 		vm.pageId = 'survey-page-css';
@@ -16,6 +16,8 @@
 
 		// Bindable Functions
 		vm.confirmDelete = confirmDelete;
+		vm.goToResponseUrl = goToResponseUrl;
+
 		vm.pageHeader = {
 			title: 'Survey Responses',
 			strapline: 'lists of what people think'
@@ -108,6 +110,10 @@
 
 			// Re-list survey responses with the updated survey response list array
 			listSurveyResponses();
+		}
+
+		function goToResponseUrl(id) {
+			$location.path('survey/responses/' + vm.accessId + '/' + id );
 		}
 
 

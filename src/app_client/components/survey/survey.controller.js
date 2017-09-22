@@ -7,13 +7,14 @@
 	.controller('surveyCtrl', surveyCtrl);
 
 	/* @ngInject */
-	function surveyCtrl (NgTableParams, surveyService, bsLoadingOverlayService, logger) {
+	function surveyCtrl($location, NgTableParams, surveyService, bsLoadingOverlayService, logger) {
 		var vm = this;
 		
 		vm.pageId = 'survey-page-css';
 
 		// Bindable Functions
 		vm.confirmDelete = confirmDelete;
+		vm.goToResponsesUrl = goToResponsesUrl;
 		vm.pageHeader = {
 			title: 'Surveys',
 			strapline: 'create, edit and view'
@@ -84,6 +85,10 @@
 
 			// Re-list surveys with the updated survey list array
 			listSurveys();
+		}
+
+		function goToResponsesUrl(id) {
+			$location.path('survey/responses/' + id);
 		}
 
 	}
