@@ -91,6 +91,10 @@ var fileSchema = new mongoose.Schema({
 	markerLinks: [{	/* Reference to marker links */
 		type: Schema.Types.ObjectId,
 		ref: 'MarkerLinks' 
+	}],
+	analyses: [{	/* Reference to any analyses the file has been used for */
+		type: Schema.Types.ObjectId, 
+		ref: 'Analysis' 
 	}]
 });
 

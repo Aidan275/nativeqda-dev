@@ -69,6 +69,7 @@
 </style>
 
 <navigation></navigation>
+
 <div class="hidden-xs hidden-sm" style="height:40px;background-color:#4676fa;position: relative;"><div style="background-color:#fff;height:3px;"></div>
 <nav class="navbar navbar-default">
 	<div class="container-fluid">
@@ -149,16 +150,17 @@
 							<h4 ng-if="vm.analysisData.files.length == 1" >File Analysed</h4>
 
 							<table ng-table="vm.tableParams" class="table table-bordered table-striped analysis-browser-table">
-								<tr class="table-row" ng-class="{'row-selected': vm.selectedFiles[row.textFileKey]}" ng-repeat="row in $data">
+								<tr class="table-row" ng-repeat="row in $data">
 									<td data-title="'Name'" class="name-cell" ng-click="vm.viewFile(row, 'false')">
 										<span>
 											<i class="{{row.icon}} fa-lg" title="{{row.type | capitalise}}"></i> {{row.name}}
 										</span>
+										<span ng-if="row.type == 'deleted'" style="color:#d9534f;font-weight:bold" title="This file has been deleted from the system"> - Deleted</span>
 									</td>
 									<td data-title="'Created By'" class="created-by-cell hidden-xs" header-class="'hidden-xs'" ng-click="vm.viewFile(row, 'false')">{{row.createdBy}}</td>
 									<td data-title="'Last Modified'" class="last-modified-cell hidden-xs hidden-sm" header-class="'hidden-xs hidden-sm'" ng-click="vm.viewFile(row, 'false')">{{row.lastModified | date : "dd MMMM, yyyy h:mm a"}}</td>
 									<td data-title="''" class="context-menu-cell">
-										<div ng-if="row.type != 'folder' && row.type != 'parent-dir'" class="dropdown">
+										<div ng-if="row.type != 'folder' && row.type != 'parent-dir' && row.type != 'deleted'" class="dropdown">
 											<span class="fa fa-ellipsis-h dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"></span>
 											<ul class="dropdown-menu">
 												<li class="view-cell" ng-click="vm.viewFile(row, 'false')"><a href="#">View File</a></li>

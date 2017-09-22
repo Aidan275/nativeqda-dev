@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var AnalysisResults = mongoose.model('analysisResults');
+var File = mongoose.model('File');
 var NaturalLanguageUnderstandingV1 = require('watson-developer-cloud/natural-language-understanding/v1.js');
 var natural_language_understanding = new NaturalLanguageUnderstandingV1({
 	"username": "ac282974-cb6e-474b-b44f-8a0680ca52c9",
@@ -339,7 +340,10 @@ module.exports.deleteWatsonAnalysis = function(req, res) {
 
 
 var saveWatsonAnalysis = function(req, res, response) {
+	/* Create new analysis document */
 	var analysisResults = new AnalysisResults();
+
+	/* Add data to new document */
 	analysisResults.name = req.body.name;
 	analysisResults.description = req.body.description;
 	analysisResults.createdBy = req.body.createdBy;
@@ -352,16 +356,29 @@ var saveWatsonAnalysis = function(req, res, response) {
 	analysisResults.relations = response.relations;
 	analysisResults.semanticRoles = response.semanticRoles;
 
-	analysisResults.save(function(err) {
+	/* Save new document to the database */
+	analysisResults.save(function(err, response) {
 		if (err) {
-			sendJSONresponse(res, 500, err);
+			sendJSONresponse(res, 500, err);	/* Return error if err */
 		} else {
-			sendJSONresponse(res, 200, {
-				_id: analysisResults._id,
-				name: analysisResults.name,
-				createdBy: analysisResults.createdBy,
-				dateCreated: analysisResults.dateCreated
-			});
+
+			/* Updates the file document of any files included in the analysis */
+			/* adding the analysis ObjectId to the analyses field */
+			File.update(
+				{ _id: { $in: analysisResults.files } },	/* Find files included in analysis */
+				{ $push: { analyses: response._id } },		/* Pushes analysis id to analyses */
+				{ multi: true }, function (err) {
+					if (err) {
+						sendJSONresponse(res, 500, err);	/* Return error if err */
+					} else {
+						sendJSONresponse(res, 200, {		/* Returns only the data needed to display the new analysis */
+							_id: analysisResults._id,
+							name: analysisResults.name,
+							createdBy: analysisResults.createdBy,
+							dateCreated: analysisResults.dateCreated
+						});
+					}
+				});
 		}
 	});	
 };

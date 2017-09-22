@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var File = mongoose.model('File');
+var AnalysisResults = mongoose.model('analysisResults');
 var MarkerLink = mongoose.model('MarkerLink');
 
 var sendJSONresponse = function(res, status, content) {
@@ -113,6 +114,19 @@ module.exports.putFile = function(req, res) { //Update or add a file
 	});
 };
 
+
+/**
+* @apiGroup Files
+* @api {Delete} /api/files/:filepath(*)	Delete File
+* @apiDescription Deletes the file from the database  
+* Also deletes any marker links and updates analyses associated with the file
+* @apiPermission researcher
+* @apiParam (URL Parameter) {String} filepath 	File path of the file
+* @apiSuccessExample {json} Success Example
+*     HTTP/1.1 204 No Content
+* @apiUse FileNotFoundError
+* @apiUse InternalServerError
+*/
 module.exports.deleteFile = function(req, res) { /* Remove file and any marker links associated with the file */
 	var path = extractpath(req.params["filepath"]);	/* Extract the path and the file name */
 
@@ -125,11 +139,12 @@ module.exports.deleteFile = function(req, res) { /* Remove file and any marker l
 		}
 
 		if (!results) {	/* If no results, return message (do we need this or will there be an err if no results?) */
-			sendJSONresponse(res, 404, "Nothing found");
+			sendJSONresponse(res, 404, "File not found");
 			return;
 		}
 
-		if(results.markerLinks) {	/* If the file has marker links associated with it, remove each link */
+		/* If the file has marker links associated with it, remove each link */
+		if(results.markerLinks) {	
 			results.markerLinks.forEach(function(markerLink) {
 				MarkerLink.findByIdAndRemove(markerLink)
 				.exec(
@@ -140,6 +155,37 @@ module.exports.deleteFile = function(req, res) { /* Remove file and any marker l
 						}
 					});
 			})
+		}
+
+		/* If the file has been used in any existing analyses, update analysis to reflect file deletion */
+		if(results.analyses) {	
+			AnalysisResults.update(
+				{ _id: { $in: results.analyses } },		/* Finds analyses the file was used in */
+				{ $pull: { files: results._id } },		/* Removes the file reference from the analysis */
+				{ multi: true }, function (err) {
+					if (err) {
+						sendJSONresponse(res, 500, err);	/* Return error if err */
+					}
+				});
+
+			/* Data stored in the analysis document to so users know which files were included in an anlysis, even if deleted */
+			var deletedFile = {
+				name: results.name,
+				icon: results.icon,
+				dateCreated: results.dateCreated,
+				size: results.size,
+				createdBy: results.createdBy
+			};
+
+			/* Updates the analyses with the deleted file information */
+			AnalysisResults.update(
+				{ _id: { $in: results.analyses } },			/* Finds analyses the file was used in */
+				{ $push: { deletedFiles: deletedFile } },	/* Adds the deleted files details */
+				{ multi: true }, function (err) {
+					if (err) {
+						sendJSONresponse(res, 500, err);	/* Return error if err */
+					}
+				});
 		}
 
 		sendJSONresponse(res, 204, null);	/* If successful, return null */	
@@ -154,7 +200,7 @@ module.exports.map = function(req, res) { //TODO: Actual limiting (Criteria and 
 		function(err, results) {
 			if (!results) {
 				sendJSONresponse(res, 404, {
-					"message": "No Files found"
+					"message": "File not found"
 				});
 				return;
 			} else if (err) {
@@ -187,7 +233,7 @@ var folderList = function(req, res, pathname) {
 		function(err, results) {
 			if (!results) {
 				sendJSONresponse(res, 404, {
-					"message": "No Files found"
+					"message": "File not found"
 				});
 				return;
 			} else if (err) {
@@ -222,7 +268,8 @@ var buildFileListDB = function(req, res, results) {
 			tags: doc.tags,
 			_id: doc._id,
 			acl: doc.acl,
-			icon: doc.icon
+			icon: doc.icon,
+			analyses: doc.analyses
 		});
 	});
 	return fileList;

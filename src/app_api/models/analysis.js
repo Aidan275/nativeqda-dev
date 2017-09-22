@@ -1,6 +1,29 @@
 var mongoose = require( 'mongoose' );
 var Schema = mongoose.Schema;
 
+var deletedFileSchema = new mongoose.Schema({
+	name: { 
+		type: String
+	},
+	icon: { // Icon for file depending on the file extension (set when uploading) - using Font Awesome classes
+		type: String,
+	},
+	dateCreated: { //Datetime file was uploaded to system
+		type: Date,
+		"default": Date.now
+	},
+	lastModified: { //Datetime file was last edited
+		type: Date,
+		"default": Date.now
+	},
+	size: { //Size of file, in bytes
+		type: Number
+	},
+	createdBy: { //User who uploaded the file
+		type: String
+	}
+});
+
 var categoriesSchema = new mongoose.Schema({
 	score: {type: Number},
 	label: {type: String}
@@ -108,6 +131,7 @@ var analysisResultsSchema = new mongoose.Schema({
 		type: Schema.Types.ObjectId, 
 		ref: 'File' 
 	}], 
+	deletedFiles: [deletedFileSchema],	/* Files references that were deleted - used so users know which files were included in an anlysis, even if deleted */
 	language: {
 		type: String,
 		required: true
