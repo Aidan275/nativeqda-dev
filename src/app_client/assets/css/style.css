@@ -2134,7 +2134,7 @@ footer span {
 	border-radius: 50%;
 	float: right;
 }
-#enter-code-css .form-group-qda erroru i svg, #visualisations-index .form-group-qda errorp i svg {
+#enter-code-css .form-group-qda erroru i svg, #enter-code-css .form-group-qda errorp i svg {
 	fill:#d34336;
 }
 #enter-code-css .form-group-qda[errr] .float-label {
@@ -2146,7 +2146,7 @@ footer span {
 #enter-code-css .form-group-qda[errr] .form-control-qda:focus {
 	border-bottom: 2px solid #d34336 !important;	
 }
-#enter-code-css .form-group-qda[errr] erroru, #visualisations-index .form-group-qda[errr] errorp  {
+#enter-code-css .form-group-qda[errr] erroru, #enter-code-css .form-group-qda[errr] errorp  {
 	opacity: 1;
 }
 #enter-code-css input[type=checkbox]
@@ -2289,6 +2289,20 @@ footer span {
 	background-color: #d9534f;
 	color: #fff;
 }
+
+/* ========== KNOWLEDGEBASE CSS ========= */
+
+#knowledgebase-css body {
+  min-height: 100%;
+  margin: 0;
+  padding: 0;
+  font: 400 1.4rem 'Lato', Verdana, Helvetica, sans-serif;
+}
+
+#knowledgebase-css .menuButtonFix {
+		top:-48px;
+}
+
 
 
 /* ========== VISUALISATIONS INDEX PAGE ========== */

@@ -6,12 +6,18 @@
 	
 	function knowledgebaseCtrl() {
 		var vm = this;
+		
+		vm.pageId = 'knowledgebase-css';
 
 		/* Bindable Functions */
 		vm.toggleOptions = toggleOptions;
 		vm.togglePage = togglePage;
 
 		/* Bindable Data */
+		vm.pageHeader = {
+			title: 'Knowledgebase',
+			strapline: 'learn how to use the system'
+		};
 		vm.knowledgebase = true;
 		vm.terminology = false;
 		vm.uploading = false;
