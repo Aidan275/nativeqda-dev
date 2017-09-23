@@ -1,10 +1,3 @@
-
-  
-
-<navigation></navigation>
-
-
-
 <style>
 	#kbMenu {
 		padding: 75px 25px 25px 25px;
@@ -82,112 +75,58 @@ body {
   width: 80%;
   margin: 0 auto;
 }
-section button {
-  
-  font-size: 1.2rem;
-  padding: 1.25rem 2.5rem;
-  display: block;
-  background-color: #009ac9;
-  border: 1px solid transparent;
-  color: #ffffff;
-  font-weight: 300;
-  -webkit-border-radius: 3px;
-  border-radius: 3px;
-  -webkit-transition: all 0.3s ease-in-out;
-  -moz-transition: all 0.3s ease-in-out;
-  transition: all 0.3s ease-in-out;
-}
-
-section button:hover {
-  background-color: #ffffff;
-  color: #009ac9;
-  border-color: #009ac9;
-}
-
-
 
 </style>
 
 <navigation></navigation>
 
 <nav id="kbMenu">
-
 	<header>
+		<h3 style="text-align:center;">Menu</h3>
 
-		
-
-		
-		<section>
-     <button id="js-trigger-overlay" type="button" ng-click="vm.togglePage('knowledgebase')" >Knowledgebase</button>
-       </section>
-		<br />
-		
-		
-		<section>
-     <button id="js-trigger-overlay" type="button" ng-click="vm.togglePage('terminology')" >Terminology</button>
-       </section>
-		<br />
-		
-		
-		<section>
-     <button id="js-trigger-overlay" type="button" ng-click="vm.togglePage('uploading')" >Uploading Files</button>
-       </section>
-		<br />
-		
-		
-		<section>
-     <button id="js-trigger-overlay" type="button" ng-click="vm.togglePage('analysis')" >Creating an Analysis</button>
-       </section>
-		<br />
-		
-	
-		 <section>
-     <button id="js-trigger-overlay" type="button" ng-click="vm.togglePage('visualisations')">Viewing Visualisations</button>
-       </section>
-		<br />
-		
-		
-		 <section>
-     <button id="js-trigger-overlay" type="button" ng-click="vm.togglePage('map')">The Map</button>
-       </section>
-		<br />
-	
-		 <section>
-     <button id="js-trigger-overlay" type="button" ng-click="vm.togglePage('system')">General System Things</button>
-       </section>
-		
+		<div ng-click="vm.togglePage('knowledgebase')" width="100%" style="height:40px;background-color:#4676fa;color:#fff;text-align:center;border-radius: 12px 12px 0 0;" role="button"><div style="position:relative;top:10px;">Knowledgebase</div></div>
+		<div style="padding-bottom:2px;"></div>
+		<div ng-click="vm.togglePage('terminology')" style="height:40px;background-color:#4676fa;color:#fff;text-align:center;" width="100%" role="button"><div style="position:relative;top:10px;">Terminology</div></div>
+		<div style="padding-bottom:2px;"></div>
+		<div ng-click="vm.togglePage('uploading')" style="height:40px;background-color:#4676fa;color:#fff;text-align:center;" width="100%" role="button"><div style="position:relative;top:10px;">Uploading Files</div></div>
+		<div style="padding-bottom:2px;"></div>
+		<div ng-click="vm.togglePage('analysis')" style="height:40px;background-color:#4676fa;color:#fff;text-align:center;" width="100%" role="button"><div style="position:relative;top:10px;">Creating an Analysis</div></div>
+		<div style="padding-bottom:2px;"></div>
+		<div ng-click="vm.togglePage('visualisations')" style="height:40px;background-color:#4676fa;color:#fff;text-align:center;" width="100%" role="button"><div style="position:relative;top:10px;">Viewing Visualisations</div></div>
+		<div style="padding-bottom:2px;"></div>
+		<div ng-click="vm.togglePage('map')" style="height:40px;background-color:#4676fa;color:#fff;text-align:center;" width="100%" role="button"><div style="position:relative;top:10px;">The Map</div></div>
+		<div style="padding-bottom:2px;"></div>
+		<div ng-click="vm.togglePage('system')" style="height:40px;background-color:#4676fa;color:#fff;text-align:center;border-radius: 0 0 12px 12px;" width="100%" role="button"><div style="position:relative;top:10px;">General System Functions</div></div>
 	</header>
 </nav>
 
 	<div id="kbPanel">
 
- <section>
-<button id="js-trigger-overlay" type="button" ng-click="vm.toggleOptions()">Find</button>
-  </section>
+	  <div ng-click="vm.toggleOptions()" style="height:48px;width:14px;background-color:#4676fa;border-radius:0 5px 5px 0;"><div style="margin-top:5px;"></div><i style="color:#fff;position:relative;top:14px;left:-1px;" class="fa fa-arrow-right" aria-hidden="true"></i></div>
 
 	  <div class="container">
 	
 		<div ng-show="vm.knowledgebase" class="pageItem">
-			<h1 style='color:#009ac9;'>Knowledgebase</h1>
-			<h3>Using the "Find" button above you can navigate through the conent in the knowledgebase regarding how things work, where to find things and why things are the way they are.</h3>
+			<h3 style='color:#4676fa;'>Knowledgebase</h3>
+			<p>Using the "Find" button above you can navigate through the conent in the knowledgebase regarding how things work, where to find things and why things are the way they are.</p>
 		
 		</div>
 		<div ng-show="vm.terminology" class="pageItem">
-			<h2 style='color:#009ac9;'>Terminology</h2>
-			<h3 style='color:#009ac9;'>"File"</h3>
+			<h3 style='color:#4676fa;'>Terminology</h2>
+			<h4 style='color:#4676fa;'>"File"</h3>
 			<p>A file within the NativeQDA system is conistant with what you would normally conisder a file in other system. These are individual</p>
 			<p>files which you upload through the file upload page and can be in a variety of types such as pdf, docx, txt, mp3 ,jpg  e.t.c. These </p>
 			<p>files are used to create datasets and are displayed on the map.</p>
-			<h3 style='color:#009ac9;'>"Analysis"</h3>
+			<h4 style='color:#4676fa;'>"Analysis"</h3>
 			<p >An analysis is conducted on datasets to generate visualisations and can be created in the Analysis page. An analysis is this process</p>
 			<p>of extracting relationships between word frequency, entites, concepts, themes e.t.c. After an analysis has been created from a datsets</p>
 			<p>all the available visualisations which are combatable with that dataset will automatically be avaialable int eh visualisations page for viewing</p>
-			<h3 style='color:#009ac9;'>"Visualisation"</h3>
+			<h4 style='color:#4676fa;'>"Visualisation"</h3>
 			<p>A visualisation occurs as a result of an analysis and comes in forms of any charts, graphs, diagrams or visual representation of the information</p>
 			<p> which was extracted and created during the analysis process. These visualisations can be saved for use in other research.</p>
 		</div>
 		<div ng-show="vm.uploading" class="pageItem">
-			<h2 id="U" style='color:#009ac9;'>Uploading Files</h2>
+			<h3 id="U" style='color:#4676fa;'>Uploading Files</h2>
 			<p>Files can be added to the system by clicking the files option in the top navigation bar. Once on the files page users will be presented</p>
 			<p>with a table displaying all files which are currently on the system, just above this table on the right hand side there are two buttons</p>
 			<p>"Upload File" and "New Folder". Clicking on the upload file option will open up a file browser which enables files to be dragged or selected.</p>
@@ -196,7 +135,7 @@ section button:hover {
 			<p>locted on the top left of the files table.</p>
 		</div>
 		<div ng-show="vm.analysis" class="pageItem">
-			<h2 id="A" style='color:#009ac9;'>Creating an Analysis</h2>
+			<h3 id="A" style='color:#4676fa;'>Creating an Analysis</h2>
 			<p>A new analysis can be created by clicking on the Analysis option in the top navigation bar. Initially this page appears similar to the files</p>
 			<p>page, a table is shown which contains all previous analysis' which have been performed. A "New Analysis" button is located on the top right</p>
 			<p>side of this table, which opens a popup window where a name and description can be given to a new analysis. Also within this popup is a table</p>
@@ -205,7 +144,7 @@ section button:hover {
 			<p>files will be generated upon clicking the analyze button in the popup window.</p>
 		</div>
 		<div ng-show="vm.visualisations" class="pageItem">
-			<h2 id="V" style='color:#009ac9;'>Viewing Visualisations</h2>
+			<h3 id="V" style='color:#4676fa;'>Viewing Visualisations</h2>
 			<p>Visualisations can be found in the same place as an analysis as seen in "Creating an Analysis", by clicking on the Analysis option in the top</p>
 			<p>navigation bar. Within this analysis page every analysis which has been created is presented within a table, the column of this table on the far right</p>
 			<p>side is titled "Command". This column enables an analysis to be viewed by clicking the "view" option, opening the visualisation page for that</p>
@@ -214,7 +153,7 @@ section button:hover {
 			<p>the page. By hovering the mouse over these visualisations a descriptive title will appear and clicking on the visualisation will open it for viewing.</p>
 		</div>
 		<div ng-show="vm.map" class="pageItem">
-			<h2 id="M" style='color:#009ac9;'>The Map</h2>
+			<h3 id="M" style='color:#4676fa;'>The Map</h2>
 			<p>Selecting the Map option in the top navigation bar will display the map page which is a large geographical map like Google Maps with a few differences.</p>
 			<br />
 			<p>All files within the system will appear on this map where they have been geo-tagged. Depending on the file type a different icon will represent the</p>
@@ -228,7 +167,7 @@ section button:hover {
 			<p>displays all connections between files.</p>
 		</div>
 		<div ng-show="vm.system" class="pageItem">
-			<h2 id="G" style='color:#009ac9;'>General System Things</h2>
+			<h3 id="G" style='color:#4676fa;'>General System Functions</h2>
 		</div>
 	 </div>
 

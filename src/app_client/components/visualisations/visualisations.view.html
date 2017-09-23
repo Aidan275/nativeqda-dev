@@ -112,7 +112,7 @@
 
 	<div class="hidden-md hidden-lg" style="padding-bottom:2px;"></div>
 	
-	<img ng-click="vm.toggleOptions()" class="hidden-md hidden-lg" alt="AM" src="assets/img/menu.png" height="48"/>
+	<div class="hidden-md hidden-lg" ng-click="vm.toggleOptions()" style="height:48px;width:14px;background-color:#4676fa;border-radius:0 5px 5px 0;"><div class="hidden-md hidden-lg" style="margin-top:5px;"></div><i class="hidden-md hidden-lg" style="color:#fff;position:relative;top:14px;left:-1px;" class="fa fa-arrow-right" aria-hidden="false"></i></div>
 
 	<div class="container menuButtonFix" style="position:relative;">
 
@@ -121,7 +121,7 @@
 				<div class="row">
 					<div class="col-md-12">
 						<div ng-show="vm.details" class="pageItem">
-							<h3>Analysis Details</h3>
+							<h3 class="hidden-xs hidden-sm">Analysis Details</h3><h3 class="hidden-md hidden-lg" style="text-align:center;">Analysis Details</h3>
 							<br/>
 							<label>Analysis: </label> {{vm.analysisData.name}}
 							<br/>
