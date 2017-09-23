@@ -35,24 +35,24 @@
 			}
 		</style>
 		
-		<div class="col-md-8">
+		<div class="col-md-12"><a style="float:right;" href="javascript:void(0);" onclick="javascript:introJs().start();"><i class="fa fa-question-circle" aria-hidden="true"></i></a>
 			<ul class="breadcrumb">
-				<li ng-click="vm.openFolder('/')">Home</li>
+				<li data-step="4" data-intro="Click here to return to the starting directory!" ng-click="vm.openFolder('/')">Home</li>
 				<li ng-repeat="path in vm.pathsArray track by $index" ng-click="vm.openFolder($index)">{{path}}</li>
 			</ul>
 		</div>
 
-		<div class="col-md-4">
-			<a ng-click="vm.newFolder()" class="btn btn-default btn-sm" role="button" style="float:right; margin-bottom:10px">New Folder</a>
-			<a ng-click="vm.popupUploadFile()" id="upload-btn-file-browser" class="btn btn-default btn-sm" role="button" style="float:right; margin:0 5px 10px">Upload File</a>
-		</div>
+		
+			<a data-step="2" data-intro="Click here to create a new folder!" ng-click="vm.newFolder()" class="btn btn-success blueButton" role="button" style="float:right;border-radius: 0 12px 0 0;font-weight:500;">New Folder</a>
+			<a data-step="1" data-intro="Click here to upload a new file!" ng-click="vm.popupUploadFile()" id="upload-btn-file-browser" class="btn btn-success blueButton" role="button" style="float:right;border-radius: 12px 0 0 0;font-weight:500;">Upload File</a>
+		
 
 		<!-- displays file list for MongoDB database -->
 		<div class="bs-loading-container" bs-loading-overlay bs-loading-overlay-active-class="loading-overlay--active" bs-loading-overlay-reference-id="file-list"> 
 			<div class="blur-this file-browser-table-container">
 				<table ng-table="vm.tableParams" class="table  table-bordered table-striped file-browser-table">
 					<tr class="table-row" ng-repeat="row in $data">
-						<td data-title="'File Name'" filter="{name: 'text'}" sortable="'name'" class="file-name-cell" ng-click="vm.viewFile(row)">
+						<td data-step="3" data-intro="Click here to view a file!" data-title="'File Name'" filter="{name: 'text'}" sortable="'name'" class="file-name-cell" ng-click="vm.viewFile(row)">
 							<span>
 								<i class="{{row.icon}} fa-lg" title="{{row.type | capitalise}}"></i> {{row.name}}
 							</span>
@@ -61,7 +61,7 @@
 						<td data-title="'Uploaded By'" filter="{createdBy: 'text'}" sortable="'createdBy'" class="uploaded-by-cell hidden-xs hidden-sm" header-class="'hidden-xs hidden-sm'">{{row.createdBy}}</td>
 						<td data-title="'Size'" filter="{size: 'text'}" sortable="'size'" class="size-cell hidden-xs hidden-sm hidden-md" header-class="'hidden-xs hidden-sm hidden-md'">{{row.size | formatFileSize:2}}</td>
 						<td data-title="'Action'" class="context-menu-cell">
-							<div class="dropdown" style="text-align:center;">
+							<div data-step="5" data-intro="Click here to view, display details or delete a file, and in the case of a folder, Open or Delete." class="dropdown" style="text-align:center;">
 								<span class="fa fa-ellipsis-h dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"></span>
 								<ul class="dropdown-menu dropdown-menu-right">
 									<li class="view-cell">
