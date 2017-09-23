@@ -8,12 +8,12 @@
 
 		<p>Select a file or dataset for analysis. A number of visualisations can then be viewed by selecting an existing analysis below.</p>
 
-		<button type="button" class="btn btn-md btn-success" ng-click="vm.popupNewAnalysis()">New Analysis</button>
+		<button type="button" class="btn btn-md btn-success blueButton" style="border-radius: 12px 12px 0 0;" ng-click="vm.popupNewAnalysis()">New Analysis</button>
 		
 
 		<div class="bs-loading-container" bs-loading-overlay bs-loading-overlay-active-class="loading-overlay--active" bs-loading-overlay-reference-id="analysis-list"> 
 			<div class="blur-this">
-				<table ng-table="vm.tableParams" class="table  table-bordered table-striped analysis-browser-table" style="margin-top:5px">
+				<table ng-table="vm.tableParams" class="table  table-bordered table-striped analysis-browser-table">
 					<tr class="table-row" ng-repeat="row in $data">
 						<td ng-click="vm.goToVisUrl(row._id)" data-title="'Analysis'" filter="{name: 'text'}" sortable="'name'" class="name-cell">{{row.name}}</td>
 						<td ng-click="vm.goToVisUrl(row._id)" data-title="'Created By'" filter="{createdBy: 'text'}" sortable="'createdBy'" class="created-by-cell hidden-xs" header-class="'hidden-xs'">{{row.createdBy}}</td>
