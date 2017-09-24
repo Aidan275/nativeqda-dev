@@ -1,28 +1,28 @@
-<navigation></navigation><div class=container><page-header content=vm.pageHeader></page-header><div class=col-md-12><style>
-			ul.breadcrumb {
-				list-style: none;
-				background-color: white;
-			}
+<style>
+	ul.breadcrumb {
+		list-style: none;
+		background-color: white;
+	}
+	
+	ul.breadcrumb li {
+		display: inline;
+		font-size: 18px;
+		cursor: pointer;
+	}
 
-			ul.breadcrumb li {
-				display: inline;
-				font-size: 18px;
-				cursor: pointer;
-			}
+	ul.breadcrumb li+li:before {
+		content: "/";
+		font-size: 22px;
+		color: black;
+	}
 
-			ul.breadcrumb li+li:before {
-				content: "/";
-				font-size: 22px;
-				color: black;
-			}
-
-			ul.breadcrumb li:hover {
-				color: var(--main-colour);
-				text-decoration: none;
-			}
+	ul.breadcrumb li:hover {
+		color: var(--main-colour);
+		text-decoration: none;
+	}
 			
-			ul.breadcrumb li:last-child {
-				color: black;
-				cursor: default;
-			}
-		</style><div class=col-md-8 "><ul class=breadcrumb><li ng-click="vm.openFolder('/')">Home</li><li ng-repeat="path in vm.pathsArray track by $index" ng-click=vm.openFolder($index)>{{path}}</li></ul></div><div class=col-md-4><a ng-click=vm.newFolder() class="btn btn-default btn-sm" role=button style="float:right; margin-bottom:10px">New Folder</a> <a ng-click=vm.popupUploadFile() id=upload-btn-file-browser class="btn btn-default btn-sm" role=button style="float:right; margin:0 5px 10px">Upload File</a></div><div class=bs-loading-container bs-loading-overlay bs-loading-overlay-active-class=loading-overlay--active bs-loading-overlay-reference-id=file-list><div class="blur-this file-browser-table-container"><table ng-table=vm.tableParams class="table table-bordered table-striped file-browser-table"><tr class=table-row ng-repeat="row in $data"><td data-title="'File Name'" filter="{name: 'text'}" sortable="'name'" class=file-name-cell ng-click=vm.viewFile(row)><span><i class="{{row.icon}} fa-lg" title="{{row.type | capitalise}}"></i> {{row.name}}</span></td><td data-title="'Last Modified'" filter="{lastModified: 'text'}" sortable="'lastModified'" class="last-modified-cell hidden-xs" header-class="'hidden-xs'">{{row.lastModified | date : "dd MMMM, yyyy h:mm a"}}</td><td data-title="'Uploaded By'" filter="{createdBy: 'text'}" sortable="'createdBy'" class="uploaded-by-cell hidden-xs hidden-sm" header-class="'hidden-xs hidden-sm'">{{row.createdBy}}</td><td data-title="'Size'" filter="{size: 'text'}" sortable="'size'" class="size-cell hidden-xs hidden-sm hidden-md" header-class="'hidden-xs hidden-sm hidden-md'">{{row.size | formatFileSize:2}}</td><td data-title="'Action'" class=context-menu-cell><div class=dropdown style=text-align:center;><span class="fa fa-ellipsis-h dropdown-toggle" data-toggle=dropdown aria-haspopup=true aria-expanded=true></span><ul class="dropdown-menu dropdown-menu-right"><li class=view-cell><a ng-if="row.type!='parent-dir'" ng-click=vm.viewFile(row)><span ng-if="row.type!='folder'">View</span> <span ng-if="row.type=='folder'">Open</span></a></li><li ng-click="vm.popupEditVisual(row.name, row._id)" class=detail-cell><a ng-if="row.type!='parent-dir' && row.type!='folder'" ng-click=vm.popupFileDetails(row)>Details</a></li><li class=delete-cell><a ng-if="row.type!='parent-dir'" ng-click=vm.confirmDelete(row)>Delete</a></li></ul></div></td></tr></table></div></div></div></div><footer-generic></footer-generic>
+	ul.breadcrumb li:last-child {
+		color: black;
+		cursor: default;
+	}
+</style><navigation></navigation><div class=container><page-header content=vm.pageHeader></page-header><div class=col-md-12><div class=col-md-12><a style=float:right; href=javascript:void(0); onclick=javascript:introJs().start();><i class="fa fa-question-circle" aria-hidden=true></i></a><ul class=breadcrumb><li data-step=4 data-intro="Click here to return to the starting directory!" ng-click="vm.openFolder('/')">Home</li><li ng-repeat="path in vm.pathsArray track by $index" ng-click=vm.openFolder($index)>{{path}}</li></ul></div><a data-step=2 data-intro="Click here to create a new folder!" ng-click=vm.newFolder() class="btn btn-success blueButton" role=button style="float:right;border-radius: 0 12px 0 0;font-weight:500;">New Folder</a> <a data-step=1 data-intro="Click here to upload a new file!" ng-click=vm.popupUploadFile() id=upload-btn-file-browser class="btn btn-success blueButton" role=button style="float:right;border-radius: 12px 0 0 0;font-weight:500;">Upload File</a><div class=bs-loading-container bs-loading-overlay bs-loading-overlay-active-class=loading-overlay--active bs-loading-overlay-reference-id=file-list><div class="blur-this file-browser-table-container"><table ng-table=vm.tableParams class="table table-bordered table-striped file-browser-table"><tr class=table-row ng-repeat="row in $data"><td data-step=3 data-intro="Click here to view a file!" data-title="'File Name'" filter="{name: 'text'}" sortable="'name'" class=file-name-cell ng-click=vm.viewFile(row)><span><i class="{{row.icon}} fa-lg" title="{{row.type | capitalise}}"></i> {{row.name}}</span></td><td data-title="'Last Modified'" filter="{lastModified: 'text'}" sortable="'lastModified'" class="last-modified-cell hidden-xs" header-class="'hidden-xs'">{{row.lastModified | date : "dd MMMM, yyyy h:mm a"}}</td><td data-title="'Uploaded By'" filter="{createdBy: 'text'}" sortable="'createdBy'" class="uploaded-by-cell hidden-xs hidden-sm" header-class="'hidden-xs hidden-sm'">{{row.createdBy}}</td><td data-title="'Size'" filter="{size: 'text'}" sortable="'size'" class="size-cell hidden-xs hidden-sm hidden-md" header-class="'hidden-xs hidden-sm hidden-md'">{{row.size | formatFileSize:2}}</td><td data-title="'Action'" class=context-menu-cell><div data-step=5 data-intro="<h5>Click here to:</h5><b>Files</b> - View a file, Display file details or Delete a file<br><b>Folders</b> - Open a folder or Delete a folder" class=dropdown style=text-align:center;><span class="fa fa-ellipsis-h dropdown-toggle" data-toggle=dropdown aria-haspopup=true aria-expanded=true></span><ul class="dropdown-menu dropdown-menu-right"><li class=view-cell><a ng-if="row.type!='parent-dir'" ng-click=vm.viewFile(row)><span ng-if="row.type!='folder'">View</span> <span ng-if="row.type=='folder'">Open</span></a></li><li ng-click="vm.popupEditVisual(row.name, row._id)" class=detail-cell><a ng-if="row.type!='parent-dir' && row.type!='folder'" ng-click=vm.popupFileDetails(row)>Details</a></li><li class=delete-cell><a ng-if="row.type!='parent-dir'" ng-click=vm.confirmDelete(row)>Delete</a></li></ul></div></td></tr></table></div></div></div></div><footer-generic></footer-generic>
