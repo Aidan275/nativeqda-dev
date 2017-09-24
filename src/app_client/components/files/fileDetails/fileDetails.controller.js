@@ -36,6 +36,10 @@
 		vm.resultButton = null;
 		vm.makePublicOptions = { buttonDefaultText: 'Make Public', animationCompleteTime: 1000, buttonSubmittingText: 'Processing...', buttonSuccessText: 'Done!' };
 		vm.makePrivateOptions = { buttonDefaultText: 'Make Private', animationCompleteTime: 1000, buttonSubmittingText: 'Processing...', buttonSuccessText: 'Done!' };
+		vm.pageHeader = {
+			title: 'File Details',
+			strapline: 'detailed information about the selected file'
+		};
 
 		activate();
 

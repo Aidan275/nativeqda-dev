@@ -8,21 +8,22 @@
 	<div class="col-md-12">
 
 		<p>This page is for creating, viewing, modifying, and deleting surveys.</p>
+		<a style="float:right;" href="javascript:void(0);" onclick="javascript:introJs().start();"><i class="fa fa-question-circle" aria-hidden="true"></i></a>
 
-		<a href="/survey/create" type="button" class="btn btn-md btn-success blueButton" style="border-radius: 12px 12px 0 0;font-weight:500;">Create Survey</a>
+		<a data-step="1" data-intro="Click here to design a new survey!" href="/survey/create" type="button" class="btn btn-md btn-success blueButton" style="border-radius: 12px 12px 0 0;font-weight:500;">Create Survey</a>
 
 		<div class="bs-loading-container" bs-loading-overlay bs-loading-overlay-active-class="loading-overlay--active" bs-loading-overlay-reference-id="file-list"> 
 			<div class="blur-this file-browser-table-container">
 				<table ng-table="vm.tableParams"class="table table-bordered table-striped surveys-browser-table">
 					<tr class="table-row" ng-repeat="row in $data">
 
-						<td ng-click="vm.goToResponsesUrl(row.accessId)" data-title="'Survey Name'"  sortable="'name'" class="survey-name-cell hidden-sm"  header-class="'hidden-xs hidden-sm'">{{row.name}}</td>
+						<td data-step="2" data-intro="Click here to view survey responses!" ng-click="vm.goToResponsesUrl(row.accessId)" data-title="'Survey Name'"  sortable="'name'" class="survey-name-cell hidden-sm"  header-class="'hidden-xs hidden-sm'">{{row.name}}</td>
 						<td ng-click="vm.goToResponsesUrl(row.accessId)" data-title="'Responses'"  	sortable="'numResponses'" class="responses-cell hidden-sm"  header-class="'hidden-xs hidden-sm'">{{row.numResponses}}</td>
 						<td ng-click="vm.goToResponsesUrl(row.accessId)" data-title="'Created By'" sortable="'createdBy'" class="created-by-cell hidden-sm"  header-class="'hidden-xs hidden-sm'">{{row.createdBy}}</td>
 						<td ng-click="vm.goToResponsesUrl(row.accessId)" data-title="'Date Created'"  sortable="'dateCreated'" class="date-created-cell hidden-sm"  header-class="'hidden-xs hidden-sm'">{{row.dateCreated | date : "dd MMMM, yyyy h:mm a"}}</td>
-						<td data-title="'Survey Code'"  class="responses-cell hidden-sm"  header-class="'hidden-xs hidden-sm'" style="cursor: text;">{{row.accessId}}</td>
+						<td  data-step="3" data-intro="Click here to add a response!" data-title="'Survey Code'"  class="responses-cell hidden-sm"  header-class="'hidden-xs hidden-sm'" style="cursor: text;">{{row.accessId}}</td>
 						<td data-title="'Action'" class="context-menu-cell hidden-sm"  header-class="'hidden-xs hidden-sm'">
-							<div class="dropdown" style="text-align:center;">
+							<div data-step="4" data-intro="<h5>Click here to:</h5><ul><li>Preview a survey</li><li>View survey responses</li><li>Manually add survey responses</li><li>Delete a survey</li></ul>" class="dropdown" style="text-align:center;">
 								<span class="fa fa-ellipsis-h dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"></span>
 								<ul class="dropdown-menu dropdown-menu-right">
 									<li class="view-cell"><a href="/survey/view/{{row.accessId}}">Preview</a></li>
