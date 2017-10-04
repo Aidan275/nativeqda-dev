@@ -68,6 +68,7 @@
 			}); 
 		}
 
+
 		function tidyData(data) {
 			var tidy = [];
 
