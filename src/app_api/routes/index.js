@@ -49,14 +49,7 @@ router.put('/user', auth, checkDatabaseStatus, ctrlUsers.updateProfile);					/* 
 router.delete('/user/:email', auth, checkDatabaseStatus, ctrlUsers.deleteUser);				/* Delete a User's account */
 /* router.get('/user/:email', auth, checkDatabaseStatus, ctrlUsers.getUserProfile); */		/* View a user's profile - Not sure if this is still needed? Is interfering with the route below (/user/last-modified) */
 
-/* User Roles */
-router.get('/user/:email/roles', auth, checkDatabaseStatus, ctrlUsers.getUserRoles);			/* Get all the roles a user has */
-router.put('/user/:email/roles', auth, checkDatabaseStatus, ctrlUsers.putUserRole);				/* Assign a role to a user - NOTE: was getting a weird authorization error when sending the request without including a body so changed the request to send the role in the body. */
-router.delete('/user/:email/roles/:role', auth, checkDatabaseStatus, ctrlUsers.deleteUserRole);	/* Un-assign a role to a user */
-
-router.get('/roles/:rolename', auth, checkDatabaseStatus, ctrlUsers.getRoles);			/* Get a specific role or a list of all the user role objects (More likely) */
-router.put('/roles/:rolename', auth, checkDatabaseStatus, ctrlUsers.putRole);			/* Create or update a user role */
-router.delete('/roles/:rolename', auth, checkDatabaseStatus, ctrlUsers.deleteRole);		/* Remove a user role from the system */
+router.put('/user/role', auth, checkDatabaseStatus, ctrlUsers.setRole);
 
 /* Datasets */
 router.post('/analysis/data/create', auth, checkDatabaseStatus, ctrlDataset.datasetCreate);

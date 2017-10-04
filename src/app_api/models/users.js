@@ -2,18 +2,6 @@ var mongoose = require( 'mongoose' );
 var crypto = require('crypto');
 var jwt = require('jsonwebtoken');
 
-var userRolesSchema = new mongoose.Schema({
-	name: { /*Name of the user role */
-		type: String,
-		unique: true,
-		required: true
-	},
-	color: { /*Colour associated with the user role, in HTML notation. */
-		type: String,
-		required: true
-	}
-});
-
 var userSchema = new mongoose.Schema({
 	email: {
 		type: String,
@@ -31,9 +19,9 @@ var userSchema = new mongoose.Schema({
 	company: {
 		type: String
 	},
-	roles: { /*User roles the member has been assigned */
-		type: [String],
-		default: 'researcher'
+	isAdmin: { /*Is the user a system administrator or just a researcher?*/
+		type: "boolean",
+		"default": false
 	},
 	settings: { /*Object of user settings */
 		type: Object,
@@ -77,9 +65,9 @@ userSchema.methods.generateJwt = function() {
 		firstName: this.firstName,
 		settings: this.settings,
 		avatar: this.avatar,
+		isAdmin: this.isAdmin,
 		exp: parseInt(expiry.getTime() / 1000),	/* Sets the expiry date in seconds in the jwt */
 	}, process.env.JWT_SECRET);
 };
 
 mongoose.model('User', userSchema);
-mongoose.model('UserRoles', userRolesSchema);
