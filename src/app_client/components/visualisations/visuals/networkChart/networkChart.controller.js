@@ -12,7 +12,7 @@
 	.module('visualisations')
 	.controller('networkChartCtrl', networkChartCtrl);
 
-	/* @ngInject */
+
 	function networkChartCtrl ($routeParams, analysisService, NgTableParams, bsLoadingOverlayService) {
 		var vm = this;
 
@@ -25,6 +25,7 @@
 
 		analysisData = [];
 		var sortData = [];
+		var tidy = [];
 
 		var common = ["he", "she", "the", "of", "and", "a", "to", "in", "is", "you", 
 						"that", "it", "was", "for", "on", "are", "as", "with", "his",
@@ -39,6 +40,14 @@
 
 		///////////////////////////
 
+
+		/* @ngInject */
+		/**
+	    * @ngdoc function
+	    * @name activate
+	    * @methodOf visualisations.controller:networkChartCtrl
+	    * @description Gets data to draw the network chart for relations
+	    */
 		function activate() {
 			bsLoadingOverlayService.start({referenceId: 'network-chart'});	// Start animated loading overlay
 			analysisService.readWatsonAnalysis(analysisId) //gets id from url
@@ -60,8 +69,7 @@
 					repeaterID++;
 				});	
 
-				tidyData(responseData);
-
+				commonWords(responseData);
 				
 			}, function(err) {
 				bsLoadingOverlayService.stop({referenceId: 'network-chart'});	// If error, stop animated loading overlay
@@ -69,9 +77,23 @@
 		}
 
 
-		function tidyData(data) {
-			var tidy = [];
-
+		/**
+	    * @ngdoc function
+	    * @name commonWords
+	    * @methodOf visualisations.controller:networkChartCtrl
+	    * @description Iterates through data and marks any member that is found in the common array.
+	    * Function then adds members without common words to the tidy array
+	    * @param {object} data An object consisting of
+    	*
+    	* id: An identifier for each member  
+    	* argumentA: The first part involved in the relation  
+    	* argumentB: The second part involved in the relation
+	    * score: A score of how correct the WATSON analysis thinks the score is
+	    * common: A boolean value indicating wether argumentA or argumentB contains a common word
+	    */
+		function commonWords(data) {
+			console.log(data);
+			
 			//Mark objects with common words by increasing the common number
 			data.forEach(function(obj){
 				var arrayLength = common.length;
@@ -80,26 +102,20 @@
 				for(var i = 0; i < arrayLength; i++) {
 					if(common[i] === obj.argumentA) {
 						//If match dont use
-						//obj.common++;
 						obj.common = true;
 					}
 
 					if(common[i] === obj.argumentB) {
-						//obj.common++;
 						obj.common = true;
 					}
 				}		
 			});
-
-			//If common > 0 then don't use it
 
 			var i = 0;
 
 			//Set up root node
 			tidy.push({name: analysisName, group: i, weight: 1});
 			i++;
-
-
 
 			data.forEach(function (data) {
 				//If no common words used
@@ -111,47 +127,76 @@
 				
 			});
 
+			makeLinks(data)
+		}
 
-			//Remove duplicates
+
+		/**
+	    * @ngdoc function
+	    * @name makeLinks
+	    * @methodOf visualisations.controller:networkChartCtrl
+	    * @description Iterates through tidy data array creating links from each element
+	    * to the root node and then links between each related group. The function then
+	    * calls the drawChart function with the newly created links array
+	    * @param {object} data An object consisting of
+    	*
+    	* id: An identifier for each member  
+    	* argumentA: The first part involved in the relation  
+    	* argumentB: The second part involved in the relation
+	    * score: A score of how correct the WATSON analysis thinks the score is
+	    * common: A boolean value indicating wether argumentA or argumentB contains a common word
+	    */
+		function makeLinks(data) {
 
 			//Make links
-			var links = [];
-
-			
+			var links = [];			
 			
 			tidy.forEach(function (data) {
 				//Make links to root node
 				links.push({source: 0, target: data.group});
+			});			 
+
+			tidy.forEach(function (data, index) {
+				if(index < tidy.length-1) {
+					links.push({source: data.group, target: tidy[index+1].group});
+				}else {
+					links.push({source: data.group, target: data.group});
+				}	
 			});
-
-
-			tidy.forEach(function (data) {
-				links.push({source: data.group, target: data.group});
-			});
-
  
 			drawChart(tidy, links);
-
-
-			
-
 		}
 
-
+		/**
+	    * @ngdoc function
+	    * @name drawChart
+	    * @methodOf visualisations.controller:networkChartCtrl
+	    * @description Using the formatted data created by commonWords and makeLinks
+	    * this function draws a network chart using D3
+	    * Code for drawing chart was taken from: https://bl.ocks.org/EfratVil/58b872b4f15a358c3a9822f5a285c5be
+	    * @param {object} tidy An array of objects consisting of
+	    * name: Name of the object involved in the relation
+	    * group: Which group the element is in, the group determines
+	    * what level in the graph it will be on. 0 is the root node
+	    * weight: Score given by WATSON analysis on how relevant the relation is
+	    * index: Keeps count of each element
+	    * x: The x co-ordinates of where the element will appear on screen
+	    * y: The y co-ordinates of where the element is on the screen
+	    * @param {object} links An array of objects consisting of
+	    * source: An integer referring to the group number for the connection source
+	    * target: An integer referring to the group number for the connection destination
+	    * index: An identifier for each link
+	    */
 		function drawChart(tidy, links) {
 			console.log(tidy);
 			console.log(links);
-
-
-	
-
 			var svg = d3.select("svg"),
 			    width = +svg.attr("width"),
 			    height = +svg.attr("height");
 
 			var simulation = d3.forceSimulation()
 			    .force("link", d3.forceLink())
-			    .force("charge", d3.forceManyBody().strength(-400))
+			    .force("charge", d3.forceManyBody().strength(-850))
 			    .force("center", d3.forceCenter(width / 2, height / 2));
 			  
 			links.forEach(function(d){
@@ -216,16 +261,16 @@
 
 			function dragstarted(d) {
   				if (!d3.event.active) simulation.alphaTarget(0.3).restart()
-  				simulation.fix(d);
+  				//simulation.fix(d);
 			}
 
 			function dragged(d) {
-			  simulation.fix(d, d3.event.x, d3.event.y);
+			  //simulation.fix(d, d3.event.x, d3.event.y);
 			}
 
 			function dragended(d) {
 			  if (!d3.event.active) simulation.alphaTarget(0);
-			  simulation.unfix(d);
+			  //simulation.unfix(d);
 			}
 	           			
 		}
