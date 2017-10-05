@@ -24,8 +24,7 @@
 			getAllUsersInfo : getAllUsersInfo,
 			getAvatar 		: getAvatar,
 			updateProfile 	: updateProfile,
-			deleteUser 		: deleteUser,
-			putUserRole 	: putUserRole
+			deleteUser 		: deleteUser
 		};
 
 		///////////////////////////
@@ -98,18 +97,6 @@
 
 			function deleteUserComplete(data) { return data.data; }
 			function deleteUserFailed(e) { return exception.catcher('Failed deleting user\'s profile.')(e); }
-		}
-
-		function putUserRole(userInfo) {
-			return $http.put('/api/user/' + userInfo.email + '/role', userInfo, {
-				headers: {
-					Authorization: 'Bearer ' + authService.getToken()
-				}
-			}).then(putUserRoleComplete)
-			.catch(putUserRoleFailed);
-
-			function putUserRoleComplete(data) { return data.data; }
-			function putUserRoleFailed(e) { return exception.catcher('Failed updating user\'s role.')(e); }
 		}
 		
 	}

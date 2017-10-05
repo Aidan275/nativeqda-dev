@@ -31,9 +31,9 @@
 				isAdmin: vm.isAdmin
 			};
 
-			usersService.putUserRole(userInfo)
-			.then(function(data) {
-				authService.saveToken(data.token)
+			usersService.updateProfile(userInfo)
+			.then(function(data) {)
+				authService.saveToken(data)
 				logger.success('Successfully updated user settings', '', 'Success');
 				setTimeout(function() {
 					vm.modal.close(data);	/* Close modal if user was updated successfully */

@@ -45,11 +45,9 @@ router.get('/user/info', auth, checkDatabaseStatus, ctrlUsers.getUserInfo);
 router.get('/users/info', auth, checkDatabaseStatus, ctrlUsers.getAllUsersInfo);			/* Gets all users info */
 router.get('/user/last-modified', auth, checkDatabaseStatus, ctrlUsers.userLastModified);	/* Get the date the user's info was last modified */
 router.get('/user/avatar/:email', checkDatabaseStatus, ctrlUsers.getAvatar);				/* Get the avatar for the email address for the login page */
-router.put('/user', auth, checkDatabaseStatus, ctrlUsers.updateProfile);					/* Update the user's details */
+router.put('/user/:email?', auth, checkDatabaseStatus, ctrlUsers.updateProfile);			/* Update a user's details */
 router.delete('/user/:email', auth, checkDatabaseStatus, ctrlUsers.deleteUser);				/* Delete a User's account */
 /* router.get('/user/:email', auth, checkDatabaseStatus, ctrlUsers.getUserProfile); */		/* View a user's profile - Not sure if this is still needed? Is interfering with the route below (/user/last-modified) */
-
-router.put('/user/:email/role', auth, checkDatabaseStatus, ctrlUsers.setRole);
 
 /* Datasets */
 router.post('/analysis/data/create', auth, checkDatabaseStatus, ctrlDataset.datasetCreate);

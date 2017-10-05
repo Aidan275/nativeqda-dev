@@ -115,52 +115,55 @@ module.exports.getAvatar = function(req, res) {
 	});
 };
 
-//Note: This should be able to be done better but I've spent too long trying to get it to work elegantly...
-module.exports.updateProfile = function(req, res) {
-	var jwtpayload = extractJWT(req.headers["authorization"]);
+module.exports.updateProfile = function(req, res) { //Update the user's profile, or if an admin, another profile.
 	
-	User.findOne({email: jwtpayload.email}, function(err, response) { //Find the logged in user's object
+	if (req.payload.isAdmin && req.params.email != req.payload.email)
+		useremail = req.body.email
+	else if (!req.payload.isAdmin && req.params.email != req.payload.email)
+		sendJSONresponse(res, 403, "Not an admin")
+	else
+		useremail = req.payload.email
+	
+	User.findOne({email: useremail}, function(err, user) { //Find the logged in user's object
 		if (err) {
 			sendJSONresponse(res, 500, err)
 			return
 		}
-		if (!response) { //If the user is in some quantum superposition where it both exists and doesn't exist
+		if (!user) { //If the user is in some quantum superposition where it both exists and doesn't exist
 			sendJSONresponse(res, 404, response)
-		return
-	}
-
-	var tmpuser = new User();
-	tmpuser = response;
+			return;
+		}
 
 		//"Update" fields
 		if (req.body.email)
-			tmpuser.email = req.body.email;
+			user.email = req.body.email;
 		if (req.body.firstName)
-			tmpuser.firstName = req.body.firstName;
+			user.firstName = req.body.firstName;
 		if (req.body.lastName)
-			tmpuser.lastName = req.body.lastName;
+			user.lastName = req.body.lastName;
 		if (req.body.company)
-			tmpuser.company = req.body.company;	/* If the company field is an empty string the company won't be changed */
-		else {
-			tmpuser.company = "";
-		}							
+			user.company = req.body.company;					
 		if (req.body.settings)
-			tmpuser.settings = req.body.settings;
+			user.settings = req.body.settings;
+		if (req.body.isAdmin && req.payload.isAdmin)
+			user.isAdmin = req.body.isAdmin;
 		if (req.body.avatar)
-			tmpuser.avatar = req.body.avatar;
+			user.avatar = req.body.avatar;
 		if (req.body.password)
-			tmpuser.setPassword(req.body.password);
+			user.setPassword(req.body.password);
 
 		var currentDate = new Date();
 		currentDate.setSeconds(currentDate.getSeconds() - 1);	/* Sets the last modified date to 1 seconds in the past to account for generating and passing the JWT to the browser (may be unnecessary) */
 
-		tmpuser.lastModified = currentDate;
+		user.lastModified = currentDate;
 		
-		tmpuser.save(function(err, response) {
+		user.save(function(err, response) {
 			if (err)
 				sendJSONresponse(res, 500, err)
+			else if (req.payload.isAdmin && req.payload.email != req.body.email) //Editing another user's profile
+				sendJSONresponse(res, 200, response)
 			else
-				sendJSONresponse(res, 200, tmpuser.generateJwt()) //Send new JWT
+				sendJSONresponse(res, 200, user.generateJwt()) //Send new JWT
 		})
 	});
 };
@@ -222,7 +225,7 @@ module.exports.deleteUser = function(req, res) {
 
 module.exports.getUserProfile = function(req, res) { res.sendStatus(418) };
 
-module.exports.setRole = function(req, res) { //TODO: Check user is a superadmin
+/*module.exports.setRole = function(req, res) { //TODO: Check user is a superadmin
 	//Check if admin
 	if (!req.payload.isAdmin) {
 		sendJSONresponse(res, 403, "Not Administrator")
@@ -239,4 +242,4 @@ module.exports.setRole = function(req, res) { //TODO: Check user is a superadmin
 			sendJSONresponse(res, 200, {"token" : results.generateJwt()});
 		}
 	})
-};
+};*/
