@@ -25,8 +25,8 @@
 				<td data-title="'Last Name'" filter="{lastName: 'text'}" sortable="'lastName'" class="last-name-cell hidden-xs">{{row.lastName}}</td>
 				<td data-title="'Email'" filter="{email: 'text'}" sortable="'email'" class="email-cell">{{row.email}}</td>
 				<td data-title="'Role'" filter="{role: 'text'}" sortable="'role'" class="role-cell hidden-xs">
-					<span ng-if="row.role=='Researcher'" class="label label-success">{{row.role}}</span>
-					<span ng-if="row.role=='Bubble Admin'" class="label label-primary">{{row.role}}</span>
+					<span ng-if="row.isAdmin" class="label label-success">Admin</span>
+					<span ng-if="!row.isAdmin" class="label label-primary">Researcher</span>
 				</td>
 				<td data-step="2" data-intro="Click here to view/edit/delete this user!" data-title="'Action'" class="context-menu-cell">
 					<div class="dropdown">

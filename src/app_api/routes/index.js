@@ -49,7 +49,7 @@ router.put('/user', auth, checkDatabaseStatus, ctrlUsers.updateProfile);					/* 
 router.delete('/user/:email', auth, checkDatabaseStatus, ctrlUsers.deleteUser);				/* Delete a User's account */
 /* router.get('/user/:email', auth, checkDatabaseStatus, ctrlUsers.getUserProfile); */		/* View a user's profile - Not sure if this is still needed? Is interfering with the route below (/user/last-modified) */
 
-router.put('/user/role', auth, checkDatabaseStatus, ctrlUsers.setRole);
+router.put('/user/:email/role', auth, checkDatabaseStatus, ctrlUsers.setRole);
 
 /* Datasets */
 router.post('/analysis/data/create', auth, checkDatabaseStatus, ctrlDataset.datasetCreate);

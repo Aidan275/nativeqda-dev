@@ -12,12 +12,12 @@
 		vm.onSubmit = onSubmit;
 
 		/* Bindable Data */
-		vm.userRole = ''
+		vm.isAdmin = ''
 
 		///////////////////////////
 
 		function onSubmit() {
-			if (!vm.userRole) {
+			if (!vm.isAdmin) {
 				logger.error('All fields required, please try again', '', 'Error')
 				return false;
 			} else {
@@ -28,7 +28,7 @@
 		function saveSettings() {
 			var userInfo = {
 				email: user.email,
-				role: vm.userRole
+				isAdmin: vm.isAdmin
 			};
 
 			usersService.putUserRole(userInfo)

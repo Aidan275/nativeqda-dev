@@ -101,7 +101,7 @@
 		}
 
 		function putUserRole(userInfo) {
-			return $http.put('/api/user/' + userInfo.email + '/roles', userInfo, {
+			return $http.put('/api/user/' + userInfo.email + '/role', userInfo, {
 				headers: {
 					Authorization: 'Bearer ' + authService.getToken()
 				}

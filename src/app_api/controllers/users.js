@@ -224,12 +224,11 @@ module.exports.getUserProfile = function(req, res) { res.sendStatus(418) };
 
 module.exports.setRole = function(req, res) { //TODO: Check user is a superadmin
 	//Check if admin
-	console.log(req.body)
 	if (!req.payload.isAdmin) {
 		sendJSONresponse(res, 403, "Not Administrator")
 		return;
 	}
-	User.findOneAndUpdate({"email": req.body["email"]}, {"isAdmin": req.body["isAdmin"]}, function(err, results) {
+	User.findOneAndUpdate({"email": req.params["email"]}, {"isAdmin": req.body["isAdmin"]}, function(err, results) {
 		if (err) {
 			sendJSONresponse(res, 500, err);
 		}
