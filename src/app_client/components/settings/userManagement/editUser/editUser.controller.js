@@ -5,7 +5,7 @@
 	.controller('editUserCtrl', editUserCtrl);
 
 	/* @ngInject */
-	function editUserCtrl (user, $uibModalInstance, usersService, logger) {
+	function editUserCtrl (user, $uibModalInstance, usersService, authService, logger) {
 		var vm = this;
 
 		/* Bindable Functions */
@@ -33,6 +33,7 @@
 
 			usersService.putUserRole(userInfo)
 			.then(function(data) {
+				authService.saveToken(data.token)
 				logger.success('Successfully updated user settings', '', 'Success');
 				setTimeout(function() {
 					vm.modal.close(data);	/* Close modal if user was updated successfully */

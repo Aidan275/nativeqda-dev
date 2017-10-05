@@ -235,8 +235,8 @@ module.exports.setRole = function(req, res) { //TODO: Check user is a superadmin
 		else if (!results) {
 			sendJSONresponse(res, 404, {"message": "No user found"});
 		}
-		else { //TODO: Invalidate JWT?
-			sendJSONresponse(res, 200, null);
+		else { //Update JWT [NOTE: If an admin is made a researcher they could still present as an admin using an old JWT whilst it is still time-valid]
+			sendJSONresponse(res, 200, {"token" : results.generateJwt()});
 		}
-	});
+	})
 };
