@@ -25,6 +25,15 @@
 
 		activate();
 
+		var slideout = new Slideout({
+      		'panel': document.querySelector('#donutPanel'),
+      		'menu': document.querySelector('#donutMenu'),
+      		'padding': 256,
+      		'tolerance': 70
+    	});
+
+    	vm.toggleOptions = toggleOptions;
+
 		///////////////////////////
 
 		function activate() {
@@ -58,6 +67,11 @@
 				bsLoadingOverlayService.stop({referenceId: 'donut-chart'});	// If error, stop animated loading overlay
 			}); 
 		}
+
+
+		function toggleOptions() {
+      		slideout.toggle();
+    	}
 
 	    /**
 	    * @ngdoc function

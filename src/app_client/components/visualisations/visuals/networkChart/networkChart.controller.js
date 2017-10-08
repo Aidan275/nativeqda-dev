@@ -38,6 +38,15 @@
 
 		activate();
 
+		var slideout = new Slideout({
+      		'panel': document.querySelector('#netPanel'),
+      		'menu': document.querySelector('#netMenu'),
+      		'padding': 256,
+      		'tolerance': 70
+    	});
+
+    	vm.toggleOptions = toggleOptions;
+
 		///////////////////////////
 
 
@@ -75,6 +84,10 @@
 				bsLoadingOverlayService.stop({referenceId: 'network-chart'});	// If error, stop animated loading overlay
 			}); 
 		}
+
+		function toggleOptions() {
+      		slideout.toggle();
+    	}
 
 
 		/**

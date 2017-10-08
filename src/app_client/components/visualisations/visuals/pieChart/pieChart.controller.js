@@ -23,6 +23,15 @@
 		var responseData = [];
 
 		activate();
+
+		var slideout = new Slideout({
+      		'panel': document.querySelector('#piePanel'),
+      		'menu': document.querySelector('#pieMenu'),
+      		'padding': 256,
+      		'tolerance': 70
+    	});
+
+    	vm.toggleOptions = toggleOptions;
 		
 		///////////////////////////
 
@@ -55,6 +64,10 @@
 				bsLoadingOverlayService.stop({referenceId: 'bubble-chart'});	// If error, stop animated loading overlay
 			}); 
 		}
+
+		function toggleOptions() {
+      		slideout.toggle();
+    	}
 
 	    /**
 	    * @ngdoc function

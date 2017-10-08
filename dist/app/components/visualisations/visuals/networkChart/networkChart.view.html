@@ -1,4 +1,49 @@
 <style>
+
+#netMenu {
+    padding: 75px 25px 25px 25px;
+    overflow: hidden;
+    background: #eee;
+}
+
+.slideout-menu {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    width: 256px;
+    min-height: 100vh;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+    z-index: 0;
+    display: none;
+}
+
+.slideout-menu-left {
+    left: 0;
+}
+
+.slideout-menu-right {
+    right: 0;
+}
+
+.slideout-panel {
+    position: relative;
+    z-index: 1;
+    will-change: transform;
+    background-color: #FFF; /* A background-color is required */
+    min-height: 100vh;
+}
+
+.slideout-open,
+.slideout-open body,
+.slideout-open .slideout-panel {
+    overflow: hidden;
+}
+
+.slideout-open .slideout-menu {
+    display: block;
+}
+
 .link {
   stroke: #aaa;
 }
@@ -14,6 +59,10 @@ stroke-width:3px;
 fill:#555;
 }
 
+#svg {
+	padding:0 100px;
+}
 
 
-</style><navigation></navigation><div style="padding:0 100px;"><svg width=960 height=500></svg><div style="position: absolute; left: 50%;transform: translateX(-75%);"><div class=chart align=center></div></div><footer-generic></footer-generic></div>
+
+</style><navigation></navigation><div id=netMenu><label>Hello</label><br></div><div id=netPanel><div><div id=controls-button><button ng-click=vm.toggleOptions() class="btn btn-success">Controls</button></div><svg width=1500 height=750></svg><div style="position: absolute; left: 50%;transform: translateX(-75%);"><div class=chart align=center></div></div></div></div><footer-generic></footer-generic>
