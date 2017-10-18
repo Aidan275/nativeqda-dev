@@ -29,26 +29,26 @@
 	
 	<form ng-submit="vm.onSubmit()" id="login-form">
 		<div id="u" class="form-group-qda">
-			<input id="email" tabindex=1 spellcheck=false class="form-control-qda" name="username" type="text" size="18" alt="login" required="required" ng-model="vm.credentials.email" ng-blur="vm.getAvatar()" >
+			<input id="email" Tabindex="1" spellcheck=false class="form-control-qda" name="username" type="text" size="18" alt="login" required="required" ng-model="vm.credentials.email" ng-blur="vm.getAvatar()" >
 			<span class="form-highlight"></span>
 			<span class="form-bar"></span>
 			<label for="email" class="float-label">Email</label>
 		</div>
 		
 		<div id="p" class="form-group-qda">
-			<input id="password" class="form-control-qda" tabindex=2 spellcheck=false name="password" type="password" size="18" alt="login" required="required" ng-model="vm.credentials.password">
+			<input id="password" class="form-control-qda" Tabindex="2" spellcheck=false name="password" type="password" size="18" alt="login" required="required" ng-model="vm.credentials.password">
 			<span class="form-highlight"></span>
 			<span class="form-bar"></span>
 			<label for="password" class="float-label">Password</label>
 		</div>
 
 		<div class="form-group-qda buttonPlacementFix">
-			<a href="/forgot-password" style="color:rgba(0,0,0,0.6);" tabindex=4 >Forgot your Password?</a>
-			<button id="submit" type="submit" tabindex=3>Sign in</button>
+			<a href="/forgot-password" style="color:rgba(0,0,0,0.6);">Forgot your Password?</a>
+			<button id="submit" type="submit" Tabindex="3">Sign in</button>
 		</div>
 	</form>
 
 	<div class="complete-survey-btn">
-		<a href="/complete-survey" tabindex=5 style="color:rgba(0,0,0,0.6);">COMPLETE A SURVEY</a>
+		<a href="/complete-survey" style="color:rgba(0,0,0,0.6);">COMPLETE A SURVEY</a>
 	</div>
 </div>
