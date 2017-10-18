@@ -10,7 +10,6 @@ var compression = require('compression')
 var debug = require('debug')('Express4');
 var path = require('path');
 var favicon = require('serve-favicon');
-var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var fs = require('fs');
@@ -27,7 +26,6 @@ var routesApi = require('./routes/index');
 app.use(secure);
 app.use(compression());
 app.use(favicon(__dirname + '/favicon.ico'));
-app.use(logger('dev'));
 app.use(bodyParser.json({limit: "50mb"}));
 app.use(bodyParser.urlencoded({limit: "50mb", extended: true, parameterLimit:50000}));
 app.use(cookieParser());
@@ -63,6 +61,8 @@ switch (environment){
     default:
         console.log('------- LOCAL DEVELOPMENT ENVIRONMENT -------');
         console.log('Serving from: ' + path.join(__dirname, '../../src'));
+		var logger = require('morgan');
+		app.use(logger('dev'));
 		app.use(express.static(path.join(__dirname, '../../')));				/* For vendor assets in node_modules and AngularJS JS files (external vendor assets downloaded using NPM - jquery, ng-tables, angular, moment, bootstrap, etc.) */
         app.use(express.static(path.join(__dirname, '../app_client')));         /* For serving the static html files requested from AngularJS (e.g. home.view.html, data.view.html) */
 		app.get('/api/*', function(req, res) {

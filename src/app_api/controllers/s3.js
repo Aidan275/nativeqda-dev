@@ -153,7 +153,6 @@ module.exports.signDownload = function(req, res) {
 
 module.exports.signDownloadKey = function(req, res) {
 	var key = req.params["key"];
-	console.log(key);
 
 	var params = {
 		Bucket: process.env.S3_BUCKET_NAME, 
