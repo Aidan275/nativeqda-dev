@@ -6,6 +6,7 @@ require('dotenv').load();
 var express = require('express');
 var app = express();
 var secure = require('express-force-https');
+var compression = require('compression')
 var debug = require('debug')('Express4');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -24,6 +25,7 @@ require('./config/passport');
 var routesApi = require('./routes/index');
 
 app.use(secure);
+app.use(compression());
 app.use(favicon(__dirname + '/favicon.ico'));
 app.use(logger('dev'));
 app.use(bodyParser.json({limit: "50mb"}));
