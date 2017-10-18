@@ -116,12 +116,13 @@ module.exports.getAvatar = function(req, res) {
 };
 
 module.exports.updateProfile = function(req, res) { //Update the user's profile, or if an admin, another profile.
-	
-	if (req.payload.isAdmin && req.params.email != req.payload.email)
-		useremail = req.body.email
-	else if (!req.payload.isAdmin && req.params.email != req.payload.email)
+	if (req.payload.isAdmin && req.params.email != req.payload.email && req.params.email != undefined) //Admin trying to update someone else's profile
+		useremail = req.params.email
+	else if (!req.payload.isAdmin && req.params.email != req.payload.email && req.params.email != undefined) { //Regular user trying to update someone else's profile IE. Unauthorised action
 		sendJSONresponse(res, 403, "Not an admin")
-	else
+		return
+	}
+	else //User updating their own profile
 		useremail = req.payload.email
 	
 	User.findOne({email: useremail}, function(err, user) { //Find the logged in user's object
@@ -130,7 +131,7 @@ module.exports.updateProfile = function(req, res) { //Update the user's profile,
 			return
 		}
 		if (!user) { //If the user is in some quantum superposition where it both exists and doesn't exist
-			sendJSONresponse(res, 404, response)
+			sendJSONresponse(res, 404, "User not found")
 			return;
 		}
 

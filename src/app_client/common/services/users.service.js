@@ -76,7 +76,7 @@
 		}
 
 		function updateProfile(userInfo){
-			return $http.put('/api/user', userInfo, {
+			return $http.put('/api/user/' + userInfo.email, userInfo, {
 				headers: {
 					Authorization: 'Bearer ' + authService.getToken()
 				}
