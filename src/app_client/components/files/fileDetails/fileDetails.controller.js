@@ -27,6 +27,7 @@
 		var vm = this;
 
 		/* Bindable Functions */
+		vm.editFile = editFile;
 		vm.updateAclS3 = updateAclS3;
 		vm.confirmDelete = confirmDelete;
 
@@ -34,11 +35,12 @@
 		vm.file = {};
 		vm.isSubmittingButton = null;	/* variables for button animation - ng-bs-animated-button */
 		vm.resultButton = null;
+		vm.edit = { buttonDefaultText: 'Edit', animationCompleteTime: 1000, buttonSubmittingText: 'Processing...', buttonSuccessText: 'Done!' };
 		vm.makePublicOptions = { buttonDefaultText: 'Make Public', animationCompleteTime: 1000, buttonSubmittingText: 'Processing...', buttonSuccessText: 'Done!' };
 		vm.makePrivateOptions = { buttonDefaultText: 'Make Private', animationCompleteTime: 1000, buttonSubmittingText: 'Processing...', buttonSuccessText: 'Done!' };
 		vm.pageHeader = {
-			title: 'File Details',
-			strapline: 'detailed information about the selected file'
+			title: file.name,
+			//strapline: 'detailed information about the selected file'
 		};
 
 		activate();
@@ -66,6 +68,10 @@
 			});
 		}
 
+		function editFile() {
+			console.log("hi")
+		}
+		
 		/**
 		* @ngdoc function
 		* @name updateAclS3
