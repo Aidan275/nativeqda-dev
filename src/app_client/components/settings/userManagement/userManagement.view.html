@@ -17,19 +17,19 @@
 		<table ng-table="vm.tableParams" class="table table-bordered table-striped users-browser-table">
 			<tr class="table-row" ng-repeat="row in $data">
 				<td data-title="'Avatar'" class="avatar-cell">
-					<div class="img-circle med-avatar-container" style="background-image: url('{{ row.avatar }}');">
+					<div data-step="2" data-intro="This is a users' current Avatar!" class="img-circle med-avatar-container" style="background-image: url('{{ row.avatar }}');">
 						<img src="{{ row.avatar }}" class="med-avatar"/>
 					</div>
 				</td>
-				<td data-title="'First Name'" filter="{firstName: 'text'}" sortable="'firstName'" class="first-name-cell">{{row.firstName}}</td>
-				<td data-title="'Last Name'" filter="{lastName: 'text'}" sortable="'lastName'" class="last-name-cell hidden-xs">{{row.lastName}}</td>
-				<td data-title="'Email'" filter="{email: 'text'}" sortable="'email'" class="email-cell">{{row.email}}</td>
+				<td data-title="'First Name'" filter="{firstName: 'text'}" sortable="'firstName'" class="first-name-cell"><div data-step="3" data-intro="This is a users' first name!">{{row.firstName}}</div></td>
+				<td data-title="'Last Name'" filter="{lastName: 'text'}" sortable="'lastName'" class="last-name-cell hidden-xs"><div  data-step="4" data-intro="This is a users' surname!">{{row.lastName}}</div></td>
+				<td data-title="'Email'" filter="{email: 'text'}" sortable="'email'" class="email-cell"><div  data-step="5" data-intro="This is a users' email address!">{{row.email}}</div></td>
 				<td data-title="'Role'" filter="{role: 'text'}" sortable="'role'" class="role-cell hidden-xs">
-					<span ng-if="row.isAdmin" class="label label-success">Admin</span>
-					<span ng-if="!row.isAdmin" class="label label-primary">Researcher</span>
+					<span data-step="6" data-intro="This user is a System Administrator!" ng-if="row.isAdmin" class="label label-success">Admin</span>
+					<span data-step="7" data-intro="This user is a Researcher!" ng-if="!row.isAdmin" class="label label-primary">Researcher</span>
 				</td>
-				<td data-step="2" data-intro="Click here to view/edit/delete this user!" data-title="'Action'" class="context-menu-cell">
-					<div class="dropdown">
+				<td data-title="'Action'" class="context-menu-cell">
+					<div  data-step="8" data-intro="Click here to view/edit/delete this user!" class="dropdown">
 								<span class="fa fa-ellipsis-h dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"></span>
 								<ul class="dropdown-menu dropdown-menu-right">
 									<li class="view-cell"><a>View</a></li>

@@ -35,13 +35,18 @@ body.pg-loaded > .inner {
 }
 
 .blueButton:hover {
-	background-color: #0676fa;
-	border-color: #0676fa;
+	background-color: #0676fa !important;
+	border-color: #0676fa !important;
 }
 
 .blueButton:focus {
-	background-color: #0676fa;
-	border-color: #0676fa;
+	background-color: #0676fa !important;
+	border-color: #0676fa !important;
+}
+
+.blueButton:active {
+	background-color: #0676fa !important;
+	border-color: #0676fa !important;
 }
 
 .inner {
