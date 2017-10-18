@@ -422,7 +422,7 @@
 				}
 
 				popupString += '<div style="padding-bottom:10px;"></div><div style="text-align:center;"><a ng-click="vm.viewFile(file)" class="btn btn-success btn-xs" role="button">View</a> ' +
-				'<a ng-click="vm.popupFileDetails(file)" class="btn btn-primary btn-xs" role="button">Details</a> ' +
+				'<a ng-click="vm.popupFileDetails(file)" class="btn btn-primary blueButton btn-xs" role="button">Details</a> ' +
 				'<a ng-click="vm.selectDependent(precedent)" class="btn btn-info btn-xs" role="button">Add Dependent</a></div>' +
 				'</div></div>';
 
