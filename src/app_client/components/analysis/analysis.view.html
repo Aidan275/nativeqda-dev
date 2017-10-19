@@ -14,7 +14,7 @@
 
 		<div class="bs-loading-container" bs-loading-overlay bs-loading-overlay-active-class="loading-overlay--active" bs-loading-overlay-reference-id="analysis-list"> 
 			<div class="blur-this">
-				<table ng-table="vm.tableParams" class="table  table-bordered table-striped analysis-browser-table">
+				<table ng-table="vm.tableParams" class="table table-bordered table-striped analysis-browser-table">
 					<tr class="table-row" ng-repeat="row in $data">
 						<td data-step="2" data-intro="Click here to view an analysis!" ng-click="vm.goToVisUrl(row._id)" data-title="'Analysis'" filter="{name: 'text'}" sortable="'name'" class="name-cell">{{row.name}}</td>
 						<td ng-click="vm.goToVisUrl(row._id)" data-title="'Created By'" filter="{createdBy: 'text'}" sortable="'createdBy'" class="created-by-cell hidden-xs" header-class="'hidden-xs'">{{row.createdBy}}</td>
@@ -23,9 +23,9 @@
 							<div data-step="3" data-intro="<h5>Click here to:</h5><ul><li>View an analysis</li><li>Edit an analysis</li><li>Delete an analysis</li></ul>" class="dropdown" style="text-align:center;">
 								<span class="fa fa-ellipsis-h dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"></span>
 								<ul class="dropdown-menu dropdown-menu-right">
-									<li class="view-cell"><a ng-href="visualisations/{{row._id}}">View</a></li>
-									<li ng-click="vm.popupEditVisual(row.name, row._id)" class="edit-cell"><a href="#">Edit</a></li>
-									<li ng-click="vm.confirmDelete(row.name, row._id)" class="delete-cell"><a href="#">Delete</a></li>
+									<li class="view-btn"><a ng-href="visualisations/{{row._id}}">View</a></li>
+									<li ng-click="vm.popupEditVisual(row.name, row._id)" class="edit-btn"><a href="#">Edit</a></li>
+									<li ng-click="vm.confirmDelete(row.name, row._id)" class="delete-btn"><a href="#">Delete</a></li>
 								</ul>
 							</div>
 						</td>

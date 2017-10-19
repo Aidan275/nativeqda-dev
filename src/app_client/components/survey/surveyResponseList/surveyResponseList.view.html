@@ -6,8 +6,8 @@
 
 	<div class="bs-loading-container" bs-loading-overlay bs-loading-overlay-active-class="loading-overlay--active" bs-loading-overlay-reference-id="survey-responses"> 
 		<div class="blur-this">
-			<table ng-table="vm.tableParams" class="table table-bordered table-striped surveys-browser-table" style="margin-top:5px">
-				<tr ng-repeat="row in $data">
+			<table ng-table="vm.tableParams" class="table table-bordered table-striped survey-responses-table" style="margin-top:5px">
+				<tr class="table-row" ng-repeat="row in $data">
 					<td ng-click="vm.goToResponseUrl(row.id)" data-title="'Name'" filter="{fullName: 'text'}" sortable="'fullName'" class="survey-name-cell">{{row.fullName}}</td>
 					<td ng-click="vm.goToResponseUrl(row.id)" data-title="'Gender'" filter="{gender: 'text'}" sortable="'gender'" class="gender-cell">{{row.gender}}</td>
 					<td ng-click="vm.goToResponseUrl(row.id)" data-title="'Age'" filter="{age: 'number'}" sortable="'age'" class="age-cell">{{row.age}}</td>
@@ -17,13 +17,12 @@
 						<div class="dropdown" style="text-align:center;">
 							<span class="fa fa-ellipsis-h dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"></span>
 							<ul class="dropdown-menu dropdown-menu-right">
-								<li class="view-cell"><a href="/survey/responses/{{vm.accessId}}/{{row.id}}">View</a></li>
-								<!-- <li class="edit-cell"><a href="/survey/responses/{{row.accessId}}">Edit</a></li> -->
-								<li class="delete-cell"><a ng-click="vm.confirmDelete(row._id, row.name)">Delete</a></li>
+								<li class="view-btn"><a href="/survey/responses/{{vm.accessId}}/{{row.id}}">View</a></li>
+								<!-- <li class="edit-btn"><a href="/survey/responses/{{row.accessId}}">Edit</a></li> -->
+								<li class="delete-btn"><a ng-click="vm.confirmDelete(row._id, row.name)">Delete</a></li>
 							</ul>
 						</div>
-
-					</td class="data-command-cell">
+					</td>
 				</tr>
 			</table>
 		</div>

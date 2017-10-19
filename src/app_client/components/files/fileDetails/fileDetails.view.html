@@ -1,9 +1,15 @@
 <div class="modal-content bs-loading-container" bs-loading-overlay bs-loading-overlay-active-class="loading-overlay--active" bs-loading-overlay-reference-id="file-details"> 
 	<div class="blur-this">
-		<div style="margin:30px;">
 
-			<page-header content="vm.pageHeader"></page-header>
+		<div class="modal-header">
+			<button type="button" ng-click="vm.modal.cancel()" ng-disabled="vm.isProcessing" class="close">
+				<span aria-hidden="true">×</span>
+				<span class="sr-only">Close</span>
+			</button>
+			<h4 id="analysis-modal-label" class="modal-title">{{vm.file.name}}</h4>
+		</div>
 
+		<div class="modal-body">
 			<label>File Name: </label> {{vm.file.path}} <input type="textbox" value={{vm.file.name}}></input>
 			<br/>
 			<label>File Type: </label> {{vm.file.type}}
@@ -34,7 +40,7 @@
 				<br/>
 				<label>Public URL: </label> <a href="{{vm.file.url}}" target=_"blank">{{vm.file.url}}</a>
 			</span>
-
 		</div>
+
 	</div>
 </div>

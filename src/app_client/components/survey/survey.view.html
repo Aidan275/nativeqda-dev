@@ -14,7 +14,7 @@
 
 		<div class="bs-loading-container" bs-loading-overlay bs-loading-overlay-active-class="loading-overlay--active" bs-loading-overlay-reference-id="file-list"> 
 			<div class="blur-this file-browser-table-container">
-				<table ng-table="vm.tableParams"class="table table-bordered table-striped surveys-browser-table">
+				<table ng-table="vm.tableParams" class="table table-bordered table-striped surveys-browser-table">
 					<tr class="table-row" ng-repeat="row in $data">
 
 						<td data-step="2" data-intro="Click here to view survey responses!" ng-click="vm.goToResponsesUrl(row.accessId)" data-title="'Survey Name'"  sortable="'name'" class="survey-name-cell hidden-sm"  header-class="'hidden-xs hidden-sm'">{{row.name}}</td>
@@ -26,12 +26,12 @@
 							<div data-step="4" data-intro="<h5>Click here to:</h5><ul><li>Preview a survey</li><li>View survey responses</li><li>Manually add survey responses</li><li>Delete a survey</li></ul>" class="dropdown" style="text-align:center;">
 								<span class="fa fa-ellipsis-h dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"></span>
 								<ul class="dropdown-menu dropdown-menu-right">
-									<li class="view-cell"><a href="/survey/view/{{row.accessId}}">Preview</a></li>
-									<li class="response-cell"><a href="/survey/responses/{{row.accessId}}">Responses</a></li>
+									<li class="view-btn"><a href="/survey/view/{{row.accessId}}">Preview Survey</a></li>
+									<li class="response-btn"><a href="/survey/responses/{{row.accessId}}">View Responses</a></li>
 									<!-- Just for show, still need to implement manually adding responses properly -->
-									<li class="edit-cell"><a href="/complete-survey/{{row.accessId}}">Add Response</a></li>
+									<li class="edit-btn"><a href="/complete-survey/{{row.accessId}}">Add Response</a></li>
 									<!-- <li class="edit-cell"><a href="/survey/responses/{{row.accessId}}">Edit</a></li> -->
-									<li ng-click="vm.confirmDelete(row._id, row.name)" class="delete-cell"><a>Delete</a></li>
+									<li ng-click="vm.confirmDelete(row._id, row.name)" class="delete-btn"><a href="">Delete Survey</a></li>
 								</ul>
 							</div>						
 							
