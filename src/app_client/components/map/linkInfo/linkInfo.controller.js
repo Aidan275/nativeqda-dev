@@ -1,3 +1,16 @@
+/**
+* @author Aidan Andrews
+* @email aa275@uowmail.edu.au
+* @ngdoc controller
+* @name map.controller:linkInfoCtrl
+* @requires $uibModalInstance
+* @requires services.service:mapService
+* @requires services.service:authService
+* @requires services.service:logger
+* @description This is a popup modal for entering a dependency link's information and saving it 
+* to the database. 
+*/
+
 (function () {
 
 	'use strict';
@@ -7,7 +20,7 @@
 	.controller('linkInfoCtrl', linkInfoCtrl);
 
 	/* @ngInject */
-	function linkInfoCtrl($uibModalInstance, markers, logger, mapService, authService) {
+	function linkInfoCtrl(markers, $uibModalInstance, mapService, authService, logger) {
 		var vm = this;
 
 		// Bindable Functions
@@ -23,11 +36,11 @@
 			if(!vm.formData.name || !vm.formData.description) {
 				logger.error('All fields required, please try again', '', 'Error');
 			} else {
-				saveDependecy();
+				saveDependency();
 			}
 		}
 
-		function saveDependecy() {
+		function saveDependency() {
 			var link = {
 				_creator: vm.currentUser._id,
 				name: vm.formData.name,

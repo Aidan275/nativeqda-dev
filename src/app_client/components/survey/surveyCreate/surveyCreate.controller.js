@@ -1,3 +1,16 @@
+/**
+* @author Aidan Andrews
+* @email aa275@uowmail.edu.au
+* @ngdoc controller
+* @name survey.controller:surveyCreateCtrl
+* @requires $scope
+* @requires $location
+* @requires services.service:surveyService
+* @requires services.service:authService
+* @description This controller displays the survey editor where a user can create a survey. 
+* The resulting JSON code of the created survey can then be saved to the database.
+*/
+
 (function () {
 
 	'use strict';
@@ -7,7 +20,7 @@
 	.controller('surveyCreateCtrl', surveyCreateCtrl);
 
 	/* @ngInject */
-	function surveyCreateCtrl (surveyService, authService, $scope, $location) {
+	function surveyCreateCtrl($scope, $location, surveyService, authService) {
 		var vm = this;
 
 		var editorOptions = {

@@ -1,3 +1,19 @@
+/**
+* @author Aidan Andrews
+* @email aa275@uowmail.edu.au
+* @ngdoc controller
+* @name settings.controller:userManagementCtrl
+* @requires $uibModal
+* @requires NgTableParams
+* @requires bsLoadingOverlayService
+* @requires services.service:usersService
+* @requires services.service:logger
+* @description This controller displays the current users of the system in a list where they
+* can be edited (change permissions) and deleted. New users can also be created in this controller.
+* Would like to extend the functionality of this controller so that information and user history can also be viewed,
+* such as files the user has uploaded or analyses the users has created. 
+*/
+
 (function () { 
 
 	'use strict';
@@ -7,7 +23,7 @@
 	.controller('userManagementCtrl', userManagementCtrl);
 	
 	/* @ngInject */
-	function userManagementCtrl (NgTableParams, bsLoadingOverlayService, $uibModal, usersService, logger) {
+	function userManagementCtrl($uibModal, NgTableParams, bsLoadingOverlayService, usersService, logger) {
 		var vm = this;
 
 		vm.pageId = 'user-management';

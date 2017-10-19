@@ -1,3 +1,16 @@
+/**
+* @author Aidan Andrews
+* @email aa275@uowmail.edu.au
+* @ngdoc controller
+* @name visualisations.controller:dataTableCtrl
+* @requires $routeParams
+* @requires NgTableParams
+* @requires bsLoadingOverlayService
+* @requires services.service:analysisService
+* @description This controller outputs all the analysis data from the database into 
+* tables so the user can view, search, and sort all the analysis results.
+*/
+
 (function () {
 
 	angular
@@ -5,7 +18,7 @@
 	.controller('dataTableCtrl', dataTableCtrl);
 
 	/* @ngInject */
-	function dataTableCtrl ($routeParams, analysisService, NgTableParams, bsLoadingOverlayService) {
+	function dataTableCtrl ($routeParams, NgTableParams, bsLoadingOverlayService, analysisService) {
 		var vm = this;
 
 		var analysisType = $routeParams.type;

@@ -760,6 +760,74 @@ define({ "api": [
   },
   {
     "group": "Files",
+    "type": "Delete",
+    "url": "/api/files/:filepath(*)",
+    "title": "Delete File",
+    "description": "<p>Deletes the file from the database<br> Also deletes any marker links and updates analyses associated with the file</p>",
+    "permission": [
+      {
+        "name": "researcher"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "URL Parameter": [
+          {
+            "group": "URL Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "filepath",
+            "description": "<p>File path of the file</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success Example",
+          "content": "HTTP/1.1 204 No Content",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "src/app_api/controllers/files.js",
+    "groupTitle": "Files",
+    "name": "DeleteApiFilesFilepath",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "FileNotFound",
+            "description": "<p>The File was not found</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "InternalServerError",
+            "description": "<p>Internal server error</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error 404",
+          "content": "HTTP/1.1 404 Not Found \n{\n  \"message\": \"File not found\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Error 500",
+          "content": "HTTP/1.1 500 Internal Server Error",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
+    "group": "Files",
     "type": "Post",
     "url": "/api/files/acl",
     "title": "Update ACL Setting",

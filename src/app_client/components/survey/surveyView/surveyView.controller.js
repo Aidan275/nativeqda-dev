@@ -1,3 +1,13 @@
+/**
+* @author Aidan Andrews
+* @email aa275@uowmail.edu.au
+* @ngdoc controller
+* @name survey.controller:surveyViewCtrl
+* @requires $routeParams
+* @requires services.service:surveyService
+* @description This controller displays a survey given its access Id for a user to preview it.
+*/
+
 (function () {
 
 	'use strict';

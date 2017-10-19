@@ -1,13 +1,39 @@
+/**
+* @author Aidan Andrews
+* @email aa275@uowmail.edu.au
+* @ngdoc controller
+* @name datasets.controller:newDatasetCtrl
+* @requires $scope
+* @requires $http
+* @requires $window
+* @requires $uibModalInstance
+* @requires Upload
+* @requires NgTableParams
+* @requires bsLoadingOverlayService
+* @requires services.service:datasetService
+* @requires services.service:filesService
+* @requires services.service:authService
+* @requires services.service:s3Service
+* @requires services.service:logger
+* @deprecated Was added as we anticipated that analyses would have settings that could be configured per analysis, 
+* so instead of needing to select multiple files each time the settings of an analysis were changed, we added the 
+* concept of datasets which consisted of a selected number of files. 
+* This has not happened yet so datasets only add an unnecessary step to the analysis process. 
+* @description Creates a new dataset out of compatible files (text/pdf/docx) by downloading the selected text verions of the files
+* and concatenating the text into one new file, which is then uploaded to S3 and saved in the database as a dataset.
+*
+*/
+
 (function () {
 
 	'use strict';
 
 	angular
-	.module('files')
+	.module('datasets')
 	.controller('newDatasetCtrl', newDatasetCtrl);
 
 	/* @ngInject */
-	function newDatasetCtrl($scope, $http, $uibModalInstance, datasetService, filesService, logger, NgTableParams, $window, Upload, authService, bsLoadingOverlayService, s3Service) {
+	function newDatasetCtrl($scope, $http, $window, $uibModalInstance, Upload, NgTableParams, bsLoadingOverlayService, datasetService, filesService, authService, s3Service, logger) {
 		var vm = this;
 
 		/* Bindable Functions */

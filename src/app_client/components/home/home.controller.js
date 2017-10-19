@@ -16,7 +16,7 @@
 * @requires services.service:authService
 * @requires services.service:analysisService
 * @requires services.service:logger
-* @description The main homepage/dashboard of the application. Displays all the small map and the recently
+* @description The main homepage/dashboard of the application. Displays a small map and the recently
 * uploaded files. 
 *
 * More to add.

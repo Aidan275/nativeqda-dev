@@ -1,3 +1,18 @@
+/**
+* @author Aidan Andrews
+* @email aa275@uowmail.edu.au
+* @ngdoc controller
+* @name survey.controller:surveyResponseListCtrl
+* @requires $location
+* @requires $routeParams
+* @requires bsLoadingOverlayService
+* @requires NgTableParams
+* @requires services.service:surveyService
+* @requires services.service:logger
+* @description This controller displays a list of all the responses received for a survey
+* given its access Id.
+*/
+
 (function () {
 
 	'use strict';
@@ -7,7 +22,7 @@
 	.controller('surveyResponseListCtrl', surveyResponseListCtrl);
 
 	/* @ngInject */
-	function surveyResponseListCtrl($location, $routeParams, surveyService, bsLoadingOverlayService, NgTableParams, logger) {
+	function surveyResponseListCtrl($location, $routeParams, bsLoadingOverlayService, NgTableParams, surveyService, logger) {
 		var vm = this;
 		
 		vm.pageId = 'survey-page-css';

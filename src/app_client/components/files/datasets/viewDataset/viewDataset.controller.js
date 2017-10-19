@@ -1,11 +1,28 @@
+/**
+* @author Aidan Andrews
+* @email aa275@uowmail.edu.au
+* @ngdoc controller
+* @name datasets.controller:viewDatasetCtrl
+* @requires $window
+* @requires $uibModalInstance
+* @requires services.service:datasetService
+* @requires services.service:s3Service
+* @deprecated Was added as we anticipated that analyses would have settings that could be configured per analysis, 
+* so instead of needing to select multiple files each time the settings of an analysis were changed, we added the 
+* concept of datasets which consisted of a selected number of files. 
+* This has not happened yet so datasets only add an unnecessary step to the analysis process. 
+* @description Opens a popup modal and displays the details of the selected dataset.
+*
+*/
+
 (function () {
 
 	angular
-	.module('files')
+	.module('datasets')
 	.controller('viewDatasetCtrl', viewDatasetCtrl);
 
 	/* @ngInject */
-	function viewDatasetCtrl ($uibModalInstance, datasetService, datasetId, s3Service, $window) {
+	function viewDatasetCtrl(datasetId, $window, $uibModalInstance, datasetService, s3Service) {
 		var vm = this;
 
 		// Bindable Functions

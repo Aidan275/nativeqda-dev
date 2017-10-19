@@ -1,3 +1,11 @@
+/**
+* @author Guy Corrigan 
+* @email gc937@uowmail.edu.au
+* @ngdoc controller
+* @name settings.controller:knowledgebaseCtrl
+* @description Contains basic information on how to use the system.
+*/
+
 (function () { 
 
 	angular

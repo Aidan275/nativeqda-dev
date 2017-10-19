@@ -1,3 +1,15 @@
+/**
+* @author Aidan Andrews
+* @email aa275@uowmail.edu.au
+* @ngdoc controller
+* @name survey.controller:surveyResponseCtrl
+* @requires $routeParams
+* @requires $filter
+* @requires services.service:surveyService
+* @description This controller displays a survey response given a survey access Id 
+* and a corressponding response Id.
+*/
+
 (function () {
 
 	'use strict';
@@ -7,7 +19,7 @@
 	.controller('surveyResponseCtrl', surveyResponseCtrl);
 
 	/* @ngInject */
-	function surveyResponseCtrl($routeParams, surveyService, $filter) {
+	function surveyResponseCtrl($routeParams, $filter, surveyService) {
 		var vm = this;
 		var accessId = $routeParams.accessId;
 		var responseId = $routeParams.responseId;

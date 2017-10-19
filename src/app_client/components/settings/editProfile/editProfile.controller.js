@@ -1,3 +1,25 @@
+/**
+* @author Aidan Andrews
+* @email aa275@uowmail.edu.au
+* @ngdoc controller
+* @name settings.controller:editProfileCtrl
+* @requires $scope
+* @requires $uibModalInstance
+* @requires $animate
+* @requires bsLoadingOverlayService
+* @requires Upload
+* @requires services.service:usersService
+* @requires services.service:authService
+* @requires services.service:s3Service
+* @requires services.service:logger
+* @description This is a popup modal where a user can modify their profile information, including:
+* * Uploading an avatar image
+* * Editing their name
+* * Editing their email
+* * Editing their company name
+* * Editing their password
+*/
+
 (function () { 
 
 	angular
@@ -5,7 +27,7 @@
 	.controller('editProfileCtrl', editProfileCtrl);
 	
 	/* @ngInject */
-	function editProfileCtrl($scope, $uibModalInstance, userEmail, usersService, bsLoadingOverlayService, logger, authService, Upload, $animate, s3Service) {
+	function editProfileCtrl(userEmail, $scope, $uibModalInstance, $animate, bsLoadingOverlayService, Upload, usersService, authService, s3Service, logger) {
 		var vm = this;
 
 		/* Bindable Functions */

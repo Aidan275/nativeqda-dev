@@ -1,3 +1,16 @@
+/**
+* @author Aidan Andrews
+* @email aa275@uowmail.edu.au
+* @ngdoc controller
+* @name settings.controller:editUserCtrl
+* @requires $uibModalInstance
+* @requires services.service:usersService
+* @requires services.service:authService
+* @requires services.service:logger
+* @description Simple popup modal where a user's role can be changed to either 
+* Researcher or System Administrator.
+*/
+
 (function () {
 
 	angular

@@ -11,7 +11,7 @@
 * @requires services.service:logger
 * @description Displays the file details and options for changing permissions and deleting the file.
 *
-* The file object in questions is passed from the caller and included in the fileDetailsCtrl parameters. 
+* The file object in question is passed from the caller and included in the fileDetailsCtrl parameters. 
 */
 
 (function () {

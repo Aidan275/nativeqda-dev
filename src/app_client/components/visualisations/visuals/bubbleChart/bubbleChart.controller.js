@@ -3,7 +3,7 @@
 * @email aa275@uowmail.edu.au
 * @ngdoc controller
 * @name visualisations.controller:bubbleChartCtrl
-* @description Generates a bubble chart
+* @description Generates and displays a bubble chart visualisation.
 */
 
 (function () {

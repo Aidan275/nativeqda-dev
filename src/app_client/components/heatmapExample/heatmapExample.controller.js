@@ -1,3 +1,15 @@
+/**
+* @author Aidan Andrews
+* @email aa275@uowmail.edu.au
+* @ngdoc controller
+* @name map.controller:heatmapCtrl
+* @requires $scope
+* @description This is an example of heatmap with hard coded data that was completed as an example
+* to see if the clients liked the outcome. No additional functionality was requested and we didn't
+* peruse this any further. In the future, with appropriate data entry functionalities, this could 
+* easily be extended. 
+*/
+
 (function () {
 
 	angular

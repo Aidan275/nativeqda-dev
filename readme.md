@@ -60,12 +60,13 @@ mongod
 Documentation is generated from the inline comments stored in the source code. 
 This means that all the docs are kept in sync as the code changes.
 
-For the front-end we use ngDoc, a form of jsDoc, with the task runner Grunt to generate the documentation.
+For the front-end we use [ngDoc](https://github.com/angular/angular.js/wiki/Writing-AngularJS-Documentation), a form of jsDoc, with the task runner Grunt to generate the documentation.
+For the back-end we use [apiDoc](http://apidocjs.com/), which generates RESTful web API documentation using the inline comments, also using the task runner Grunt.
 
-To generate the documentation use the following command
+To generate the documentation, use the following command
 
 ```
-grunt
+grunt docs
 ```
 This should start a server at [http://localhost:8000](http://localhost:8000) where the documentation can be viewed.
 

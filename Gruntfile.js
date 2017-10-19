@@ -19,7 +19,7 @@ module.exports = function(grunt) {
 				dest: 'docs/front-end-docs/'
 			},
 			docs: {
-				src: ['src/**/*.js'],
+				src: ['src/**/*.js', 'docs/assets/index.js'],
 				title: 'Documentation',
 				api: true
 			}

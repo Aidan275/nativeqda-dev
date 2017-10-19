@@ -1,3 +1,19 @@
+/**
+* @author Aidan Andrews
+* @email aa275@uowmail.edu.au
+* @ngdoc controller
+* @name survey.controller:surveyCompleteCtrl
+* @requires $routeParams
+* @requires $location
+* @requires bsLoadingOverlayService
+* @requires factories.service:geolocationSvc
+* @requires services.service:surveyService
+* @requires services.service:logger
+* @description This controller displays a survey to a survey participant if they enter 
+* a correct survey code. The survey participant must fill out a form with some basic 
+* information before the survey is displayed.
+*/
+
 (function () {
 
 	'use strict';
@@ -7,7 +23,7 @@
 	.controller('surveyCompleteCtrl', surveyCompleteCtrl);
 
 	/* @ngInject */
-	function surveyCompleteCtrl($routeParams, $location, logger, bsLoadingOverlayService, surveyService, geolocationSvc) {
+	function surveyCompleteCtrl($routeParams, $location, bsLoadingOverlayService, geolocationSvc, surveyService, logger) {
 		var vm = this;
 
 		var accessId = $routeParams.accessId;

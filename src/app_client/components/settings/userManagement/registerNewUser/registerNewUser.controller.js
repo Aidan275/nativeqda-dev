@@ -1,3 +1,15 @@
+/**
+* @author Reece Denaro
+* @email rd923@uowmail.edu.au
+* @ngdoc controller
+* @name settings.controller:registerNewUserCtrl
+* @requires $uibModalInstance
+* @requires services.service:usersService
+* @requires services.service:logger
+* @description This controller is for a popup modal that contains a form for a current
+* user to enter the details of a new user to be registered for the system.
+*/
+
 (function () {
 	
 	'use strict';

@@ -1,3 +1,11 @@
+/**
+* @author Aidan Andrews
+* @email aa275@uowmail.edu.au
+* @ngdoc controller
+* @name visualisations.controller:wordCloudCtrl
+* @description Generates and displays a word cloud visualisation. 
+*/
+
 (function () {
 
 	angular

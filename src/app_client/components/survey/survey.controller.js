@@ -3,9 +3,12 @@
 * @email aa275@uowmail.edu.au
 * @ngdoc controller
 * @name survey.controller:surveyCtrl
-* @description Controller for the main survey page.
+* @requires $location
+* @requires services.service:surveyService
+* @requires services.service:logger
+* @description This controller is for the main survey page, where all the created surveys are listed.
+* From the survey page, surveys and survey responses can be created, previewed, viewed, and deleted.
 */
-
 (function () {
 
 	'use strict';

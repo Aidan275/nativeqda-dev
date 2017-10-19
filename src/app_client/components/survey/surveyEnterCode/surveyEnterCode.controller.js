@@ -1,3 +1,19 @@
+/**
+* @author Aidan Andrews
+* @email aa275@uowmail.edu.au
+* @ngdoc controller
+* @name survey.controller:surveyEnterCodeCtrl
+* @requires $location
+* @requires services.service:surveyService
+* @requires services.service:logger
+* @description This controller checks if a survey code is valid before forwarding the 
+* user to the complete survey page, where the survey is displayed. 
+*
+* The system checks if the IP address of the user has recently completed the given survey, 
+* if so, the IP address is locked out from the given survey for 5 minutes to prevent people
+* from entering false/inaccurate data multiple times.
+*/
+
 (function () {
 
 	'use strict';
@@ -7,7 +23,7 @@
 	.controller('surveyEnterCodeCtrl', surveyEnterCodeCtrl);
 
 	/* @ngInject */
-	function surveyEnterCodeCtrl(logger, surveyService, $location) {
+	function surveyEnterCodeCtrl($location, surveyService, logger) {
 		var vm = this;
 		
 		vm.pageId = "enter-code-css";

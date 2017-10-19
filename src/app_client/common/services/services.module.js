@@ -3,9 +3,12 @@
 * @email aa275@uowmail.edu.au
 * @ngdoc overview 
 * @name services
-* @description The services module is a sub-module of the common module.
+* @requires common
+* @description 
+* # Description
+* The {@link services services} module is a sub-module of the {@link common common} module. 
 * 
-* The following are included in this module:
+* This module consists of the following services
 *
 * **Services**
 * - {@link services.service:analysisService analysisService}

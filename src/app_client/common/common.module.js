@@ -3,9 +3,12 @@
 * @email aa275@uowmail.edu.au
 * @ngdoc overview 
 * @name common
-* @description The common module is a sub-module of the nativeQDA module, the main module of this application.
+* @requires nativeQDA
+* @description 
+* # Description
+* The {@link common common} module is a sub-module of the {@link nativeQDA nativeQDA} module, the core module of this application.
 * 
-* The sub-modules of the common module include:
+* This module consists of the following sub-modules
 *
 * - {@link directives directives}
 * - {@link factories factories}

@@ -1,3 +1,20 @@
+/**
+* @author Aidan Andrews
+* @email aa275@uowmail.edu.au
+* @ngdoc controller
+* @name files.controller:filesUploadCtrl
+* @requires $scope
+* @requires $uibModalInstance
+* @requires $filter
+* @requires Upload
+* @requires services.service:filesService
+* @requires services.service:authService
+* @requires services.service:s3Service
+* @requires services.service:logger
+* @description A popup modal where a user can upload a file, select a location on a map for the file's coordinates, 
+* and enter the file's name and tags. 
+*/
+
 (function () { 
 
 	'use strict';
@@ -7,7 +24,7 @@
 	.controller('filesUploadCtrl', filesUploadCtrl);
 	
 	/* @ngInject */
-	function filesUploadCtrl(currentPath, $scope, $uibModalInstance, Upload, filesService, authService, logger, $filter, s3Service) {
+	function filesUploadCtrl(currentPath, $scope, $uibModalInstance, $filter, Upload, filesService, authService, s3Service, logger) {
 		var vm = this;
 
 		vm.currentModalPage = 1;	/* Outside the rendered event to prevent the modal content from suddenly appearing once the modal is ready */

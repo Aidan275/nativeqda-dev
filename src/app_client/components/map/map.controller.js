@@ -22,7 +22,6 @@
 * much work/time so this will suffice for now.
 *
 * Currently this file is to long. In the future these functions should be split up where possible.
-*
 */
 
 (function () {

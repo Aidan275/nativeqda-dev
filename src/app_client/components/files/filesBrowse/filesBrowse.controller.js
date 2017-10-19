@@ -1,3 +1,28 @@
+/**
+* @author Aidan Andrews
+* @email aa275@uowmail.edu.au
+* @ngdoc controller
+* @name files.controller:filesBrowseCtrl
+* @requires $http
+* @requires $window
+* @requires $routeParams
+* @requires $location
+* @requires $scope
+* @requires $uibModal
+* @requires $filter
+* @requires $compile
+* @requires bsLoadingOverlayService
+* @requires Upload
+* @requires NgTableParams
+* @requires services.service:mapService
+* @requires services.service:filesService
+* @requires services.service:authService
+* @requires services.service:s3Service
+* @requires services.service:logger
+* @description Displays all the files and folders that have been uploaded to the system. Provides functionalities to 
+* create folders; view file information; and upload, view, edit, and delete files.
+*/
+
 (function () { 
 
 	'use strict';
@@ -8,7 +33,7 @@
 	
 
 	/* @ngInject */
-	function filesBrowseCtrl (mapService, $http, $window, $routeParams, $location, $scope, $uibModal, Upload, NgTableParams, filesService, authService, logger, $filter, $compile, bsLoadingOverlayService, s3Service) {
+	function filesBrowseCtrl ($http, $window, $routeParams, $location, $scope, $uibModal, $filter, $compile, bsLoadingOverlayService, Upload, NgTableParams, mapService, filesService, authService, s3Service, logger) {
 		var vm = this;
 		
 		vm.pageId = 'file-browser-css'

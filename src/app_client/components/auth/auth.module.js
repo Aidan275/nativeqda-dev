@@ -4,9 +4,11 @@
 * @ngdoc overview 
 * @name auth
 * @requires components
-* @description The auth module is a sub-module of the {@link components components} module 
+* @description 
+* # Description
+* The {@link auth auth} module is a sub-module of the {@link components components} module 
 * 
-* The following are included in this module:
+* The following controllers are included in this module:
 *
 * **Controllers**
 * - {@link auth.controller:forgotPassCtrl forgotPassCtrl}

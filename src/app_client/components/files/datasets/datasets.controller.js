@@ -1,7 +1,28 @@
+/**
+* @author Aidan Andrews
+* @email aa275@uowmail.edu.au
+* @ngdoc controller
+* @name datasets.controller:datasetsCtrl
+* @requires $window
+* @requires $sce
+* @requires $uibModal
+* @requires NgTableParams
+* @requires bsLoadingOverlayService
+* @requires services.service:datasetService
+* @requires services.service:logger
+* @requires services.service:filesService
+* @requires services.service:s3Service
+* @deprecated Was added as we anticipated that analyses would have settings that could be configured per analysis, 
+* so instead of needing to select multiple files each time the settings of an analysis were changed, we added the 
+* concept of datasets which consisted of a selected number of files. 
+* This has not happened yet so datasets only add an unnecessary step to the analysis process. 
+* @description Displays the existing datasets and gave the options to create, view, edit, and delete these datasets.
+*/
+
 (function () {
 
 	angular
-	.module('auth')
+	.module('datasets')
 	.controller('datasetsCtrl', datasetsCtrl);
 
 	/* @ngInject */

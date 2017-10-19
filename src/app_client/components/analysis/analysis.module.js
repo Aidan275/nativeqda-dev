@@ -4,14 +4,15 @@
 * @ngdoc overview 
 * @name analysis
 * @requires components
-* @description The analysis module is a sub-module of the {@link components components} module 
+* @description 
+* # Description
+* The {@link analysis analysis} module is a sub-module of the {@link components components} module 
 * 
-* The sub-modules of the analysis module include:
+* This module consists of the following controllers
 *
-* - {@link directives directives}
-* - {@link factories factories}
-* - {@link filters filters}
-* - {@link services services}
+* **Controllers**
+* - {@link analysis.controller:analysisCtrl analysisCtrl}
+* - {@link analysis.controller:newAnalysisCtrl newAnalysisCtrl}
 */
 
 (function() {
