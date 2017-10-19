@@ -125,7 +125,52 @@ module.exports.putFile = function(req, res) { //Update or add a file
 */
 module.exports.deleteFile = function(req, res) { /* Remove file and any marker links associated with the file */
 	var path = extractpath(req.params["filepath"]);	/* Extract the path and the file name */
+	
+	File.find({name: path[0], path: path[1]}).exec(function(err, results) {
+		
+		if (err) {
+			sendJSONresponse(res, 500, err)
+			return;
+		}
+		if (!results) {
+			sendJSONresponse(res, 404, "Not found")
+			return;
+		}
+		var path = [results[0].name, results[0].path]
+		if (results[0].type == 'folder') {
+			//Delete all the files/folders in the selected folder
+			if (path[1] == '/') //Folder is in root
+				deleteFolder(res, [path[0]])
+			else //Folder is not in root
+				deleteFolder(res, path)			
+		}
+		//Normal file deletion
+		deleteFile(res, path)
+		sendJSONresponse(res, 204, null);
+	});
+};
 
+function deleteFolder(res, path) {
+	File.find({path: path[1]+'/'+path[0] })
+		.exec(function(err, results) {
+			if (err) {
+				sendJSONresponse(res, 500, err)
+				return;
+			}
+			for (var i = 0; i < results.length; i++) {
+				var path = [results[i].name, results[i].path]
+				deleteFile(res, path);
+				if (results[i].type == 'folder') {
+					//console.log('Folder: ' + results[i].name)
+					deleteFolder(res, path) //Another folder
+				}
+			}
+		});
+}
+
+var deleteFile = function(res, path) {
+	console.log('File: ' + path)
+	
 	File.findOneAndRemove({name: path[0], path: path[1]})	/* Finds and removes the file with the provided path and name */
 	.exec(function(err, results) {
 
@@ -183,10 +228,9 @@ module.exports.deleteFile = function(req, res) { /* Remove file and any marker l
 					}
 				});
 		}
-
-		sendJSONresponse(res, 204, null);	/* If successful, return null */	
 	});
-};
+}
+
 
 //Get (limited) file info for pins on the map based on some criteria. Ie. Limited in spatial or time range
 module.exports.map = function(req, res) { //TODO: Actual limiting (Criteria and ACL)
