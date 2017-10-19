@@ -77,6 +77,7 @@
 					vm.fileList.push(file);
 				});
 				listFiles();	/* List files in the view using ng-table */
+				console.log(vm.currentPath);
 			}, function(err){
 				bsLoadingOverlayService.stop({referenceId: 'file-list'});	// If error, stop animated loading overlay
 			});
