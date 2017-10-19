@@ -45,9 +45,13 @@
 		.attr("width", width)
 		.attr("height", height)
 		.attr("class", "graph-svg-component")
-		.call(d3.zoom().on("zoom", function () {
-			svg.attr("transform", d3.event.transform)
-		}))
+		.call(
+			d3.zoom()
+			.scaleExtent([0.5, 10])
+			.translateExtent([[-width/2, -height/2], [width*1.5, height*1.5]])
+			.on("zoom", function () {
+				svg.attr("transform", d3.event.transform)
+			}))
 		.append("g");
 
 		activate();
@@ -184,7 +188,13 @@
 		*/
 		function drawChart(data) {
 
-			var tooltip = d3.select("#barPanel").append("div").attr("class", "toolTip");
+			var tooltip = d3.select("#barPanel").append("div")	
+			.attr("class", "bar-chart-tooltip")				
+			.style("opacity", 0)
+			.style("background", "#fff")
+			.style("padding", "10px")
+			.style("border-radius", "10px")
+			.style("font-weight", 600);
 
 			/* Set the x and y ranges */
 			var x = d3.scaleBand().rangeRound([0, width]).padding(0.1),
@@ -193,7 +203,6 @@
 			var colours = d3.scaleOrdinal()
 			.range(["#6F257F", "CA0D59"]);
 
-			/* Set margins */
 			g = svg.append("g")
 			.attr("transform", "translate(" + width/3 + ", " + height/4 + ") scale(0.4)")
 
@@ -235,14 +244,23 @@
 			.attr("height", function(d) { return height - y(d.relevance);})
 			.attr("fill", function(d) { return colours(d.area); })
 			.on("mousemove", function(d){
-				tooltip
-				.style("left", d3.event.pageX  + "px")
-				.style("top", d3.event.pageY - 115 + "px")
-				.style("display", "inline-block")
-				.style("pointer-events", "none")
-				.html((d.text) + "<br>" + d3.format(".2%")(d.relevance));
+				tooltip.transition()		
+				.duration(200)		
+				.style("opacity", .9);
+
+				tooltip.html((d.text) + "<br>" + d3.format(".2%")(d.relevance))
+				.style("left", width/2 + "px")		
+				.style("transform", "translate(-50%, 0)")		
+				.style("top", 10 + "px")
+				.style("background", "#fafafa")
+				.style("border", "1px solid #000");
 			})
-			.on("mouseout", function(d){ tooltip.style("display", "none");});
+			.on("mouseout", function(d) {		
+				tooltip.transition()		
+				.duration(500)		
+				.delay(3000)
+				.style("opacity", 0);	
+			})
 		}
 
 		vm.barColourChange = { onChange: function() {setBarColour(); } };
@@ -268,14 +286,14 @@
 		* text: The name of the element
 		*/
 		function drawEntityChart(data) {
-			/* Set the drawing space for the graph */
-			var svg = d3.select("svg"),
-			margin = {top: 20, right: 20, bottom: 200, left: 40},
-			width = +svg.attr("width") - margin.left - margin.right,
-			height = +svg.attr("height") - margin.top - margin.bottom+30; 
 
-
-			var tooltip = d3.select("body").append("div").attr("class", "toolTip");
+			var tooltip = d3.select("#barPanel").append("div")	
+			.attr("class", "bar-chart-tooltip")				
+			.style("opacity", 0)
+			.style("background", "#fff")
+			.style("padding", "10px")
+			.style("border-radius", "10px")
+			.style("font-weight", 600);
 
 			/* Set the x and y ranges */
 			var x = d3.scaleBand().rangeRound([0, width]).padding(0.1),
@@ -284,9 +302,8 @@
 			var colours = d3.scaleOrdinal()
 			.range(["#6F257F", "CA0D59"]);
 
-			/* Set margins */
-			var g = svg.append("g")
-			.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+			g = svg.append("g")
+			.attr("transform", "translate(" + width/3 + ", " + height/4 + ") scale(0.4)")
 
 			/* Sets the domain, x is text and y is count */
 			x.domain(data.map(function(d) { return d.text; }));
@@ -303,7 +320,6 @@
 			.attr("dx", "-.8em")
 			.attr("dy", ".15em")
 			.attr("transform", "rotate(-65)");
-
 
 			/* Add the y axis */
 			g.append("g")
@@ -327,13 +343,23 @@
 			.attr("height", function(d) { return height - y(d.count);})
 			.attr("fill", function(d) { return colours(d.area); })
 			.on("mousemove", function(d){
-				tooltip
-				.style("left", d3.event.pageX - 50 + "px")
-				.style("top", d3.event.pageY - 70 + "px")
-				.style("display", "inline-block")
-				.html((d.text) + "<br>" + (d.count));
+				tooltip.transition()		
+				.duration(200)		
+				.style("opacity", .9);
+
+				tooltip.html((d.text) + "<br>" + (d.count))
+				.style("left", width/2 + "px")		
+				.style("transform", "translate(-50%, 0)")		
+				.style("top", 10 + "px")
+				.style("background", "#fafafa")
+				.style("border", "1px solid #000");
 			})
-			.on("mouseout", function(d){ tooltip.style("display", "none");});
+			.on("mouseout", function(d) {		
+				tooltip.transition()		
+				.duration(500)		
+				.delay(3000)
+				.style("opacity", 0);	
+			})
 		}
 	}
 

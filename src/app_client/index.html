@@ -96,13 +96,9 @@
 	<!-- endinject -->
 
 	<!-- inject-ng-app:js -->
-	<script src="/src/app_client/common/common.module.js"></script>
 	<script src="/src/app_client/components/components.module.js"></script>
+	<script src="/src/app_client/common/common.module.js"></script>
 	<script src="/src/app_client/core/app.module.js"></script>
-	<script src="/src/app_client/common/directives/directives.module.js"></script>
-	<script src="/src/app_client/common/factories/factories.module.js"></script>
-	<script src="/src/app_client/common/filters/filters.module.js"></script>
-	<script src="/src/app_client/common/services/services.module.js"></script>
 	<script src="/src/app_client/components/analysis/analysis.module.js"></script>
 	<script src="/src/app_client/components/auth/auth.module.js"></script>
 	<script src="/src/app_client/components/files/files.module.js"></script>
@@ -111,8 +107,18 @@
 	<script src="/src/app_client/components/settings/settings.module.js"></script>
 	<script src="/src/app_client/components/survey/survey.module.js"></script>
 	<script src="/src/app_client/components/visualisations/visualisations.module.js"></script>
+	<script src="/src/app_client/common/directives/directives.module.js"></script>
+	<script src="/src/app_client/common/factories/factories.module.js"></script>
+	<script src="/src/app_client/common/filters/filters.module.js"></script>
+	<script src="/src/app_client/common/services/services.module.js"></script>
 	<script src="/src/app_client/core/app.config.js"></script>
 	<script src="/src/app_client/core/app.routes.js"></script>
+	<script src="/src/app_client/components/analysis/analysis.controller.js"></script>
+	<script src="/src/app_client/components/heatmapExample/heatmapExample.controller.js"></script>
+	<script src="/src/app_client/components/home/home.controller.js"></script>
+	<script src="/src/app_client/components/map/map.controller.js"></script>
+	<script src="/src/app_client/components/survey/survey.controller.js"></script>
+	<script src="/src/app_client/components/visualisations/visualisations.controller.js"></script>
 	<script src="/src/app_client/common/directives/dragAndDrop.directive.js"></script>
 	<script src="/src/app_client/common/directives/pwCheck.directive.js"></script>
 	<script src="/src/app_client/common/factories/geolocationSvc.factory.js"></script>
@@ -131,21 +137,11 @@
 	<script src="/src/app_client/common/services/s3.service.js"></script>
 	<script src="/src/app_client/common/services/survey.service.js"></script>
 	<script src="/src/app_client/common/services/users.service.js"></script>
-	<script src="/src/app_client/components/analysis/analysis.controller.js"></script>
-	<script src="/src/app_client/components/heatmapExample/heatmapExample.controller.js"></script>
-	<script src="/src/app_client/components/home/home.controller.js"></script>
-	<script src="/src/app_client/components/map/map.controller.js"></script>
-	<script src="/src/app_client/components/survey/survey.controller.js"></script>
-	<script src="/src/app_client/components/visualisations/visualisations.controller.js"></script>
-	<script src="/src/app_client/common/directives/footerGeneric/footerGeneric.directive.js"></script>
-	<script src="/src/app_client/common/directives/navigation/navigation.controller.js"></script>
-	<script src="/src/app_client/common/directives/navigation/navigation.directive.js"></script>
-	<script src="/src/app_client/common/directives/pageHeader/pageHeader.directive.js"></script>
 	<script src="/src/app_client/components/analysis/newAnalysis/newAnalysis.controller.js"></script>
-	<script src="/src/app_client/components/auth/login/login.controller.js"></script>
 	<script src="/src/app_client/components/auth/forgotPass/forgotPass.controller.js"></script>
-	<script src="/src/app_client/components/auth/resetPassword/resetPassword.controller.js"></script>
+	<script src="/src/app_client/components/auth/login/login.controller.js"></script>
 	<script src="/src/app_client/components/auth/register/register.controller.js"></script>
+	<script src="/src/app_client/components/auth/resetPassword/resetPassword.controller.js"></script>
 	<script src="/src/app_client/components/files/datasets/datasets.controller.js"></script>
 	<script src="/src/app_client/components/files/fileDetails/fileDetails.controller.js"></script>
 	<script src="/src/app_client/components/files/filesBrowse/filesBrowse.controller.js"></script>
@@ -161,8 +157,12 @@
 	<script src="/src/app_client/components/survey/surveyResponse/surveyResponse.controller.js"></script>
 	<script src="/src/app_client/components/survey/surveyResponseList/surveyResponseList.controller.js"></script>
 	<script src="/src/app_client/components/survey/surveyView/surveyView.controller.js"></script>
-	<script src="/src/app_client/components/files/datasets/newDataset/newDataset.controller.js"></script>
+	<script src="/src/app_client/common/directives/footerGeneric/footerGeneric.directive.js"></script>
+	<script src="/src/app_client/common/directives/navigation/navigation.controller.js"></script>
+	<script src="/src/app_client/common/directives/navigation/navigation.directive.js"></script>
+	<script src="/src/app_client/common/directives/pageHeader/pageHeader.directive.js"></script>
 	<script src="/src/app_client/components/files/datasets/editDataset/editDataset.controller.js"></script>
+	<script src="/src/app_client/components/files/datasets/newDataset/newDataset.controller.js"></script>
 	<script src="/src/app_client/components/files/datasets/viewDataset/viewDataset.controller.js"></script>
 	<script src="/src/app_client/components/settings/userManagement/editUser/editUser.controller.js"></script>
 	<script src="/src/app_client/components/settings/userManagement/registerNewUser/registerNewUser.controller.js"></script>
