@@ -62,7 +62,6 @@
 
 					vm.surveyResponsesList.push(dataResponse);
 				});
-				console.log(vm.surveyResponsesList);
 				listSurveyResponses();
 			}, function(err){
 				bsLoadingOverlayService.stop({referenceId: 'survey-responses'});	// If error, stop animated loading overlay
@@ -71,7 +70,7 @@
 
 		function listSurveyResponses() {
 			vm.tableParams = new NgTableParams({
-				sorting: {lastModified: "desc"}
+				sorting: {dateCreated: "desc"}
 			}, {
 				dataset: vm.surveyResponsesList
 			});

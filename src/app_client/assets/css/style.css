@@ -704,7 +704,6 @@ footer span {
 }
 
 .file-browser-table td.file-name-cell {
-	white-space: nowrap;
 	vertical-align: middle !important;
 	cursor: pointer;
 }
@@ -2376,7 +2375,6 @@ footer span {
 
 .vis-thumb-list {
 	padding: 0;
-	text-align: center;
 }
 
 .vis-thumb-list-item {

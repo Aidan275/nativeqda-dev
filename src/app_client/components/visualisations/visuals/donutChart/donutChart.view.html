@@ -3,136 +3,136 @@
 <style>
 
 #donutMenu {
-    padding: 75px 25px 25px 25px;
-    overflow: hidden;
-    background: #eee;
+	padding: 75px 25px 25px 25px;
+	overflow: hidden;
+	background: #eee;
 }
 
 .slideout-menu {
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    width: 256px;
-    min-height: 100vh;
-    overflow-y: scroll;
-    -webkit-overflow-scrolling: touch;
-    z-index: 0;
-    display: none;
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	width: 256px;
+	min-height: 100vh;
+	overflow-y: scroll;
+	-webkit-overflow-scrolling: touch;
+	z-index: 0;
+	display: none;
 }
 
 .slideout-menu-left {
-    left: 0;
+	left: 0;
 }
 
 .slideout-menu-right {
-    right: 0;
+	right: 0;
 }
 
 .slideout-panel {
-    position: relative;
-    z-index: 1;
-    will-change: transform;
-    background-color: #FFF; /* A background-color is required */
-    min-height: 100vh;
+	position: relative;
+	z-index: 1;
+	will-change: transform;
+	background-color: #FFF; /* A background-color is required */
+	min-height: 100vh;
 }
 
 .slideout-open,
 .slideout-open body,
 .slideout-open .slideout-panel {
-    overflow: hidden;
+	overflow: hidden;
 }
 
 .slideout-open .slideout-menu {
-    display: block;
+	display: block;
 }
 .arc text {
-    font: 10px sans-serif;
-    text-anchor: middle;
+	font: 10px sans-serif;
+	text-anchor: middle;
 }
 
 .arc path {
-    stroke: #fff;
+	stroke: #fff;
 }
 
 .legend {
-    font-size: 13px;
+	font-size: 13px;
 }
 
 h1 {
-    font-size: 15px;
-    text-align: center;
+	font-size: 15px;
+	text-align: center;
 }
 
 rect {
-    stroke-width: 2;
+	stroke-width: 2;
 }
 
 #chart {
-    height: 720;
-    margin: 0 auto;
-    position: relative;
-    width: 720;
+	height: 720;
+	margin: 0 auto;
+	position: relative;
+	width: 720;
 }
 
 .tooltip {
-    position: absolute;
-    display: none;
-    min-width: 80px;
-    height: auto;
-    background: none repeat scroll 0 0 #ffffff;
-    border: 1px solid #6F257F;
-    padding: 14px;
-    text-align: center;
+	position: absolute;
+	display: none;
+	min-width: 80px;
+	height: auto;
+	background: none repeat scroll 0 0 #ffffff;
+	border: 1px solid #6F257F;
+	padding: 14px;
+	text-align: center;
 }
 
 .label {
-    font-weight: 600;
+	font-weight: 600;
 }
 
 body {
-    font-family: 'Roboto', sans-serif;
-    color: #333333;
+	font-family: 'Roboto', sans-serif;
+	color: #333333;
 }
 
 /* Add shadow effect to chart. */
 svg {
-    -webkit-filter: drop-shadow( 0px 3px 3px rgba(0,0,0,.3) );
-    filter: drop-shadow( 0px 3px 3px rgba(0,0,0,.25) );
+	-webkit-filter: drop-shadow( 0px 3px 3px rgba(0,0,0,.3) );
+	filter: drop-shadow( 0px 3px 3px rgba(0,0,0,.25) );
 }
 
 /*Styling for the lines connecting the labels to the slices*/
 polyline{
-    opacity: .3;
-    stroke: black;
-    stroke-width: 2px;
-    fill: none;
+	opacity: .3;
+	stroke: black;
+	stroke-width: 2px;
+	fill: none;
 }
 
 /* Make the percentage on the text labels bold*/
 .labelName tspan {
-    font-style: normal;
-    font-weight: 700;
+	font-style: normal;
+	font-weight: 700;
 }
 
 
 .labelName {
-    font-size: 0.9em;
-    font-style: italic;
+	font-size: 0.9em;
+	font-style: italic;
 }
 </style>
 <navigation> </navigation>
 <div id = "donutMenu">
-    <label>Hello</label>
-    <br />
+	<label>Hello</label>
+	<br />
 </div>
 <div id = "donutPanel">
-    <div ng-click="vm.toggleOptions()" style="height:48px;width:30px;background-color:#4676fa;border-radius:0 5px 5px 0;"><div style="margin-top:5px;"></div>
-	  <i style="color:#fff;position:relative;top:13px;left:8px;width:30px" class="fa fa-arrow-right" aria-hidden="true"></i>
+	<div ng-click="vm.toggleOptions()" style="height:48px;width:30px;background-color:#4676fa;border-radius:0 5px 5px 0;position:relative;top: 5px;">
+		<i style="color:#fff;position:relative;top:13px;left:8px;width:30px" class="fa fa-arrow-right" aria-hidden="true"></i>
 	</div>
-    <div style="padding-top: 50px;"></div>
-    <div style="padding:100 100px;">
-        <div style="position: absolute; left: 50%;transform: translateX(-50%);">
-            <div id="chart"></div>
-        </div>
-    </div>
+	<div style="padding-top: 50px;"></div>
+	<div style="padding:100 100px;">
+		<div style="position: absolute; left: 50%;transform: translateX(-50%);">
+			<div id="chart"></div>
+		</div>
+	</div>
 </div>

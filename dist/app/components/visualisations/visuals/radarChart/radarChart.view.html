@@ -1,63 +1,63 @@
 <style>
-	.checkbox-data {
-		display: block;
-		float: left;
-		padding-top:50px;
-	}
-	.radarChart {
-		padding-top:50px;
-	}
+.checkbox-data {
+	display: block;
+	float: left;
+	padding-top:50px;
+}
+.radarChart {
+	padding-top:50px;
+}
 
-	.radarChart svg {
-		display: block;
-		margin: 0 auto;
-	}
+.radarChart svg {
+	display: block;
+	margin: 0 auto;
+}
 
-	#rcMenu {
-		padding: 75px 25px 25px 25px;
-		overflow-x: hidden;
-		background: #eee;
-	}
+#rcMenu {
+	padding: 75px 25px 25px 25px;
+	overflow-x: hidden;
+	background: #eee;
+}
 
-	.slideout-menu {
-		position: fixed;
-		top: 0;
-		bottom: 0;
-		width: 256px;
-		min-height: 100vh;
-		overflow-y: scroll;
-		-webkit-overflow-scrolling: touch;
-		z-index: 0;
-		display: none;
-	}
+.slideout-menu {
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	width: 256px;
+	min-height: 100vh;
+	overflow-y: scroll;
+	-webkit-overflow-scrolling: touch;
+	z-index: 0;
+	display: none;
+}
 
-	.slideout-menu-left {
-		left: 0;
-	}
+.slideout-menu-left {
+	left: 0;
+}
 
-	.slideout-menu-right {
-		right: 0;
-	}
+.slideout-menu-right {
+	right: 0;
+}
 
-	.slideout-panel {
-		position: relative;
-		z-index: 1;
-		will-change: transform;
-		background-color: #FFF; /* A background-color is required */
-		min-height: 100vh;
-	}
+.slideout-panel {
+	position: relative;
+	z-index: 1;
+	will-change: transform;
+	background-color: #FFF; /* A background-color is required */
+	min-height: 100vh;
+}
 
-	.slideout-open,
-	.slideout-open body,
-	.slideout-open .slideout-panel {
-		overflow: hidden;
-	}
+.slideout-open,
+.slideout-open body,
+.slideout-open .slideout-panel {
+	overflow: hidden;
+}
 
-	.slideout-open .slideout-menu {
-		display: block;
-	}
+.slideout-open .slideout-menu {
+	display: block;
+}
 
-	#controls-button {
-		position:relative;
-	}
-</style><navigation></navigation><div id=rcMenu><div class=checkbox-data><div><label><input type=checkbox ng-model=vm.selectAll ng-click=vm.toogleAllBoxes()> Select/Deslect All</label></div><div ng-repeat="data in vm.analysisData"><label><input type=checkbox ng-model=data.checked ng-change=vm.updateRadarChart(data)> {{data[0].text}}</label></div></div></div><div id=rcPanel><div class=bs-loading-container bs-loading-overlay bs-loading-overlay-active-class=loading-overlay--active bs-loading-overlay-reference-id=bubble-chart><div class=blur-this><div ng-click=vm.toggleOptions() style="height:48px;width:30px;background-color:#4676fa;border-radius:0 5px 5px 0;"><div style=margin-top:5px;></div><i style=color:#fff;position:relative;top:13px;left:8px;width:30px class="fa fa-arrow-right" aria-hidden=true></i></div><div class=container><div class=radarChart></div></div></div></div></div>
+#controls-button {
+	position:relative;
+}
+</style><navigation></navigation><div id=rcMenu><div class=checkbox-data><div><label><input type=checkbox ng-model=vm.selectAll ng-click=vm.toogleAllBoxes()> Select/Deslect All</label></div><div ng-repeat="data in vm.analysisData"><label><input type=checkbox ng-model=data.checked ng-change=vm.updateRadarChart(data)> {{data[0].text}}</label></div></div></div><div id=rcPanel><div class=bs-loading-container bs-loading-overlay bs-loading-overlay-active-class=loading-overlay--active bs-loading-overlay-reference-id=bubble-chart><div class=blur-this><div ng-click=vm.toggleOptions() style="height:48px;width:30px;background-color:#4676fa;border-radius:0 5px 5px 0;position:relative;top: 5px;"><i style=color:#fff;position:relative;top:13px;left:8px;width:30px class="fa fa-arrow-right" aria-hidden=true></i></div><div class=container><div class=radarChart></div></div></div></div></div>

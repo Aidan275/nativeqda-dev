@@ -1,3 +1,11 @@
+/**
+* @author Aidan Andrews
+* @email aa275@uowmail.edu.au
+* @ngdoc controller
+* @name visualisations.controller:visualisationsCtrl
+* @description Controller for the visualisations page.
+*/
+
 (function () {
 
 	angular
@@ -148,33 +156,29 @@
 			vm.keywords = false;
 			vm.relations = false;
 			vm.semanticRoles = false;
+			
+			slideout.close()
 
 			switch(page) {
 				case 'details':
 				vm.details = true;
 				break;
 				case 'categories':
-				//vm.details = true;
 				vm.categories = true;
 				break;
 				case 'concepts':
-				//vm.details = true;
 				vm.concepts = true;
 				break;
 				case 'entities':
-				//vm.details = true;
 				vm.entities = true;
 				break;
 				case 'keywords':
-				//vm.details = true;
 				vm.keywords = true;
 				break;
 				case 'relations':
-				//	vm.details = true;
 				vm.relations = true;
 				break;
 				case 'semanticRoles':
-				//	vm.details = true;
 				vm.semanticRoles = true;
 				break;
 				default:

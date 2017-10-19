@@ -16,17 +16,18 @@
 	function networkChartCtrl ($routeParams, analysisService, NgTableParams, bsLoadingOverlayService) {
 		var vm = this;
 
-		console.log();
+		vm.toggleOptions = toggleOptions;
 
 		var analysisType = $routeParams.type; 
 		var analysisId = $routeParams.id;
-		var analysisName;
-		var responseData = [];
 
-		analysisData = [];
+		var analysisName;
+		var width = document.querySelector("#graph").clientWidth;
+	    var height = document.querySelector("#graph").clientHeight;
+		var responseData = [];
+		var analysisData = [];
 		var sortData = [];
 		var tidy = [];
-
 		var common = ["he", "she", "the", "of", "and", "a", "to", "in", "is", "you", 
 						"that", "it", "was", "for", "on", "are", "as", "with", "his",
 						"they", "I", "at", "be", "this", "have", "from", "or", "one",
@@ -35,17 +36,17 @@
 						"if", "will", "Mr", "Ms", "one", "two", "man", "boy", "her", "Mr", "Mr.",
 						"Mrs", "Mrs.", "me", "him", "He", "Her", "Their"];
 
+    	
 
-		activate();
-
-		var slideout = new Slideout({
+	    var slideout = new Slideout({
       		'panel': document.querySelector('#netPanel'),
       		'menu': document.querySelector('#netMenu'),
       		'padding': 256,
       		'tolerance': 70
     	});
 
-    	vm.toggleOptions = toggleOptions;
+
+	    activate();
 
 		///////////////////////////
 
@@ -203,9 +204,16 @@
 		function drawChart(tidy, links) {
 			console.log(tidy);
 			console.log(links);
-			var svg = d3.select("svg"),
-			    width = +svg.attr("width"),
-			    height = +svg.attr("height");
+			
+			var svg = d3.select("#graph")
+			    .append("svg")
+			    .attr("width", width)
+			    .attr("height", height)
+			    .attr("class", "graph-svg-component")
+			    .call(d3.zoom().on("zoom", function () {
+			    	svg.attr("transform", d3.event.transform)
+			    }))
+			    .append("g");
 
 			var simulation = d3.forceSimulation()
 			    .force("link", d3.forceLink())

@@ -1,63 +1,63 @@
 <style>
-	body {
-		width: 100%;
-		height: 100%;
-		overflow:hidden;
-	}
+body {
+	width: 100%;
+	height: 100%;
+	overflow:hidden;
+}
 
-	#bcMenu {
-		padding: 75px 25px 25px 25px;
-		overflow: hidden;
-		background: #eee;
-	}
+#bcMenu {
+	padding: 75px 25px 25px 25px;
+	overflow: hidden;
+	background: #eee;
+}
 
-	.slideout-menu {
-		position: fixed;
-		top: 0;
-		bottom: 0;
-		width: 256px;
-		min-height: 100vh;
-		overflow-y: scroll;
-		-webkit-overflow-scrolling: touch;
-		z-index: 0;
-		display: none;
-	}
+.slideout-menu {
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	width: 256px;
+	min-height: 100vh;
+	overflow-y: scroll;
+	-webkit-overflow-scrolling: touch;
+	z-index: 0;
+	display: none;
+}
 
-	.slideout-menu-left {
-		left: 0;
-	}
+.slideout-menu-left {
+	left: 0;
+}
 
-	.slideout-menu-right {
-		right: 0;
-	}
+.slideout-menu-right {
+	right: 0;
+}
 
-	.slideout-panel {
-		position: relative;
-		z-index: 1;
-		will-change: transform;
-		background-color: #FFF; /* A background-color is required */
-		min-height: 100vh;
-	}
+.slideout-panel {
+	position: relative;
+	z-index: 1;
+	will-change: transform;
+	background-color: #FFF; /* A background-color is required */
+	min-height: 100vh;
+}
 
-	.slideout-open,
-	.slideout-open body,
-	.slideout-open .slideout-panel {
-		overflow: hidden;
-	}
+.slideout-open,
+.slideout-open body,
+.slideout-open .slideout-panel {
+	overflow: hidden;
+}
 
-	.slideout-open .slideout-menu {
-		display: block;
-	}
+.slideout-open .slideout-menu {
+	display: block;
+}
 
-	#graph {
-		position: absolute;
-		top: 0; 
-		right: 0; 
-		bottom: 0; 
-		left: 0;
-	}
-	
-	#controls-button {
-		position:relative;
-	}
-</style><navigation></navigation><div id=bcMenu><label>Background Colour</label><color-picker ng-model=vm.bgColour options=vm.bgColourOptions event-api=vm.bgColourChange></color-picker><br><label>Bubble Colours</label><color-picker ng-model=vm.bubbleColour1 options=vm.bubbleColourOptions1 event-api=vm.bubbleColourChange1></color-picker><color-picker ng-model=vm.bubbleColour2 options=vm.bubbleColourOptions2 event-api=vm.bubbleColourChange2></color-picker><br><label>Text Colour</label><color-picker ng-model=vm.textColour options=vm.textColourOptions event-api=vm.textColourChange></color-picker><br><label>Font Scale</label> <input class=number-input-bubble type=number name=font-scale ng-model=vm.fontScale.value ng-change=vm.updateFontScale() min=0 max=50 required> <span class=validity title="Invaild Input"></span><br><label>Bubble Scale</label><br><label>Linear</label> <input type=radio name=radio-scale ng-model=vm.selectedScale ng-click=vm.updateToLinearScale() value=linear><br><label>Power</label> <input type=radio name=radio-scale ng-model=vm.selectedScale ng-click=vm.updateToPowScale() value=power> <input class=number-input-bubble type=number name=bubble-scale ng-model=vm.powScale.value ng-change=vm.updateToPowScale() min=0 max=10 step=0.1 required> <span class=validity title="Invaild Input"></span></div><div id=bcPanel><div class=bs-loading-container bs-loading-overlay bs-loading-overlay-active-class=loading-overlay--active bs-loading-overlay-reference-id=bubble-chart><div class=blur-this><div id=graph></div><div ng-click=vm.toggleOptions() style="height:48px;width:30px;background-color:#4676fa;border-radius:0 5px 5px 0;"><div style=margin-top:5px;></div><i style=color:#fff;position:relative;top:13px;left:8px;width:30px class="fa fa-arrow-right" aria-hidden=true></i></div><svg id=svg-legend></svg></div></div></div>
+#graph {
+	position: absolute;
+	top: 0; 
+	right: 0; 
+	bottom: 0; 
+	left: 0;
+}
+
+#controls-button {
+	position:relative;
+}
+</style><navigation></navigation><div id=bcMenu><label>Background Colour</label><color-picker ng-model=vm.bgColour options=vm.bgColourOptions event-api=vm.bgColourChange></color-picker><br><label>Bubble Colours</label><color-picker ng-model=vm.bubbleColour1 options=vm.bubbleColourOptions1 event-api=vm.bubbleColourChange1></color-picker><color-picker ng-model=vm.bubbleColour2 options=vm.bubbleColourOptions2 event-api=vm.bubbleColourChange2></color-picker><br><label>Text Colour</label><color-picker ng-model=vm.textColour options=vm.textColourOptions event-api=vm.textColourChange></color-picker><br><label>Font Scale</label> <input class=number-input-bubble type=number name=font-scale ng-model=vm.fontScale.value ng-change=vm.updateFontScale() min=0 max=50 required> <span class=validity title="Invaild Input"></span><br><label>Bubble Scale</label><br><label>Linear</label> <input type=radio name=radio-scale ng-model=vm.selectedScale ng-click=vm.updateToLinearScale() value=linear><br><label>Power</label> <input type=radio name=radio-scale ng-model=vm.selectedScale ng-click=vm.updateToPowScale() value=power> <input class=number-input-bubble type=number name=bubble-scale ng-model=vm.powScale.value ng-change=vm.updateToPowScale() min=0 max=10 step=0.1 required> <span class=validity title="Invaild Input"></span></div><div id=bcPanel><div class=bs-loading-container bs-loading-overlay bs-loading-overlay-active-class=loading-overlay--active bs-loading-overlay-reference-id=bubble-chart><div class=blur-this><div id=graph></div><div ng-click=vm.toggleOptions() style="height:48px;width:30px;background-color:#4676fa;border-radius:0 5px 5px 0;position:relative;top: 5px;"><i style=color:#fff;position:relative;top:13px;left:8px;width:30px class="fa fa-arrow-right" aria-hidden=true></i></div><svg id=svg-legend></svg></div></div></div>

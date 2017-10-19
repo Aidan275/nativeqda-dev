@@ -21,15 +21,21 @@
 								<img src="{{ row.avatar }}" class="med-avatar"/>
 							</div>
 						</td>
-						<td data-title="'First Name'" filter="{firstName: 'text'}" sortable="'firstName'" class="first-name-cell"><div data-step="3" data-intro="This is a users' first name!">{{row.firstName}}</div></td>
-						<td data-title="'Last Name'" filter="{lastName: 'text'}" sortable="'lastName'" class="last-name-cell hidden-xs"><div  data-step="4" data-intro="This is a users' surname!">{{row.lastName}}</div></td>
-						<td data-title="'Email'" filter="{email: 'text'}" sortable="'email'" class="email-cell"><div  data-step="5" data-intro="This is a users' email address!">{{row.email}}</div></td>
-						<td data-title="'Role'" filter="{role: 'text'}" sortable="'role'" class="role-cell hidden-xs">
+						<td data-title="'First Name'" filter="{firstName: 'text'}" sortable="'firstName'" class="first-name-cell">
+							<div data-step="3" data-intro="This is a users' first name!">{{row.firstName}}</div>
+						</td>
+						<td data-title="'Last Name'" filter="{lastName: 'text'}" sortable="'lastName'" class="last-name-cell hidden-xs hidden-sm"  header-class="'hidden-xs hidden-sm'" >
+							<div data-step="4" data-intro="This is a users' surname!">{{row.lastName}}</div>
+						</td>
+						<td data-title="'Email'" filter="{email: 'text'}" sortable="'email'" class="email-cell hidden-xs"  header-class="'hidden-xs'">
+							<div data-step="5" data-intro="This is a users' email address!">{{row.email}}</div>
+						</td>
+						<td data-title="'Role'" filter="{role: 'text'}" sortable="'role'" class="role-cell hidden-xs hidden-sm"  header-class="'hidden-xs hidden-sm'">
 							<span data-step="6" data-intro="This user is a System Administrator!" ng-if="row.isAdmin" class="label label-success">Admin</span>
 							<span data-step="7" data-intro="This user is a Researcher!" ng-if="!row.isAdmin" class="label label-primary">Researcher</span>
 						</td>
 						<td data-title="'Action'" class="context-menu-cell">
-							<div  data-step="8" data-intro="Click here to view/edit/delete this user!" class="dropdown">
+							<div data-step="8" data-intro="Click here to view/edit/delete this user!" class="dropdown">
 								<span class="fa fa-ellipsis-h dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"></span>
 								<ul class="dropdown-menu dropdown-menu-right">
 									<li class="view-btn"><a>View</a></li>

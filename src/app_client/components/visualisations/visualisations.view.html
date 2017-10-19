@@ -61,12 +61,6 @@
 	transition: all linear 300ms;
 }
 
-@media screen and (max-width: 480px) {	
-	.menuButtonFix {
-		top:-48px;
-	}
-}
-
 </style>
 
 <navigation></navigation>
@@ -111,20 +105,18 @@
 
 <div id="viPanel">
 
-	<div class="hidden-md hidden-lg" style="padding-bottom:2px;"></div>
-	
-	<div ng-click="vm.toggleOptions()" class="hidden-md hidden-lg" style="height:48px;width:30px;background-color:#4676fa;border-radius:0 5px 5px 0;"><div style="margin-top:5px;"></div>
+	<div class="hidden-md hidden-lg" ng-click="vm.toggleOptions()" style="height:48px;width:30px;background-color:#4676fa;border-radius:0 5px 5px 0;position:relative;top: 5px;">
 		<i style="color:#fff;position:relative;top:13px;left:8px;width:30px" class="fa fa-arrow-right" aria-hidden="true"></i>
 	</div>
 
-	<div class="container menuButtonFix" style="position:relative;">
+	<div class="container">
 
 		<div class="bs-loading-container" bs-loading-overlay bs-loading-overlay-active-class="loading-overlay--active" bs-loading-overlay-reference-id="visuals-info"> 
 			<div class="blur-this">
 				<div class="row">
 					<div class="col-md-12">
 						<div ng-show="vm.details" class="pageItem">
-							<h3 class="hidden-xs hidden-sm">Analysis Details</h3><h3 class="hidden-md hidden-lg" style="text-align:center;">Analysis Details</h3>
+							<h3>Analysis Details</h3>
 							<br/>
 							<label>Analysis: </label> {{vm.analysisData.name}}
 							<br/>
@@ -158,11 +150,11 @@
 										<span>
 											<i class="{{row.icon}} fa-lg" title="{{row.type | capitalise}}"></i> {{row.name}}
 										</span>
-										<span ng-if="row.type == 'deleted'" class="file-deleted-msg" title="This file has been deleted from the system"> - Deleted</span>
+										<span ng-if="row.type == 'deleted'" class="file-deleted-msg" title="This file has been deleted from the system. Note: this does not affect the current results."> - Deleted</span>
 									</td>
 									<td data-title="'Created By'" class="created-by-cell hidden-xs" header-class="'hidden-xs'" ng-click="vm.viewFile(row, 'false')">{{row.createdBy}}</td>
 									<td data-title="'Last Modified'" class="last-modified-cell hidden-xs hidden-sm" header-class="'hidden-xs hidden-sm'" ng-click="vm.viewFile(row, 'false')">{{row.lastModified | date : "dd MMMM, yyyy h:mm a"}}</td>
-									<td data-title="''" class="context-menu-cell">
+									<td data-title="'Action'" class="context-menu-cell">
 										<div ng-if="row.type != 'folder' && row.type != 'parent-dir' && row.type != 'deleted'" class="dropdown">
 											<span class="fa fa-ellipsis-h dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"></span>
 											<ul class="dropdown-menu dropdown-menu-right">
@@ -515,7 +507,7 @@
 						<p>Supported languages: Arabic, English, Spanish</p>
 
 						<ul class="vis-thumb-list">
-						
+
 							<li class="vis-thumb-list-item">
 								<div class="vis-thumb-outer-div">
 									<div class="vis-thumb-inner-div">
@@ -530,7 +522,7 @@
 									</div>
 								</div>
 							</li>
-						
+
 							<li class="vis-thumb-list-item">
 								<div class="vis-thumb-outer-div">
 									<div class="vis-thumb-inner-div">

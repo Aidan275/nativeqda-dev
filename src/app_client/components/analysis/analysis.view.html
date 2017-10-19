@@ -7,7 +7,10 @@
 	<div class="col-md-12">
 
 		<p>Select a file or dataset for analysis. A number of visualisations can then be viewed by selecting an existing analysis below.</p>
-		<a style="float:right;" href="javascript:void(0);" onclick="javascript:introJs().start();"><i class="fa fa-question-circle" aria-hidden="true"></i></a>
+
+		<a class="hidden-xs hidden-sm" style="float:right;" href="javascript:void(0);" onclick="javascript:introJs().start();">
+			<i class="fa fa-question-circle" aria-hidden="true"></i>
+		</a>
 
 		<button data-step="1" data-intro="Click here to analyse new data!" type="button" class="btn btn-md btn-success blueButton" style="border-radius: 12px 12px 0 0;font-weight:500;" ng-click="vm.popupNewAnalysis()">New Analysis</button>
 		

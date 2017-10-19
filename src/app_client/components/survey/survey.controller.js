@@ -1,3 +1,11 @@
+/**
+* @author Aidan Andrews
+* @email aa275@uowmail.edu.au
+* @ngdoc controller
+* @name survey.controller:surveyCtrl
+* @description Controller for the main survey page.
+*/
+
 (function () {
 
 	'use strict';

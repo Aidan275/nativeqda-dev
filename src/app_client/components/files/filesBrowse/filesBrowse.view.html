@@ -19,7 +19,16 @@ ul.breadcrumb-menu li+li:before {
 	color: black;
 	display:inline-block;
 	text-decoration: none !important;
-	padding: 0 4px;
+	margin: 0 4px;
+}
+
+ul.breadcrumb-menu li:nth-child(2):before {
+	content: "/";
+	font-size: 16px;
+	color: black;
+	display:inline-block;
+	text-decoration: none !important;
+	margin: 0 4px 0 1px;
 }
 
 ul.breadcrumb-menu li:hover {
@@ -31,6 +40,13 @@ ul.breadcrumb-menu li:last-child {
 	cursor: default;
 	text-decoration: none !important;
 }
+
+ul.breadcrumb-menu .inactive-home-link {
+	color: #000;
+	cursor: default;
+	text-decoration: none !important;
+}
+
 </style>
 
 <navigation></navigation>
@@ -41,16 +57,17 @@ ul.breadcrumb-menu li:last-child {
 
 	<div class="col-md-12">
 		
-		<div class="col-md-12" style="padding: 0; margin: 0px 0 22px 0; height: 16px;">
+		<div class="col-md-12 hidden-xs hidden-sm" style="padding: 0; margin: 0px 0 22px 0; height: 16px;">
 			<a style="float:right;" href="javascript:void(0);" onclick="javascript:introJs().start();">
 				<i class="fa fa-question-circle" aria-hidden="true"></i>
 			</a>
 		</div>
 
 		<div class="col-md-9 hidden-xs hidden-sm" style="padding: 0;">
-			<ul ng-if="vm.currentPath != ''" class="breadcrumb-menu">
-				<li data-step="1" data-intro="Click here to return to the home directory!" ng-click="vm.openFolder('/')">Home</li>
-				<li ng-repeat="path in vm.pathsArray track by $index" ng-click="vm.openFolder($index)">{{path}}</li>
+			<ul class="breadcrumb-menu">
+				<li ng-if="vm.currentPath == ''" class="inactive-home-link">Home  /</li>
+				<li ng-if="vm.currentPath != ''" data-step="1" data-intro="Click here to return to the home directory!" ng-click="vm.openFolder('/')">Home</li>
+				<li ng-if="vm.currentPath != ''" ng-repeat="path in vm.pathsArray track by $index" ng-click="vm.openFolder($index)">{{path}}</li>
 			</ul>
 		</div>
 

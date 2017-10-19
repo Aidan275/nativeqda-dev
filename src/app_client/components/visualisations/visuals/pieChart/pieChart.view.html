@@ -1,81 +1,85 @@
 <style>
 
 #pieMenu {
-    padding: 75px 25px 25px 25px;
-    overflow: hidden;
-    background: #eee;
+	padding: 75px 25px 25px 25px;
+	overflow: hidden;
+	background: #eee;
 }
 
 .slideout-menu {
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    width: 256px;
-    min-height: 100vh;
-    overflow-y: scroll;
-    -webkit-overflow-scrolling: touch;
-    z-index: 0;
-    display: none;
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	width: 256px;
+	min-height: 100vh;
+	overflow-y: scroll;
+	-webkit-overflow-scrolling: touch;
+	z-index: 0;
+	display: none;
 }
 
 .slideout-menu-left {
-    left: 0;
+	left: 0;
 }
 
 .slideout-menu-right {
-    right: 0;
+	right: 0;
 }
 
 .slideout-panel {
-    position: relative;
-    z-index: 1;
-    will-change: transform;
-    background-color: #FFF; /* A background-color is required */
-    min-height: 100vh;
+	position: relative;
+	z-index: 1;
+	will-change: transform;
+	background-color: #FFF; /* A background-color is required */
+	min-height: 100vh;
 }
 
 .slideout-open,
 .slideout-open body,
 .slideout-open .slideout-panel {
-    overflow: hidden;
+	overflow: hidden;
 }
 
 .slideout-open .slideout-menu {
-    display: block;
+	display: block;
 }
 .chart div {
-    font: 10px sans-serif;
-    background-color: steelblue;
-    text-align: right;
-    padding: 3px;
-    margin: 1px;
-    color: white;
-    top: 100px;
+	font: 10px sans-serif;
+	background-color: steelblue;
+	text-align: right;
+	padding: 3px;
+	margin: 1px;
+	color: white;
+	top: 100px;
 }
 
 .toolTip {
-    position: absolute;
-    display: none;
-    min-width: 80px;
-    height: auto;
-    background: none repeat scroll 0 0 #ffffff;
-    border: 1px solid #6F257F;
-    padding: 14px;
-    text-align: center;
+	position: absolute;
+	display: none;
+	min-width: 80px;
+	height: auto;
+	background: none repeat scroll 0 0 #ffffff;
+	border: 1px solid #6F257F;
+	padding: 14px;
+	text-align: center;
 }
 </style>
+
 <navigation></navigation>
-<div id = "pieMenu">
-    <label>Hello</label>
-    <br />
+
+<div id="pieMenu">
+	<label>Hello</label>
+	<br />
 </div>
-<div id = "piePanel">
-			<div ng-click="vm.toggleOptions()" style="height:48px;width:30px;background-color:#4676fa;border-radius:0 5px 5px 0;"><div style="margin-top:5px;"></div>
-			  <i style="color:#fff;position:relative;top:13px;left:8px;width:30px" class="fa fa-arrow-right" aria-hidden="true"></i>
-			</div>
-    <div style="position: absolute; left: 50%;transform: translateX(-50%);">
-        <svg width="960" height="500"></svg>
-        <div class="chart"></div>
-    </div>
+
+<div id="piePanel">
+	<div ng-click="vm.toggleOptions()" style="height:48px;width:30px;background-color:#4676fa;border-radius:0 5px 5px 0;position:relative;top: 5px;">
+		<i style="color:#fff;position:relative;top:13px;left:8px;width:30px" class="fa fa-arrow-right" aria-hidden="true"></i>
+	</div>
+	<div style="position: absolute; left: 50%;transform: translateX(-50%);">
+		<svg width="960" height="500"></svg>
+		<div class="chart"></div>
+	</div>
 </div>
+
 <footer-generic></footer-generic>
