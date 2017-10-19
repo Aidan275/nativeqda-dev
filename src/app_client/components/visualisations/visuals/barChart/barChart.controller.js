@@ -29,8 +29,8 @@
     //Bindable functions
     vm.top10 = top10;
     vm.bottom10 = bottom10;
-    vm.redraw = redraw;
-    vm.checkMobile = checkMobile;
+    vm.setBarColour = setBarColour;
+
 
     var slideout = new Slideout({
       'panel': document.querySelector('#barPanel'),
@@ -39,16 +39,29 @@
       'tolerance': 70
     });
 
+    var width = document.querySelector("#graph").clientWidth;
+    var height = document.querySelector("#graph").clientHeight+200;
+    var margin = {top: 500 , right: 500, bottom: 5000, left: 1200};
+
+
+
+    var svg = d3.select("#graph")
+      .append("svg")
+      .attr("width", width)
+      .attr("height", height)
+      .attr("class", "graph-svg-component")
+      .call(d3.zoom()
+        .scaleExtent([.5, 2])
+        .translateExtent([[0,0], [width, height]])
+        .on("zoom", function () {
+        svg.attr("transform", d3.event.transform)
+      }))
+      .append("g");
+
+
     vm.toggleOptions = toggleOptions;
 
-    function checkMobile() {
-      isMobile = false; //initiate as false
-    // device detection
-if(/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|ipad|iris|kindle|Android|Silk|lge |maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i.test(navigator.userAgent) 
-    || /1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.test(navigator.userAgent.substr(0,4))) isMobile = true;
 
-      console.log(isMobile);
-    }
 
     /**
     * @ngdoc function
@@ -119,6 +132,7 @@ if(/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine
       } 
     }
 
+
     /**
     * @ngdoc function
     * @name sortRelevance
@@ -166,82 +180,7 @@ if(/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine
     }
 
 
-
-  function redraw(data) {
-    //Remove the old graph
-    //console.log(data);
-    d3.selectAll("svg").remove();
-    drawChart(data);
-    //Set the drawing space for the graph
-    var svg = d3.select("svg"),
-      margin = {top: 20, right: 20, bottom: 200, left: 40},
-        width = +svg.attr("width") - margin.left - margin.right,
-        height = +svg.attr("height") - margin.top - margin.bottom+30; 
-    
-        
-      var tooltip = d3.select("body").append("div").attr("class", "toolTip");
-
-      //Set the x and y ranges
-      var x = d3.scaleBand().rangeRound([0, width]).padding(0.1),
-        y = d3.scaleLinear().rangeRound([height, 0]);
-
-      var colours = d3.scaleOrdinal()
-        .range(["#6F257F", "CA0D59"]);
-
-      //Set margins
-    var g = svg.append("g")
-        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-      //Sets the domain, x is text and y is relevance
-      x.domain(data.map(function(d) { return d.text; }));
-      y.domain([0, d3.max(data, function(d) { return d.relevance; })]);
-
-      //Appends graph to body of the page
-      //Append x axis
-      g.append("g")
-          .attr("class", "axis axis--x")
-          .attr("transform", "translate(0," + height + ")")
-          .call(d3.axisBottom(x).ticks(10))
-          .selectAll("text")
-            .style("text-anchor", "end")
-            .attr("dx", "-.8em")
-            .attr("dy", ".15em")
-            .attr("transform", "rotate(-65)");
-
-
-        //Add the y axis
-        g.append("g")
-          .attr("class", "axis axis--y")
-          .call(d3.axisLeft(y).ticks(10, "%"))
-        .append("text")
-          .attr("transform", "rotate(-90)")
-          .attr("y", 6)
-          .attr("dy", "0.71em")
-          .attr("text-anchor", "end")
-          .text("Relevance");
-
-        //Append rectangles for the bar chart
-         g.selectAll(".bar")
-        .data(data)
-        .enter().append("rect")
-          .attr("class", "bar")
-          .attr("x", function(d) { return x(d.text); })
-          .attr("y", function(d) { return y(d.relevance); })
-          .attr("width", x.bandwidth())
-          .attr("height", function(d) { return height - y(d.relevance);})
-          .attr("fill", function(d) { return colours(d.area); })
-          .on("mousemove", function(d){
-              tooltip
-                .style("left", d3.event.pageX - 50 + "px")
-                .style("top", d3.event.pageY - 70 + "px")
-                .style("display", "inline-block")
-                .html((d.text) + "<br>" + (d.relevance) + "%");
-        })
-      .on("mouseout", function(d){ tooltip.style("display", "none");});
-
-
-  
-  }
+    var g;
 
     /**
     * @ngdoc function
@@ -256,35 +195,8 @@ if(/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine
     * dbpedia_resource: A link to dbpedias page on the resource
     */
     function drawChart(data) {
-
-      isMobile = false; //initiate as false
-    // device detection
-if(/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|ipad|iris|kindle|Android|Silk|lge |maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i.test(navigator.userAgent) 
-    || /1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.test(navigator.userAgent.substr(0,4))) isMobile = true;
-
-    console.log(isMobile);
-
-
-    if(isMobile) {
-
-      //Set the drawing space for the graph
-      var svg = d3.select("svg"),
-        margin = {top: 50, right: 50, bottom: 500, left: 120},
-          width = +svg.attr("width") - margin.left - margin.right,
-          height = +svg.attr("height") - margin.top - margin.bottom+30;
-
-    }else {
-
-      //Set the drawing space for the graph
-      var svg = d3.select("svg"),
-        margin = {top: 20, right: 20, bottom: 200, left: 40},
-          width = +svg.attr("width") - margin.left - margin.right,
-          height = +svg.attr("height") - margin.top - margin.bottom+30;
-    }
-
-    
         
-      var tooltip = d3.select("body").append("div").attr("class", "toolTip");
+      var tooltip = d3.select("#barPanel").append("div").attr("class", "toolTip");
 
       //Set the x and y ranges
       var x = d3.scaleBand().rangeRound([0, width]).padding(0.1),
@@ -294,8 +206,8 @@ if(/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine
         .range(["#6F257F", "CA0D59"]);
 
       //Set margins
-    var g = svg.append("g")
-        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+      g = svg.append("g")
+        .attr("transform", "translate(40,20), scale(0.5)");
 
       //Sets the domain, x is text and y is relevance
       x.domain(data.map(function(d) { return d.text; }));
@@ -337,7 +249,7 @@ if(/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine
           .attr("fill", function(d) { return colours(d.area); })
           .on("mousemove", function(d){
               tooltip
-                .style("left", d3.event.pageX - 50 + "px")
+                .style("left", d3.event.pageX - 25 + "px")
                 .style("top", d3.event.pageY - 70 + "px")
                 .style("display", "inline-block")
                 .html((d.text) + "<br>" + (d.relevance) + "%");
@@ -345,29 +257,16 @@ if(/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine
       .on("mouseout", function(d){ tooltip.style("display", "none");});
     }
 
+    vm.barColourChange = { onChange: function() {setBarColour(); } };
+    vm.textColourChange = { onChange: function(api, color, $event) {svg.selectAll("text").style("fill", color);} };
 
-    function resize() {
-      /* Find the new window dimensions */
-      var width = parseInt(d3.select("#graph").style("width")) - margin*2,
-      height = parseInt(d3.select("#graph").style("height")) - margin*2;
 
-      /* Update the range of the scale with new width/height */
-      xScale.range([0, width]).nice(d3.time.year);
-      yScale.range([height, 0]).nice();
+    function setBarColour() {
+      var colours = d3.scaleOrdinal()
+        .range([vm.barColour, vm.barColour]);
 
-      /* Update the axis with the new scale */
-      graph.select('.x.axis')
-        .attr("transform", "translate(0," + height + ")")
-        .call(xAxis);
-
-      graph.select('.y.axis')
-        .call(yAxis);
-
-      /* Force D3 to recalculate and update the line */
-      graph.selectAll('.line')
-        .attr("d", line);
+      svg.selectAll(".bar").style("fill", function(d) {return colours(d.relevance)});      
     }
-
 
     /**
     * @ngdoc function
