@@ -296,7 +296,7 @@
 				title: "New Folder",
 				text: "Please enter a name for this folder",
 				type: "input",
-				confirmButtonColor: "#5cb85c",
+				confirmButtonColor: "var(--main-colour)",
 				showCancelButton: true,
 				closeOnConfirm: false,
 				allowOutsideClick: true,
