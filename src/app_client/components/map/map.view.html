@@ -1,20 +1,20 @@
 <style>
 .leaflet-popup-content p {
-    margin: 0 !important;
+	margin: 0 !important;
 }
 
 .leaflet-popup-content {
-    margin: 0 !important;
+	margin: 0 !important;
 }
 
 .leaflet-popup-content-wrapper {
-    padding: 0 !important;
+	padding: 0 !important;
 	padding-bottom: 1px !important;
 	border-radius: 12px !important;
 }
 
 .leaflet-container a.leaflet-popup-close-button {
-    color:#FFF;
+	color:#FFF;
 	position:absolute;
 	border-radius: 50%;
 	background-color:#4676fa;
@@ -74,10 +74,18 @@
 
 				<div class="sidebar-pane" id="filters">
 					<h1 class="sidebar-header">Filters<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
+					<h4>Hide/show dependency links</h4>
 					<div id="sidebar-filters-body">
 						<a ng-if="vm.linksHidden" ng-click="vm.toggleLinks()" class="btn btn-primary blueButton" role="button">Show Dependecies</a>
 						<a ng-if="!vm.linksHidden" ng-click="vm.toggleLinks()" class="btn btn-primary blueButton" role="button">Hide Dependecies</a>
 					</div>
+					<br />
+					<h4>Filter by date range</h4>
+					<div id="slider-date"></div>
+					<br />
+					<label>Min: </label> <span id="event-start"></span>
+					<br />
+					<label>Max: </label> <span id="event-end"></span>
 				</div>
 
 				<div class="sidebar-pane" id="settings">

@@ -107,6 +107,21 @@
 			className: 'position-icon'
 		});
 
+		/* Data for the date slider */
+		var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+		var dateValues = [
+		document.getElementById('event-start'),
+		document.getElementById('event-end')
+		];
+		var dateSlider = document.getElementById('slider-date');
+		var sliderUpdated = false;	/* Set to true after slider has been changed - enables min and max dates to be found and kept */
+		var earliestDate = null;
+		var latestDate = null;
+		var dateRange = {
+			min: 0,
+			max: 0
+		};
+
 		activate();
 
 		///////////////////////////
@@ -368,120 +383,140 @@
 		*/
 		function addMapMarkers() {
 			vm.markers = L.markerClusterGroup({showCoverageOnHover: false, maxClusterRadius: 40});
-			
+
 			/* For each file returned from the DB, a marker with an info  */
 			/* window is created. Each marker is then added to the  */
 			/* markers cluster group to be displayed on the map */
 			vm.fileList.forEach(function(file, index, fileListArray) {
-				var lat = file.coords.coordinates[1];
-				var lng = file.coords.coordinates[0];
+				/* If the date slider hasn't been used yet display all files OR if the files last modified date is within range, add marker */
+				if(!sliderUpdated || file.lastModified >= dateRange.min && file.lastModified <= dateRange.max) {
+					var lat = file.coords.coordinates[1];
+					var lng = file.coords.coordinates[0];
 
-				var marker;
+					var marker;
 
-				switch(file.type) {
-					case 'file':
-					marker = L.marker([lat, lng], { icon: fileMarkerIcon });
-					break;
-					case 'text':
-					marker = L.marker([lat, lng], { icon: textMarkerIcon });
-					break;
-					case 'doc':
-					marker = L.marker([lat, lng], { icon: wordMarkerIcon });
-					break;
-					case 'pdf':
-					marker = L.marker([lat, lng], { icon: pdfMarkerIcon });
-					break;
-					case 'image':
-					marker = L.marker([lat, lng], { icon: imageMarkerIcon });
-					break;
-					case 'video':
-					marker = L.marker([lat, lng], { icon: videoMarkerIcon });
-					break;
-					case 'audio':
-					marker = L.marker([lat, lng], { icon: audioMarkerIcon });
-					break;
-					default:
-					marker = L.marker([lat, lng], { icon: defaultIcon });
-				}
-
-				/* HTML for the popup boxes displayed when the file marker is pressed */
-				var popupString = '<div class="info-window"><div style="background-color:#4676fa;border-radius: 12px 12px 0 0 !important;text-align:center;">' +
-				'<h3 style="color:#FFF;margin-left:8px;margin-right:5px;padding-bottom:5px;padding-top:5px;padding-right:18px;">' + file.name + '</h3></div><div style="margin-left: 15px;margin-right:15px;margin-top:5px;margin-bottom:15px;">' +
-				'<p><strong>Created By:</strong> ' + file.createdBy + '<br />' +
-				'<strong>Size:</strong> ' + $filter('formatFileSize')(file.size, 2) + '<br />' +	/* uses formatFileSize filter to format the file size */
-				'<strong>Last Modified:</strong> ' + $filter('date')(file.lastModified, "dd MMMM, yyyy h:mm a");	/* uses date filter to format the date */
-
-				/* If the file has tags, add as a comma separated list, listing each tag */
-				/* otherwise skip and exclude the tags label */
-				if(file.tags.length != 0) { 
-					popupString += '<br /><strong>Tags:</strong> ';
-					/* lists each tag for current file */
-					popupString += file.tags.join(", ") + '</p>';
-				} else {
-					popupString += '</p>';
-				}
-
-				popupString += '<div style="padding-bottom:10px;"></div><div style="text-align:center;"><a ng-click="vm.viewFile(file)" class="btn btn-success btn-xs" role="button">View</a> ' +
-				'<a ng-click="vm.popupFileDetails(file)" class="btn btn-primary blueButton btn-xs" role="button">Details</a> ' +
-				'<a ng-click="vm.selectDependent(precedent)" class="btn btn-info btn-xs" role="button">Add Dependent</a></div>' +
-				'</div></div>';
-
-				/* compiles the HTML so ng-click works */
-				var compiledPopupString = $compile(angular.element(popupString));
-				var newScope = $scope.$new();
-
-				/* New scope variables for the compiled string above */
-				newScope.file = {
-					name: file.name,
-					path: file.path,
-					key: file.key, 
-					textFileKey: file.textFileKey
-				};
-				newScope.precedent = {
-					_id: file._id,
-					lat: lat,
-					lng: lng
-				};
-
-				marker.bindPopup(compiledPopupString(newScope)[0]);
-
-				/* Only include tooltips if the browser is not running on a mobile device */
-				/* so mobile devices do not display the tooltip when a pin is pressed. */
-				if (L.Browser.mobile != true) {
-					var toolTipString = '<strong>File Name:</strong> ' + file.name + '<br />' + 
-					'<strong>Created By:</strong> ' + file.createdBy + '<br />' + 
-					'<strong>Last Modified:</strong> ' + $filter('date')(file.lastModified, "dd MMMM, yyyy h:mm a");
-
-					marker.bindTooltip(toolTipString);
-				}
-
-				/* When a marker is clicked and the popup opens, the currentMaker variable is set */
-				/* so the marker can be removed if the file is deleted. */
-				/* Also hides the tooltip from the marker when the popup window is open */
-				marker.on("popupopen", function() { 
-					vm.currentMarker = this; 
-					var toolTip = marker.getTooltip();
-					if(toolTip) {
-						toolTip.setOpacity(0);
+					switch(file.type) {
+						case 'file':
+						marker = L.marker([lat, lng], { icon: fileMarkerIcon });
+						break;
+						case 'text':
+						marker = L.marker([lat, lng], { icon: textMarkerIcon });
+						break;
+						case 'doc':
+						marker = L.marker([lat, lng], { icon: wordMarkerIcon });
+						break;
+						case 'pdf':
+						marker = L.marker([lat, lng], { icon: pdfMarkerIcon });
+						break;
+						case 'image':
+						marker = L.marker([lat, lng], { icon: imageMarkerIcon });
+						break;
+						case 'video':
+						marker = L.marker([lat, lng], { icon: videoMarkerIcon });
+						break;
+						case 'audio':
+						marker = L.marker([lat, lng], { icon: audioMarkerIcon });
+						break;
+						default:
+						marker = L.marker([lat, lng], { icon: defaultIcon });
 					}
-				});
 
-				/* Sets the current marker to null and unhides the tooltip from the marker */
-				/* when the popup window is closed */
-				marker.on("popupclose", function() { 
-					vm.currentMarker = null; 
-					var toolTip = marker.getTooltip();
-					if(toolTip) {
-						toolTip.setOpacity(0.9);
-					}	
-				});
+					/* HTML for the popup boxes displayed when the file marker is pressed */
+					var popupString = '<div class="info-window"><div style="background-color:#4676fa;border-radius: 12px 12px 0 0 !important;text-align:center;">' +
+					'<h3 style="color:#FFF;margin-left:8px;margin-right:5px;padding-bottom:5px;padding-top:5px;padding-right:18px;">' + file.name + '</h3></div><div style="margin-left: 15px;margin-right:15px;margin-top:5px;margin-bottom:15px;">' +
+					'<p><strong>Created By:</strong> ' + file.createdBy + '<br />' +
+					'<strong>Size:</strong> ' + $filter('formatFileSize')(file.size, 2) + '<br />' +	/* uses formatFileSize filter to format the file size */
+					'<strong>Last Modified:</strong> ' + $filter('date')(file.lastModified, "dd MMMM, yyyy h:mm a");	/* uses date filter to format the date */
 
-				vm.markers.addLayer(marker);
-				fileListArray[index].marker = marker;	/* Adds the marker objects into the corresponding file object */
+					/* If the file has tags, add as a comma separated list, listing each tag */
+					/* otherwise skip and exclude the tags label */
+					if(file.tags.length != 0) { 
+						popupString += '<br /><strong>Tags:</strong> ';
+						/* lists each tag for current file */
+						popupString += file.tags.join(", ") + '</p>';
+					} else {
+						popupString += '</p>';
+					}
+
+					popupString += '<div style="padding-bottom:10px;"></div><div style="text-align:center;"><a ng-click="vm.viewFile(file)" class="btn btn-success btn-xs" role="button">View</a> ' +
+					'<a ng-click="vm.popupFileDetails(file)" class="btn btn-primary blueButton btn-xs" role="button">Details</a> ' +
+					'<a ng-click="vm.selectDependent(precedent)" class="btn btn-info btn-xs" role="button">Add Dependent</a></div>' +
+					'</div></div>';
+
+					/* compiles the HTML so ng-click works */
+					var compiledPopupString = $compile(angular.element(popupString));
+					var newScope = $scope.$new();
+
+					/* New scope variables for the compiled string above */
+					newScope.file = {
+						name: file.name,
+						path: file.path,
+						key: file.key, 
+						textFileKey: file.textFileKey
+					};
+					newScope.precedent = {
+						_id: file._id,
+						lat: lat,
+						lng: lng
+					};
+
+					marker.bindPopup(compiledPopupString(newScope)[0]);
+
+					/* Only include tooltips if the browser is not running on a mobile device */
+					/* so mobile devices do not display the tooltip when a pin is pressed. */
+					if (L.Browser.mobile != true) {
+						var toolTipString = '<strong>File Name:</strong> ' + file.name + '<br />' + 
+						'<strong>Created By:</strong> ' + file.createdBy + '<br />' + 
+						'<strong>Last Modified:</strong> ' + $filter('date')(file.lastModified, "dd MMMM, yyyy h:mm a");
+
+						marker.bindTooltip(toolTipString);
+					}
+
+					/* When a marker is clicked and the popup opens, the currentMaker variable is set */
+					/* so the marker can be removed if the file is deleted. */
+					/* Also hides the tooltip from the marker when the popup window is open */
+					marker.on("popupopen", function() { 
+						vm.currentMarker = this; 
+						var toolTip = marker.getTooltip();
+						if(toolTip) {
+							toolTip.setOpacity(0);
+						}
+					});
+
+					/* Sets the current marker to null and unhides the tooltip from the marker */
+					/* when the popup window is closed */
+					marker.on("popupclose", function() { 
+						vm.currentMarker = null; 
+						var toolTip = marker.getTooltip();
+						if(toolTip) {
+							toolTip.setOpacity(0.9);
+						}	
+					});
+
+					vm.markers.addLayer(marker);
+					fileListArray[index].marker = marker;	/* Adds the marker objects into the corresponding file object */
+
+					if(!sliderUpdated) {
+						if(index == 0) {
+							earliestDate = file.lastModified;
+							latestDate = file.lastModified;
+						} else {
+							if(earliestDate > file.lastModified)
+								earliestDate = file.lastModified;
+							if(latestDate < file.lastModified)
+								latestDate = file.lastModified;
+						}
+					}
+				}
 			});
 
-			vm.map.addLayer(vm.markers);	/* Adds the markers cluster group to the map */
+			// Adds the markers cluster group to the map */
+			vm.map.addLayer(vm.markers);	
 			bsLoadingOverlayService.stop({referenceId: 'map'});	/* Stop animated loading overlay */
+
+			if(!sliderUpdated) {
+				initDateSlider();
+			}
 		}
 
 		/**
@@ -640,86 +675,89 @@
 			vm.linksHidden = false;	/* Sets false so the show dependencies button displays hide dependencies */
 
 			vm.linkList.forEach(function(link) {
-				/* Creates the polyline for each link from the database */
-				var arrow = L.polyline([[link.dependent.coords.coordinates[1], link.dependent.coords.coordinates[0]], [link.precedent.coords.coordinates[1], link.precedent.coords.coordinates[0]]], {
-					color: '#4676fa',
-					weight: 8
-				}).addTo(vm.map);
+				/* If the date slider hasn't been used yet display all links OR if the link's last modified date is within range, add link */
+				if(!sliderUpdated || link.dateCreated >= dateRange.min && link.dateCreated <= dateRange.max) {
+					/* Creates the polyline for each link from the database */
+					var arrow = L.polyline([[link.dependent.coords.coordinates[1], link.dependent.coords.coordinates[0]], [link.precedent.coords.coordinates[1], link.precedent.coords.coordinates[0]]], {
+						color: '#4676fa',
+						weight: 8
+					}).addTo(vm.map);
 
-				/* Creates the arrow head for each line */
-				var arrowHead = L.polylineDecorator(arrow, {
-					patterns: [{
-						offset: '100%', 
-						repeat: 0, 
-						symbol: L.Symbol.arrowHead({
-							pixelSize: 18, 
-							polygon: false, 
-							pathOptions: {
-								stroke: true,
-								weight: 5,
-								color: '#4676fa'
-							}
-						})
-					}]
-				}).addTo(vm.map);
+					/* Creates the arrow head for each line */
+					var arrowHead = L.polylineDecorator(arrow, {
+						patterns: [{
+							offset: '100%', 
+							repeat: 0, 
+							symbol: L.Symbol.arrowHead({
+								pixelSize: 18, 
+								polygon: false, 
+								pathOptions: {
+									stroke: true,
+									weight: 5,
+									color: '#4676fa'
+								}
+							})
+						}]
+					}).addTo(vm.map);
 
-				/* HTML for the popup boxes displayed when the link is pressed */
-				var popupString = '<div class="info-window"><div style="background-color:#4676fa;border-radius: 12px 12px 0 0 !important;text-align:center;">' +
-				'<h3 style="color:#FFF;margin-left:5px;margin-right:5px;padding-bottom:5px;padding-top:5px;">' + link.name + '</h3></div><div style="margin-left: 15px;margin-right:15px;margin-top:5px;margin-bottom:15px;">' +
-				'<p><strong>Description:</strong> ' + link.description + '<br />' +
-				'<strong>Created By:</strong> ' + link._creator.firstName + '<br />' +
-				'<strong>Date Created:</strong> ' + $filter('date')(link.dateCreated, "dd MMMM, yyyy h:mm a") + '</p><div style="padding-bottom:10px;"></div>' +	/* uses date filter to format the date */
-				'<a ng-click="vm.confirmLinkDelete(link)" class="btn btn-danger btn-xs" role="button">Delete</a>' +
-				'</div></div>';
+					/* HTML for the popup boxes displayed when the link is pressed */
+					var popupString = '<div class="info-window"><div style="background-color:#4676fa;border-radius: 12px 12px 0 0 !important;text-align:center;">' +
+					'<h3 style="color:#FFF;margin-left:5px;margin-right:5px;padding-bottom:5px;padding-top:5px;">' + link.name + '</h3></div><div style="margin-left: 15px;margin-right:15px;margin-top:5px;margin-bottom:15px;">' +
+					'<p><strong>Description:</strong> ' + link.description + '<br />' +
+					'<strong>Created By:</strong> ' + link._creator.firstName + '<br />' +
+					'<strong>Date Created:</strong> ' + $filter('date')(link.dateCreated, "dd MMMM, yyyy h:mm a") + '</p><div style="padding-bottom:10px;"></div>' +	/* uses date filter to format the date */
+					'<a ng-click="vm.confirmLinkDelete(link)" class="btn btn-danger btn-xs" role="button">Delete</a>' +
+					'</div></div>';
 
-				/* Compiles the HTML so ng-click works */
-				var compiledPopupString = $compile(angular.element(popupString));
-				var newScope = $scope.$new();
+					/* Compiles the HTML so ng-click works */
+					var compiledPopupString = $compile(angular.element(popupString));
+					var newScope = $scope.$new();
 
-				/* New scope variables for the compiled string above */
-				newScope.link = link;
+					/* New scope variables for the compiled string above */
+					newScope.link = link;
 
-				arrow.bindPopup(compiledPopupString(newScope)[0]);
+					arrow.bindPopup(compiledPopupString(newScope)[0]);
 
-				/* Only include tooltips if the browser is not running on a mobile device */
-				/* so mobile devices do not display the tooltip when a link is pressed. */
-				if (L.Browser.mobile != true) {
-					var toolTipString = '<strong>Name:</strong> ' + link.name + '<br />';
-					if(link.description.length < 75) {	/* If the description is more than 75 characters it is not added to the tooltip to prevent it being too wide */
-						toolTipString += '<strong>Description:</strong> ' + link.description + '<br />';
+					/* Only include tooltips if the browser is not running on a mobile device */
+					/* so mobile devices do not display the tooltip when a link is pressed. */
+					if (L.Browser.mobile != true) {
+						var toolTipString = '<strong>Name:</strong> ' + link.name + '<br />';
+						if(link.description.length < 75) {	/* If the description is more than 75 characters it is not added to the tooltip to prevent it being too wide */
+							toolTipString += '<strong>Description:</strong> ' + link.description + '<br />';
+						}
+						toolTipString += '<strong>Date Created:</strong> ' + $filter('date')(link.dateCreated, "dd MMMM, yyyy h:mm a");
+
+						arrow.bindTooltip(toolTipString, {sticky: true});
 					}
-					toolTipString += '<strong>Date Created:</strong> ' + $filter('date')(link.dateCreated, "dd MMMM, yyyy h:mm a");
 
-					arrow.bindTooltip(toolTipString, {sticky: true});
+					/* When a link is clicked and it is popup opens, the currentLink variable is set */
+					/* so the link can be removed if it is deleted. */
+					/* Also hides the tooltip from the link when the popup window is open */
+					arrow.on("popupopen", function() { 
+						vm.currentLink = {
+							line: this,
+							head: arrowHead
+						}; 
+						var toolTip = arrow.getTooltip();
+						if(toolTip) {
+							toolTip.setOpacity(0);
+						}
+					});
+
+					/* Sets the current link to null and unhides the tooltip from the link */
+					/* when the popup window is closed */
+					arrow.on("popupclose", function() { 
+						vm.currentLink = null; 
+						var toolTip = arrow.getTooltip();
+						if(toolTip) {
+							toolTip.setOpacity(0.9);
+						}	
+					});
+
+					/* Adds the arrows and arrowHeads to arrays */
+					vm.arrows.push(arrow);
+					vm.arrowHeads.push(arrowHead);
 				}
-
-				/* When a link is clicked and it is popup opens, the currentLink variable is set */
-				/* so the link can be removed if it is deleted. */
-				/* Also hides the tooltip from the link when the popup window is open */
-				arrow.on("popupopen", function() { 
-					vm.currentLink = {
-						line: this,
-						head: arrowHead
-					}; 
-					var toolTip = arrow.getTooltip();
-					if(toolTip) {
-						toolTip.setOpacity(0);
-					}
-				});
-
-				/* Sets the current link to null and unhides the tooltip from the link */
-				/* when the popup window is closed */
-				arrow.on("popupclose", function() { 
-					vm.currentLink = null; 
-					var toolTip = arrow.getTooltip();
-					if(toolTip) {
-						toolTip.setOpacity(0.9);
-					}	
-				});
-
-				/* Adds the arrows and arrowHeads to arrays */
-				vm.arrows.push(arrow);
-				vm.arrowHeads.push(arrowHead);
 			});
 		}
 
@@ -943,6 +981,86 @@
 			if (linkIndex > -1) {
 				vm.linkList.splice(linkIndex, 1);
 			}
+		}
+
+		/**
+		* @ngdoc function
+		* @name initDateSlider
+		* @param {Object} link Link object
+		* @methodOf map.controller:mapCtrl
+		* @description Initialises the date slider with the min and max dates based on all the files. Adds listeners to the 
+		* slider and displays formatted min and max dates.
+		*/
+		function initDateSlider() {
+
+			function timestamp(str){
+				return new Date(str).getTime();   
+			}
+
+			/* Append a suffix to dates. */
+			/* Example: 23 => 23rd, 1 => 1st. */
+			function nth(d) {
+				if(d>3 && d<21) return 'th';
+				switch (d % 10) {
+					case 1:  return "st";
+					case 2:  return "nd";
+					case 3:  return "rd";
+					default: return "th";
+				}
+			}
+
+			/* Create a string representation of the date. */
+			function formatDate(date) {
+				return date.getDate() + nth(date.getDate()) + " " +
+				months[date.getMonth()] + " " +
+				date.getFullYear();
+			}
+
+			/* Creates the slider object */
+			noUiSlider.create(dateSlider, {
+				range: {
+					min: timestamp(earliestDate),
+					max: timestamp(latestDate)
+				},
+				connect: true, /* Connect sliders with blue fill */
+				step: 24 * 60 * 60 * 1000,	/* Sets the step to days */
+				start: [ timestamp(earliestDate), timestamp(latestDate) ],
+				format: {
+					to: function(value) {
+						return Math.floor(value);	/* Drops the trailing decimals */
+					},
+					from: function(value) {
+						return Math.floor(value);
+					}
+				}
+			});
+
+			/* Updates the min and max values displayed below the slider */
+			dateSlider.noUiSlider.on('update', function(values, handle) {
+				dateValues[handle].innerHTML = formatDate(new Date(+values[handle]));
+			});
+
+			/* Updates all the markers and links on the map based on the current slider values. Should probably */
+			/* change to update on 'change' not 'update' so performance doesn't take a hit from the constant updates */
+			/* whiles sliding the slider. */
+			dateSlider.noUiSlider.on('update', function(values, handle) {
+				sliderUpdated = true;
+				
+				/* Converts the current date value to ISO to compare against the date from the files from the database (also in ISO format) */
+				dateRange.min = new Date(values[0]).toISOString()
+				dateRange.max = new Date(values[1]).toISOString()
+				
+				if(vm.markers) {
+					removeAllMarkers();
+				}
+				addMapMarkers();
+
+				if(!vm.linksHidden) {
+					removeLinks();
+					addLinks();
+				}
+			});
+
 		}
 	}
 
