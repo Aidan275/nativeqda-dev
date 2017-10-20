@@ -2490,3 +2490,30 @@ footer span {
 	color:#d9534f;
 	font-weight:bold
 }
+
+/* Leaflet Sidebar Override */
+
+.sidebar-tabs > li > a, .sidebar-tabs > ul > li > a {
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    line-height: 40px;
+    color: inherit;
+    text-decoration: none;
+    text-align: center;
+	padding-right:3px;
+}
+
+@-moz-document url-prefix() {
+.sidebar-tabs > li > a, .sidebar-tabs > ul > li > a {
+    display: block;
+    width: 100%;
+    height: 100%;
+    line-height: 40px;
+    color: inherit;
+    text-decoration: none;
+    text-align: center;
+	padding-right:0px;
+}
+
+}
