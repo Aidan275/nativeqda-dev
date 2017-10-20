@@ -10,7 +10,9 @@
 		<p>This page is for creating, viewing, modifying, and deleting users.</p>
 
 		<button data-step="1" data-intro="Click here to create a new user!" type="button" class="btn btn-md btn-success blueButton" style="border-radius: 12px 12px 0 0;font-weight:500;" ng-click="vm.popupNewUser()">New User</button>
-		<a style="float:right;" href="javascript:void(0);" onclick="javascript:introJs().start();"><i class="fa fa-question-circle" aria-hidden="true"></i></a>
+		<a class="hidden-xs" style="float:right;" href="javascript:void(0);" onclick="javascript:introJs().start();">
+			<i class="fa fa-question-circle" aria-hidden="true"></i>
+		</a>
 
 		<div class="bs-loading-container" bs-loading-overlay bs-loading-overlay-active-class="loading-overlay--active" bs-loading-overlay-reference-id="analysis-list"> 
 			<div class="blur-this">
