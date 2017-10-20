@@ -32,9 +32,33 @@
     	});
 
     	vm.toggleOptions = toggleOptions;
-		
+
+    	var width = document.querySelector("svg").clientWidth;
+		var height = document.querySelector("svg").clientHeight;
+		var radius = Math.min(width, height) / 2;
+
+    	var svg = d3.select("svg")
+    		.attr("width", width)
+    		.attr("height", height)
+    		.attr("radius", radius)
+    		.attr("class", "chart-svg-component")
+    		.call(
+				d3.zoom()
+				.scaleExtent([0.5, 10])
+				.translateExtent([[-width/2, -height/2], [width*1.5, height*1.5]])
+				.on("zoom", function () {
+					svg.attr("transform", d3.event.transform)
+				}))
+			.append("g");
 		///////////////////////////
 
+
+		/**
+		* @ngdoc function
+		* @name activate
+		* @methodOf visualisations.controller:pieChartCtrl
+		* @description Gets data to draw the pie chart for either concepts or keywords
+		*/
 		function activate() {
 			bsLoadingOverlayService.start({referenceId: 'pie-chart'});	// Start animated loading overlay
 			analysisService.readWatsonAnalysis(analysisId) //gets id from url
@@ -135,18 +159,30 @@
 	    	drawChart(data);
 	    }
 
-
+		/**
+		* @ngdoc function
+		* @name drawChart
+		* @methodOf visualisations.controller:pieChartCtrl
+		* @description Function takes the trimmed and sorted data and using d3 draws a pie chart on relevance
+		* function is called when drawing keyword and concept analysis
+		* @param {object} data An object consisting of
+		*
+		* relevance: A score of how relevant the keyword or concept is  
+		* text: The name of the element  
+		* dbpedia_resource: A link to dbpedias page on the resource
+		*/
 		function drawChart(data) {
-			console.log(data);
+
 			//set area
-			var svg = d3.select("svg"),
-			margin = {top: 40, right: 40, bottom: 400, left: 80},
-			width = 500,
-			height = 500, 
-			radius = Math.min(width, height) / 2,
 			g = svg.append("g").attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 
-			var tooltip = d3.select("body").append("div").attr("class", "toolTip");
+			var tooltip = d3.select("#piePanel").append("div")	
+			.attr("class", "pie-chart-tooltip")				
+			.style("opacity", 0)
+			.style("background", "#fff")
+			.style("padding", "10px")
+			.style("border-radius", "10px")
+			.style("font-weight", 600);
 
 			//set colours
 			var color = d3.scaleOrdinal(d3.schemeCategory20c);
@@ -158,6 +194,7 @@
 			var outerRadius = radius - 10;
 			var innerRadius = 0;
 			
+			/* Sets the radius */
 			var path = d3.arc()
 				.outerRadius(outerRadius)
 				.innerRadius(innerRadius);	
@@ -166,24 +203,36 @@
 				.outerRadius(radius - 40)
 				.innerRadius(radius - 40);
 
+			/* Append the sections of the pie chart */
 			var arc = g.selectAll(".arc")
 				.data(pie(data))
 				.enter().append("g")
 				.attr("class", "arc")
 				.attr("transform", "translate(" + outerRadius + "," + innerRadius + ")")
 				.on("mousemove", function(d){
-				tooltip
-				.style("left", d3.event.pageX - 20 + "px")
-				.style("top", d3.event.pageY - 40 + "px")
-				.style("display", "inline-block")
-				.html((d.data.text) + "<br>" + ((d.data.relevance)));
-			})
-			.on("mouseout", function(d){ tooltip.style("display", "none");});
+				tooltip.transition()		
+				.duration(200)		
+				.style("opacity", .9);
+
+				tooltip.html((d.data.text) + "<br>" + d3.format(".2%")(d.data.relevance/100))
+					.style("left", width/2 + "px")		
+					.style("transform", "translate(-50%, 0)")		
+					.style("top", 10 + "px")
+					.style("background", "#fafafa")
+					.style("border", "1px solid #000");
+				})
+				.on("mouseout", function(d) {		
+					tooltip.transition()		
+					.duration(500)		
+					.delay(3000)
+					.style("opacity", 0);	
+				})
 
 			arc.append("path")
 				.attr("d", path)
 				.attr("fill", function(d) { return color(d.data.text); });
 
+			/* Add labels to pie */
 			arc.append("text")
 				.attr("transform", function(d) { return "translate(" + label.centroid(d) + ")"; })
 				.attr("dy", "0.35em")

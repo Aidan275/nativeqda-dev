@@ -44,13 +44,31 @@
 	display: block;
 }
 .chart div {
-	font: 10px sans-serif;
-	background-color: steelblue;
-	text-align: right;
-	padding: 3px;
-	margin: 1px;
-	color: white;
-	top: 100px;
+	position: absolute;
+	top: 200; 
+	right: 0; 
+	bottom: 0; 
+	left: 0;
+}
+
+.pie-chart-tooltip {
+	position: absolute;
+	z-index: 1070;
+	display: block;
+	font-size: 15px;
+	font-style: normal;
+	font-weight: normal;
+	text-align: left;
+	text-align: start;
+	text-decoration: none;
+	text-shadow: none;
+	text-transform: none;
+	letter-spacing: normal;
+	word-break: normal;
+	word-spacing: normal;
+	word-wrap: normal;
+	white-space: normal;
+	line-break: auto;
 }
 
 .toolTip {
@@ -63,6 +81,7 @@
 	padding: 14px;
 	text-align: center;
 }
+
 </style>
 
 <navigation></navigation>
@@ -74,6 +93,7 @@
 <div id="piePanel">
 
 	<div style="position: absolute; left: 50%;transform: translateX(-50%);">
+		<div class="tool"></div>
 		<svg width="960" height="500"></svg>
 		<div class="chart"></div>
 	</div>

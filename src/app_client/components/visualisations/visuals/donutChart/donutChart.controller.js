@@ -5,7 +5,6 @@
 * @name visualisations.controller:donutChartCtrl
 * @description Controller for the donut chart visualisation
 */
-
 (function () {
 
 	angular
@@ -36,6 +35,12 @@
 
 		///////////////////////////
 
+		/**
+		* @ngdoc function
+		* @name activate
+		* @methodOf visualisations.controller:donutChartCtrl
+		* @description Gets data to draw the donut chart for either concepts, entities or keywords
+		*/
 		function activate() {
 			bsLoadingOverlayService.start({referenceId: 'donut-chart'});	// Start animated loading overlay
 			analysisService.readWatsonAnalysis(analysisId) //gets id from url
@@ -61,8 +66,7 @@
 					checkLength();
 				break;
       		}
-      		
-				
+      			
 			}, function(err) {
 				bsLoadingOverlayService.stop({referenceId: 'donut-chart'});	// If error, stop animated loading overlay
 			}); 
@@ -108,6 +112,13 @@
 	      });
 	    }
 
+	    /**
+	    * @ngdoc function
+	    * @name roundUp
+	    * @methodOf visualisations.controller:donutChartCtrl
+	    * @description Function takes each objects relevance, calculates the sum of them and then makes
+	    * each relevance value a percentage
+	    */ 
 	    function roundUp(data) {
 	    	//Add up to get total
 	    	var total = 0;
@@ -134,7 +145,18 @@
 	    }
 
 		
-
+		/**
+		* @ngdoc function
+		* @name drawFancy
+		* @methodOf visualisations.controller:donutChartCtrl
+		* @description Function takes the trimmed and sorted data and sets the initial
+		* size of the chart. Function calls the donutChart function to draw the chart
+		* @param {object} data An object consisting of
+		*
+		* relevance: A score of how relevant the keyword or concept is  
+		* text: The name of the element  
+		* dbpedia_resource: A link to dbpedias page on the resource
+		*/
 		function drawFancy(data) {
 			var donut = donutChart(data)
 	        .width(960)
@@ -149,6 +171,19 @@
 	        	.call(donut);
 		}
 
+		/**
+		* @ngdoc function
+		* @name donutChart
+		* @methodOf visualisations.controller:donutChartCtrl
+		* @description donutChart function uses d3 to draw a donut chart
+		* Code was taken from:
+		* https://bl.ocks.org/mbhall88/b2504f8f3e384de4ff2b9dfa60f325e2
+		* @param {object} data An object consisting of
+		*
+		* relevance: A score of how relevant the keyword or concept is  
+		* text: The name of the element  
+		* dbpedia_resource: A link to dbpedias page on the resource
+		*/		
 		function donutChart(data) {
 			var width,
 			        height,
