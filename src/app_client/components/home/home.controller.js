@@ -444,8 +444,38 @@
 			.attr("width", width + margin.left + margin.right)
 			.attr("height", height + margin.top + margin.bottom)
 			.append("g")
-			.attr("transform",
-				"translate(" + margin.left + "," + margin.top + ")");
+			.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+			var legendNames = [{'name': 'Files'}, {'name': 'Analyses'}];
+
+			var legend = svg.selectAll('g')
+			.data(legendNames)
+			.enter()
+			.append('g')
+			.attr('class', 'legend');
+
+			legend.append('rect')
+			.attr('x', width - 60)
+			.attr('y', function(d, i) {
+				return i * 20;
+			})
+			.attr('width', 10)
+			.attr('height', 10)
+			.style('fill', function(d) {
+				if(d.name == 'Files')
+					return 'green'
+				else 
+					return 'blue';
+			});
+
+			legend.append('text')
+			.attr('x', width - 45)
+			.attr('y', function(d, i) {
+				return (i * 20) + 9;
+			})
+			.text(function(d) {
+				return d.name;
+			});
 
 			data.forEach(function(d) {
 				d.date = parseTime(d.date);
@@ -462,23 +492,134 @@
 			svg.append("path")
 			.data([data])
 			.attr("class", "line")
+			.style("stroke", "green")
 			.attr("d", valueline);
 
 			/* Add the valueline2 path. */
 			svg.append("path")
 			.data([data])
 			.attr("class", "line")
-			.style("stroke", "red")
+			.style("stroke", "blue")
 			.attr("d", valueline2);
 
 			/* Add the X Axis */
 			svg.append("g")
+			.attr("class", "x axis")
 			.attr("transform", "translate(0," + height + ")")
 			.call(d3.axisBottom(x));
 
 			/* Add the Y Axis */
 			svg.append("g")
+			.attr("class", "y axis")
 			.call(d3.axisLeft(y));
+
+			var mouseG = svg.append("g")
+			.attr("class", "mouse-over-effects");
+
+			mouseG.append("path")
+			.attr("class", "mouse-line")
+			.style("stroke", "black")
+			.style("stroke-width", "1px")
+			.style("opacity", "0");
+
+			var lines = document.getElementsByClassName('line');
+
+			var mousePerLine = mouseG.selectAll('.mouse-per-line')
+			.data(legendNames)
+			.enter()
+			.append("g")
+			.attr("class", "mouse-per-line");
+
+			mousePerLine.append("circle")
+			.attr("r", 7)
+			.style("stroke", function(d) {
+				if(d.name == 'Files')
+					return 'green'
+				else 
+					return 'blue';
+			})
+			.style("fill", "none")
+			.style("stroke-width", "1px")
+			.style("opacity", "0");
+
+			mousePerLine.append("text")
+
+			mouseG.append('svg:rect')
+			.attr('width', width)
+			.attr('height', height)
+			.attr('fill', 'none')
+			.attr('pointer-events', 'all')
+			.on('mouseout', function() {
+				d3.select(".mouse-line")
+				.style("opacity", "0");
+				d3.selectAll(".mouse-per-line circle")
+				.style("opacity", "0");
+				d3.selectAll(".mouse-per-line text")
+				.style("opacity", "0");
+			})
+			.on('mouseover', function() {
+				d3.select(".mouse-line")
+				.style("opacity", "1");
+				d3.selectAll(".mouse-per-line circle")
+				.style("opacity", "1");
+				d3.selectAll(".mouse-per-line text")
+				.style("opacity", "1");
+			})
+			.on('mousemove', function() { 
+				var mouse = d3.mouse(this);
+				d3.select(".mouse-line")
+				.attr("d", function() {
+					var d = "M" + mouse[0] + "," + height;
+					d += " " + mouse[0] + "," + 0;
+					return d;
+				});
+
+				d3.selectAll(".mouse-per-line")
+				.attr("transform", function(d, i) {
+					var xDate = x.invert(mouse[0]),
+					bisect = d3.bisector(function(d) { return d.date; }).right;
+
+					var beginning = 0,
+					end = lines[i].getTotalLength(),
+					target = null;
+
+					while (true){
+						target = Math.floor((beginning + end) / 2);
+						var pos = lines[i].getPointAtLength(target);
+						if ((target === end || target === beginning) && pos.x !== mouse[0]) {
+							break;
+						}
+						if (pos.x > mouse[0])      end = target;
+						else if (pos.x < mouse[0]) beginning = target;
+						else break; 
+					}
+
+					d3.select(this).select('text')
+					.text(function(d) {
+						if(d.name == 'Files')
+							return "Files Uploaded: " + y.invert(pos.y).toFixed(0);
+						else 
+							return "Analyses Processed: " + y.invert(pos.y).toFixed(0);
+					})
+					.attr("transform", function(d) {
+						if(width/mouse[0] < 2) {
+							if(d.name == 'Files')
+								return "translate(-120,-5)";
+							else 
+								return "translate(-155,-25)";
+						} else {
+							if(d.name == 'Files')
+								return "translate(10,-5)";
+							else 
+								return "translate(10,-25)";
+						}
+						
+					});
+
+					return "translate(" + mouse[0] + "," + pos.y +")";
+				});
+			});
+
 		}
 
 		/**
