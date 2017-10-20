@@ -559,7 +559,7 @@ NG_DOCS={
       "type": "controller",
       "moduleName": "visualisations",
       "shortDescription": "Controller for the donut chart visualisation",
-      "keywords": "analysis array ascending au ben bjr342 called calls chart checklength checks concept controller data descending docs donut drawchart drawing drawn elements functinon function keyword order relevance reverse rogers sorted sortrelevance sorts top trims visualisation visualisations"
+      "keywords": "activate analysis array ascending au ben bjr342 calculates called calls chart checklength checks code concept concepts consisting controller d3 data dbpedia_resource dbpedias descending docs donut donutchart draw drawchart drawfancy drawing drawn element elements entities functinon function https initial keyword keywords link object objects ocks order org percentage relevance relevant resource reverse rogers roundup score sets size sorted sortrelevance sorts sum takes text top trimmed trims visualisation visualisations"
     },
     {
       "section": "docs",
@@ -577,7 +577,7 @@ NG_DOCS={
       "type": "controller",
       "moduleName": "visualisations",
       "shortDescription": "Controller for the donut chart visualisation",
-      "keywords": "analysis array ascending au ben bjr342 calculates called calls chart checklength checks concept controller data descending docs donut drawchart drawing drawn elements functinon function keyword objects order percentage relevance reverse rogers roundup sorted sortrelevance sorts sum takes top trims visualisation visualisations"
+      "keywords": "activate analysis array ascending au ben bjr342 calculates called calls chart checklength checks concept concepts consisting controller d3 data dbpedia_resource dbpedias descending docs donut draw drawchart drawing drawn draws element elements functinon function keyword keywords link object objects order percentage pie relevance relevant resource reverse rogers roundup score sorted sortrelevance sorts sum takes text top trimmed trims visualisation visualisations"
     },
     {
       "section": "docs",

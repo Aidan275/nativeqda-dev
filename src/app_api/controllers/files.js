@@ -295,6 +295,7 @@ var buildFileListDB = function(req, res, results) {
 			size: doc.size,
 			url: doc.url,
 			createdBy: doc.createdBy,
+			dateCreated: doc.dateCreated,
 			lastModified: doc.lastModified,
 			name: doc.name,
 			path: doc.path,

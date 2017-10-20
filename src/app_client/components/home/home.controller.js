@@ -328,13 +328,157 @@
 			filesService.getFileList()
 			.then(function(data) {
 				vm.fileList = data;
-				console.log(data);
 				listFiles();
 				addMapMarkers();
+				getAnalysisList();
 			}, function(err) {
 				bsLoadingOverlayService.stop({referenceId: 'file-list'});	/* If error, stop animated loading overlays */
 				bsLoadingOverlayService.stop({referenceId: 'home-map'});
 			});
+		}
+
+		function getAnalysisList() {
+			analysisService.listWatsonAnalysis()
+			.then(function(data) {
+				vm.analysisList = data;
+				initDateGraph();
+			});
+		}
+
+		function initDateGraph() {
+			var earliestDate = null;
+			var latestDate = null;
+
+			/* Find the min and max dates */
+			vm.analysisList.forEach(function(file, index) {
+				if(index == 0) {
+					earliestDate = file.dateCreated;
+					latestDate = file.dateCreated;
+				} else {
+					if(earliestDate > file.dateCreated)
+						earliestDate = file.dateCreated;
+					if(latestDate < file.dateCreated)
+						latestDate = file.dateCreated;
+				}
+			});
+
+			/* Find the min and max dates */
+			vm.fileList.forEach(function(file) {
+				if(earliestDate > file.dateCreated)
+					earliestDate = file.dateCreated;
+				if(latestDate < file.dateCreated)
+					latestDate = file.dateCreated;
+			});
+
+			earliestDate = earliestDate.substring(0, 10);
+			latestDate = latestDate.substring(0, 10);
+
+			var dateCounts = [
+			{
+				"date": earliestDate,
+				"fileCount": 0,
+				"analysisCount": 0
+			}, {
+				"date": latestDate,
+				"fileCount": 0,
+				"analysisCount": 0
+			}
+			];
+
+			var startDate = moment(dateCounts[0].date);
+			var endDate = moment(dateCounts[1].date);
+			var days = endDate.diff(startDate, 'd', false);
+
+			for (var i = 1; i < days; i++) {
+				dateCounts.splice(i, 0, {"date" : startDate.add(1, 'd').toISOString().substring(0, 10), 'fileCount': 0, 'analysisCount': 0} )
+			}
+
+			vm.fileList.forEach(function(file, index) {
+				for(var i = 0; i < dateCounts.length; i++) {
+					if(dateCounts[i].date == file.dateCreated.substring(0, 10)) {
+						dateCounts[i].fileCount++;
+						break;
+					}
+				}
+			});
+
+			vm.analysisList.forEach(function(analysis, index) {
+				for(var i = 0; i < dateCounts.length; i++) {
+					if(dateCounts[i].date == analysis.dateCreated.substring(0, 10)) {
+						dateCounts[i].analysisCount++;
+						break;
+					}
+				}
+			});
+
+			drawDateGraph(dateCounts);
+		}
+
+		function drawDateGraph(data) {
+			/* set the dimensions and margins of the graph */
+			var margin = {top: 20, right: 20, bottom: 30, left: 50};
+			var width = document.querySelector("#dateGraph").clientWidth - margin.left - margin.right;
+			var height = 300 - margin.top - margin.bottom;
+
+			/* parse the date / time */
+			var parseTime = d3.timeParse("%Y-%m-%d");
+
+			/* set the ranges */
+			var x = d3.scaleTime().range([0, width]);
+			var y = d3.scaleLinear().range([height, 0]);
+
+			/* define the 1st line */
+			var valueline = d3.line()
+			.x(function(d) { return x(d.date); })
+			.y(function(d) { return y(d.files); });
+
+			/* define the 2nd line */
+			var valueline2 = d3.line()
+			.x(function(d) { return x(d.date); })
+			.y(function(d) { return y(d.analyses); });
+
+			/* append the svg obgect to the body of the page */
+			/* appends a 'group' element to 'svg' */
+			/* moves the 'group' element to the top left margin */
+			var svg = d3.select("#dateGraph").append("svg")
+			.attr("width", width + margin.left + margin.right)
+			.attr("height", height + margin.top + margin.bottom)
+			.append("g")
+			.attr("transform",
+				"translate(" + margin.left + "," + margin.top + ")");
+
+			data.forEach(function(d) {
+				d.date = parseTime(d.date);
+				d.files = d.fileCount;
+				d.analyses = d.analysisCount;
+			});
+
+			/* Scale the range of the data */
+			x.domain(d3.extent(data, function(d) { return d.date; }));
+			y.domain([0, d3.max(data, function(d) {
+				return Math.max(d.files, d.analyses); })]);
+
+			/* Add the valueline path. */
+			svg.append("path")
+			.data([data])
+			.attr("class", "line")
+			.attr("d", valueline);
+
+			/* Add the valueline2 path. */
+			svg.append("path")
+			.data([data])
+			.attr("class", "line")
+			.style("stroke", "red")
+			.attr("d", valueline2);
+
+			/* Add the X Axis */
+			svg.append("g")
+			.attr("transform", "translate(0," + height + ")")
+			.call(d3.axisBottom(x));
+
+			/* Add the Y Axis */
+			svg.append("g")
+			.call(d3.axisLeft(y));
 		}
 
 		/**
@@ -451,9 +595,9 @@
 				vm.markers.addLayer(marker);
 			});
 
-			vm.map.addLayer(vm.markers);	/* Adds the markers cluster group to the map */
-			bsLoadingOverlayService.stop({referenceId: 'home-map'});	/* Stop animated loading overlay */
-		}
+vm.map.addLayer(vm.markers);	/* Adds the markers cluster group to the map */
+bsLoadingOverlayService.stop({referenceId: 'home-map'});	/* Stop animated loading overlay */
+}
 
 		/**
 		* @ngdoc function

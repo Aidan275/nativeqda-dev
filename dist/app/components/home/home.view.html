@@ -84,4 +84,11 @@ input.tiny {
 	left:95%;
 	top:5%;
 }
-</style><navigation></navigation><div class=container><page-header content=vm.pageHeader></page-header><div class=col-md-8><div class=carousel-demo style="width:100%;height:100%;border: 1px solid #ddd;"><ul rn-carousel class=image><li ng-repeat="image in vm.testImages"><div ng-style="{'background-image': 'url(' + image.url + ')'}" class=bgimage><a style=background-color:white; href=/analysis>{{ image.title }}</a></div></li></ul></div></div><div class=col-md-4><div class=bs-loading-container bs-loading-overlay bs-loading-overlay-active-class=loading-overlay--active bs-loading-overlay-reference-id=file-list><div class="blur-this home-recent-files-table-container"><table ng-table=vm.tableParams class="table table-condensed table-bordered table-striped home-recent-files-table"><tr class=table-row ng-repeat="row in $data"><td data-title="'Recent Files'" class=file-name-cell ng-click=vm.viewFile(row)><span><i class="{{row.icon}} fa-lg"></i> {{row.name}}</span></td></tr></table></div></div></div><div class=col-md-12 style=min-height:400px;><div class=bs-loading-container bs-loading-overlay bs-loading-overlay-active-class=loading-overlay--active bs-loading-overlay-reference-id=home-map><div class=blur-this><div id=map-homepage></div></div></div></div></div><footer-generic></footer-generic>
+
+.line {
+  fill: none;
+  stroke: steelblue;
+  stroke-width: 2px;
+}
+
+</style><navigation></navigation><div class=container><page-header content=vm.pageHeader></page-header><div class=col-md-8><h4 style="text-align: center;">File & Analysis Activity</h4><div id=dateGraph></div></div><div class=col-md-4><div class=bs-loading-container bs-loading-overlay bs-loading-overlay-active-class=loading-overlay--active bs-loading-overlay-reference-id=file-list><div class="blur-this home-recent-files-table-container"><table ng-table=vm.tableParams class="table table-condensed table-bordered table-striped home-recent-files-table"><tr class=table-row ng-repeat="row in $data"><td data-title="'Recent Files'" class=file-name-cell ng-click=vm.viewFile(row)><span><i class="{{row.icon}} fa-lg"></i> {{row.name}}</span></td></tr></table></div></div></div><div class=col-md-12 style=min-height:400px;><div class=bs-loading-container bs-loading-overlay bs-loading-overlay-active-class=loading-overlay--active bs-loading-overlay-reference-id=home-map><div class=blur-this><div id=map-homepage></div></div></div></div></div><footer-generic></footer-generic>
