@@ -33,11 +33,12 @@
 
     	vm.toggleOptions = toggleOptions;
 
-    	var width = document.querySelector("svg").clientWidth;
-		var height = document.querySelector("svg").clientHeight;
+    	var width = document.querySelector("#chart").clientWidth;
+		var height = document.querySelector("#chart").clientHeight;
 		var radius = Math.min(width, height) / 2;
 
-    	var svg = d3.select("svg")
+    	var svg = d3.select("#chart")
+    		.append("svg")
     		.attr("width", width)
     		.attr("height", height)
     		.attr("radius", radius)
@@ -147,7 +148,6 @@
 	    		i++;
 	    	});
 
-
 	    	//Get percentages for each
 	    	i = 0;
 	    	data.forEach(function (object){
@@ -174,7 +174,9 @@
 		function drawChart(data) {
 
 			//set area
-			g = svg.append("g").attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+			console.log(width/4);
+			console.log(height/2.5);
+			g = svg.append("g").attr("transform", "translate(" + width/4  + "," + (height/2) + ")");
 
 			var tooltip = d3.select("#piePanel").append("div")	
 			.attr("class", "pie-chart-tooltip")				
@@ -191,7 +193,7 @@
 				.sort(null)
 				.value(function(d) { return d.relevance; });
 
-			var outerRadius = radius - 10;
+			var outerRadius = (radius - 100);
 			var innerRadius = 0;
 			
 			/* Sets the radius */
@@ -200,8 +202,8 @@
 				.innerRadius(innerRadius);	
 
 			var label = d3.arc()
-				.outerRadius(radius - 40)
-				.innerRadius(radius - 40);
+				.outerRadius(radius - 120)
+				.innerRadius(radius - 120);
 
 			/* Append the sections of the pie chart */
 			var arc = g.selectAll(".arc")
@@ -234,7 +236,7 @@
 
 			/* Add labels to pie */
 			arc.append("text")
-				.attr("transform", function(d) { return "translate(" + label.centroid(d) + ")"; })
+				.attr("transform", function(d) { return "translate(" + (label.centroid(d)) + ")"; })
 				.attr("dy", "0.35em")
 				.text(function(d) { return  (d.data.text); });
 

@@ -43,9 +43,9 @@
 .slideout-open .slideout-menu {
 	display: block;
 }
-.chart div {
+#chart {
 	position: absolute;
-	top: 200; 
+	top: 0; 
 	right: 0; 
 	bottom: 0; 
 	left: 0;
@@ -87,16 +87,10 @@
 <navigation></navigation>
 
 <div id="pieMenu">
-	
 </div>
 
 <div id="piePanel">
-
-	<div style="position: absolute; left: 50%;transform: translateX(-50%);">
-		<div class="tool"></div>
-		<svg width="960" height="500"></svg>
-		<div class="chart"></div>
-	</div>
+	<div id="chart"></div>
 </div>
 
 <footer-generic></footer-generic>
