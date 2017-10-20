@@ -5,6 +5,7 @@ var del = require('del');
 var paths = require('./gulp.config.json');
 var plug = require('gulp-load-plugins')();
 var reload = browserSync.reload;
+var markdownpdf = require("markdown-pdf");
 
 var colors = plug.util.colors;
 var env = plug.util.env;
@@ -189,6 +190,17 @@ gulp.task('fonts', function() {
 });
 
 /**
+* Creates a PDF version of the readme
+* @return {Stream}
+*/
+gulp.task('readmeToPDF', function() {
+	log('Converting the readme to PDF');
+
+	markdownpdf().from("readme.md").to("readme.pdf");
+});
+
+
+/**
 * Inject all the optimised files into the index.html for production
 * @return {Stream}
 */
@@ -227,7 +239,7 @@ gulp.task('inject-min', ['ng-app', 'scripts-js', 'vendor-js', 'styles-css', 'app
 * Build the optimised app for production
 * @return {Stream}
 */
-gulp.task('build', ['inject-min', 'fonts', 'images', 'html'], function() {
+gulp.task('build', ['inject-min', 'fonts', 'images', 'html', 'readmeToPDF'], function() {
 	log('Building the optimized app');
 
 	return gulp.src('')

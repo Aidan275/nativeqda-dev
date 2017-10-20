@@ -178,7 +178,7 @@
 			swal({
 				title: "Are you sure?",
 				html: true,
-				text: "<p>Confirm to delete the file '<strong>" + file.name + "</strong>'</p>",
+				text: "<p>Confirm to delete '<strong>" + file.name + "</strong>'</p>",
 				type: "warning",
 				showCancelButton: true,
 				allowOutsideClick: true,

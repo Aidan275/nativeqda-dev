@@ -81,24 +81,28 @@ ul.breadcrumb-menu .inactive-home-link {
 						<td ng-click="vm.viewFile(row)" data-title="'Uploaded By'" filter="{createdBy: 'text'}" sortable="'createdBy'" class="uploaded-by-cell hidden-xs hidden-sm" header-class="'hidden-xs hidden-sm'">{{row.createdBy}}</td>
 						<td ng-click="vm.viewFile(row)" data-title="'Size'" filter="{size: 'text'}" sortable="'size'" class="size-cell hidden-xs hidden-sm hidden-md" header-class="'hidden-xs hidden-sm hidden-md'">{{row.size | formatFileSize:2}}</td>
 						<td data-title="'Action'" class="context-menu-cell">
-							<div data-step="5" data-intro="<h5>Click here to:</h5><b>Files</b> - View a file, Display file details or Delete a file<br><b>Folders</b> - Open a folder or Delete a folder" class="dropdown" style="text-align:center;">
+							<div ng-if="row.type!='parent-dir'" data-step="5" data-intro="<h5>Click here to:</h5><b>Files</b> - View a file, Display file details or Delete a file<br><b>Folders</b> - Open a folder or Delete a folder" class="dropdown" style="text-align:center;">
 								<span class="fa fa-ellipsis-h dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"></span>
 								<ul class="dropdown-menu dropdown-menu-right">
 									<li class="view-cell">
-										<a ng-if="row.type!='parent-dir'" ng-click="vm.viewFile(row)">
+										<a ng-click="vm.viewFile(row)">
 											<span ng-if="row.type!='folder'">View</span>
 											<span ng-if="row.type=='folder'">Open</span>
 										</a>
 									</li>
-									<li ng-click="vm.popupEditVisual(row.name, row._id)" class="detail-cell"><a ng-if="row.type!='parent-dir' && row.type!='folder'" ng-click="vm.popupFileDetails(row)">Details</a>
-										<li class="delete-cell"><a ng-if="row.type!='parent-dir'" ng-click="vm.confirmDelete(row)">Delete</a></li>
-									</ul>
-								</div>
-							</td>
-						</tr>
-					</table>
-				</div>
+									<li class="detail-cell">
+										<a ng-if="row.type!='parent-dir' && row.type!='folder'" ng-click="vm.popupFileDetails(row)">Details</a>
+									</li>
+									<li class="delete-cell">
+										<a ng-if="row.type!='parent-dir'" ng-click="vm.confirmDelete(row)">Delete</a>
+									</li>
+								</ul>
+							</div>
+						</td>
+					</tr>
+				</table>
 			</div>
+		</div>
 
 		<!-- displays file list for S3
 

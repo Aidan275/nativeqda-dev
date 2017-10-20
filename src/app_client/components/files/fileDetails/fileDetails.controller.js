@@ -118,14 +118,32 @@
 		function confirmDelete() {
 			swal({
 				title: "Are you sure?",
-				text: "Confirm to delete the file '" + vm.file.name + "'",
+				html: true,
+				text: "<p>Confirm to delete the file '<strong>" + vm.file.name + "</strong>'</p>",
 				type: "warning",
 				showCancelButton: true,
 				allowOutsideClick: true,
+				closeOnConfirm: false,
 				confirmButtonColor: "#d9534f",
 				confirmButtonText: "Yes, delete it!"
 			}, function() {
-				deleteFileDB();
+				if(vm.file.analyses.length > 0) {
+					swal({
+						title: "Are you positive?",
+						html: true,
+						text: "<p>'<strong>" + vm.file.name + "</strong>' is included in an analysis, are you still sure you want to delete this file?</p><br /><p>The analysis results will still be available.</p>",
+						type: "warning",
+						showCancelButton: true,
+						allowOutsideClick: true,
+						confirmButtonColor: "#d9534f",
+						confirmButtonText: "Yes! delete it!"
+					}, function() {
+						deleteFileDB();
+					});
+				} else {
+					deleteFileDB();
+					swal.close();
+				}
 			});
 		}
 

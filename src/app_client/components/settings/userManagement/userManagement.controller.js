@@ -102,7 +102,8 @@
 		function confirmDelete(user) {
 			swal({
 				title: "Are you sure?",
-				text: "Confirm to delete the user '" + user.firstName + "'",
+				html: true,
+				text: "<p>Confirm to delete the user '<strong>" + user.firstName + "</strong>'</p>",
 				type: "warning",
 				showCancelButton: true,
 				allowOutsideClick: true,
