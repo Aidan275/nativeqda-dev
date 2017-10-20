@@ -19,11 +19,11 @@
 				<table ng-table="vm.tableParams" class="table table-bordered table-striped surveys-browser-table">
 					<tr class="table-row" ng-repeat="row in $data">
 
-						<td data-step="2" data-intro="Click here to view survey responses!" ng-click="vm.goToResponsesUrl(row.accessId)" data-title="'Survey Name'"  sortable="'name'" class="survey-name-cell">{{row.name}}</td>
-						<td ng-click="vm.goToResponsesUrl(row.accessId)" data-title="'Responses'"  	sortable="'numResponses'" class="responses-cell">{{row.numResponses}}</td>
-						<td ng-click="vm.goToResponsesUrl(row.accessId)" data-title="'Created By'" 	sortable="'createdBy'" class="created-by-cell hidden-xs hidden-sm"  header-class="'hidden-xs hidden-sm'">{{row.createdBy}}</td>
-						<td ng-click="vm.goToResponsesUrl(row.accessId)" data-title="'Date Created'"  sortable="'dateCreated'" class="date-created-cell hidden-xs hidden-sm"  header-class="'hidden-xs hidden-sm'">{{row.dateCreated | date : "dd MMMM, yyyy h:mm a"}}</td>
-						<td data-step="3" data-intro="Click here to add a response!" data-title="'Survey Code'"  class="responses-cell" style="cursor: text;">{{row.accessId}}</td>
+						<td data-step="2" data-intro="Click here to view survey responses!" ng-click="vm.goToResponsesUrl(row.accessId)" data-title="'Survey Name'"  filter="{name: 'text'}" sortable="'name'" class="survey-name-cell">{{row.name}}</td>
+						<td ng-click="vm.goToResponsesUrl(row.accessId)" data-title="'Responses'"  	filter="{numResponses: 'number'}" sortable="'numResponses'" class="responses-cell">{{row.numResponses}}</td>
+						<td ng-click="vm.goToResponsesUrl(row.accessId)" data-title="'Created By'" 	filter="{createdBy: 'text'}" sortable="'createdBy'" class="created-by-cell hidden-xs hidden-sm"  header-class="'hidden-xs hidden-sm'">{{row.createdBy}}</td>
+						<td ng-click="vm.goToResponsesUrl(row.accessId)" data-title="'Date Created'"  filter="{dateCreated: 'text'}" sortable="'dateCreated'" class="date-created-cell hidden-xs hidden-sm"  header-class="'hidden-xs hidden-sm'">{{row.dateCreated | date : "dd MMMM, yyyy h:mm a"}}</td>
+						<td data-step="3" data-intro="Click here to add a response!" data-title="'Survey Code'"  filter="{accessId: 'text'}" class="responses-cell" style="cursor: text;">{{row.accessId}}</td>
 						<td data-title="'Action'" class="context-menu-cell">
 							<div data-step="4" data-intro="<h5>Click here to:</h5><ul><li>Preview a survey</li><li>View survey responses</li><li>Manually add survey responses</li><li>Delete a survey</li></ul>" class="dropdown" style="text-align:center;">
 								<span class="fa fa-ellipsis-h dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"></span>
