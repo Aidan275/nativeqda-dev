@@ -170,8 +170,7 @@ module.exports.updateProfile = function(req, res) { //Update the user's profile,
 };
 
 module.exports.deleteUser = function(req, res) {
-	var jwtpayload = extractJWT(req.headers["authorization"]);
-	if (req.params["email"] == null || req.params["email"] == jwtpayload.email) { //Deleting own account
+	if (req.params["email"] == null || req.params["email"] == req.payload.isAdmin) { //Deleting own account
 		User.remove({"email": jwtpayload.email}, function(err, results) {
 			if (err) {
 				sendJSONresponse(res, 500, err);
@@ -188,39 +187,26 @@ module.exports.deleteUser = function(req, res) {
 		});
 	}
 	else { //Deleting another account
-		//Determine if they are a sysadmin
-		User.findOne({"email": jwtpayload.email}, function(err, results) { //Find the requesting user's account
-			if (err) {
-				sendJSONresponse(res, 500, err)
-				return
-			}
-			else if (!results) {
-				sendJSONresponse(res, 404, {"message": "User not found"})
-				return
-			}
-			else {
-				if (results.roles.indexOf("sysadmin") > -1) { //The user is a sysadmin
-					User.remove({"email": req.params["email"]}, function(err, results) {
-						if (err) {
-							sendJSONresponse(res, 500, err);
-							return;
-						}
-						else if (results.toJSON().n < 1) {
-							sendJSONresponse(res, 404, {"message": "User not found"});
-							return;
-						}
-						else {
-							sendJSONresponse(res, 200, results);
-							return;
-						}
-					});
-				}
-				else { //The user is not a sysadmin and so is not authorised to delete a user.
-					sendJSONresponse(res, 403, {"message": "Not System Administrator"});
+		if (req.payload.isAdmin) { //The user is a sysadmin
+			User.remove({"email": req.params["email"]}, function(err, results) {
+				if (err) {
+					sendJSONresponse(res, 500, err);
 					return;
 				}
-			}
-		});
+				else if (results.toJSON().n < 1) {
+					sendJSONresponse(res, 404, {"message": "User not found"});
+					return;
+				}
+				else {
+					sendJSONresponse(res, 200, results);
+					return;
+				}
+			});
+		}
+		else { //The user is not a sysadmin and so is not authorised to delete a user.
+			sendJSONresponse(res, 403, {"message": "Not System Administrator"});
+			return;
+		}
 	}
 };
 
