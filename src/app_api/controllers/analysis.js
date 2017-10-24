@@ -3,9 +3,9 @@ var AnalysisResults = mongoose.model('analysisResults');
 var File = mongoose.model('File');
 var NaturalLanguageUnderstandingV1 = require('watson-developer-cloud/natural-language-understanding/v1.js');
 var natural_language_understanding = new NaturalLanguageUnderstandingV1({
-	"username": "ac282974-cb6e-474b-b44f-8a0680ca52c9",
-	"password": "qFuZ38BQwB8z",
-	'version_date': '2017-02-27'
+	"username": process.env.WATSON_USERNAME,
+	"password": process.env.WATSON_PASSWORD,
+	'version_date': process.env.WATSON_VERSION
 });
 
 var sendJSONresponse = function(res, status, content) {
