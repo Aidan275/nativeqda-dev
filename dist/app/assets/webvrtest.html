@@ -1,0 +1,580 @@
+<head><title>My A-Frame Scene</title><script src=https://aframe.io/releases/0.6.0/aframe.min.js></script><script src=https://jeromeetienne.github.io/AR.js/aframe/build/aframe-ar.js></script><script src=https://mapzen.com/tangram/tangram.min.js></script><script src=https://unpkg.com/aframe-tangram-component@1.1.0/dist/aframe-tangram-component.js></script></head><script>
+
+var markers = [
+  {
+    "key": "2017/08/be3368bfc3602d4c0c0b-NASA reveals space weapon to stop asteroids.txt",
+    "textFileKey": "2017/08/be3368bfc3602d4c0c0b-NASA reveals space weapon to stop asteroids.txt",
+    "size": 5517,
+    "url": "https://nativeqda-assets-dev.s3-ap-southeast-2.amazonaws.com/2017%2F08%2Fbe3368bfc3602d4c0c0b-NASA%20reveals%20space%20weapon%20to%20stop%20asteroids.txt",
+    "createdBy": "Aidan",
+    "lastModified": "2017-08-04T12:15:04.612Z",
+    "name": "NASA reveals space weapon to stop asteroids.txt",
+    "path": "undefined",
+    "type": "text",
+    "coords": {
+      "coordinates": {
+        "latitude": 150.8779048919678,
+        "longitude": -34.41809755364443,
+		"altitude": null
+      }
+    },
+    "tags": [],
+    "_id": "5984654882656c00117c69ce",
+    "acl": "private",
+    "icon": "fa fa-file-text-o",
+    "analyses": []
+  },
+  {
+    "key": "2017/08/84e6e9170baeba7e2411-MMA News",
+    "size": 4587,
+    "url": "https://nativeqda-assets-dev.s3-ap-southeast-2.amazonaws.com/2017%2F08%2F84e6e9170baeba7e2411-MMA%20News",
+    "createdBy": "Ben",
+    "lastModified": "2017-08-07T04:23:45.247Z",
+    "name": "MMA News",
+    "path": "undefined",
+    "type": "file",
+    "coords": {
+      "coordinates": {
+        "latitude": 150.86975097656253,
+        "longitude": -34.41101677994497,
+		"altitude": null
+      }
+    },
+    "tags": [],
+    "_id": "5987eb515d76fa0011a0e974",
+    "acl": "private",
+    "icon": "fa fa-file-o",
+    "analyses": []
+  },
+  {
+    "key": "files/2017/08/17/bdd5da3b116f50095a7b.pdf",
+    "textFileKey": "text-data/2017/08/17/bdd5da3b116f50095a7b.txt",
+    "size": 652217,
+    "url": "https://nativeqda-assets-dev.s3-ap-southeast-2.amazonaws.com/files/2017/08/17/bdd5da3b116f50095a7b.pdf",
+    "createdBy": "Ben",
+    "lastModified": "2017-08-17T04:05:47.881Z",
+    "name": "Grappling with grammar.pdf",
+    "path": "/",
+    "type": "pdf",
+    "coords": {
+      "coordinates": {
+        "latitude": 150.896701812744,
+        "longitude": -34.4099192063605,
+		"altitude": null
+      }
+    },
+    "tags": [],
+    "_id": "5995161bfdba13001146d8d3",
+    "acl": "private",
+    "icon": "fa fa-file-pdf-o",
+    "analyses": []
+  },
+  {
+    "key": "files/2017/08/17/cfcb1854f83272c93bd2.pdf",
+    "textFileKey": "text-data/2017/08/17/cfcb1854f83272c93bd2.txt",
+    "size": 396223,
+    "url": "https://nativeqda-assets-dev.s3-ap-southeast-2.amazonaws.com/files/2017/08/17/cfcb1854f83272c93bd2.pdf",
+    "createdBy": "Ben",
+    "lastModified": "2017-08-17T04:07:24.858Z",
+    "name": "UOW NSW Department of Education.pdf",
+    "path": "/",
+    "type": "pdf",
+    "coords": {
+      "coordinates": {
+        "latitude": 150.879878997803,
+        "longitude": -34.4079010496032,
+		"altitude": null
+      }
+    },
+    "tags": [],
+    "_id": "5995167cfdba13001146d8d4",
+    "acl": "private",
+    "icon": "fa fa-file-pdf-o",
+    "analyses": []
+  },
+  {
+    "key": "files/2017/08/17/1303c507a4fd27901263.txt",
+    "textFileKey": "files/2017/08/17/1303c507a4fd27901263.txt",
+    "size": 9646,
+    "url": "https://nativeqda-assets-dev.s3-ap-southeast-2.amazonaws.com/files/2017/08/17/1303c507a4fd27901263.txt",
+    "createdBy": "Ben",
+    "lastModified": "2017-08-17T04:34:09.388Z",
+    "name": "Test.txt",
+    "path": "/",
+    "type": "text",
+    "coords": {
+      "coordinates": {
+        "latitude": 150.890908241272,
+        "longitude": -34.404147856696795,
+		"altitude": null
+      }
+    },
+    "tags": [
+      "Language"
+    ],
+    "_id": "59951cc1fdba13001146df84",
+    "acl": "private",
+    "icon": "fa fa-file-text-o",
+    "analyses": []
+  },
+  {
+    "key": "files/2017/08/21/d927c903e00c125e9721.txt",
+    "textFileKey": "files/2017/08/21/d927c903e00c125e9721.txt",
+    "size": 15698,
+    "url": "https://nativeqda-assets-dev.s3-ap-southeast-2.amazonaws.com/files/2017/08/21/d927c903e00c125e9721.txt",
+    "createdBy": "Ben",
+    "lastModified": "2017-08-21T10:32:15.942Z",
+    "name": "Harry Potter first chapter.txt",
+    "path": "/",
+    "type": "text",
+    "coords": {
+      "coordinates": {
+        "latitude": 150.88005065917972,
+        "longitude": -34.424717534718795,
+		"altitude": null
+      }
+    },
+    "tags": [
+      "harry",
+      "potter"
+    ],
+    "_id": "599ab6af91c7e80011708a10",
+    "acl": "private",
+    "icon": "fa fa-file-text-o",
+    "analyses": []
+  },
+  {
+    "key": "2017/08/bbe50d656f9a982c0bb0-bubble02.jpg",
+    "size": 12082,
+    "url": "https://nativeqda-assets-dev.s3-ap-southeast-2.amazonaws.com/2017%2F08%2Fbbe50d656f9a982c0bb0-bubble02.jpg",
+    "createdBy": "Aidan",
+    "lastModified": "2017-08-04T12:14:54.266Z",
+    "name": "bubble02.jpg",
+    "path": "undefined",
+    "type": "image",
+    "coords": {
+      "coordinates": {
+        "latitude": 150.8819389343262,
+        "longitude": -34.40025285584484,
+		"altitude": null
+      }
+    },
+    "tags": [],
+    "_id": "5984653e82656c00117c69cd",
+    "acl": "private",
+    "icon": "fa fa-file-image-o",
+    "analyses": []
+  },
+  {
+    "key": "2017/08/314bdbd70b49015e6442-bubble01.jpg",
+    "size": 78075,
+    "url": "https://nativeqda-assets-dev.s3-ap-southeast-2.amazonaws.com/2017%2F08%2F314bdbd70b49015e6442-bubble01.jpg",
+    "createdBy": "Aidan",
+    "lastModified": "2017-08-04T12:14:45.404Z",
+    "name": "bubble01.jpg",
+    "path": "undefined",
+    "type": "image",
+    "coords": {
+      "coordinates": {
+        "latitude": 150.89481353759768,
+        "longitude": -34.40347509677684,
+		"altitude": null
+      }
+    },
+    "tags": [],
+    "_id": "5984653582656c00117c69cc",
+    "acl": "private",
+    "icon": "fa fa-file-image-o",
+    "analyses": []
+  },
+  {
+    "key": "files/2017/08/17/7242aae9632668da85bd.pdf",
+    "textFileKey": "text-data/2017/08/17/7242aae9632668da85bd.txt",
+    "size": 822705,
+    "url": "https://nativeqda-assets-dev.s3-ap-southeast-2.amazonaws.com/files/2017/08/17/7242aae9632668da85bd.pdf",
+    "createdBy": "Ben",
+    "lastModified": "2017-08-17T03:41:29.536Z",
+    "name": "University Student Language Ambassadors.pdf",
+    "path": "/",
+    "type": "pdf",
+    "coords": {
+      "coordinates": {
+        "latitude": 150.875973701477,
+        "longitude": -34.4047497951976,
+		"altitude": null
+      }
+    },
+    "tags": [
+      "Anu",
+      "Language"
+    ],
+    "_id": "59951069fdba13001146ce62",
+    "acl": "private",
+    "icon": "fa fa-file-pdf-o",
+    "analyses": []
+  },
+  {
+    "key": "files/2017/08/22/cbe8d47343850ef95659.txt",
+    "textFileKey": "files/2017/08/22/cbe8d47343850ef95659.txt",
+    "size": 1276799,
+    "url": "https://nativeqda-assets-dev.s3-ap-southeast-2.amazonaws.com/files/2017/08/22/cbe8d47343850ef95659.txt",
+    "createdBy": "Aidan",
+    "lastModified": "2017-08-22T05:55:39.557Z",
+    "name": "MOBY DICK.txt",
+    "path": "/",
+    "type": "text",
+    "coords": {
+      "coordinates": {
+        "latitude": 150.89395523071292,
+        "longitude": -34.42144891045866,
+		"altitude": null
+      }
+    },
+    "tags": [
+      "moby",
+      "dick"
+    ],
+    "_id": "599bc75ba3f1120011701181",
+    "acl": "private",
+    "icon": "fa fa-file-text-o",
+    "analyses": []
+  },
+  {
+    "key": "files/2017/08/22/fc9c8e83f796bcfe4caf.txt",
+    "textFileKey": "files/2017/08/22/fc9c8e83f796bcfe4caf.txt",
+    "size": 12472,
+    "url": "https://nativeqda-assets-dev.s3-ap-southeast-2.amazonaws.com/files/2017/08/22/fc9c8e83f796bcfe4caf.txt",
+    "createdBy": "Aidan",
+    "lastModified": "2017-08-22T05:57:38.489Z",
+    "name": "MOBY DICK - Chapter 1.txt",
+    "path": "/",
+    "type": "text",
+    "coords": {
+      "coordinates": {
+        "latitude": 150.89395523071292,
+        "longitude": -34.42144891045866,
+		"altitude": null
+      }
+    },
+    "tags": [],
+    "_id": "599bc7d2a3f1120011701182",
+    "acl": "private",
+    "icon": "fa fa-file-text-o",
+    "analyses": []
+  },
+  {
+    "key": "files/2017/09/06/ff0bcbe99985d073266f.pdf",
+    "textFileKey": "text-data/2017/09/06/ff0bcbe99985d073266f.txt",
+    "size": 412556,
+    "url": "https://nativeqda-assets-dev.s3-ap-southeast-2.amazonaws.com/files/2017/09/06/ff0bcbe99985d073266f.pdf",
+    "createdBy": "Reece",
+    "lastModified": "2017-09-06T07:26:59.197Z",
+    "name": "ISIT100.pdf",
+    "path": "/",
+    "type": "pdf",
+    "coords": {
+      "coordinates": {
+        "latitude": 150.88225007057193,
+        "longitude": -34.40627675211371,
+		"altitude": null
+      }
+    },
+    "tags": [
+      "assignment",
+      "outline",
+      "university",
+      "academic"
+    ],
+    "_id": "59afa343baf49c0011810bed",
+    "acl": "private",
+    "icon": "fa fa-file-pdf-o",
+    "analyses": []
+  },
+  {
+    "key": "files/2017/09/14/b3c442fafe92026da209.mp3",
+    "size": 5292022,
+    "url": "https://nativeqda-assets-dev.s3-ap-southeast-2.amazonaws.com/files/2017/09/14/b3c442fafe92026da209.mp3",
+    "createdBy": "Aidan",
+    "lastModified": "2017-09-14T16:39:27.227Z",
+    "name": "7 - Candy Shop (Feat. Olivia) (Produced By Scott Storch).mp3",
+    "path": "/",
+    "type": "audio",
+    "coords": {
+      "coordinates": {
+        "latitude": 150.89421808719638,
+        "longitude": -34.42550664633313,
+		"altitude": null
+      }
+    },
+    "tags": [],
+    "_id": "59bab0bfbd66a30012ab65f2",
+    "acl": "private",
+    "icon": "fa fa-file-audio-o",
+    "analyses": []
+  },
+  {
+    "key": "files/text-data/2017/09/14/5a2ed4996d2286cc31a7.txt.docx",
+    "textFileKey": "text-data/text-data/2017/09/14/5a2ed4996d2286cc31a7.txt",
+    "size": 17279,
+    "url": "https://nativeqda-assets-dev.s3-ap-southeast-2.amazonaws.com/files/text-data/2017/09/14/5a2ed4996d2286cc31a7.txt.docx",
+    "createdBy": "Aidan",
+    "lastModified": "2017-09-14T16:40:08.102Z",
+    "name": "ALICE.docx",
+    "path": "/",
+    "type": "doc",
+    "coords": {
+      "coordinates": {
+        "latitude": 150.88798999786377,
+        "longitude": -34.415678356629684,
+		"altitude": null
+      }
+    },
+    "tags": [],
+    "_id": "59bab0e6bd66a30012ab65f3",
+    "acl": "private",
+    "icon": "fa fa-file-word-o",
+    "analyses": []
+  },
+  {
+    "key": "files/2017/09/14/c0205ce9f07bdd20fd3b.mp4",
+    "size": 78075,
+    "url": "https://nativeqda-assets-dev.s3-ap-southeast-2.amazonaws.com/files/2017/09/14/c0205ce9f07bdd20fd3b.mp4",
+    "createdBy": "Aidan",
+    "lastModified": "2017-09-14T16:38:50.349Z",
+    "name": "video.mp4",
+    "path": "/",
+    "type": "video",
+    "coords": {
+      "coordinates": {
+        "latitude": 150.88726043701175,
+        "longitude": -34.407428959034334,
+		"altitude": null
+      }
+    },
+    "tags": [],
+    "_id": "59bab098bd66a30012ab65f0",
+    "acl": "private",
+    "icon": "fa fa-file-video-o",
+    "analyses": []
+  },
+  {
+    "key": "files/text-data/2017/09/19/39131491b61972007f03.txt.docx",
+    "textFileKey": "text-data/text-data/2017/09/19/39131491b61972007f03.txt",
+    "size": 124792,
+    "url": "https://nativeqda-assets-dev.s3-ap-southeast-2.amazonaws.com/files/text-data/2017/09/19/39131491b61972007f03.txt.docx",
+    "createdBy": "Reece",
+    "lastModified": "2017-09-19T04:26:57.126Z",
+    "name": "Interbit Welcome Letter.docx",
+    "path": "/",
+    "type": "doc",
+    "coords": {
+      "coordinates": {
+        "latitude": 150.891652,
+        "longitude": -34.3881552,
+		"altitude": null
+      }
+    },
+    "tags": [
+      "computers",
+      "shop",
+      "letter"
+    ],
+    "_id": "59c09c8d092d220012a3d3da",
+    "acl": "private",
+    "icon": "fa fa-file-word-o",
+    "analyses": []
+  },
+  {
+    "key": "files/2017/09/20/526996a5eade77c26566.txt",
+    "textFileKey": "files/2017/09/20/526996a5eade77c26566.txt",
+    "size": 445461,
+    "url": "https://nativeqda-assets-dev.s3-ap-southeast-2.amazonaws.com/files/2017/09/20/526996a5eade77c26566.txt",
+    "createdBy": "Ben",
+    "lastModified": "2017-09-20T10:30:04.145Z",
+    "name": "Harry Potter and the Sorcerer's Stone.txt",
+    "path": "/",
+    "type": "text",
+    "coords": {
+      "coordinates": {
+        "latitude": 150.87485790252688,
+        "longitude": -34.41023785823963,
+		"altitude": null
+      }
+    },
+    "tags": [],
+    "_id": "59c2432cc6eeba001214b994",
+    "acl": "private",
+    "icon": "fa fa-file-text-o",
+    "analyses": [
+      "59c5298bfba3270012cd60c4"
+    ]
+  },
+  {
+    "key": "files/2017/09/20/c6e0e3b9f061f4675433.txt",
+    "textFileKey": "files/2017/09/20/c6e0e3b9f061f4675433.txt",
+    "size": 1115308,
+    "url": "https://nativeqda-assets-dev.s3-ap-southeast-2.amazonaws.com/files/2017/09/20/c6e0e3b9f061f4675433.txt",
+    "createdBy": "Ben",
+    "lastModified": "2017-09-20T10:38:18.354Z",
+    "name": "Fellowship of the Ring.txt",
+    "path": "/",
+    "type": "text",
+    "coords": {
+      "coordinates": {
+        "latitude": 150.86451530456546,
+        "longitude": -34.418947206201565,
+		"altitude": null
+      }
+    },
+    "tags": [],
+    "_id": "59c2451ac6eeba001214c426",
+    "acl": "private",
+    "icon": "fa fa-file-text-o",
+    "analyses": [
+      "59c5298bfba3270012cd60c4"
+    ]
+  },
+  {
+    "key": "files/2017/09/21/1508edfb2432e63d8fa6.txt",
+    "textFileKey": "files/2017/09/21/1508edfb2432e63d8fa6.txt",
+    "size": 9646,
+    "url": "https://nativeqda-assets-dev.s3-ap-southeast-2.amazonaws.com/files/2017/09/21/1508edfb2432e63d8fa6.txt",
+    "createdBy": "Ben",
+    "lastModified": "2017-09-21T04:04:37.044Z",
+    "name": "Anu file.txt",
+    "path": "/",
+    "type": "text",
+    "coords": {
+      "coordinates": {
+        "latitude": 150.90116500854495,
+        "longitude": -34.41891180418405,
+		"altitude": null
+      }
+    },
+    "tags": [
+      "Anu"
+    ],
+    "_id": "59c33a552fd95c0012298b30",
+    "acl": "private",
+    "icon": "fa fa-file-text-o",
+    "analyses": [
+      "59c5298bfba3270012cd60c4"
+    ]
+  },
+  {
+    "key": "files/2017/09/26/145bccbd526a0de0f712.txt",
+    "textFileKey": "files/2017/09/26/145bccbd526a0de0f712.txt",
+    "size": 4119,
+    "url": "https://nativeqda-assets-dev.s3-ap-southeast-2.amazonaws.com/files/2017/09/26/145bccbd526a0de0f712.txt",
+    "createdBy": "Reece",
+    "lastModified": "2017-09-26T02:53:38.290Z",
+    "name": "BananaAppleOrange.txt",
+    "path": "/",
+    "type": "text",
+    "coords": {
+      "coordinates": {
+        "latitude": 150.89376211166385,
+        "longitude": -34.39155926825359,
+		"altitude": null
+      }
+    },
+    "tags": [
+      "complaint",
+      "fruit",
+      "unhappy",
+      "customer"
+    ],
+    "_id": "59c9c132f601dd0012a343d5",
+    "acl": "private",
+    "icon": "fa fa-file-text-o",
+    "analyses": [
+      "59c9c15bf601dd0012a343d6"
+    ]
+  }
+]
+
+
+/*
+AFRAME.registerComponent('test', {
+        init: function () {
+          // Solution for Creating Entities.
+          var sceneEl = document.querySelector('a-scene'); 
+		  var mapEl = document.querySelector('[tangram-map]');
+		  
+		  for (var i = 0; i < markers.length; i++) {
+			console.log(mapEl.project(markers[i].coords.coordinates[0],markers[i].coords.coordinates[1]))
+			console.log(Math.pow(markers[i].coords.coordinates[0] / 100, 3))
+			var boxEl = document.createElement('a-box');
+			if (i % 2)
+					boxEl.setAttribute('material', {color: "orange"});
+			else
+				boxEl.setAttribute('material', {color: "teal"});
+			boxEl.setAttribute('position', {x: Math.pow(markers[i].coords.coordinates[0], 2) / 10000, y: 1, z: markers[i].coords.coordinates[1] / 10});
+			boxEl.setAttribute('scale', {x: 0.02, y: 0.02, z: 0.02});
+			sceneEl.appendChild(boxEl);
+		  }
+		  
+          /*for (var i = 0; i < 25; i++) {
+			for (var j = 0; j < 25; j++) {
+				var boxEl = document.createElement('a-box');
+				if (i % 2 || j % 2)
+					boxEl.setAttribute('material', {color: "orange"});
+				else
+					boxEl.setAttribute('material', {color: "teal"});
+				boxEl.setAttribute('position', {x: i /10, y: 0, z: j /10});
+				boxEl.setAttribute('scale', {x: 0.02, y: 0.02, z: 0.02});
+				sceneEl.appendChild(boxEl);
+			}
+          }
+        }
+      });*/
+</script><body style="margin : 0px; overflow: hidden;"><a-scene test embedded arjs><a-assets><img id=skyTexture src=equirectangular_web_optimized.jpg></a-assets><a-entity position="0 0 0" rotation="-90 0 0" geometry="primitive: plane; width: 5; height: 5;" material="shader: flat;" tangram-map="mapzenAPIKey: mapzen-5785vFB; center: 0,0; zoom: 14; pxToWorldRatio: 100;"><a-sphere id=marker color=#EF2D5E position="0 0 0" visible=false radius=0.03></a-sphere></a-entity><a-marker-camera preset=hiro></a-marker-camera><a-sky src=#skyTexture></a-sky></a-scene><script>
+	//<a-plane rotation="-90 0 0" width="10" height="10" color="grey"></a-plane>
+	
+      //<a-box position="0 5 -2" width="7.1" height="0.1" depth="0.1" color="#4CC3D9"></a-box>
+      //<a-box position="0 0 -2" width="7.1" height="0.1" depth="0.1" color="#4CC3D9"></a-box>
+      //<a-box position="3.5 2.5 -2" width="0.1" height="5.1" depth="0.1" color="#4CC3D9"></a-box>
+      //<a-box position="-3.5 2.5 -2" width="0.1" height="5.1" depth="0.1" color="#4CC3D9"></a-box>
+      var mapEl = document.querySelector('[tangram-map]');
+	  
+      var markerEl = document.querySelector('#marker');
+      var setProperty = window.AFRAME.utils.entity.setComponentProperty;
+      mapEl.addEventListener('map-loaded', function() {
+       var sceneEl = document.querySelector('a-scene'); 
+	   navigator.geolocation.watchPosition(function(position) {
+	   console.log(position.coords)
+          var long = position.coords.longitude;
+          var lat = position.coords.latitude;
+		  
+		  
+		  console.log(mapEl.components["tangram-map"].project(long, lat))
+          setProperty(mapEl, 'tangram-map.center', long + ', ' + lat);
+          setProperty(mapEl, 'tangram-map.zoom', '13');
+          setProperty(markerEl, 'position', mapEl.components["tangram-map"].project(long, lat));
+          setProperty(markerEl, 'visible', true);
+        }, function(error) {
+          console.error(error);
+        });
+		
+		for (var i = 0; i < markers.length; i++) {
+			var lat = markers[i].coords.coordinates.longitude
+			var long = markers[i].coords.coordinates.latitude
+			var xy = mapEl.components["tangram-map"].project(long, lat)
+			console.log(xy)
+			console.log(mapEl.components["tangram-map"].project(long, lat))
+			//console.log(markers[i].coords.coordinates[0] + ", " + markers[i].coords.coordinates[1] + " : " + xy['x'] + " " + xy['y'])
+			var boxEl = document.createElement('a-box');
+			boxEl.setAttribute('position', 0,0,0)
+			if (i % 2)
+				boxEl.setAttribute('material', {color: "orange"});
+			else
+				boxEl.setAttribute('material', {color: "teal"});
+			boxEl.setAttribute('position', mapEl.components["tangram-map"].project(long, lat));
+			boxEl.setAttribute('scale', {x: 0.07, y: 0.07, z: 0.07});
+			mapEl.appendChild(boxEl);
+			
+		}
+		
+		
+      });
+    </script></body>
