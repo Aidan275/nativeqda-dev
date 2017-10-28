@@ -26,8 +26,6 @@
 				<label>Tags: </label> {{vm.tags}}
 				<br/>
 			</span>
-
-			<a ng-click="vm.editFile()" class="btn btn-primary blueButton" role="button" jp-ng-bs-animated-button is-submitting="vm.isSubmittingButton" result="vm.resultButton" options="vm.edit">Edit</a>
 			
 			<a ng-if="vm.file.acl=='private'" ng-click="vm.updateAclS3('public-read')" class="btn btn-primary blueButton" role="button" jp-ng-bs-animated-button is-submitting="vm.isSubmittingButton" result="vm.resultButton" options="vm.makePublicOptions">Make Public</a>
 
