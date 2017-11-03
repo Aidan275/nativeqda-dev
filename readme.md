@@ -97,3 +97,7 @@ you receive instant feedback on any changes that break the expected code functio
 
 * the configuration is found at 'karma.conf.js'
 * the unit tests are found next to the code they are testing and are named as '....spec.js'.
+
+## License
+
+See the [LICENSE](LICENSE) file for license rights and limitations (GNU GPLv3).
